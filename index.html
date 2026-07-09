@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#0a0f1a"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <title>Be Ready</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    :root{
+      --bg:#0a0f1a;--bg2:#0e1520;--bg3:#111d2e;--bg4:#1a2640;--card:#0d1525;
+      --acc:#e63946;--acc2:#ff4d5a;--gold:#f5a623;--teal:#06b6d4;
+      --green:#10b981;--purple:#8b5cf6;--blue:#3b82f6;--orange:#f97316;
+      --text:#f0f4f8;--text2:#94a3b8;--text3:#475569;
+      --border:#1e2d42;--border2:#243347;
+      --font-d:'Bebas Neue',cursive;--font-b:'DM Sans',sans-serif;
+      --safe-top:env(safe-area-inset-top);--safe-bottom:env(safe-area-inset-bottom);
+    }
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-b);overflow:hidden}
+    #root{height:100%;display:flex;flex-direction:column}
+    ::-webkit-scrollbar{display:none}
+    input,textarea,select{font-family:var(--font-b)}
+  .btn-back{background:#1b263b;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer}
+
+.card{overflow-wrap:break-word;word-break:break-word}
+input,select,textarea{box-sizing:border-box}
+
+/* Largeur uniforme bilans : forcer tous les onglets à pleine largeur */
+.scroll > div { width:100% !important; box-sizing:border-box; }
+.scroll .card { width:100% !important; box-sizing:border-box; }
+.scroll .section-hdr { width:100%; box-sizing:border-box; }
+
+/* Anti-débordement page Routine */
+.scroll{overflow-x:hidden!important}
+.section-hdr{max-width:100%;box-sizing:border-box;overflow-wrap:break-word}
+.cat-badge{flex-shrink:0;max-width:60px;overflow:hidden;text-overflow:ellipsis}
+.tag{flex-shrink:0;white-space:normal}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module">
+
+// ── FIREBASE ──────────────────────────────────────────────────────────────
+const FB_CONFIG = {
+  apiKey: "AIzaSyB4_7zeE2xm_WKDKs8ZoluoTNxnUW4VZnM",
+  authDomain: "mon-programme-4dbc0.firebaseapp.com",
+  projectId: "mon-programme-4dbc0",
+  storageBucket: "mon-programme-4dbc0.firebasestorage.app",
+  appId: "1:1040124656222:web:a67cf47fab26abf60852cf"
+};
+
+let db=null, _uid=null;
+let _fbDoc=null, _fbSetDoc=null, _fbCollection=null, _fbGetDocs=null;
+
+// UID fixe stocké en localStorage → le même sur tous les appareils si copié
+function getFixedUid(){
+  let id=localStorage.getItem('be_ready_uid');
+  if(!id){ id='br_'+Math.random().toString(36).slice(2,9)+'_'+Date.now().toString(36); localStorage.setItem('be_ready_uid',id); }
+  return id;
+}
+
+async function initFirebase(){
+  try{
+    const {initializeApp}=await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js');
+    const {getFirestore,doc,setDoc,collection,getDocs}=await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js');
+    const {getAuth,signInAnonymously}=await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js');
+    const app=initializeApp(FB_CONFIG);
+    db=getFirestore(app); _fbDoc=doc; _fbSetDoc=setDoc; _fbCollection=collection; _fbGetDocs=getDocs;
+    await signInAnonymously(getAuth(app));
+    _uid=getFixedUid();
+    return true;
+  }catch(e){ console.warn('Firebase non dispo — mode local',e); return false; }
+}
+
+async function syncFromFirebase(){
+  if(!db||!_uid||!_fbCollection||!_fbGetDocs) return;
+  try{
+    const snap=await _fbGetDocs(_fbCollection(db,'users',_uid,'data'));
+    snap.forEach(d=>{
+      const remote=d.data();
+      const localVal=localStorage.getItem(d.id);
+      // Restore if missing locally, OR if remote has a newer timestamp
+      if(localVal===null){
+        localStorage.setItem(d.id, remote.value);
+      } else if(remote.ts && remote.localTs && remote.ts > (Number(localStorage.getItem('_ts:'+d.id))||0)){
+        localStorage.setItem(d.id, remote.value);
+      }
+    });
+  }catch(e){console.warn('sync error',e);}
+}
+// ─────────────────────────────────────────────────────────────────────────
+
+
+// ── STORAGE ──────────────────────────────────────────────────────────────
+function save(key,data){
+  const ts=Date.now();
+  try{ localStorage.setItem(key,JSON.stringify(data)); localStorage.setItem('_ts:'+key,String(ts)); }catch(e){}
+  if(db&&_uid&&_fbDoc&&_fbSetDoc) _fbSetDoc(_fbDoc(db,'users',_uid,'data',key),{value:JSON.stringify(data),ts:ts}).catch(()=>{});
+}
+function load(key){ try{ const v=localStorage.getItem(key); return v?JSON.parse(v):null; }catch(e){ return null; } }
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+const $ = (t,p,...c) => {
+  const el = document.createElement(t);
+  if(p) Object.entries(p).forEach(([k,v])=>{
+    if(k==='style'&&typeof v==='object') Object.assign(el.style,v);
+    else if(k.startsWith('on')) el[k]=v;
+    else if(k==='class') el.className=v;
+    else if(k==='value'||k==='checked') el[k]=v;
+    else el.setAttribute(k,v);
+  });
+  c.flat().forEach(ch=>{ if(ch==null||ch===false) return; el.appendChild(typeof ch==='string'?document.createTextNode(ch):ch); });
+  return el;
+};
+
+const today = new Date();
+const todayStr = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+const DOW = today.getDay();
+const MONTHS = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+const DAYS_FULL = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+
+// ── PROGRAMME DATA ────────────────────────────────────────────────────────
+
+const BLOCS = [
+  {id:1,name:'FONDATIONS',color:'#3b82f6',weeks:[1]},
+  {id:2,name:'FORCE & ALACTIQUE',color:'#8b5cf6',weeks:[2,3,4,5]},
+  {id:3,name:'PUISSANCE & GLYCO',color:'#e63946',weeks:[6,7,8]},
+  {id:4,name:'DÉLOAD & TESTS',color:'#10b981',weeks:[9]}];
+
+function getBlocId(week){ return week<=1?1:week<=5?2:week<=8?3:4; }
+
+function getSemLabels(bloc){
+  const m={1:['S1','—','—','—'],2:['S2','S3','S4','S5'],3:['S6','S7','S8','—'],4:['S9','—','—','—']};
+  return m[bloc]||m[1];
+}
+
+// ── SÉANCES COMPLÈTES PAR BLOC ─────────────────────────────────────────
+
+const SEANCES = {
+  'Haut 1':{
+    icon:'🏋',color:'#1E3A5F',jour:'Lundi',
+    focus:'Upper 1 \u2014 Militaire EN PREMIER \u00b7 Pendlay Row \u00b7 DB bench \u00b7 Chin-ups \u00b7 \u00c9paule',
+    blocs:{
+      1:{duree:'~65 min',rpe:'5-6/10',
+        priming:['Activation ISO militaire 1\u00d75s angle 90\u00b0 avant 1\u00e8re s\u00e9rie','CARs \u00e9paule \u00d75/sens','Rotation thoracique \u00d78/c\u00f4t\u00e9 (quadrup\u00e9die)'],
+        exercices:[
+          {num:'1',name:'\u2605\u2605\u2605 MILITAIRE BARRE',fmt:'4\u00d75',s1:'30 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:'Priorit\u00e9 absolue. Tempo 2-1-X-0. 1 activation ISO 5s angle 90\u00b0 juste avant 1\u00e8re s\u00e9rie.'},
+          {num:'2',name:'Pendlay Row \u00b7 d\u00e9part sol chaque rep',fmt:'3\u00d76',s1:'44 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Explosif concentrique. En B2 sup.: sup. avec militaire pendant repos. Tempo 2-0-X-0.'},
+          {num:'3',name:'DB Bench INCLIN\u00c9 \u00b7 halt\u00e8res \u00b7 2 bras simult.',fmt:'3\u00d78',s1:'2\u00d718 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Halt\u00e8res. 2 bras simultan\u00e9s. Tempo 3-1-X-1.'},
+          {num:'4',name:'Chin-ups \u00b7 volume \u00b7 sangle poignet G',fmt:'3\u00d78 RIR3-4',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:'Tempo 3-1-X-1. Descente contr\u00f4l\u00e9e.'},
+          {num:'5',name:'\u2605\u2605 Face Pull \u00e9lastique \u00b7 superset\u2192',fmt:'3\u00d715',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'\u2014',rpe:'5/10',note:'Coudes hauts. Hold 2s.'},
+          {num:'6',name:'Rotation ext \u00e9lastique debout \u00b7 \u2190superset',fmt:'2\u00d712/c\u00f4t\u00e9',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Coude 90\u00b0 contre flanc. Hold 2s.'},
+          {num:'7',name:'\u2605\u2605 Nuque ISO \u00e9lastique \u00b7 4 directions',fmt:'2\u00d74 dir.\u00d78s',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'60s',rpe:'5/10',note:'Boucle front. Avant/Arri\u00e8re/G/D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Transfert vers la force sous charge. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos pour la cha\u00eene TFL/IT band).'}]},
+      2:{duree:'~80 min',rpe:'6-8/10',
+        priming:['\u26a1 ALACTIQUE KB 28 kg 2 bras \u00b7 PRIMER 2-3\u00d78s \u00b7 avant militaire','Activation ISO militaire 1\u00d75s'],
+        exercices:[
+          {num:'0',name:'\u26a1 Alactique KB 28 kg 2 BRAS \u00b7 primer',fmt:'2-3\u00d78s',s1:'28 kg',s2:'28 kg',s3:'28 kg',dl:'28 kg (l\u00e9ger volume)',repos:'30-45s',rpe:'10/10',note:'PRIMER neural (pas de d\u00e9veloppement, c\u2019est l\u2019AGT mercredi). 2-3 efforts explosifs 2 BRAS, r\u00e9cup courte 30-45s, pour activer le SNC. Encha\u00eener sur le militaire dans les 1-2 min (effet potentiation). Hip hinge maximal.'},
+          {num:'1',name:'\u2605\u2605\u2605 MILITAIRE \u00b7 Top set conjugate \u00b7 superset\u2192',fmt:'5\u00d73 \u2192 top set',s1:'\u2191 vers 35 kg',s2:'\u2191 vers 37-38 kg + AMRAP',s3:'\u2191 vers 40 kg',dl:'3\u00d73 @30 kg d\u00e9load',repos:'2-3 min',rpe:'9/10',note:'CONJUGATE : 5 s\u00e9ries de 3 reps en montant vers le top set du jour (RIR 1). En S4 : +1 s\u00e9rie AMRAP \u00e0 ~80% du top set (max reps propres, stop RIR 1) = 6 s\u00e9ries. Superset pendant repos avec Pendlay Row.'},
+          {num:'2',name:'Pendlay Row \u00b7 \u2190superset militaire',fmt:'4\u00d75',s1:'48 kg',s2:'50-52 kg + AMRAP',s3:'52-54 kg',dl:'44 kg d\u00e9load',repos:'\u2014',rpe:'7/10',note:'Pendant repos militaire. Tempo 2-0-X-0.'},
+          {num:'3',name:'DB Bench INCLIN\u00c9 halt\u00e8res',fmt:'3-4\u00d78',s1:'2\u00d720 kg',s2:'2\u00d722 kg',s3:'2\u00d724 kg',dl:'2\u00d718 kg d\u00e9load',repos:'2 min',rpe:'7/10',note:'Omoplates r\u00e9tract\u00e9es + d\u00e9prim\u00e9es. Descente contr\u00f4l\u00e9e jusqu\u2019\u00e0 affleurement. Coudes ~45\u00b0 du tronc. Expiration sur push. G d\u00e9finit la charge.'},
+          {num:'4',name:'Chin-ups \u00b7 volume + AMRAP \u00b7 sangle poignet G',fmt:'4\u00d76-8 RIR3-4',s1:'PDC',s2:'PDC',s3:'PDC + AMRAP (stop RIR2)',dl:'PDC d\u00e9load',repos:'2-3 min',rpe:'6-7/10',note:'Prise supination, sangle G si grip l\u00e2che. ARR\u00caTER \u00e0 RIR 1-2 (1-2 reps en r\u00e9serve), PAS d\u2019\u00e9chec fractionn\u00e9 \u2014 viser RPE 8-9 max, pas 10. Sur la s\u00e9rie AMRAP : stop quand la forme casse. D\u00e9coaptation initiale, initier dorsaux, menton au-dessus barre, descente 3s.'},
+          {num:'5',name:'Face Pull + Rotation ext \u00b7 superset',fmt:'3\u00d715+2\u00d712',s1:'moyen',s2:'moyen+',s3:'moyen+',dl:'l\u00e9ger d\u00e9load',repos:'90s',rpe:'5/10',note:'Face pull : coudes hauts, tirer vers le visage. Rotation ext : coude 90\u00b0 collé au flanc, rotation vers l\u2019ext\u00e9rieur, hold 2s.'},
+          {num:'6',name:'Nuque ISO \u00e9lastique',fmt:'2\u00d74 dir.\u00d79-10s',s1:'l\u00e9ger',s2:'moyen',s3:'moyen',dl:'l\u00e9ger d\u00e9load',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
+      3:{duree:'S6 transition ~70 min | S7-S8 ~80 min',rpe:'S6: 7/10 | S7-S8: 8-9/10',
+        priming:['\u26a1 ALACTIQUE KB 28 kg 2 bras \u00b7 PRIMER 2-3\u00d78s','Activation ISO militaire 1\u00d75s'],
+        exercices:[
+          {num:'0',name:'\u26a1 Alactique KB 28 kg 2 BRAS \u00b7 primer',fmt:'2-3\u00d78s',s1:'28 kg',s2:'28 kg',s3:'28 kg',dl:'28 kg (l\u00e9ger volume)',repos:'30-45s',rpe:'10/10',note:'PRIMER neural (pas de d\u00e9veloppement, c\u2019est l\u2019AGT mercredi). 2-3 efforts explosifs 2 BRAS, r\u00e9cup courte 30-45s, pour activer le SNC. Encha\u00eener sur le militaire dans les 1-2 min (effet potentiation). Hip hinge maximal.'},
+          {num:'1',name:'\u2605\u2605\u2605 MILITAIRE \u00b7 Cluster 2+2+2',fmt:'4 clusters',s1:'@40 kg',s2:'@42 kg',s3:'@38 kg 3 clusters',dl:'\u2014',repos:'20s/3 min',rpe:'8-9/10',note:'2\u219220s\u21922\u219220s\u21922 = 1 cluster.'},
+          {num:'2',name:'\u2605\u2605\u2605 Bench PAP \u2192 plyo push-up OU speed bench',fmt:'3-4 paires (ou 3\u00d73 speed)',s1:'@68 kg\u2192plyo\u00d75',s2:'@70 kg\u2192plyo\u00d75',s3:'@64 kg 2 paires',dl:'\u2014',repos:'4-5 min/paire',rpe:'9/10',note:'0s entre bench @85% et le plyo. PLYO PUSH-UP : sur poign\u00e9es ou poings (m\u00e9nage poignet G), SANS claquer, r\u00e9ception contr\u00f4l\u00e9e. OPTION SPEED BENCH : contre \u00e9lastiques (50-55% + bandes), 3\u00d73 \u00e0 VITESSE MAXIMALE, transition 15-30s apr\u00e8s la s\u00e9rie lourde @85%. Les deux d\u00e9veloppent la puissance de poussée.'},
+          {num:'3',name:'Pendlay Row \u00b7 3-7 Legeard @65%',fmt:'3\u219247 paliers',s1:'@44 kg',s2:'@46 kg',s3:'@40 kg',dl:'\u2014',repos:'10-15s entre paliers',rpe:'8/10',note:'Dos 90\u00b0. Barre au sol entre chaque rep. Coudes 45\u00b0 du tronc. Contraction omoplate en haut. Explosif mont\u00e9e, lent descente.'},
+          {num:'4',name:'Chin-ups \u00b7 volume \u00b7 sangle poignet G',fmt:'3\u00d78 RIR3',s1:'PDC',s2:'PDC',s3:'PDC',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:''},
+          {num:'5',name:'Face Pull + Rotation ext peak',fmt:'3\u00d715+2\u00d712',s1:'lourd',s2:'lourd',s3:'moyen',dl:'\u2014',repos:'90s',rpe:'5/10',note:'M\u00eame technique. Progression en amplitude de rotation ext.'},
+          {num:'6',name:'Nuque ISO \u00e9lastique peak',fmt:'3\u00d74 dir.\u00d710s',s1:'moyen',s2:'moyen',s3:'moyen',dl:'l\u00e9ger d\u00e9load',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
+      4:{duree:'~45 min',rpe:'4-5/10',
+        priming:['D\u00e9load'],
+        exercices:[
+          {num:'1',name:'Militaire \u00b7 d\u00e9load + TEST 3RM S9',fmt:'3\u00d73 puis test',s1:'25 kg puis 3RM',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'3 min',rpe:'4-9/10',note:'S9: test 3RM. Objectif \u226543 kg.'},
+          {num:'2',name:'Pendlay Row \u00b7 d\u00e9load',fmt:'3\u00d75',s1:'42 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'Dos horizontal. Barre au sol entre chaque rep. Coudes 45\u00b0.'},
+          {num:'3',name:'DB Bench INCLIN\u00c9 \u00b7 d\u00e9load',fmt:'2\u00d78',s1:'2\u00d716 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'Omoplates r\u00e9tract\u00e9es. Coudes ~45\u00b0.'},
+          {num:'4',name:'Chin-ups \u00b7 d\u00e9load + TEST max S9',fmt:'2\u00d78 puis max',s1:'PDC puis max',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'3 min',rpe:'4-9/10',note:'S9: test max. Objectif \u226515 reps.'},
+          {num:'T1',name:'🎯 TEST · Militaire barre 3RM',fmt:'3RM',s1:'≥43 kg',s2:'—',s3:'—',dl:'—',repos:'5 min',rpe:'9/10',note:'Test officiel S9. Après échauffement progressif (50%×5 / 70%×3 / 85%×1 / 93%×3). 1RM estimé = charge × 1.08.'},
+          {num:'T2',name:'🎯 TEST · Bench plat 3RM',fmt:'3RM',s1:'≥80 kg',s2:'—',s3:'—',dl:'—',repos:'5 min',rpe:'9/10',note:'Test officiel S9. Même protocole échauffement. Objectif : 80 kg × 3 propres.'}]},
+    }
+  },
+  'Bas 1':{
+    icon:'🦵',color:'#06b6d4',jour:'Mardi',
+    focus:'Lower 1 \u2014 Bulgarian G FIRST \u00b7 RDL \u00b7 Copenhagen \u00b7 Pallof',
+    blocs:{
+      1:{duree:'~60 min',rpe:'5-6/10',
+        priming:['TGU vide \u00d71/1','Clamshell G \u00d715','Petersen G \u00d710','Hip CAR \u00d73/c\u00f4t\u00e9'],
+        exercices:[
+          
+          {num:'1',name:'\u2605\u2605\u2605 Bulgarian Split Squat \u00b7 G EN PREMIER',fmt:'3\u00d78/c\u00f4t\u00e9',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min/c\u00f4t\u00e9',rpe:'6/10',note:'G AVANT D. G d\u00e9finit le poids et les reps pour D. Tempo 3-1-2-0.'},
+          {num:'2',name:'Romanian DL bil.',fmt:'3\u00d76',s1:'82 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:'Genoux l\u00e9g\u00e8rement fl\u00e9chis et FIXES. Hanches en arri\u00e8re jusqu\u2019\u00e0 tension ischio. Barre contre les jambes tout le long. Dos plat, regard l\u00e9g\u00e8rement devant. Retour par extension hanche.'},
+          {num:'3',name:'Copenhagen adductor \u00b7 G FIRST',fmt:'2\u00d78/c\u00f4t\u00e9',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Avant-bras au sol, coude sous \u00e9paule. Mollet (pas genou) sur le banc. Ligne droite t\u00eate-hanche-pied. Monter la jambe basse vers la haute. Bassin stable, pas de rotation. G EN PREMIER.'},
+          {num:'4',name:'Pallof press \u00e9lastique',fmt:'3\u00d710/c\u00f4t\u00e9',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Bras tendus en avant. R\u00e9sister \u00e0 la rotation. Pas de compensation du tronc ou des hanches.'},
+          {num:'F1',name:'Dragon flag \u00b7 finisher',fmt:'3\u00d74-6 (ou negatives)',s1:'tuck/neg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'7/10',note:'OPTIONNEL. ANTI-EXTENSION dynamique grande amplitude. Prise derri\u00e8re la t\u00eate, coudes pr\u00e8s du corps (\u00e9paule G confortable). Corps RIGIDE, z\u00e9ro cassure \u00e0 la hanche. Descente 4-5s contr\u00f4l\u00e9e. Progression : negatives \u2192 tuck \u2192 one-leg \u2192 full. R\u00e9gresser si lombaire cambre ou \u00e9paule G g\u00eane.'},
+          {num:'F2',name:'Nuque ISO élastique · 4 directions',fmt:'2×4 dir.×8s',s1:'léger',s2:'—',s3:'—',dl:'—',repos:'60s',rpe:'4/10',note:'3ème stimulus nuque/sem. Élastique poteau, boucle tête, maintien axe.'},
+          {num:'F3',name:'Farmer carry 16+20 kg · alterner mains/sem',fmt:'3×40m',s1:'16+20',s2:'—',s3:'—',dl:'—',repos:'90s',rpe:'6/10',note:'Sem. paire: 20 à D / impaire: 20 à G (si poignet ok, sinon 16 à G fixe). Posture gilet: grand, épaules basses.'}]},
+      2:{duree:'~70 min',rpe:'6-8/10',
+        priming:['Hip CAR \u00d73/c\u00f4t\u00e9'],
+        exercices:[
+          {num:'1',name:'\u2605\u2605\u2605 Bulgarian G FIRST \u00b7 charg\u00e9',fmt:'3-4\u00d78/c\u00f4t\u00e9',s1:'@16 kg goblet',s2:'@16-20 kg',s3:'@20 kg',dl:'PDC d\u00e9load',repos:'2 min/c\u00f4t\u00e9',rpe:'7/10',note:'G AVANT D. G d\u00e9finit le poids/reps. Tempo 3-1-X-1.'},
+          {num:'2',name:'Romanian DL bil. \u00b7 sangle poignet G',fmt:'4\u00d76 RIR',s1:'82-84 RIR3',s2:'84-86 RIR3',s3:'86-88 RIR2',dl:'88-90 RIR2 plafond',repos:'2-3 min',rpe:'8/10',note:'e1RM ~103, 6RM ~88-92. Kg = fourchette, prescrire en RIR (toute série ≤ e-xRM −5%). SANGLE poignet G. Genoux fléchis FIXES, hanches en arrière jusqu\u2019à tension ischio, barre contre jambes, dos plat.'},
+          {num:'3',name:'Copenhagen \u00b7 G FIRST',fmt:'2\u00d78-10/c\u00f4t\u00e9',s1:'PDC',s2:'PDC+l\u00e9ger',s3:'PDC+l\u00e9ger',dl:'PDC d\u00e9load',repos:'90s',rpe:'5/10',note:'Mollet sur banc. Ligne droite corps. Lever jambe basse. Bassin stable. G EN PREMIER.'},
+          {num:'4',name:'Pallof press',fmt:'3\u00d710-12/c\u00f4t\u00e9',s1:'moyen',s2:'moyen+',s3:'moyen+',dl:'l\u00e9ger d\u00e9load',repos:'90s',rpe:'5/10',note:'Bras tendus. R\u00e9sister \u00e0 la rotation. Tronc neutre.'},
+          {num:'F1',name:'Dragon flag \u00b7 finisher',fmt:'3\u00d75-6',s1:'tuck/1-leg',s2:'1-leg',s3:'1-leg/full',dl:'tuck d\u00e9load',repos:'2 min',rpe:'7/10',note:'OPTIONNEL. ANTI-EXTENSION dynamique grande amplitude. Prise derri\u00e8re la t\u00eate, coudes pr\u00e8s du corps (\u00e9paule G confortable). Corps RIGIDE, z\u00e9ro cassure \u00e0 la hanche. Descente 4-5s contr\u00f4l\u00e9e (l\u2019excentrique = tout l\u2019int\u00e9r\u00eat). Progression : negatives \u2192 tuck \u2192 one-leg \u2192 full. R\u00e9gresser si lombaire cambre ou \u00e9paule G g\u00eane.'},
+          {num:'F2',name:'Nuque ISO élastique · 4 directions',fmt:'2×4 dir.×9-10s',s1:'moyen',s2:'moyen',s3:'léger',dl:'—',repos:'60s',rpe:'5/10',note:''},
+          {num:'F3',name:'Farmer carry 16+20 · alterner mains/sem',fmt:'3×40m',s1:'16+20',s2:'16+20',s3:'16+20',dl:'—',repos:'90s',rpe:'6/10',note:''}]},
+      3:{duree:'~70 min',rpe:'7-9/10',
+        priming:['Clamshell G \u00d715'],
+        exercices:[
+          {num:'1',name:'\u2605\u2605\u2605 Bulgarian PAP \u00b7 G FIRST \u2192 Jump Lunge OU Step-up explosif',fmt:'3-4 paires/c\u00f4t\u00e9',s1:'@20 kg\u2192plyo\u00d75/c\u00f4t\u00e9',s2:'@20 kg\u2192plyo\u00d75',s3:'@16 kg 2 paires',dl:'\u2014',repos:'4 min/paire',rpe:'9/10',note:'G AVANT D. 0-15s entre Bulgarian et le plyo. OPTION S\u00c9CURIT\u00c9 IT band : Step-up EXPLOSIF (banc ~40cm, concentrique MAXIMAL, redescente MARCH\u00c9E 2s = pas d\u2019impact excentrique) au lieu du Jump Lunge. 5/c\u00f4t\u00e9. Alterner les c\u00f4t\u00e9s pendant les repos. ARR\u00caT au moindre signal IT band. Atterrissage contr\u00f4l\u00e9.'},
+          {num:'2',name:'RDL PAP \u2192 KB swing 2 bras (0s) \u00b7 sangle poignet G',fmt:'paires 2-3 reps',s1:'@90-95\u2192KB\u00d75',s2:'@95-97 max\u2192KB\u00d75',s3:'@88-90 d\u00e9chargé',dl:'\u2014',repos:'4-5 min/paire',rpe:'9/10',note:'\u26a0 2 BRAS sur KB swing. 0s entre RDL et swing.'},
+          {num:'3',name:'Copenhagen peak \u00b7 G FIRST',fmt:'3\u00d78/c\u00f4t\u00e9',s1:'PDC+l\u00e9ger',s2:'PDC+moyen',s3:'PDC',dl:'\u2014',repos:'90s',rpe:'6/10',note:'Mollet sur banc. Progression si stable : cheville sur le banc (levier plus long). G EN PREMIER.'},
+          {num:'4',name:'Pallof press lourd',fmt:'3\u00d710/c\u00f4t\u00e9',s1:'lourd',s2:'lourd',s3:'moyen',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Bras tendus. R\u00e9sister \u00e0 la rotation. Progression de charge uniquement si la technique est parfaite.'},
+          {num:'F1',name:'Dragon flag \u00b7 finisher',fmt:'3\u00d76',s1:'1-leg/full',s2:'full',s3:'full',dl:'\u2014',repos:'2 min',rpe:'8/10',note:'OPTIONNEL. ANTI-EXTENSION dynamique grande amplitude. Prise derri\u00e8re la t\u00eate, coudes pr\u00e8s du corps (\u00e9paule G confortable). Corps RIGIDE, z\u00e9ro cassure \u00e0 la hanche. Descente 4-5s contr\u00f4l\u00e9e. Progression : negatives \u2192 tuck \u2192 one-leg \u2192 full. R\u00e9gresser si lombaire cambre ou \u00e9paule G g\u00eane.'},
+          {num:'F2',name:'Nuque ISO élastique · peak',fmt:'3×4 dir.×10s',s1:'moyen',s2:'moyen',s3:'moyen',dl:'—',repos:'60s',rpe:'5/10',note:''},
+          {num:'F3',name:'Farmer carry 16+28 · alterner mains/sem',fmt:'3×40m',s1:'16+28',s2:'16+28',s3:'16+28',dl:'—',repos:'2 min',rpe:'7/10',note:'Si grip G ok, sinon rester 16+20.'}]},
+      4:{duree:'~35 min',rpe:'4-5/10',
+        priming:['Mobilit\u00e9 hanche'],
+        exercices:[
+          {num:'1',name:'Bulgarian \u00b7 d\u00e9load + test asym\u00e9trie G/D',fmt:'3\u00d75/c\u00f4t\u00e9 PDC',s1:'PDC \u00b7 noter G vs D',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'S9: \u00e9cart G/D objectif <10%.'},
+          {num:'2',name:'RDL \u00b7 d\u00e9load',fmt:'3\u00d75',s1:'80 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'Hip hinge pur. Genoux fixes.'},
+          {num:'3',name:'Copenhagen \u00b7 d\u00e9load',fmt:'2\u00d76/c\u00f4t\u00e9',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'4/10',note:'Volume r\u00e9duit. M\u00eame technique.'},
+          {num:'T1',name:'🎯 TEST · Bulgarian G puis D · asymétrie',fmt:'max PDC',s1:'—',s2:'—',s3:'—',dl:'—',repos:'3 min',rpe:'9/10',note:'Max reps PDC G / max reps D. Objectif : écart <10%. Note les deux chiffres.'},
+          {num:'T2',name:'🎯 TEST · RDL 3RM',fmt:'3RM',s1:'≥117 kg',s2:'—',s3:'—',dl:'—',repos:'5 min',rpe:'9/10',note:'Test officiel S9. Objectif : progression vs baseline 110 kg × 3.'}]},
+    }
+  },
+  'AGT':{
+    icon:'⚡',color:'#10b981',jour:'Vendredi (finisher Haut 2)',
+    focus:'Alactique KB \u00b7 Substitut course \u00b7 Anti-glycolytique',
+    blocs:{
+      1:{duree:'~45 min',rpe:'10/10 par effort',
+        priming:['Swing l\u00e9ger \u00d710','Hip CAR \u00d73/c\u00f4t\u00e9'],
+        exercices:[
+          {num:'1',name:'KB Swing 28 kg 2 BRAS \u00b7 efforts alactiques',fmt:'4\u00d78s',s1:'4\u00d78s',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min complet',rpe:'10/10',note:'\u26a0 2 BRAS. Marche nasale FC<130 entre efforts. Jamais assis. Post-AGT: marche 20 min ext\u00e9rieur.'}]},
+      2:{duree:'~50 min',rpe:'10/10 par effort',
+        priming:['Swing l\u00e9ger \u00d710'],
+        exercices:[
+          {num:'0',name:'\u26a1 Broad Jump \u00b7 TEST puissance',fmt:'3 essais',s1:'noter meilleur (cm)',s2:'noter meilleur (cm)',s3:'noter meilleur (cm)',dl:'\u2014',repos:'complet',rpe:'8/10',note:'AVANT les swings (frais). 3 sauts en longueur d\u00e9part arr\u00eat\u00e9, noter le MEILLEUR (cm). R\u00c8GLE : chute >5-7% vs semaine pr\u00e9c\u00e9dente = fatigue neurale -> AGT r\u00e9duit \u00e0 4 efforts ce jour. Marqueur de fra\u00eecheur du syst\u00e8me nerveux.'},
+          {num:'1',name:'KB Swing 28 kg 2 BRAS \u00b7 puissance HANCHE',fmt:'3\u00d78s',s1:'3\u00d78s',s2:'3\u00d78s',s3:'2\u00d78s DL',dl:'\u2014',repos:'2 min complet',rpe:'10/10',note:'\u26a0 2 BRAS. Vecteur sagittal (hip snap). Si puissance rep1 \u2260 rep3 \u2192 stop. Swings EN PREMIER (frais).'},
+          {num:'2',name:'Chop/Lift \u00e9lastique explosif \u00b7 puissance ROTATION',fmt:'3\u00d7/c\u00f4t\u00e9',s1:'3/c\u00f4t\u00e9',s2:'3/c\u00f4t\u00e9',s3:'2/c\u00f4t\u00e9 DL',dl:'\u2014',repos:'2 min complet',rpe:'9/10',note:'Vecteur transverse (frappe/projection). Ancrage bas\u2192haut (lift) ou haut\u2192bas (chop). ROTATION VIOLENTE des hanches, bras suivent. Chaque r\u00e9p\u00e9tition MAXIMALE. R\u00e9cup compl\u00e8te = qualit\u00e9.'}]},
+      3:{duree:'~60 min',rpe:'10/10 puis 7-8/10',
+        priming:['Swing l\u00e9ger \u00d710'],
+        exercices:[
+          {num:'0',name:'\u26a1 Broad Jump \u00b7 TEST puissance',fmt:'3 essais',s1:'noter meilleur (cm)',s2:'noter meilleur (cm)',s3:'noter meilleur (cm)',dl:'\u2014',repos:'complet',rpe:'8/10',note:'AVANT les swings (frais). 3 sauts en longueur d\u00e9part arr\u00eat\u00e9, noter le MEILLEUR (cm). R\u00c8GLE : chute >5-7% vs semaine pr\u00e9c\u00e9dente = fatigue neurale -> AGT r\u00e9duit \u00e0 4 efforts ce jour. Marqueur de fra\u00eecheur du syst\u00e8me nerveux.'},
+          {num:'1',name:'KB Swing 28 kg 2 BRAS \u00b7 puissance HANCHE',fmt:'4\u00d78s',s1:'4\u00d78s',s2:'4\u00d78s',s3:'2\u00d78s DL',dl:'\u2014',repos:'2 min complet',rpe:'10/10',note:'\u26a0 2 BRAS. Vecteur sagittal. Swings EN PREMIER (frais). Chaque effort maximal.'},
+          {num:'2',name:'Chop/Lift \u00e9lastique explosif \u00b7 puissance ROTATION',fmt:'4\u00d7/c\u00f4t\u00e9',s1:'4/c\u00f4t\u00e9',s2:'4/c\u00f4t\u00e9',s3:'2/c\u00f4t\u00e9 DL',dl:'\u2014',repos:'2 min complet',rpe:'9/10',note:'Vecteur transverse. ROTATION VIOLENTE des hanches. Chaque r\u00e9p\u00e9tition MAXIMALE, r\u00e9cup compl\u00e8te. Total 8 efforts = dans la fen\u00eatre alactique.'}]},
+      4:{duree:'~25 min',rpe:'5-6/10',
+        priming:['L\u00e9ger'],
+        exercices:[
+          {num:'1',name:'KB Swing \u00b7 d\u00e9load',fmt:'3\u00d78s @20 kg',s1:'3\u00d78s @20 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'5/10',note:'S9: test BOLT. Objectif >20s.'}]},
+    }
+  },
+  'Haut 2':{
+    icon:'🔁',color:'#7C3AED',jour:'Vendredi',
+    focus:'Upper 2 \u2014 Bench barre \u00b7 DB press vertical \u00b7 Chin-ups lest\u00e9s \u00b7 Gorilla Row \u00b7 \u00c9paule',
+    blocs:{
+      1:{duree:'~65 min',rpe:'5-6/10',
+        priming:['Cercles \u00e9paule \u00d720','Band pull-apart \u00d715','Rotation thoracique \u00d78/c\u00f4t\u00e9'],
+        exercices:[
+          {num:'1',name:'Bench PLAT barre \u00b7 2\u00e8me stimulus horizontal',fmt:'3\u00d75',s1:'54 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:'Omoplates r\u00e9tract\u00e9es + d\u00e9prim\u00e9es. Pieds au sol. Descente contr\u00f4l\u00e9e touche poitrine. Coudes 45\u00b0 du tronc. Expiration sur push. Tempo 3-1-X-1.'},
+          {num:'2',name:'DB Press vertical halt\u00e8res \u00b7 8+ reps',fmt:'3\u00d78',s1:'2\u00d714 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'2 bras simult. 2\u00e8me stimulus vertical. OPTION UNILAT\u00c9RAL (\u00e0 tester) : 1 seul haltier \u00e0 la fois, autre main \u00e0 la hanche. G EN PREMIER, commence l\u00e9ger (10-12 kg). Tronc gain\u00e9, NE PAS se pencher c\u00f4t\u00e9 charge = b\u00e9n\u00e9fice anti-rotation. Surveiller \u00e9paule G. Tempo 3-1-1-0.'},
+          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 5 reps \u00b7 sangle poignet G',fmt:'3\u00d75 RIR2-3',s1:'PDC+2 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'3 min',rpe:'6/10',note:'Tempo 3-1-X-1. Force.'},
+          {num:'4',name:'Gorilla Row \u00b7 pause 1s en haut',fmt:'3\u00d78/c\u00f4t\u00e9',s1:'20 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Un bras \u00e0 la fois. Pause 1s. Tempo 2-1-1-0.'},
+          {num:'5',name:'\u2605\u2605 Face Pull \u00e9lastique \u00b7 superset\u2192',fmt:'3\u00d715',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'\u2014',rpe:'5/10',note:'2\u00e8me stimulus sant\u00e9 \u00e9paule semaine.'},
+          {num:'6',name:'Rotation ext \u00e9lastique \u00b7 \u2190superset',fmt:'2\u00d712/c\u00f4t\u00e9',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Coude 90\u00b0 collé au flanc. Rotation vers l\u2019ext\u00e9rieur uniquement. Hold 2s position out. Pas de compensation de tronc.'},
+          {num:'7',name:'Nuque ISO \u00e9lastique \u00b7 4 directions',fmt:'2\u00d74 dir.\u00d78s',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
+      2:{duree:'~70 min',rpe:'6-7/10',
+        priming:['Cercles \u00e9paule \u00d720','Rotation thoracique \u00d78/c\u00f4t\u00e9'],
+        exercices:[
+          {num:'1',name:'Bench PLAT barre \u00b7 top set conjugate',fmt:'5\u00d73 \u2192 top set (+AMRAP S4)',s1:'\u2191 vers 62 kg',s2:'\u2191 vers 64-66 kg + AMRAP',s3:'\u2191 vers 68 kg',dl:'3\u00d73 @54 kg d\u00e9load',repos:'2-3 min',rpe:'9/10 (top set RIR1)',note:'CONJUGATE : 5 s\u00e9ries de 3 reps en montant vers le top set du jour (RIR 1). En S4 : ajouter 1 s\u00e9rie AMRAP \u00e0 ~80% du top set (max reps propres, stop \u00e0 RIR 1) = 6 s\u00e9ries au total. Omoplates r\u00e9tract\u00e9es, descente contr\u00f4l\u00e9e, coudes 45\u00b0.'},
+          {num:'2',name:'DB Press vertical \u00b7 8+ reps',fmt:'3\u00d78-10',s1:'2\u00d712 kg',s2:'2\u00d712-14 kg',s3:'2\u00d714 kg',dl:'2\u00d710 kg d\u00e9load',repos:'2 min',rpe:'6/10',note:'\u00c9paule G = facteur limitant (pas la force). Monter seulement si l\u2019\u00e9paule G tol\u00e8re sans douleur. OPTION UNILAT\u00c9RAL : 1 bras \u00e0 la fois, G d\u2019abord, l\u00e9ger (10-12 kg), tronc gain\u00e9 anti-rotation. Prise neutre ou prono. Press vers le haut l\u00e9g\u00e8rement en arc. Omoplates stables. Pas d\u2019hyperextension lombaire. Tempo 3-1-1-0.'},
+          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 force \u00b7 sangle poignet G',fmt:'4\u00d75 RIR2-3',s1:'PDC+3 kg',s2:'PDC+5-7 kg',s3:'PDC+8-10 kg (plafond)',dl:'PDC d\u00e9load',repos:'2-3 min',rpe:'7/10',note:'D\u00e9coaptation initiale. Initier avec dorsaux. Menton au-dessus barre. Lest stable (ceinture ou sac). Descente contr\u00f4l\u00e9e.'},
+          {num:'4',name:'Gorilla Row \u00b7 progression 20\u219228',fmt:'3-4\u00d76-8/c\u00f4t\u00e9',s1:'20\u219228 kg',s2:'28 kg',s3:'28 kg',dl:'20 kg d\u00e9load',repos:'2 min',rpe:'7/10',note:'KB au sol. Genou oppos\u00e9 au sol. Tirrer coude haut, pause 1s en haut. Corps stable. Alterner sans poser le KB non-actif. GRIP: 2 derni\u00e8res s\u00e9ries option serviette microfibre autour de la anse (\u00e9crasement/grappling), D d\u2019abord, G si indolore. Tempo 2-1-1-0.'},
+          {num:'5',name:'Face Pull + Rotation ext \u00b7 superset',fmt:'3\u00d715+2\u00d712',s1:'moyen',s2:'moyen+',s3:'moyen+',dl:'l\u00e9ger d\u00e9load',repos:'90s',rpe:'5/10',note:'Face pull : coudes hauts, tirer vers le visage. Rotation ext : coude 90\u00b0 collé au flanc, rotation vers l\u2019ext\u00e9rieur, hold 2s.'},
+          {num:'6',name:'Nuque ISO \u00e9lastique \u00b7 4 directions',fmt:'2\u00d74 dir.\u00d79-10s',s1:'moyen',s2:'moyen+',s3:'moyen+',dl:'l\u00e9ger d\u00e9load',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
+      3:{duree:'~70 min',rpe:'7-8/10',
+        priming:['Cercles \u00e9paule \u00d720','Rotation thoracique \u00d78/c\u00f4t\u00e9'],
+        exercices:[
+          {num:'1',name:'Bench PLAT barre \u00b7 cluster 2+2+2',fmt:'4 clusters',s1:'@68 kg',s2:'@70 kg',s3:'@64 kg 3 clusters',dl:'\u2014',repos:'20s/3 min',rpe:'8-9/10',note:'15-20s entre chaque mini-s\u00e9rie. Intensit\u00e9 \u00e9lev\u00e9e. Chaque rep avec intention maximale.'},
+          {num:'2',name:'DB Press vertical',fmt:'3\u00d78-10',s1:'2\u00d712 kg',s2:'2\u00d713-14 kg',s3:'2\u00d712 kg',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Press vers le haut. Omoplates stables. Pas d\u2019hyperextension lombaire. Tempo 3-1-1-0.'},
+          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 3-7 Legeard \u00b7 sangle poignet G',fmt:'3\u219247 @65%',s1:'PDC+8 kg',s2:'PDC+10 kg',s3:'PDC+6 kg',dl:'\u2014',repos:'10-15s entre paliers',rpe:'8/10',note:'10-15s entre paliers. Chaque rep qualitative. Lest fixe sur tout le Legeard.'},
+          {num:'4',name:'Gorilla Row \u00b7 3-7 Legeard @65%',fmt:'3\u219247 paliers/c\u00f4t\u00e9',s1:'@20 kg',s2:'@20-28 kg',s3:'@16 kg',dl:'\u2014',repos:'10-15s entre paliers',rpe:'8/10',note:'Pause 1s en haut. 10-15s entre paliers. Corps stable. GRIP: option serviette microfibre autour de la anse sur 2 s\u00e9ries (\u00e9crasement), D d\u2019abord.'},
+          {num:'5',name:'Face Pull + Rotation ext peak',fmt:'3\u00d715+2\u00d712',s1:'lourd',s2:'lourd',s3:'moyen',dl:'\u2014',repos:'90s',rpe:'5/10',note:'M\u00eame technique. Progression en amplitude de rotation ext.'},
+          {num:'6',name:'Nuque ISO \u00e9lastique \u00b7 peak',fmt:'3\u00d74 dir.\u00d710s',s1:'lourd',s2:'lourd',s3:'moyen',dl:'\u2014',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
+      4:{duree:'~40 min',rpe:'4-5/10',
+        priming:['D\u00e9load'],
+        exercices:[
+          {num:'1',name:'Bench PLAT barre \u00b7 d\u00e9load + TEST 3RM S9',fmt:'3\u00d73 puis test',s1:'50 kg puis 3RM',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'3 min',rpe:'4-9/10',note:'S9: test 3RM. Objectif \u226580 kg.'},
+          {num:'2',name:'DB Press vertical \u00b7 d\u00e9load',fmt:'2\u00d78',s1:'2\u00d712 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'Volume r\u00e9duit. M\u00eame technique.'},
+          {num:'3',name:'Chin-ups \u00b7 d\u00e9load \u00b7 sangle poignet G',fmt:'3\u00d75',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'4/10',note:'Prise supination. Qualit\u00e9 avant tout.'},
+          {num:'4',name:'Gorilla Row \u00b7 d\u00e9load',fmt:'2\u00d76/c\u00f4t\u00e9',s1:'20 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'Pause 1s en haut. Corps stable.'},
+          {num:'T1',name:'🎯 TEST · Pull-ups max strict',fmt:'1 série max',s1:'≥15',s2:'—',s3:'—',dl:'—',repos:'10 min',rpe:'10/10',note:'Test officiel S9. Propres uniquement : chin au-dessus barre, coudes pleine extension en bas. Note le nombre exact.'},
+          {num:'T2',name:'🎯 TEST · Dead hang max',fmt:'1 série max',s1:'≥30s',s2:'—',s3:'—',dl:'—',repos:'5 min',rpe:'10/10',note:'Prise mixte ou double pronation. Stop à la première fissure de grip.'},
+          {num:'T3',name:'🎯 TEST · HRR 60s',fmt:'2 min burpees → stop',s1:'—',s2:'—',s3:'—',dl:'—',repos:'—',rpe:'9/10',note:'2 min burpees max reps → stop complet → Garmin enregistre chute FC sur 60s. Cible : chute >35 bpm. Note aussi nb de burpees (test glycolytique).'}]},
+    }
+  },
+  'Bas 2':{
+    icon:'⚔️',color:'#e63946',jour:'Jeudi',
+    focus:'Lower 2 \u2014 Zercher \u00b7 Nordic Curl \u00e9lastique GHD \u00b7 Copenhagen \u00b7 Pallof',
+    blocs:{
+      1:{duree:'~60 min',rpe:'5-7/10',
+        priming:['Hip CAR \u00d73/c\u00f4t\u00e9','Clamshell G \u00d715','Petersen G \u00d710','Copenhagen ACTIVATION G \u00d78 l\u00e9ger'],
+        exercices:[
+          {num:'T1',name:'🎯 TEST S1 · MATIN · BOLT × 3',fmt:'3 mesures / 5 min',s1:'baseline',s2:'—',s3:'—',dl:'—',repos:'5 min entre',rpe:'—',note:'Assis calme, expire normalement, maintien jusqu\'à 1ère envie. 3 mesures, médiane.'},
+          {num:'T2',name:'🎯 TEST S1 · Dead hang max',fmt:'1 série max',s1:'baseline',s2:'—',s3:'—',dl:'—',repos:'5 min',rpe:'10/10',note:'Prise pronation ou mixte. Stop à la 1ère fissure de grip.'},
+          {num:'T3',name:'🎯 TEST S1 · HRR 60s · récupération cardiaque',fmt:'2 min burpees → stop',s1:'baseline',s2:'—',s3:'—',dl:'—',repos:'—',rpe:'9/10',note:'2 min burpees continus → Garmin note la chute FC sur 60s. Note aussi nb de reps (test glycolytique).'},
+          {num:'T4',name:'🎯 TEST S1 · Marche lestée 1600m @10kg',fmt:'chrono',s1:'baseline',s2:'—',s3:'—',dl:'—',repos:'—',rpe:'7/10',note:'⚠ Si IT band silencieux. En dernier. Terrain plat, allure constante, nasal si possible.'},
+          {num:'1',name:'Zercher squat',fmt:'3\u00d76',s1:'30 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Barre creux des coudes. Tronc vertical. Tempo 3-1-X-0.'},
+          {num:'2',name:'\u2605\u2605 Nordic Curl \u00e9lastique GHD \u00b7 excentrique',fmt:'3\u00d74-5 exc.',s1:'\u00e9lastique FORT \u00b7 desc. 5s',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'7/10',note:'SETUP : \u00e0 genoux sur tapis, chevilles bloqu\u00e9es sous GHD ou poids. \u00c9lastique fort accroch\u00e9 en hauteur (poutre) passant sous la poitrine/aisselles pour t\u2019assister vers le haut. EX\u00c9CUTION : corps gain\u00e9 (planche genoux-t\u00eate align\u00e9s), descendre le tronc vers l\u2019avant le plus LENTEMENT possible (5s) en r\u00e9sistant avec les ischios. L\u2019\u00e9lastique t\u2019emp\u00eache de tomber. Pousser sur les mains pour remonter. Si tu ne tiens que 3s de vraie descente, c\u2019est NORMAL au d\u00e9but \u2014 l\u2019\u00e9lastique fort doit t\u2019aider davantage. Hanches FIXES (ne pas plier \u00e0 la hanche, tout vient des genoux). Tempo 5-0-1-0.'},
+          {num:'3',name:'Good Morning \u00b7 hinge chaîne post.',fmt:'3\u00d710',s1:'barre 35 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'7/10',note:'HINGE dos neutre, genoux souples. 2e stimulus cha\u00eene post. (compl\u00e8te RDL/Nordic). Copenhagen d\u00e9plac\u00e9 en priming (activation adducteurs). Tempo 3-1-1-1.'},
+          {num:'4',name:'Pallof press ou Planche lat\u00e9rale',fmt:'3\u00d710/c\u00f4t\u00e9 ou 3\u00d720s',s1:'l\u00e9ger / PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Avant-bras au sol, coude sous \u00e9paule. Mollet (pas genou) sur le banc. Ligne droite t\u00eate-hanche-pied. Monter la jambe basse vers la haute. Bassin stable, pas de rotation. G EN PREMIER.'},
+          {num:'F1',name:'Dragon flag \u00b7 finisher',fmt:'3\u00d74-6 (ou negatives)',s1:'tuck/neg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'7/10',note:'OPTIONNEL si \u00e9nergie + temps. ANTI-EXTENSION dynamique grande amplitude. Prise derri\u00e8re la t\u00eate, coudes pr\u00e8s du corps (\u00e9paule G confortable). Corps RIGIDE, z\u00e9ro cassure \u00e0 la hanche. Descente 4-5s contr\u00f4l\u00e9e (l\u2019excentrique = tout l\u2019int\u00e9r\u00eat). Progression : negatives \u2192 tuck \u2192 one-leg \u2192 full. R\u00e9gresser si lombaire cambre ou \u00e9paule G g\u00eane.'},
+          {num:'F2',name:'Back extension banc \u00b7 finisher',fmt:'3\u00d712-15',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'6/10',note:'OPTIONNEL. Banc lombaire horizontal. Mont\u00e9e jusqu\u2019\u00e0 alignement (pas d\u2019hyperextension). \u00c9recteurs + cha\u00eene post\u00e9rieure pour le port du gilet.'},
+          {num:'F3',name:'Nuque ISO \u00e9lastique \u00b7 4 directions',fmt:'2\u00d74 dir.\u00d78s',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'60s',rpe:'4/10',note:'OPTIONNEL. \u00c9lastique au poteau, boucle t\u00eate, maintien axe. 4 directions.'},
+          {num:'F4',name:'Farmer carry 16+20 \u00b7 alterner mains/sem',fmt:'3\u00d740m',s1:'16+20',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'6/10',note:'OPTIONNEL. Tronc vertical, \u00e9paules basses. Sem. paire 20\u00e0D / impaire 20\u00e0G.'}]},
+      2:{duree:'~65 min',rpe:'6-7/10',
+        priming:['Hip CAR \u00d73/c\u00f4t\u00e9','Clamshell G \u00d715','Copenhagen ACTIVATION G \u00d78 l\u00e9ger'],
+        exercices:[
+          {num:'0',name:'\u26a1 Alactique KB 28 kg 2 BRAS \u00b7 primer',fmt:'2-3\u00d78s',s1:'28 kg',s2:'28 kg',s3:'28 kg',dl:'28 kg (l\u00e9ger volume)',repos:'30-45s',rpe:'8/10',note:'\u26a0 2 BRAS. PRIMER neural (2-3 efforts) avant Zercher. R\u00e9veille la cha\u00eene de hanche. Le d\u00e9veloppement alactique se fait \u00e0 l\u2019AGT mercredi.'},
+          {num:'1',name:'Zercher squat',fmt:'3-4\u00d76',s1:'34 kg',s2:'36-40 kg',s3:'40-42 kg',dl:'30 kg d\u00e9load',repos:'2 min',rpe:'6/10',note:'Barre dans le creux des coudes. Coudes hauts, bras parall\u00e8les au sol. Descente profonde, genoux en dehors dans l\u2019axe des pieds. Tronc le plus vertical possible. Expiration en montant. Tempo 3-1-X-1.'},
+          {num:'2',name:'Nordic Curl \u00e9lastique GHD \u00b7 excentrique',fmt:'3\u00d75-6 exc.',s1:'\u00e9lastique fort-moyen \u00b7 5-6s',s2:'\u00e9lastique moyen \u00b7 6s',s3:'\u00e9lastique moyen-faible \u00b7 6-7s',dl:'\u00e9lastique fort 5s d\u00e9load',repos:'2 min',rpe:'7/10',note:'Diminuer assistance progressivement. Tempo 5-0-1-0.'},
+          {num:'3',name:'Good Morning \u00b7 hinge chaîne post.',fmt:'3\u00d710',s1:'barre 30 kg',s2:'40 kg',s3:'45 kg',dl:'barre \u00e0 vide',repos:'2 min',rpe:'7/10',note:'HINGE dos neutre, genoux souples. Charnière de hanche pure, PAS un squat. 2e stimulus chaîne post. (compl\u00e8te RDL/Nordic). Amplitude o\u00f9 le dos reste plat. Copenhagen d\u00e9plac\u00e9 en priming (activation). stable. G EN PREMIER. Tempo 3-1-1-1.'},
+          {num:'4',name:'Pallof ou Planche lat\u00e9rale',fmt:'3\u00d712/c\u00f4t\u00e9 ou 3\u00d725s',s1:'moyen / PDC',s2:'moyen+ / PDC',s3:'moyen+ / PDC',dl:'l\u00e9ger d\u00e9load',repos:'90s',rpe:'5/10',note:'Pallof : bras tendus, r\u00e9sister rotation. Planche : corps rigid, fessiers contract\u00e9s.'},
+          {num:'F1',name:'Dragon flag \u00b7 finisher',fmt:'3\u00d75-6',s1:'tuck/1-leg',s2:'1-leg',s3:'1-leg/full',dl:'tuck d\u00e9load',repos:'2 min',rpe:'7/10',note:'OPTIONNEL. ANTI-EXTENSION dynamique grande amplitude. Prise derri\u00e8re la t\u00eate, coudes pr\u00e8s du corps (\u00e9paule G confortable). Corps RIGIDE, z\u00e9ro cassure \u00e0 la hanche. Descente 4-5s contr\u00f4l\u00e9e (l\u2019excentrique = tout l\u2019int\u00e9r\u00eat). Progression : negatives \u2192 tuck \u2192 one-leg \u2192 full. R\u00e9gresser si lombaire cambre ou \u00e9paule G g\u00eane.'},
+          {num:'F2',name:'Back extension banc \u00b7 finisher',fmt:'3\u00d712-15',s1:'PDC',s2:'PDC+plaque',s3:'PDC+plaque',dl:'PDC d\u00e9load',repos:'90s',rpe:'6/10',note:'OPTIONNEL. Banc lombaire. Alignement, pas d\u2019hyperextension.'},
+          {num:'F3',name:'Nuque ISO \u00e9lastique \u00b7 4 directions',fmt:'2\u00d74 dir.\u00d79-10s',s1:'moyen',s2:'moyen',s3:'moyen',dl:'l\u00e9ger d\u00e9load',repos:'60s',rpe:'5/10',note:'OPTIONNEL. Maintien axe, 4 directions.'},
+          {num:'F4',name:'Farmer carry 16+20 \u00b7 alterner mains/sem',fmt:'3\u00d740m',s1:'16+20',s2:'16+20',s3:'16+20',dl:'16 seul d\u00e9load',repos:'90s',rpe:'6/10',note:'OPTIONNEL. Tronc vertical.'}]},
+      3:{duree:'~65 min',rpe:'7-8/10',
+        priming:['Hip CAR \u00d73/c\u00f4t\u00e9','Copenhagen ACTIVATION G \u00d78 l\u00e9ger'],
+        exercices:[
+          {num:'0',name:'\u26a1 Alactique KB 28 kg 2 BRAS \u00b7 primer',fmt:'2-3\u00d78s',s1:'28 kg',s2:'28 kg',s3:'28 kg',dl:'28 kg (l\u00e9ger volume)',repos:'30-45s',rpe:'8/10',note:'\u26a0 2 BRAS. PRIMER neural (2-3 efforts) avant Zercher. R\u00e9veille la cha\u00eene de hanche. Le d\u00e9veloppement alactique se fait \u00e0 l\u2019AGT mercredi.'},
+          {num:'1',name:'Zercher squat \u00b7 force',fmt:'4\u00d75',s1:'42 kg',s2:'44 kg',s3:'38 kg',dl:'\u2014',repos:'2-3 min',rpe:'7/10',note:'Barre dans le creux des coudes. Profondeur maximale. Coudes hauts. Genoux en dehors. Tempo 3-1-X-1.'},
+          {num:'2',name:'Nordic Curl \u00e9lastique l\u00e9ger GHD \u00b7 excentrique',fmt:'3\u00d75-6 exc.',s1:'\u00e9lastique l\u00e9ger \u00b7 6-7s',s2:'\u00e9lastique l\u00e9ger \u00b7 7s',s3:'\u00e9lastique moyen \u00b7 5s',dl:'\u2014',repos:'2 min',rpe:'8/10',note:'\u00c9lastique l\u00e9ger en B3 = tr\u00e8s difficile. Qualit\u00e9 > quantit\u00e9. Tempo 5-0-1-0.'},
+          {num:'3',name:'Good Morning \u00b7 hinge chaîne post.',fmt:'3\u00d710',s1:'45 kg',s2:'50 kg',s3:'40 kg',dl:'\u2014',repos:'2 min',rpe:'7/10',note:'HINGE dos neutre. 2e stimulus chaîne post. Charni\u00e8re pure. Copenhagen en priming d\u00e9sormais (activation). Progression prudente (patte d\u2019oie G). Tempo 3-1-1-1.'},
+          {num:'4',name:'Pallof lourd ou Planche lat\u00e9rale',fmt:'3\u00d710/c\u00f4t\u00e9 ou 3\u00d730s',s1:'lourd / +l\u00e9ger',s2:'lourd / +l\u00e9ger',s3:'moyen',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Pallof : progresser en charge si technique parfaite. Planche : tension totale du corps.'},
+          {num:'F1',name:'Dragon flag \u00b7 finisher',fmt:'3\u00d76',s1:'1-leg/full',s2:'full',s3:'full',dl:'\u2014',repos:'2 min',rpe:'8/10',note:'OPTIONNEL. ANTI-EXTENSION dynamique grande amplitude. Prise derri\u00e8re la t\u00eate, coudes pr\u00e8s du corps (\u00e9paule G confortable). Corps RIGIDE, z\u00e9ro cassure \u00e0 la hanche. Descente 4-5s contr\u00f4l\u00e9e (l\u2019excentrique = tout l\u2019int\u00e9r\u00eat). Progression : negatives \u2192 tuck \u2192 one-leg \u2192 full. R\u00e9gresser si lombaire cambre ou \u00e9paule G g\u00eane.'},
+          {num:'F2',name:'Back extension banc \u00b7 finisher',fmt:'3\u00d712',s1:'PDC+plaque',s2:'PDC+plaque',s3:'PDC+plaque',dl:'PDC d\u00e9load',repos:'90s',rpe:'7/10',note:'OPTIONNEL. Charge plaque sur poitrine. Alignement strict.'},
+          {num:'F3',name:'Nuque ISO \u00e9lastique \u00b7 peak',fmt:'3\u00d74 dir.\u00d710s',s1:'moyen',s2:'moyen',s3:'moyen',dl:'\u2014',repos:'60s',rpe:'5/10',note:'OPTIONNEL. Maintien axe, 4 directions.'},
+          {num:'F4',name:'Farmer carry 16+28 \u00b7 alterner mains/sem',fmt:'3\u00d740m',s1:'16+28',s2:'16+28',s3:'16+28',dl:'\u2014',repos:'2 min',rpe:'7/10',note:'OPTIONNEL. Si grip G ok, sinon 16+20.'}]},
+      4:{duree:'~30 min',rpe:'4-5/10',
+        priming:['L\u00e9ger'],
+        exercices:[
+          {num:'1',name:'Zercher \u00b7 d\u00e9load',fmt:'3\u00d75',s1:'26 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'Coudes hauts. Tronc vertical.'},
+          {num:'2',name:'Nordic Curl \u00b7 d\u00e9load',fmt:'2\u00d74 exc.',s1:'\u00e9lastique fort \u00b7 4s',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'5/10',note:'Descente contr\u00f4l\u00e9e 4s. Retour aid\u00e9 mains.'},
+          {num:'3',name:'Copenhagen \u00b7 d\u00e9load',fmt:'2\u00d76/c\u00f4t\u00e9 PDC',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'4/10',note:'Volume r\u00e9duit. M\u00eame technique.'}]},
+    }
+  },
+  'Conditioning':{
+    icon:'🥊',color:'#e63946',jour:'Samedi',
+    focus:'Bearcrawl \u00b7 Sprawls+Shadow \u00b7 Carry \u00b7 Mountain climbers \u00b7 Test HRR \u00b7 2-3min entre circuits',
+    blocs:{
+      1:{duree:'~40 min',rpe:'6-7/10',
+        priming:['\u00c9chauffement : mobilit\u00e9 hanches/\u00e9paules','Montée cardiaque progressive 2-3 min (shadow léger)'],
+        exercices:[
+          
+          {num:'R1',name:'Swings rapides 30/30 \u00b7 R1',fmt:'2 circuits \u00d7 3 min / 1 min repos',s1:'30s swings / 30s repos actif',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'1 min',rpe:'8/10',note:'30s KB swings RAPIDES 16-20 kg (cadence \u00e9lev\u00e9e = monter la FC) \u2192 30s repos actif (marche). Glycolytique. Remplace le bearcrawl (revient en sept. en s\u00e9ance capacit\u00e9 de travail).'},
+          {num:'R2',name:'Sprawls + Shadow 30/30 \u00b7 R2',fmt:'2 circuits \u00d7 3 min',s1:'30s sprawls / 30s shadow',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'1 min',rpe:'8/10',note:'30s sprawls (hanches basses, 2 mains sol, retour rapide) \u2192 30s shadow (garde, footwork, combos). R\u00e9p\u00e9ter.'},
+          {num:'R3',name:'KB Clean 30/30 \u00b7 D prioritaire',fmt:'2 circuits \u00d7 3 min',s1:'16 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'1 min',rpe:'8/10',note:'KB clean explosif (hanche) 16 kg, PAS de snatch (\u00e9paule G). C\u00d4T\u00c9 DROIT prioritaire ; gauche l\u00e9ger seulement si 0 douleur poignet. Cardio sans passage overhead. Remplace le carry.'},
+          {num:'R4',name:'Mountain climbers 30/30 \u00b7 R4',fmt:'2 circuits \u00d7 3 min',s1:'30s MC / 30s garde',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'1 min',rpe:'7/10',note:'30s mountain climbers (gainage, rythme soutenu) \u2192 30s d\u00e9placement garde. Z\u00e9ro impact (remplace corde). Surveiller \u00e9paule G.'}]},
+      3:{duree:'~60 min',rpe:'8-9/10',
+        priming:['\u00c9chauffement mobilit\u00e9','Shadow l\u00e9ger 2-3 min mont\u00e9e cardiaque'],
+        exercices:[
+          
+          {num:'R1',name:'Swings rapides 30/30 \u00b7 R1 intensif',fmt:'4 circuits \u00d7 3 min / 1 min repos',s1:'30s swings / 30s repos actif',s2:'idem',s3:'3 rounds',dl:'\u2014',repos:'1 min',rpe:'9/10',note:'30s KB swings RAPIDES 16-20 kg MAX cadence \u2192 30s repos actif. Glycolytique intense.'},
+          {num:'R2',name:'Sprawls + Shadow 30/30 \u00b7 R2 intensif',fmt:'4 circuits \u00d7 3 min',s1:'30s sprawls+push-up / 30s shadow',s2:'idem',s3:'3 rounds',dl:'\u2014',repos:'1 min',rpe:'8/10',note:'30s sprawls + pompe explosive OPTIONNELLE (sur poign\u00e9es ou poings pour m\u00e9nager le poignet G, SANS claquer, r\u00e9ception contr\u00f4l\u00e9e) \u2192 30s shadow intensif. La pompe explosive ajoute un stimulus de puissance ; \u00e0 sauter si poignet/\u00e9paule sensibles.'},
+          {num:'R3',name:'KB Clean 30/30 \u00b7 D prioritaire intensif',fmt:'4 circuits \u00d7 3 min',s1:'16-20 kg',s2:'16-20 kg',s3:'16-20 kg',dl:'16 kg l\u00e9ger',repos:'1 min',rpe:'9/10',note:'KB clean explosif D prioritaire, cadence \u00e9lev\u00e9e. PAS de snatch (\u00e9paule G). Gauche l\u00e9ger si 0 douleur poignet.'},
+          {num:'R4',name:'Mountain climbers 30/30 \u00b7 R4 intensif',fmt:'4 circuits \u00d7 3 min',s1:'30s MC rapide / 30s level change',s2:'idem',s3:'3 rounds',dl:'\u2014',repos:'1 min',rpe:'8/10',note:'30s mountain climbers rapides \u2192 30s level change (descente/remont\u00e9e contr\u00f4l\u00e9e). Z\u00e9ro impact.'}]},
+      4:{duree:'~30 min',rpe:'5/10',
+        priming:['\u00c9chauffement l\u00e9ger'],
+        exercices:[
+          
+          {num:'R1',name:'Shadow l\u00e9ger \u00b7 technique',fmt:'2 rounds',s1:'technique',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'1 min',rpe:'5/10',note:'Garde. Pieds. Expiration sur chaque frappe. Pas de vitesse, qualit\u00e9.'},
+          {num:'RC',name:'R\u00e9cup respi simul\u00e9e \u00b7 TEST FINAL',fmt:'TEST',s1:'CHRONO',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'\u2014',rpe:'\u2014',note:'3 min : m\u00eame technique avec charge lourde. Tronc strictement vertical. Grip maximal.'},
+          {num:'P1',name:'🎯 TEST · CMJ (saut vertical) · app MyJump',fmt:'5 sauts',s1:'noter meilleur (cm)',s2:'—',s3:'—',dl:'—',repos:'complet',rpe:'8/10',note:'Countermovement jump mesuré à l\'app MyJump (smartphone). 5 sauts, noter le MEILLEUR. Marqueur de puissance traçable dans le temps (UFC PI). À faire FRAIS, avant le drop-off.'},
+          {num:'P2',name:'🎯 TEST · Broad Jump (saut longueur)',fmt:'3 essais',s1:'noter meilleur (cm)',s2:'—',s3:'—',dl:'—',repos:'complet',rpe:'8/10',note:'Saut en longueur départ arrêté, 3 essais, noter le MEILLEUR. Puissance horizontale. À faire FRAIS, avant le drop-off.'},
+          {num:'T1',name:'🎯 TEST · Drop-off KB · répétition puissance',fmt:'6×10s @28kg / 50s repos',s1:'—',s2:'—',s3:'—',dl:'—',repos:'3 min avant',rpe:'10/10 par série',note:'6 séries de 10s swings 2 bras max reps / 50s repos. Note reps chaque série. Chute S1→S6 : <10% excellent · 10-20% correct · >20% = capacité alactique à travailler.'},
+          {num:'T2',name:'🎯 TEST · Wall sit G puis D',fmt:'max / côté',s1:'G ≥40s · D ≥55s',s2:'—',s3:'—',dl:'—',repos:'3 min',rpe:'10/10',note:'Baseline S1 : G 30s · D 45s. Cible S9 : réduction asymétrie.'},
+          {num:'T3',name:'🎯 TEST · BOLT × 3',fmt:'5 min entre tests',s1:'≥25s',s2:'—',s3:'—',dl:'—',repos:'—',rpe:'—',note:'Matin, calme, à jeun. 3 mesures, prendre la médiane. Cible S9 : >25s.'},
+          {num:'T4',name:'🎯 TEST · Marche lestée 1600 m @10 kg',fmt:'chrono',s1:'<16 min',s2:'—',s3:'—',dl:'—',repos:'—',rpe:'7/10',note:'⚠ Conditionnel : uniquement si IT band asymptomatique depuis 1 semaine. Terrain plat, allure soutenue constante, respiration nasale si possible. Repères : <16 min correct · <14 min bon · <12 min excellent.'}]},
+    }
+  },
+  'Z2 Swings':{
+    icon:'\ud83d\udd35',color:'#3b82f6',
+    blocs:{
+      1:{duree:'15-20 min',rpe:'5-6/10',
+        priming:['\u00c9chauffement hanches 2 min','Swing l\u00e9ger \u00d710'],
+        exercices:[
+          {num:'Z1',name:'\ud83d\udd35 KB Swings cardio Z2 \u00b7 d\u00e9but',fmt:'15 min',s1:'20 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'voir note',rpe:'5-6/10',note:'S\u00c9ANCE Z2 (jour s\u00e9par\u00e9 de l\u2019AGT). 20 kg, cadence MOD\u00c9R\u00c9E (PAS explosif). Format : 30s swings / 30s repos actif (marche sur place). R\u00e9p\u00e9ter 15 min. Cible FC 130-150. 2 BRAS. Respiration nasale max. Grip G : descendre \u00e0 16 kg si l\u00e2che.'},
+          {num:'Z2',name:'\ud83d\udd35 KB Swings cardio Z2 \u00b7 progression',fmt:'18 min',s1:'20 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'voir note',rpe:'6/10',note:'Quand 15 min confortables : passer \u00e0 40s swings / 20s repos actif, 18 min. FC 130-150 soutenue. C\u2019est ta VRAIE Z2 (la marche reste Z1).'},
+          {num:'Z3',name:'\ud83d\udd35 Step-ups lents \u00b7 alternative douce',fmt:'15-20 min',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'continu',rpe:'5-6/10',note:'ALTERNATIVE si swings fatiguent trop le grip/\u00e9paule G. Marche basse 20-30 cm. Mont\u00e9e lente et continue, concentrique dominant (peu de stress IT band). 15-20 min en continu. FC 130-150. Z\u00e9ro impact.'}]},
+    }
+  },
+  'Haut 3':{
+    icon:'\ud83d\udcaa',color:'#7c3aed',jour:'Au besoin (\u00e9nergie)',
+    focus:'Upper 3 \u2014 ISO force (bench + militaire) \u00b7 Volume \u00b7 BFR bras \u00b7 \u00c9paule',
+    blocs:{
+      1:{duree:'~45 min',rpe:'7/10',
+        priming:['CARs \u00e9paule \u00d75/sens','Activation band pull-apart \u00d715','Rotation thoracique \u00d78/c\u00f4t\u00e9'],
+        exercices:[
+          {num:'1',name:'\u26a1 Bench plat BARRE \u00b7 ISO + volume',fmt:'1 iso 6s + 2\u00d78-10',s1:'iso mi-course \u2192 50-54 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'iso\u21922min, s\u00e9ries 90s',rpe:'iso 100% / s\u00e9ries 7-8',note:'1) ISO OVERCOMING au mi-course (sticking point) : barre cal\u00e9e sur les barres de s\u00e9curit\u00e9 \u00e0 hauteur mi-course, pousser 100% pendant 6s. 2) REPOS 1min30-2min (potentiation). 3) 2 s\u00e9ries de 8-10 reps en dynamique RPE 7-8, repos 90s entre. OPTION YIELDING (si \u00e9paule G \u2265 2-3/10) : remplacer 2 sem par 3-5 tenues de 30-45s @~70% sur les s\u00e9curit\u00e9s (contraction excentrique douce, moins agressive que l\u2019overcoming). Omoplates r\u00e9tract\u00e9es. Bench ISO reste OBLIGATOIRE. Tempo 3-1-X-1.'},
+          {num:'2',name:'\u26a1 Militaire BARRE \u00b7 ISO + volume (OPTIONNEL)',fmt:'1 iso 6s + 2\u00d78-10',s1:'iso mi-course \u2192 26-30 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'iso\u21922min, s\u00e9ries 90s',rpe:'iso 100% / s\u00e9ries 7-8',note:'1) ISO OVERCOMING au mi-course (sticking point) : pousser 100% 6s contre point fixe. 2) REPOS 1min30-2min. 3) 2 s\u00e9ries de 8-10 reps dynamique RPE 7-8. \u26a1 OPTIONNEL : sauter cet exercice si \u00e9paule G sensible OU si semaine de GTG militaire complet (le press vertical est d\u00e9j\u00e0 stimul\u00e9 3\u00d7/sem). Le bench ISO, lui, reste obligatoire. Si conserv\u00e9 : surveiller \u00e9paule G, angle non-douloureux, pas d\u2019hyperextension lombaire. Tempo 3-1-1-0.'},
+          {num:'PU',name:'\u2605 Pull-ups / Chin-ups \u00b7 sangle poignet G',fmt:'4\u00d76-8 RIR2-3',s1:'PDC (+lest si facile)',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'7-8/10',note:'Tirage vertical en volume. Reps propres, tempo contr\u00f4l\u00e9 (descente 3s), z\u00e9ro \u00e9lan. Pronation (test m\u00e9tier) ou supination (\u00e9paule G + biceps) selon ressenti. Menton au-dessus barre.'},{num:'3',name:'Row b\u00fbcheron \u00b7 volume',fmt:'3\u00d710-12/c\u00f4t\u00e9',s1:'20-28 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'7/10',note:'Tirage volume, plus de reps que le Pendlay lourd. Tempo contr\u00f4l\u00e9. Coude pr\u00e8s du corps, serrer l\u2019omoplate en haut. Tronc gain\u00e9. Tempo 2-1-1-0.'},
+          {num:'4',name:'\u00c9l\u00e9vations lat\u00e9rales DB',fmt:'3\u00d712-15',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'60s',rpe:'7/10',note:'Delto\u00efde moyen (jamais cibl\u00e9 directement ailleurs). L\u00e9ger, contr\u00f4l\u00e9, pas d\u2019\u00e9lan. Lever jusqu\u2019\u00e0 l\u2019horizontale, descente lente. Surveiller \u00e9paule G.'},
+          {num:'4b',name:'Shrug barre/DB \u00b7 trap\u00e8zes',fmt:'3\u00d712-15',s1:'mod\u00e9r\u00e9-lourd',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'60s',rpe:'7/10',note:'Trap\u00e8zes sup\u00e9rieurs (port casque/gilet). \u00c9paules vers les oreilles, PAS de rotation. Tenue 1s en haut, descente contr\u00f4l\u00e9e. Barre ou halt\u00e8res.'},{num:'5',name:'Curl biceps DB \u00b7 BFR',fmt:'30-15-15-15 reps',s1:'l\u00e9ger + bande',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'30s',rpe:'brulure',note:'BFR : bande/\u00e9lastique en haut du bras (serr\u00e9 mais pas garrot total ~7/10). Charge tr\u00e8s l\u00e9g\u00e8re (5-8 kg). 30 reps \u2192 30s repos \u2192 15 \u2192 15 \u2192 15, bande maintenue tout du long. Hypertrophie sans charge articulaire. Test \u2014 \u00e0 d\u00e9faut, volume classique 3\u00d715-20.'},
+          {num:'6',name:'Extension triceps DB \u00b7 BFR',fmt:'30-15-15-15 reps',s1:'l\u00e9ger + bande',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'30s',rpe:'brulure',note:'M\u00eame protocole BFR que le curl, bande au m\u00eame endroit (haut du bras). Charge tr\u00e8s l\u00e9g\u00e8re. Superset possible avec le curl (bande garde la m\u00eame). \u00c0 d\u00e9faut de bande : volume classique 3\u00d715-20.'},
+          {num:'F',name:'Hollow Hold \u00b7 gainage position',fmt:'3\u00d720-30s',s1:'20s',s2:'25s',s3:'30s',dl:'2\u00d715s',repos:'45s',rpe:'6/10',note:'Position creuse : bas du dos PLAQU\u00c9 au sol, \u00e9paules + jambes d\u00e9coll\u00e9es, bassin en r\u00e9troversion. Apprend le placement de gainage athl\u00e9tique (base calisth\u00e9nics). R\u00e9gression : genoux fl\u00e9chis ou bras le long du corps. Gainage anti-extension de H3 (compl\u00e8te hardstyle H1/H2, dragon flag B1/B2).'}
+        ]
+      }
+    }
+  },
+};
+const SEANCE_PAR_JOUR = {1:'Haut 1',2:'Bas 1',3:'AGT',4:'Haut 2',5:'Bas 2',6:'Conditioning',0:null};
+
+// ── GTG DATA ──────────────────────────────────────────────────────────────
+
+const GTG_EXERCICES = [
+  {id:'militaire_gtg',icon:'🏋️',name:'Militaire GTG',reps:'1×3 reps',charge:'20 kg',rpe:'5/10',note:'3–4 passes/jour · 90 min min entre passes · SNC frais. Bureau, couloir, partout. Jamais fatigant. ~44% 1RM. ⚠ BLOC 3 (S6-S8) : 1 jour sur 2 (les clusters chargent déjà l’épaule). Jours OFF = wall sit + dead hang seuls.',freq:'3–4×/jour (1j/2 en Bloc 3)'},
+  {id:'wall_sit_gtg',icon:'🪑',name:'Wall Sit GTG · bilatéral',reps:'1×35s propre',charge:'BW',rpe:'5/10',note:'Form stricte (pas de triche bassin). Passage unilatéral quand 60s bilatéral confortable.',freq:'3–4×/jour'},
+  {id:'dead_hang_gtg',icon:'🤸',name:'Dead Hang',reps:'1×max (obj. 30s)',charge:'BW passif',rpe:'3/10',note:'Stimulus GTG à part entière. Décompression rachis + santé épaule G. ARRÊT si poignet G douloureux.',freq:'3–4×/jour'},
+  {id:'iso_vert',icon:'🔲',name:'ISO Overcoming vertical · FALLBACK uniquement',reps:'1×8s 100%',charge:'—',rpe:'9/10',note:'⚠ FALLBACK si pas de barre disponible. Encadrement porte, pousser vers le haut 8s à 100%. Remplace militaire GTG en déplacement.',freq:'si pas de barre'}];
+
+// ── CARS / RENFO MATIN ────────────────────────────────────────────────────
+
+const ROUTINE_MATIN = [
+  {id:'cars_epaule',cat:'CARs',icon:'⭕',name:'CARs Épaule',detail:'3×/sens · 30s/rotation · ultra lent',priority:'★★★',note:'Avant chaque séance force. Chercher les zones raides. Résistance légère bras.'},
+  {id:'cars_hanche',cat:'CARs',icon:'⭕',name:'CARs Hanche',detail:'5×/sens · 45s/rotation',priority:'★★★',note:'Lié à l\'IT band. Mobilité critique grappling. Bassin immobile pendant le cercle.'},
+  {id:'cars_poignet',cat:'CARs',icon:'⭕',name:'CARs Poignet G',detail:'5×/dir · 30s · DOUX',priority:'★★★',note:'Poignet G sensible = QUOTIDIEN OBLIGATOIRE. Jamais douloureux. Flexion/ext/prono/supination.'},
+  {id:'cars_cheville',cat:'CARs',icon:'⭕',name:'CARs Cheville',detail:'5×/sens · 30s',priority:'★★',note:'Stance et footwork MMA. Dorsiflexion active = tronc vertical au squat = quads.'},
+  {id:'cars_cervicales',cat:'CARs',icon:'⭕',name:'CARs Cervicales',detail:'3×/dir · 20s · PRUDENCE',priority:'★',note:'Jamais cercle complet. Rotation lente + flexion latérale. Stop si douleur.'},
+  {id:'clamshell',cat:'Renfo ★★★ obligatoire',icon:'🦵',name:'Clamshell G FIRST',detail:'3 × 15/côté · élastique léger',priority:'★★★',note:'Fessier moyen G = cause racine IT band. Quotidien SANS EXCEPTION. G d\'abord.'},
+  {id:'petersen',cat:'Renfo ★★★ obligatoire',icon:'🦵',name:'Petersen Step-up G FIRST',detail:'2 × 10/jambe · BW',priority:'★★★',note:'Orteils sur bord marche 10-15cm. Genou monte vers la pointe. VMO. IT band rehab. Quotidien jusqu\'à disparition douleur.'},
+  {id:'balance',cat:'Unipodal brossage de dents',icon:'🦶',name:'Balance unipodale · brosse-dents',detail:'30s G · 30s D · puis yeux fermés',priority:'★',note:'Pendant le brossage. G EN PREMIER. Yeux fermés = objectif progressif. Aucun équipement. Zéro coût de temps.'},
+  {id:'bolt',cat:'Respiration',icon:'🌬️',name:'Test BOLT',detail:'1 test · matin avant box breathing',priority:'★★',note:'Expire normalement → pince nez → chrono premier désir. Score >25s fin Bloc 2. Départ ~15s normal.'},
+  {id:'box_breathing',cat:'Respiration',icon:'🌬️',name:'Box Breathing',detail:'4s/4s/4s/4s × 5 min · → 5s en S3',priority:'★★★',note:'Inhale nasal 4s → hold 4s → exhale bouche 4s → hold 4s. ↑ CO₂ tolérance. Matin à jeun.'},
+  {id:'coherence',cat:'Respiration',icon:'💓',name:'Cohérence Cardiaque',detail:'5 min couché · soir',priority:'★★★',note:'5s inhale nasal + 5s exhale bouche. 5 min couché le soir. ↑ HRV.'},
+  {id:'humming',cat:'Respiration',icon:'🎵',name:'Humming expiratoire',detail:'3–5 min · post-séance ou soir',priority:'★★',note:'Fredonner pendant l\'expiration (mmm). ↑ NO nasal. ↑ tolérance CO₂. Après séance ou avant sommeil.'},
+  {id:'calf_raise',cat:'Renfo ★★★ obligatoire',icon:'🦵',name:'Calf raise G FIRST · sur bord marche',detail:'3 × 15/jambe · BW',priority:'★★★',note:'G EN PREMIER. Talon descend sous le niveau du pied. Descente 3s. Mollet + proprioception cheville. \u26a0 PIEDS PLATS : garder le poids sur le BORD EXTERNE du pied (ne pas s\'effondrer vers l\'int\u00e9rieur) pour solliciter le TIBIAL POST\u00c9RIEUR, le muscle qui soutient la vo\u00fbte.'},
+  {id:'short_foot',cat:'Renfo optionnel',icon:'🦶',name:'Short foot (pieds plats)',detail:'2-3×10 tenues 5-10s',priority:'',note:'FONDAMENTAL pieds plats. Pied \u00e0 plat, rapprocher la base du gros orteil vers le talon pour CR\u00c9ER une vo\u00fbte, SANS recroqueviller les orteils. R\u00e9active tibial post\u00e9rieur + intrins\u00e8ques. Lien direct avec genou G (pied plat \u2192 valgus genou \u2192 IT band).'},
+  {id:'tripod',cat:'Renfo optionnel',icon:'🦶',name:'Ancrage tripod',detail:'debout / squat / fente',priority:'',note:'R\u00e9partir le poids sur 3 points : base gros orteil + base petit orteil + talon. Maintenir la vo\u00fbte active en charge. \u00c0 pratiquer debout, en squat, en fente \u2014 r\u00e9entra\u00eene le pied \u00e0 ne pas s\'effondrer.'},
+  {id:'foot_intrinsics',cat:'Renfo optionnel',icon:'🦶',name:'Intrins\u00e8ques pied',detail:'towel curls + orteils',priority:'',note:'Towel curls (agripper serviette avec orteils), \u00e9carter les orteils, relev\u00e9 gros orteil seul puis les 4 autres. R\u00e9veille la musculature profonde du pied. Travail pieds nus progressif sur surfaces vari\u00e9es.'},
+  {id:'tib_raise',cat:'Renfo optionnel',icon:'🦵',name:'Tib raises (jambier ant\u00e9rieur)',detail:'2-3×15-20',priority:'',note:'\u00c9quilibre le mollet (souvent l\'avant est faible). Talon au sol, lever la POINTE du pied contre r\u00e9sistance (adoss\u00e9 au mur, ou \u00e9lastique). Pr\u00e9vient p\u00e9riostites + absorbe \u00e0 la marche. Utile longues marches.'},
+  {id:'ankle_evinv',cat:'Renfo optionnel',icon:'🦶',name:'\u00c9version/inversion cheville',detail:'2-3×15-20/sens',priority:'',note:'2 options compl\u00e9mentaires. (1) \u00c9LASTIQUE assis/allong\u00e9, jambe tendue, pied dans l\'\u00e9lastique fix\u00e9 : le pied se d\u00e9place activement contre la r\u00e9sistance \u2014 \u00e9version (pied vers l\'EXT\u00c9RIEUR, p\u00e9roniers, anti-entorse) puis inversion (vers l\'INT\u00c9RIEUR, tibial post\u00e9rieur, soutien vo\u00fbte). (2) DEBOUT, transfert de poids contr\u00f4l\u00e9 sur le bord EXTERNE puis INTERNE du pied (pas rouler brutalement) \u2014 renfo + proprioception en charge, utile pieds plats (apprend \u00e0 ne pas s\'effondrer).'},
+  {id:'poignet_g',cat:'Renfo optionnel',icon:'🪤',name:'Renfo poignet G',detail:'3×12 · flex/ext excentrique · @0,5–2 kg',priority:'',note:'Tendinite + kyste G. Doux. Deux directions : flexion et extension.'},
+  {id:'lat_walk',cat:'Renfo optionnel',icon:'🩺',name:'Lateral band walk',detail:'3×12 pas/sens · élastique chevilles',priority:'',note:'Fessier moyen chaîne fermée. Genoux légèrement fléchis.'},
+  {id:'hip_9090',cat:'Renfo optionnel',icon:'🦴',name:'Hip 90/90 PAILs/RAILs',detail:'2×90s/côté · fin de séance uniquement',priority:'',note:'Jamais à froid. Après Bas 1 ou Haut 2. Mobilité active hanche.'},
+  {id:'shoulder_pailrail',cat:'Renfo optionnel',icon:'🦴',name:'Épaule G PAILs/RAILs',detail:'2×90s/côté · fin de séance',priority:'',note:'Jamais à froid (après une séance haut). Gagne amplitude ACTIVE + solidité articulaire de l\'épaule G fragile. Position d\'étirement passif 90s, puis contraction PAILs (pousser dans l\'étirement) 10-20s, puis RAILs (tirer hors de l\'étirement, contracter l\'agoniste) 10-20s. Cible flexion + rotation externe (les amplitudes limitées de l\'épaule G).'},
+  {id:'bfr_squat',cat:'Renfo optionnel',icon:'🦵',name:'Air squat BFR · sangles cuisses',detail:'4 séries : 30+15+15+15 · 30s repos',priority:'',note:'Sangles réglables autour des cuisses (~7/10, restriction veineuse). N’importe quel jour, idéalement en activation AVANT une séance jambes (Bas 1 ou Bas 2). Réveille quadriceps + VMO (soutien genou) SANS charge articulaire — utile genou G. Bilatéral (2 jambes ensemble). Surveiller amplitude si IT band/genou G parle.'}
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+
+const S = {
+  tab: 'routine',
+  week: 1,
+  bloc: 1,
+  tooltipTarget: null,
+  seanceKey: null,
+};
+
+// Charger config
+// Force-correct any old programStart value to the real start date
+{
+  const CORRECT_START = '2026-06-09';
+  const stored = load('programStart');
+  if(stored !== CORRECT_START){ save('programStart', CORRECT_START); }
+  const startDate = new Date(CORRECT_START);
+  const diff = Math.floor((today - startDate)/(7*24*3600*1000));
+  S.week = Math.max(1, Math.min(9, diff+1));
+  S.bloc = getBlocId(S.week);
+}
+S.seanceKey = SEANCE_PAR_JOUR[DOW] || 'Haut 1';
+
+function getLog(){ return load('log:'+todayStr) || {}; }
+function saveLog(data){ save('log:'+todayStr, data); }
+function updateLog(key, val){ const l=getLog(); l[key]=val; saveLog(l); }
+
+// ── RENDER ROOT ───────────────────────────────────────────────────────────
+
+
+// ── TIMER ─────────────────────────────────────────────────────────────────
+let _timerSec = 0, _timerTotal = 0, _timerIv = null, _audioCtx = null, _timerCtx = null;
+
+function _initAudio(){
+  try{
+    if(!_audioCtx) _audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(_audioCtx.state==='suspended') _audioCtx.resume();
+  }catch(e){}
+}
+
+function parseReposAll(r){
+  if(!r||r==='\u2014'||r==='-') return [];
+  const out=[];
+  // Split on / but keep "4-5 min/paire" as one (no sec before /)
+  const parts = r.split('/');
+  for(const part of parts){
+    const mm=part.match(/(\d+)(?:-(\d+))?\s*min/);
+    if(mm){const v=mm[2]?parseInt(mm[2]):parseInt(mm[1]);out.push({sec:v*60,lbl:v+'min'});continue;}
+    const ss=part.match(/(\d+)(?:-(\d+))?s(?!\w)/);
+    if(ss){const v=ss[2]?parseInt(ss[2]):parseInt(ss[1]);out.push({sec:v,lbl:v+'s'});}
+  }
+  // Deduplicate by sec value, keep unique
+  return out.filter((t,i,a)=>a.findIndex(x=>x.sec===t.sec)===i).filter(t=>t.sec>0);
+}
+
+function _beep(freq,dur){
+  try{
+    if(!_audioCtx) return;
+    if(_audioCtx.state==='suspended') _audioCtx.resume();
+    const o=_audioCtx.createOscillator(),g=_audioCtx.createGain();
+    o.type='square';
+    o.connect(g);g.connect(_audioCtx.destination);
+    o.frequency.value=freq;
+    g.gain.setValueAtTime(1.0,_audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,_audioCtx.currentTime+dur);
+    o.start(_audioCtx.currentTime);o.stop(_audioCtx.currentTime+dur+0.05);
+  }catch(e){}
+}
+
+
+function _speak(txt){
+  try{
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt);
+    u.lang='fr-FR';u.rate=1.1;u.volume=1;u.pitch=1;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function _bell(){
+  try{
+    if(!_audioCtx)return;
+    if(_audioCtx.state==='suspended')_audioCtx.resume();
+    const t=_audioCtx.currentTime;
+    [[880,1.0,2.5],[1320,0.5,1.8],[2200,0.25,1.2],[440,0.3,2.0]].forEach(([freq,gain,decay])=>{
+      const o=_audioCtx.createOscillator(),g=_audioCtx.createGain();
+      o.type='sine';o.connect(g);g.connect(_audioCtx.destination);
+      o.frequency.value=freq;
+      g.gain.setValueAtTime(gain,t);
+      g.gain.exponentialRampToValueAtTime(0.001,t+decay);
+      o.start(t);o.stop(t+decay+0.05);
+    });
+  }catch(e){}
+}
+function _updateTimerUI(){
+  const ov=document.getElementById('_tmr');if(!ov)return;
+  const m=Math.floor(_timerSec/60),s=_timerSec%60;
+  const tEl=document.getElementById('_tmr_t');
+  if(tEl) tEl.textContent=m+':'+(s<10?'0':'')+s;
+  const circ=2*Math.PI*90;
+  const prog=_timerTotal>0?_timerSec/_timerTotal:0;
+  const cEl=document.getElementById('_tmr_c');
+  if(cEl){
+    cEl.style.strokeDashoffset=circ*(1-prog);
+    cEl.style.stroke=prog>0.5?'#3b82f6':prog>0.25?'#f5a623':'#e63946';
+  }
+  if(tEl) tEl.style.color=_timerSec<=10&&_timerSec>0?'#e63946':'#f0f4ff';
+  if(tEl&&_timerSec===0){tEl.classList.add('timer-flashing');}
+}
+
+let _timerEnd=0;
+function startTimer(sec,ctx){
+  _timerCtx=ctx||null;
+  _initAudio();
+  try{const u=new SpeechSynthesisUtterance('');window.speechSynthesis.speak(u);}catch(e){}
+  if(_timerIv){clearInterval(_timerIv);_timerIv=null;}
+  _timerSec=sec;_timerTotal=sec;
+  _timerEnd=Date.now()+sec*1000;
+  _buildTimerOverlay();
+  _updateTimerUI();
+  _timerIv=setInterval(()=>{
+    _timerSec=Math.max(0,Math.round((_timerEnd-Date.now())/1000));
+    if(_timerSec<=0){
+      _timerSec=0;clearInterval(_timerIv);_timerIv=null;
+      _beep(660,0.2);setTimeout(()=>_beep(880,0.2),280);setTimeout(()=>_beep(1100,0.3),560);
+      _speak('Go\u00a0!');
+      const ov2=document.getElementById('_tmr');if(ov2){ov2.style.background='rgba(230,57,70,0.35)';setTimeout(()=>{if(ov2)ov2.style.background='rgba(8,12,22,0.95)';},600);}
+      try{navigator.vibrate([200,80,200,80,400]);}catch(e){}
+      _updateTimerUI();
+      setTimeout(()=>{const o=document.getElementById('_tmr');if(o)o.remove();},3500);
+    } else {
+      if(_timerSec===10){
+        try{const o2=_audioCtx.createOscillator(),g2=_audioCtx.createGain();o2.type='sine';o2.connect(g2);g2.connect(_audioCtx.destination);o2.frequency.value=660;g2.gain.setValueAtTime(0.5,_audioCtx.currentTime);g2.gain.exponentialRampToValueAtTime(0.001,_audioCtx.currentTime+0.3);o2.start(_audioCtx.currentTime);o2.stop(_audioCtx.currentTime+0.35);}catch(e){}
+        try{navigator.vibrate(80);}catch(e){}
+      }
+      if(_timerSec===3)_speak('3');
+      if(_timerSec===2)_speak('2');
+      if(_timerSec===1)_speak('1');
+      _updateTimerUI();
+    }
+  },1000);
+}
+
+function stopTimer(){
+  if(_timerIv){clearInterval(_timerIv);_timerIv=null;}
+  const o=document.getElementById('_tmr');if(o)o.remove();
+}
+
+function _addTimer30(){_timerEnd+=30000;_timerSec=Math.round((_timerEnd-Date.now())/1000);_timerTotal=Math.max(_timerTotal,_timerSec);_updateTimerUI();}
+
+function _buildTimerOverlay(){
+  let ov=document.getElementById('_tmr');
+  if(ov) ov.remove();
+  ov=document.createElement('div');
+  ov.id='_tmr';
+  Object.assign(ov.style,{position:'fixed',top:'0',left:'0',right:'0',bottom:'0',
+    background:'rgba(8,12,22,0.95)',display:'flex',flexDirection:'column',
+    alignItems:'center',justifyContent:'center',zIndex:'9999',backdropFilter:'blur(4px)'});
+  ov.onclick=(e)=>{if(e.target===ov)stopTimer();};
+  document.body.appendChild(ov);
+
+  // SVG circle
+  const ns='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('width','220');svg.setAttribute('height','220');
+  const circ=2*Math.PI*90;
+
+  const track=document.createElementNS(ns,'circle');
+  ['cx','cy','r','fill'].forEach((a,i)=>track.setAttribute(a,['110','110','90','none'][i]));
+  track.setAttribute('stroke','#1e2d42');track.setAttribute('stroke-width','14');
+  svg.appendChild(track);
+
+  const prog=document.createElementNS(ns,'circle');
+  prog.id='_tmr_c';
+  ['cx','cy','r','fill'].forEach((a,i)=>prog.setAttribute(a,['110','110','90','none'][i]));
+  prog.setAttribute('stroke','#3b82f6');prog.setAttribute('stroke-width','14');
+  prog.setAttribute('stroke-linecap','round');
+  prog.setAttribute('transform','rotate(-90 110 110)');
+  prog.style.strokeDasharray=circ;
+  prog.style.strokeDashoffset=0;
+  prog.style.transition='stroke-dashoffset .95s linear,stroke .3s';
+  svg.appendChild(prog);
+
+  // Wrapper with SVG + centered time
+  const wrap=document.createElement('div');
+  Object.assign(wrap.style,{position:'relative',width:'220px',height:'220px'});
+  wrap.appendChild(svg);
+
+  const tDiv=document.createElement('div');
+  tDiv.id='_tmr_t';
+  Object.assign(tDiv.style,{position:'absolute',top:'50%',left:'50%',
+    transform:'translate(-50%,-50%)',fontSize:'54px',fontWeight:'900',
+    fontFamily:'monospace',color:'#f0f4ff',letterSpacing:'2px'});
+  wrap.appendChild(tDiv);
+  ov.appendChild(wrap);
+
+  // Enhanced context display
+  if(_timerCtx){
+    const c2=document.createElement('div');
+    Object.assign(c2.style,{marginTop:'16px',padding:'12px 16px',background:'#111d2e',
+      borderRadius:'10px',border:'1px solid #1e2d42',width:'220px',textAlign:'center'});
+    const o=typeof _timerCtx==='object'?_timerCtx:{name:_timerCtx};
+    if(o.setNum&&o.totalSets)
+      c2.innerHTML+='<div style="font-size:13px;font-weight:800;color:#3b82f6;margin-bottom:4px">Série '+o.setNum+' / '+o.totalSets+' terminée</div>';
+    if(o.name)
+      c2.innerHTML+='<div style="font-size:11px;font-weight:700;color:#f0f4ff;margin-bottom:2px">'+o.name+'</div>';
+    if(o.fmt)
+      c2.innerHTML+='<div style="font-size:12px;color:#8b5cf6;font-weight:600">'+(o.fmt)+(o.charge?' · '+o.charge:'')+'</div>';
+    if(o.tempo)
+      c2.innerHTML+='<div style="font-size:11px;color:#06b6d4;margin-top:3px">Tempo '+o.tempo+'</div>';
+    ov.appendChild(c2);
+  }
+  // Quick preset buttons row
+  const presets=document.createElement('div');
+  Object.assign(presets.style,{display:'flex',gap:'8px',marginTop:'16px'});
+  [20,60,90,120,180].forEach(s=>{
+    const b=document.createElement('button');
+    b.textContent=s<60?s+'s':(s/60)+'min';
+    Object.assign(b.style,{padding:'8px 10px',background:'#111d2e',border:'1px solid #1e2d42',
+      borderRadius:'8px',color:'#64748b',fontSize:'11px',fontWeight:'700',cursor:'pointer'});
+    b.onclick=(e)=>{e.stopPropagation();startTimer(s);};
+    presets.appendChild(b);
+  });
+  ov.appendChild(presets);
+
+  // Action buttons
+  const btns=document.createElement('div');
+  Object.assign(btns.style,{display:'flex',gap:'12px',marginTop:'16px'});
+
+  const b30=document.createElement('button');
+  b30.textContent='+30s';
+  Object.assign(b30.style,{padding:'13px 26px',background:'#111d2e',border:'1.5px solid #3b82f6',
+    borderRadius:'12px',color:'#3b82f6',fontSize:'15px',fontWeight:'700',cursor:'pointer'});
+  b30.onclick=(e)=>{e.stopPropagation();_addTimer30();};
+  btns.appendChild(b30);
+
+  const bStop=document.createElement('button');
+  bStop.textContent='✕';
+  Object.assign(bStop.style,{padding:'13px 22px',background:'#111d2e',border:'1.5px solid #1e2d42',
+    borderRadius:'12px',color:'#475569',fontSize:'15px',fontWeight:'700',cursor:'pointer'});
+  bStop.onclick=(e)=>{e.stopPropagation();stopTimer();};
+  btns.appendChild(bStop);
+  ov.appendChild(btns);
+}
+
+
+// ── FLAG SYSTEM ────────────────────────────────────────────────────────────
+function getRecentLogs(days){
+  const out=[];
+  for(let i=0;i<days;i++){
+    const d=new Date(today);d.setDate(d.getDate()-i);
+    const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    out.push({date:ds,log:load('log:'+ds)||{}});
+  }
+  return out;
+}
+
+function computeFlags(){
+  const flags=[];
+  const L7=getRecentLogs(7);
+  const L14=getRecentLogs(14);
+  const L28=getRecentLogs(28);
+
+  // ── Douleurs ──────────────────────────────────────────────────────────────
+  const dGenou7=L7.filter(d=>d.log.matin?.douleur_genou==='forte');
+  const dPoignet7=L7.filter(d=>d.log.matin?.douleur_poignet==='forte');
+  const dGenouLeg=L7.slice(0,3).filter(d=>d.log.matin?.douleur_genou==='légère');
+  if(dGenou7.length>0)
+    flags.push({lvl:'red',icon:'🛑',metric:'Genou G · douleur forte',msg:'Suspendre Bulgarian, Zercher et Nordic Curl. Seule la marche et les exercices sans appui.'});
+  else if(dGenouLeg.length>=2)
+    flags.push({lvl:'orange',icon:'⚠️',metric:'Genou G · douleur légère persistante',msg:'Réduire volume Lower de 20%. Surveiller avant progression de charge.'});
+  if(dPoignet7.length>0)
+    flags.push({lvl:'red',icon:'🛑',metric:'Poignet G · douleur forte',msg:'Suspendre KB Press, Dead hang et exercices portés en main G. Maintenir militaire barre si indolore.'});
+
+  // ── Épaule G : règle de délestage ─────────────────────────────────────────
+  const dEpaule7=L7.filter(d=>d.log.matin?.douleur_epaule==='forte');
+  const dEpauleLeg=L7.slice(0,3).filter(d=>d.log.matin?.douleur_epaule==='légère');
+  if(dEpaule7.length>0)
+    flags.push({lvl:'red',icon:'🛑',metric:'Épaule G · douleur forte',msg:'DÉLESTAGE épaule : couper dans l\'ordre 1) GTG militaire → 2) ISO militaire H3 → 3) DB press H2 → en dernier militaire lourd H1. Face pull + rotation externe JAMAIS coupés. Observer 4-5 jours par étage.'});
+  else if(dEpauleLeg.length>=2)
+    flags.push({lvl:'orange',icon:'⚠️',metric:'Épaule G · gêne persistante',msg:'Premier étage de délestage : couper le GTG militaire quotidien. Maintenir face pull + rotation externe. Surveiller avant de charger le press vertical.'});
+
+  // ── RPE effectif vs semaine courante ─────────────────────────────────────
+  const rpeVals=L7.map(d=>({rpe:Number(d.log.soir?.rpe)||0,date:d.date})).filter(d=>d.rpe>0);
+  if(rpeVals.length>=2){
+    const avg=rpeVals.reduce((s,v)=>s+v.rpe,0)/rpeVals.length;
+    const weekBloc=getBlocId(S.week);
+    const blocData=weekBloc?BLOCS.find(b=>b.id===weekBloc):null;
+    const prescrit=blocData?parseFloat(blocData.color==='#3b82f6'?6:blocData.color==='#8b5cf6'?7:8):7;
+    if(avg>prescrit+2)
+      flags.push({lvl:'red',icon:'🔴',metric:`RPE moyen ${avg.toFixed(1)}/10 (prescrit ~${prescrit})`,msg:'Fatigue accumulée importante. Déload cette semaine conseillé — réduire charges de 30% et couper 1 séance.'});
+    else if(avg>prescrit+1)
+      flags.push({lvl:'orange',icon:'⚠️',metric:`RPE moyen ${avg.toFixed(1)}/10`,msg:'Au-dessus du prescrit. Garder les charges mais ne pas progresser cette semaine.'});
+  }
+
+  // ── HRV ──────────────────────────────────────────────────────────────────
+  const hrv7=L7.map(d=>Number(d.log.matin?.hrv)).filter(v=>v>0);
+  const hrv14=L14.map(d=>Number(d.log.matin?.hrv)).filter(v=>v>0);
+  if(hrv7.length>=3&&hrv14.length>=5){
+    const base=hrv14.reduce((a,b)=>a+b,0)/hrv14.length;
+    const rec=hrv7.slice(0,3).reduce((a,b)=>a+b,0)/Math.min(3,hrv7.length);
+    const drop=(base-rec)/base;
+    if(drop>0.2)
+      flags.push({lvl:'red',icon:'❤️',metric:`HRV -${Math.round(drop*100)}% vs baseline`,msg:'Chute HRV significative. SNC sous tension. Priorité récupération : réduire intensité, pas volume.'});
+    else if(drop>0.1)
+      flags.push({lvl:'orange',icon:'⚠️',metric:`HRV -${Math.round(drop*100)}% vs baseline`,msg:'Tendance baissière HRV. Éviter les surcharges cette semaine.'});
+  }
+
+  // ── Sommeil ───────────────────────────────────────────────────────────────
+  const sq3=L7.slice(0,3).map(d=>d.log.matin?.sleep_quality).filter(v=>v);
+  if(sq3.length>=2&&sq3.filter(v=>v<=2).length>=2)
+    flags.push({lvl:'red',icon:'😴',metric:'Sommeil dégradé (≤2/5 sur 2+ nuits)',msg:'Récupération insuffisante. Couper la séance la plus intense cette semaine.'});
+  else if(sq3.length>=3&&sq3.reduce((a,b)=>a+b,0)/sq3.length<3)
+    flags.push({lvl:'orange',icon:'⚠️',metric:`Qualité sommeil moy. ${(sq3.reduce((a,b)=>a+b,0)/sq3.length).toFixed(1)}/5`,msg:'Réduire le volume de 15% et prioriser le protocole cohérence cardiaque soir.'});
+
+  // ── BOLT ─────────────────────────────────────────────────────────────────
+  const bolt7=L7.map(d=>Number(d.log.matin?.bolt)).filter(v=>v>0);
+  if(bolt7.length>=3){
+    const trend=bolt7[0]-bolt7[bolt7.length-1];
+    if(trend<-4)
+      flags.push({lvl:'orange',icon:'🫁',metric:`BOLT -${Math.abs(Math.round(trend))}s cette semaine`,msg:'Régression BOLT. Augmenter cohérence cardiaque + humming. Vérifier respiration nasale pendant AGT.'});
+  }
+
+  // ── ACWR (Gabbett) ────────────────────────────────────────────────────────
+  const acute=L7.reduce((s,d)=>s+(Number(d.log.soir?.rpe)||0),0);
+  const chronic4w=L28.reduce((s,d)=>s+(Number(d.log.soir?.rpe)||0),0)/4;
+  if(acute>0&&chronic4w>0){
+    const acwr=acute/chronic4w;
+    if(acwr>1.5)
+      flags.push({lvl:'red',icon:'📈',metric:`ACWR ${acwr.toFixed(2)} · zone rouge`,msg:'Risque blessure élevé (Gabbett >1.5). Déload obligatoire cette semaine.'});
+    else if(acwr>1.3)
+      flags.push({lvl:'orange',icon:'⚠️',metric:`ACWR ${acwr.toFixed(2)} · attention`,msg:'Au-dessus du seuil optimal (0.8-1.3). Pas de surcharge. Maintenir les charges actuelles.'});
+  }
+
+  // ── SÉANCE COMPRESSÉE (jour rouge) ─────────────────────────────────────────
+  // Déclencheurs : sommeil <6h OU HRV -10% OU douleur >= modérée (légère persistante ou forte)
+  const todayLog = L7[0] ? L7[0].log : {};
+  const tm = todayLog.matin || {};
+  const sleepLow = tm.sleep_hours!==undefined && tm.sleep_hours!=='' && Number(tm.sleep_hours) < 6;
+  let hrvDrop10 = false;
+  if(hrv7.length>=3 && hrv14.length>=5){
+    const base=hrv14.reduce((a,b)=>a+b,0)/hrv14.length;
+    const rec=hrv7.slice(0,3).reduce((a,b)=>a+b,0)/Math.min(3,hrv7.length);
+    if((base-rec)/base > 0.1) hrvDrop10 = true;
+  }
+  const painMod = (tm.douleur_genou==='forte'||tm.douleur_genou==='légère'||tm.douleur_poignet==='forte'||tm.douleur_epaule==='forte'||tm.douleur_epaule==='légère');
+  if(sleepLow || hrvDrop10 || painMod){
+    const raisons=[];
+    if(sleepLow) raisons.push('sommeil <6h');
+    if(hrvDrop10) raisons.push('HRV -10%');
+    if(painMod) raisons.push('douleur ≥ modérée');
+    flags.unshift({lvl:'orange',icon:'🗜️',metric:'Jour compressé conseillé ('+raisons.join(' · ')+')',msg:'Signaux de récupération basse. La séance COMPRESSÉE du jour (version allégée) est disponible en 1 tap dans l\'onglet Séance. Garde le mouvement, réduis le volume/l\'intensité — ne saute pas, allège.',compressed:true});
+  }
+
+  return flags;
+}
+
+function renderFlagsCard(){
+  const flags=computeFlags();
+  const card=$('div',{class:'card',style:{
+    borderColor:flags.some(f=>f.lvl==='red')?'#e63946':flags.some(f=>f.lvl==='orange')?'#f5a623':'#10b981',
+    borderWidth:'1.5px'
+  }});
+  const title=$('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:flags.length?'10px':'0'}});
+  const dot=flags.some(f=>f.lvl==='red')?'🔴':flags.some(f=>f.lvl==='orange')?'🟠':'🟢';
+  title.appendChild($('span',{style:{fontSize:'14px',fontWeight:'700',color:'#f0f4ff'}},'📊 Analyse automatique'));
+  title.appendChild($('span',{style:{fontSize:'13px',marginLeft:'auto'}},dot));
+  card.appendChild(title);
+  if(flags.length===0){
+    card.appendChild($('div',{style:{fontSize:'12px',color:'#10b981',fontWeight:'600'}},'✓ Tous les indicateurs sont dans les normes'));
+  } else {
+    flags.forEach(f=>{
+      const row=$('div',{style:{display:'flex',gap:'8px',alignItems:'flex-start',padding:'8px',background:'#0d1626',borderRadius:'8px',marginBottom:'6px',borderLeft:'3px solid '+(f.lvl==='red'?'#e63946':'#f5a623')}});
+      row.appendChild($('span',{style:{fontSize:'16px',flexShrink:'0'}},f.icon));
+      const txt=$('div',{style:{minWidth:'0'}});
+      txt.appendChild($('div',{style:{fontSize:'11px',fontWeight:'700',color:f.lvl==='red'?'#e63946':'#f5a623',marginBottom:'2px'}},f.metric));
+      txt.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8',lineHeight:'1.4'}},f.msg));
+      row.appendChild(txt);
+      card.appendChild(row);
+    });
+  }
+  return card;
+}
+
+
+seedBaselines();
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden){
+    if(_audioCtx&&_audioCtx.state==='suspended') _audioCtx.resume();
+    if(_timerIv&&_timerEnd>0){
+      _timerSec=Math.max(0,Math.round((_timerEnd-Date.now())/1000));
+      _updateTimerUI();
+    }
+    try{window.speechSynthesis.cancel();}catch(e){}
+  }
+});
+
+// Service worker registration for offline mode
+// ── Service Worker (fichier externe requis sur le serveur) ──
+window.__swStatus = 'non supporté';
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sport-pwa-sw.js')
+      .then(async reg=>{
+        window.__swStatus='enregistré';
+        await navigator.serviceWorker.ready;
+        window.__swStatus = navigator.serviceWorker.controller ? 'actif ✓' : 'prêt — recharge pour activer';
+      })
+      .catch(e=>{ window.__swStatus='ÉCHEC : '+e.message; console.warn('SW failed:',e); });
+  });
+}
+function render(){
+  const _ps=document.querySelector('.scroll'); const _st=_ps?_ps.scrollTop:0;
+  const root = document.getElementById('root');
+  root.innerHTML = '';
+
+  if(!document.getElementById('app-css')){
+    const css = document.createElement('style');
+    css.id='app-css';
+    css.textContent = `
+      .app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
+      .topbar{background:linear-gradient(135deg,#0a0f1a,#0d1525);border-bottom:1px solid #1e2d42;padding:12px 16px;padding-top:calc(12px + var(--safe-top));display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+      .topbar-title{font-family:var(--font-d);font-size:20px;letter-spacing:3px;color:#e63946}
+      .topbar-info{font-size:10px;color:#475569;text-align:right}
+      .scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 14px 90px;display:flex;flex-direction:column;align-items:stretch}
+.scroll>*{width:100%}
+      .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--border);width:100%;box-sizing:border-box}
+      .card-title{font-family:var(--font-d);font-size:13px;letter-spacing:1.5px;color:#94a3b8;margin-bottom:10px}
+      .section-hdr{font-family:var(--font-d);font-size:16px;letter-spacing:2px;color:#e63946;margin-bottom:14px}
+      .lbl{font-size:11px;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+      .btn{padding:11px 18px;border-radius:10px;border:none;cursor:pointer;font-family:var(--font-b);font-weight:600;font-size:13px;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+      .btn-red{background:var(--acc);color:#fff}.btn-red:active{transform:scale(.97)}
+      .btn-ghost{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+      .btn-sm{padding:7px 12px;font-size:11px;border-radius:8px}
+      .tag{display:inline-flex;align-items:center;padding:3px 8px;border-radius:10px;font-size:11px;font-weight:600}
+      .tag-purple{background:#8b5cf622;color:#8b5cf6}
+      .tag-gold{background:#f5a62322;color:#f5a623}
+      .tag-red{background:#e6394622;color:#e63946}
+      .tag-green{background:#10b98122;color:#10b981}
+      .tag-blue{background:#3b82f622;color:#3b82f6}
+      .tag-grey{background:#1e2d42;color:#64748b}
+      .tag-teal{background:#06b6d422;color:#06b6d4}
+      .check-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #1e2d42;cursor:pointer;user-select:none;width:100%;max-width:100%;box-sizing:border-box;min-width:0;overflow-wrap:break-word}
+      .check-item:last-child{border-bottom:none}
+      .check-box{width:22px;height:22px;border-radius:6px;border:2px solid #1e2d42;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-top:1px}
+      .check-box.done{background:var(--green);border-color:var(--green);color:#fff}
+      .ex-card{background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid var(--border)}
+      .ex-card.prio{border-left:3px solid var(--acc)}
+      .ex-header{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+      .ex-num{font-size:10px;font-weight:700;color:#475569;min-width:18px;margin-top:2px}
+      .ex-name{font-size:13px;font-weight:700;color:var(--text);flex:1;line-height:1.3}
+      .ex-name.prio{color:var(--acc)}
+      .ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+      .ex-cell{background:#1a2640;border-radius:7px;padding:6px 8px}
+      .ex-cell-lbl{font-size:9px;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+      .ex-cell-val{font-size:12px;font-weight:700;color:var(--text)}
+      .ex-cell-val.blue{color:#3b82f6}
+      .ex-cell-val.gold{color:#f5a623}
+      .ex-cell-val.red{color:#e63946}
+      .ex-cell-val.teal{color:#06b6d4}
+      .ex-cell-val.purple{color:#8b5cf6}
+      .ex-semaines{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+      .ex-sem{flex:1;min-width:0;background:#243347;border-radius:7px;padding:6px;text-align:center;border:1px solid #2d3f56}
+      .ex-sem.active{background:#1a2d4a;border-color:#3b82f6}
+      .ex-sem-lbl{font-size:9px;color:#475569;text-transform:uppercase;letter-spacing:.4px}
+      .ex-sem-val{font-size:11px;font-weight:700;color:var(--text);margin-top:2px}
+      .sets-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+      .set-chip{padding:5px 10px;border-radius:20px;background:#1a2640;border:1.5px solid #2d3f56;font-size:11px;font-weight:600;color:#64748b;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap}
+      .set-chip.done{background:#10b98122;border-color:#10b981;color:#10b981}
+      .note-preview{font-size:11px;color:#475569;font-style:italic;line-height:1.4;margin-bottom:6px;padding:6px 8px;background:#0d1525;border-radius:6px;border-left:2px solid #1e2d42}
+      .info-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#475569;padding:2px 4px;border-radius:4px;transition:color .15s;flex-shrink:0}
+      .info-btn:hover{color:#f5a623}
+      .tooltip{position:fixed;background:#0d1525;border:1px solid #f5a62344;border-radius:10px;padding:10px 12px;max-width:280px;font-size:11px;color:#94a3b8;line-height:1.5;z-index:1000;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+      .tooltip-close{display:block;text-align:right;color:#f5a623;cursor:pointer;font-size:13px;margin-top:6px}
+      .input-field{width:100%!important;display:block;box-sizing:border-box;-webkit-appearance:none;appearance:none;background:#111d2e;border:1px solid #1e2d42;border-radius:8px;padding:10px 12px;color:var(--text);font-size:15px;outline:none;transition:border-color .15s}
+      .input-field:focus{border-color:#3b82f6}
+      .textarea-field{width:100%!important;max-width:100%!important;min-width:0!important;display:block;box-sizing:border-box;-webkit-appearance:none;appearance:none;background:#111d2e;border:1px solid #1e2d42;border-radius:8px;padding:10px;color:var(--text);font-size:13px;resize:none;outline:none;line-height:1.5;field-sizing:content}
+      .scale-row{display:flex;gap:6px;width:100%;overflow:hidden}
+      .scale-btn{flex:1;min-width:0;padding:10px 4px;border-radius:9px;border:1.5px solid #1e2d42;background:#111d2e;color:#475569;font-weight:700;font-size:14px;cursor:pointer;text-align:center;transition:all .15s}
+      .scale-btn.sel{border-color:var(--acc);background:#e6394622;color:var(--acc)}
+      .pain-row{display:flex;gap:8px;width:100%;overflow:hidden}
+      .pain-btn{flex:1;min-width:0;padding:10px;border-radius:9px;border:1.5px solid #1e2d42;background:#111d2e;cursor:pointer;text-align:center;transition:all .15s}
+      .pain-btn.sel{border-color:var(--acc);background:#e6394622}
+      .mood-row{display:flex;gap:10px;justify-content:space-between;padding:4px 0}
+      .mood-btn{font-size:28px;cursor:pointer;opacity:.4;transition:all .15s}
+      .mood-btn.sel{opacity:1;transform:scale(1.2)}
+
+      .timer-btn{background:none;border:none;cursor:pointer;color:#e63946;font-weight:700;font-size:12px;padding:2px 0;text-align:left;display:flex;align-items:center;gap:3px;transition:opacity .15s}
+      .timer-btn:active{opacity:.6}
+      .timer-btns{display:flex;flex-direction:column;gap:3px}
+      @keyframes timer-flash{0%,100%{opacity:1}50%{opacity:.3}}
+      .timer-flashing{animation:timer-flash .5s infinite}
+      .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(10,15,26,.97);border-top:1px solid #1e2d42;display:flex;padding-bottom:var(--safe-bottom);z-index:100;backdrop-filter:blur(10px)}
+      .nav-tab{flex:1;padding:9px 4px 7px;text-align:center;cursor:pointer;border:none;background:none}
+      .nav-tab-icon{font-size:20px;line-height:1}
+      .nav-tab-lbl{font-size:9px;font-weight:600;color:#475569;margin-top:3px;display:block}
+      .nav-tab.active .nav-tab-lbl{color:var(--acc)}
+      .priming-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:12px;color:#64748b}
+      .seg-ctrl{display:flex;background:#111d2e;border-radius:9px;padding:3px;gap:2px;margin-bottom:14px;width:100%;box-sizing:border-box;max-width:100%}
+      .seg-btn{flex:1 1 0;min-width:0;padding:7px 4px;border:none;background:none;color:#64748b;font-size:11px;font-weight:600;border-radius:7px;cursor:pointer;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .seg-btn.active{background:#1e2d42;color:var(--text)}
+      .cat-badge{display:inline-block;padding:1px 7px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:.5px;margin-right:4px}
+      .cat-cars{background:#3b82f622;color:#3b82f6}
+      .cat-renfo{background:#10b98122;color:#10b981}
+      .cat-resp{background:#8b5cf622;color:#8b5cf6}
+      .chrono-display{font-family:var(--font-d);font-size:48px;letter-spacing:4px;color:var(--text);text-align:center;padding:12px}
+      .input-mod{background:#111d2e;border:1px solid #1e2d42;border-radius:6px;padding:4px 7px;color:var(--text);font-size:12px;width:70px;text-align:center;outline:none}
+      .history-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1e2d42;cursor:pointer}
+      .history-row:last-child{border-bottom:none}
+      .history-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+    `;
+    document.head.appendChild(css);
+  }
+
+  const app = $('div',{class:'app'});
+
+  // TOPBAR
+  const blocData = BLOCS.find(b=>b.id===S.bloc)||BLOCS[0];
+  const tb = $('div',{class:'topbar'},
+    $('div',{class:'topbar-title'},'BE READY'),
+    $('div',{class:'topbar-info'},
+      $('div',{style:{color:blocData.color,fontWeight:700,fontSize:'11px'}},`S${S.week} · ${blocData.name}`),
+      $('div',{},`${DAYS_FULL[DOW]} ${today.getDate()} ${MONTHS[today.getMonth()]}`)
+    )
+  );
+  app.appendChild(tb);
+
+  // CONTENT
+  const content = $('div',{class:'scroll'});
+  const views = {
+    routine: renderRoutine,
+    seance: renderSeance,
+    gtg: renderGTG,
+    bilan: renderBilan,
+  };
+  content.appendChild((views[S.tab]||renderRoutine)());
+  app.appendChild(content);
+
+  // BOTTOM NAV
+  const nav = $('div',{class:'bottom-nav'});
+  [
+    {id:'routine',icon:'☀️',lbl:'Routine'},
+    {id:'seance',icon:'🏋️',lbl:'Séance'},
+    {id:'gtg',icon:'🔁',lbl:'GTG'},
+    {id:'bilan',icon:'📊',lbl:'Bilan'}].forEach(item=>{
+    const tab = $('button',{
+      class:'nav-tab'+(S.tab===item.id?' active':''),
+      onclick:()=>{ S.tab=item.id; render(); }
+    },
+      $('div',{class:'nav-tab-icon'},item.icon),
+      $('span',{class:'nav-tab-lbl'},item.lbl)
+    );
+    nav.appendChild(tab);
+  });
+  app.appendChild(nav);
+
+  root.appendChild(app);
+  if(_st>0) requestAnimationFrame(()=>{ const _ns=document.querySelector('.scroll'); if(_ns) _ns.scrollTop=_st; });
+}
+
+// ── TOOLTIP ──────────────────────────────────────────────────────────────
+
+function showTooltip(e, text){
+  closeTooltip();
+  const tt = $('div',{class:'tooltip'}, text, $('span',{class:'tooltip-close',onclick:closeTooltip},'✕ fermer'));
+  const rect = e.target.getBoundingClientRect();
+  document.body.appendChild(tt);
+  const ttH = tt.offsetHeight;
+  const top = rect.top > ttH + 20 ? rect.top - ttH - 8 : rect.bottom + 8;
+  tt.style.top = top+'px';
+  tt.style.left = Math.max(8, Math.min(window.innerWidth - 296, rect.left - 140))+'px';
+  S.tooltipTarget = tt;
+}
+
+function closeTooltip(){ if(S.tooltipTarget){ S.tooltipTarget.remove(); S.tooltipTarget=null; } }
+document.addEventListener('click', e=>{ if(S.tooltipTarget && !S.tooltipTarget.contains(e.target)) closeTooltip(); });
+
+// ── ONGLET 1 — ROUTINE DU MATIN ──────────────────────────────────────────
+
+
+// ── STATS: progression chart per exercise ──────────────────────────────────
+let _statsEx = null;
+
+function getAllExerciseData(){
+  // Scan all localStorage logs, collect {exName: [{date, charge, rpe}]}
+  const data = {};
+  for(let i=0;i<localStorage.length;i++){
+    const k = localStorage.key(i);
+    if(!k || !k.startsWith('log:')) continue;
+    const dateStr = k.substring(4);
+    let log;
+    try{ log = JSON.parse(localStorage.getItem(k)); }catch(e){ continue; }
+    if(!log) continue;
+    Object.keys(log).forEach(key=>{
+      if(!key.startsWith('ex_')) return;
+      const entry = log[key];
+      if(!entry || (!entry.charge && !entry.rpe)) return;
+      // Resolve exercise name from key: ex_<seance>_b<bloc>_<idx>
+      const m = key.match(/^ex_(.+)_b(\d)_(\d+)(?:_\w+)?$/);
+      if(!m) return;
+      const seanceName=m[1], blocId=Number(m[2]), exIdx=Number(m[3]);
+      const seance=SEANCES[seanceName];
+      if(!seance||!seance.blocs||!seance.blocs[blocId]) return;
+      const exList=seance.blocs[blocId].exercices||[];
+      const ex=exList[exIdx];
+      if(!ex) return;
+      // Normalize name: strip stars/icons, keep core
+      let baseName=ex.name.replace(/[\u2605\u26a1\u26a0]/g,'').replace(/\s+/g,' ').trim().split('\u00b7')[0].trim();
+      // Canonicalisation : fusionner les variantes du même exercice (noms changés entre blocs)
+      const _canon=[
+        [/militaire/i,'Militaire'],
+        [/db bench inclin/i,'DB Bench incliné'],
+        [/bench plat/i,'Bench plat'],
+        [/db press vertical/i,'DB Press vertical'],
+        [/pendlay/i,'Pendlay Row'],
+        [/gorilla/i,'Gorilla Row'],
+        [/chin-ups lest/i,'Chin-ups lestés'],
+        [/chin-ups supination/i,'Chin-ups'],
+        [/romanian|rdl/i,'RDL'],
+        [/zercher/i,'Zercher'],
+        [/copenhagen/i,'Copenhagen'],
+        [/bulgarian/i,'Bulgarian'],
+        [/nordic/i,'Nordic Curl'],
+        [/pallof/i,'Pallof'],
+        [/face pull/i,'Face Pull'],
+        [/nuque/i,'Nuque ISO'],
+        [/farmer carry/i,'Farmer carry'],
+        [/alactique|kb swing/i,'Alactique KB'],
+        [/dragon flag/i,'Dragon flag'],
+        [/pull-ups/i,'Pull-ups'],
+        [/back extension/i,'Back extension'],
+      ];
+      for(const [re,name] of _canon){ if(re.test(baseName)){ baseName=name; break; } }
+      if(!data[baseName]) data[baseName]=[];
+      const chargeNum=(()=>{
+        let raw=String(entry.charge||'').replace(',','.').trim();
+        if(!raw) return null;
+        // Format "NxM" ou "Nx M kg" → prendre M (la charge par main), pas N (le nombre)
+        let mx=raw.match(/(\d+(?:\.\d+)?)\s*[x\u00d7]\s*(\d+(?:\.\d+)?)/i);
+        if(mx) return parseFloat(mx[2]);
+        // Format "PDC+Nkg" → prendre N (le lest)
+        let mp=raw.match(/(?:PDC|pdc)\s*\+\s*(\d+(?:\.\d+)?)/);
+        if(mp) return parseFloat(mp[1]);
+        // Sinon premier nombre
+        let m1=raw.match(/(\d+(?:\.\d+)?)/);
+        return m1?parseFloat(m1[1]):null;
+      })();
+      if(isNaN(chargeNum)||chargeNum===null) return; // skip if no charge entered
+      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw:entry.charge||'', rpe:Number(entry.rpe)||null, fmt:entry.fmt||'', bloc:blocId});
+    });
+  }
+  // Sort each by date
+  Object.values(data).forEach(arr=>arr.sort((a,b)=>a.date.localeCompare(b.date)));
+  return data;
+}
+
+function renderStats(){
+  const el = $('div',{style:{width:'100%',minWidth:'100%',display:'flex',flexDirection:'column',alignItems:'stretch',boxSizing:'border-box'}});
+  const data = getAllExerciseData();
+  const exNames = Object.keys(data).filter(n=>data[n].some(d=>d.charge!==null));
+
+  const card = $('div',{class:'card'});
+  card.appendChild($('div',{class:'card-title'},'📈 Progression des charges'));
+
+  if(exNames.length===0){
+    card.appendChild($('div',{style:{fontSize:'12px',color:'#475569',lineHeight:'1.6'}},
+      'Aucune donnée encore. Saisis la charge utilisée sur les cards d\'exercices pendant tes séances — les courbes apparaîtront ici automatiquement.'));
+    el.appendChild(card);
+    return el;
+  }
+
+  if(!_statsEx || !exNames.includes(_statsEx)) _statsEx = exNames[0];
+
+  // Exercise selector chips
+  const selRow = $('div',{style:{display:'flex',gap:'6px',flexWrap:'wrap',marginBottom:'14px'}});
+  exNames.forEach(n=>{
+    selRow.appendChild($('button',{
+      style:{
+        padding:'6px 10px',borderRadius:'8px',fontSize:'11px',fontWeight:'600',cursor:'pointer',
+        border:'1.5px solid '+(n===_statsEx?'#3b82f6':'#1e2d42'),
+        background:n===_statsEx?'#1a2942':'#111d2e',
+        color:n===_statsEx?'#3b82f6':'#94a3b8'
+      },
+      onclick:()=>{ _statsEx=n; render(); }
+    }, n.length>22?n.substring(0,22)+'…':n));
+  });
+  card.appendChild(selRow);
+
+  // Build SVG chart
+  const pts = data[_statsEx].filter(d=>d.charge!==null);
+  if(pts.length===0){
+    card.appendChild($('div',{style:{fontSize:'12px',color:'#475569'}},'Pas de charge numérique saisie pour cet exercice.'));
+  } else {
+    const W=320,H=180,P={t:14,r:14,b:28,l:34};
+    const vals=pts.map(p=>p.charge);
+    let vMin=Math.min(...vals), vMax=Math.max(...vals);
+    if(vMin===vMax){ vMin-=2; vMax+=2; }
+    const pad=(vMax-vMin)*0.12; vMin-=pad; vMax+=pad;
+    const x=i=>P.l+(pts.length===1?((W-P.l-P.r)/2):(i*(W-P.l-P.r)/(pts.length-1)));
+    const y=v=>P.t+(H-P.t-P.b)*(1-(v-vMin)/(vMax-vMin));
+
+    let svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block">';
+    // Grid lines (3)
+    for(let g=0;g<=3;g++){
+      const gv=vMin+(vMax-vMin)*g/3, gy=y(gv);
+      svg+='<line x1="'+P.l+'" y1="'+gy+'" x2="'+(W-P.r)+'" y2="'+gy+'" stroke="#1e2d42" stroke-width="1"/>';
+      svg+='<text x="'+(P.l-5)+'" y="'+(gy+3)+'" fill="#475569" font-size="9" text-anchor="end">'+gv.toFixed(0)+'</text>';
+    }
+    // Line path
+    if(pts.length>1){
+      let path='M';
+      pts.forEach((p,i)=>{ path+=(i?' L':'')+x(i).toFixed(1)+' '+y(p.charge).toFixed(1); });
+      svg+='<path d="'+path+'" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+    }
+    // Bloc change separators (vertical dashed lines)
+    for(let i=1;i<pts.length;i++){
+      if(pts[i].bloc!==pts[i-1].bloc){
+        const sx=(x(i)+x(i-1))/2;
+        svg+='<line x1="'+sx.toFixed(1)+'" y1="'+P.t+'" x2="'+sx.toFixed(1)+'" y2="'+(H-P.b)+'" stroke="#475569" stroke-width="1" stroke-dasharray="3,3"/>';
+        svg+='<text x="'+(sx+3).toFixed(1)+'" y="'+(P.t+8)+'" fill="#475569" font-size="8">B'+pts[i].bloc+'</text>';
+      }
+    }
+    // Points + RPE color
+    pts.forEach((p,i)=>{
+      const col=p.rpe?(p.rpe>=9?'#e63946':p.rpe>=7?'#f5a623':'#10b981'):'#3b82f6';
+      svg+='<circle cx="'+x(i).toFixed(1)+'" cy="'+y(p.charge).toFixed(1)+'" r="4.5" fill="'+col+'" stroke="#0a0f1a" stroke-width="1.5"/>';
+      // Date labels (max 6, evenly spread)
+      if(pts.length<=6 || i%Math.ceil(pts.length/6)===0 || i===pts.length-1){
+        const d=p.date.substring(5).replace('-','/');
+        svg+='<text x="'+x(i).toFixed(1)+'" y="'+(H-8)+'" fill="#475569" font-size="8.5" text-anchor="middle">'+d+'</text>';
+      }
+    });
+    svg+='</svg>';
+
+    const chartWrap=$('div',{style:{background:'#0d1525',borderRadius:'10px',padding:'10px 6px 4px'}});
+    chartWrap.innerHTML=svg;
+    card.appendChild(chartWrap);
+
+    // Legend + summary
+    const first=pts[0].charge, last=pts[pts.length-1].charge;
+    const delta=last-first;
+    const sum=$('div',{style:{display:'flex',gap:'12px',marginTop:'10px',flexWrap:'wrap'}});
+    sum.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8'}},'Début: '+first+' kg'));
+    sum.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8'}},'Actuel: '+last+' kg'));
+    sum.appendChild($('div',{style:{fontSize:'11px',fontWeight:'700',color:delta>=0?'#10b981':'#e63946'}},
+      (delta>=0?'+':'')+delta.toFixed(1)+' kg ('+(first?((delta/first*100).toFixed(0)):'—')+'%)'));
+    card.appendChild(sum);
+    card.appendChild($('div',{style:{fontSize:'10px',color:'#475569',marginTop:'8px'}},
+      'Points = charge réellement saisie. 🟢 RPE ≤6 · 🟠 7-8 · 🔴 ≥9. ⚠ Comparer uniquement dans le même bloc — format et tempo changent entre blocs.'));
+
+    // Data table: last entries with format
+    const tbl=$('div',{style:{marginTop:'12px'}});
+    tbl.appendChild($('div',{style:{fontSize:'11px',fontWeight:'700',color:'#94a3b8',marginBottom:'6px'}},'Dernières séances'));
+    pts.slice(-8).reverse().forEach(p=>{
+      const row=$('div',{style:{display:'flex',gap:'8px',alignItems:'center',padding:'5px 8px',background:'#0d1525',borderRadius:'6px',marginBottom:'4px',fontSize:'11px'}});
+      row.appendChild($('span',{style:{color:'#475569',minWidth:'42px'}},p.date.substring(5).replace('-','/')));
+      row.appendChild($('span',{style:{color:'#f0f4ff',fontWeight:'700',minWidth:'52px'}},p.chargeRaw||p.charge+' kg'));
+      row.appendChild($('span',{style:{color:'#8b5cf6',flex:'1'}},p.fmt||'B'+p.bloc));
+      row.appendChild($('span',{style:{color:'#475569',fontSize:'10px'}},'B'+p.bloc));
+      if(p.rpe)row.appendChild($('span',{style:{color:p.rpe>=9?'#e63946':p.rpe>=7?'#f5a623':'#10b981',fontWeight:'700'}},'RPE '+p.rpe));
+      tbl.appendChild(row);
+    });
+    card.appendChild(tbl);
+  }
+
+  el.appendChild(card);
+  return el;
+}
+
+
+function seedBaselines(){
+  // Nettoyer toutes les anciennes versions
+  ['baselines_seeded_v1','baselines_seeded_v2','baselines_seeded_v3'].forEach(k=>localStorage.removeItem(k));
+  const KEY = 'baselines_seeded_v4';
+  if(localStorage.getItem(KEY)) return;
+
+  // Supprimer les fausses entrées des anciennes dates de seed
+  ['2026-06-08','2026-06-07','2026-06-01'].forEach(d=>{
+    const l = load('log:'+d) || {};
+    ['ex_Haut 1_b1_0','ex_Haut 2_b1_0','ex_Haut 2_b1_1','ex_Haut 1_b1_2',
+     'ex_Haut 1_b1_3','ex_Haut 2_b1_3','ex_Bas 1_b1_0','ex_Bas 1_b1_1','ex_Bas 2_b1_0'].forEach(k=>delete l[k]);
+    save('log:'+d, l);
+  });
+
+  // ── 6 juin · tests de référence SANS tempo ────────────────────────────
+  const log6 = load('log:2026-06-06') || {};
+  Object.assign(log6, {
+    'ex_Haut 1_b1_0': {charge:'34',  rpe:'9', fmt:'5RM sans tempo'},
+    'ex_Haut 2_b1_0': {charge:'70',  rpe:'9', fmt:'3RM sans tempo'},
+    'ex_Haut 1_b1_1': {charge:'60',  rpe:'9', fmt:'3RM sans tempo'},
+    'ex_Bas 1_b1_1':  {charge:'100', rpe:'9', fmt:'3RM sans tempo'},
+    'ex_Bas 2_b1_0':  {charge:'60',  rpe:'9', fmt:'3RM sans tempo'},
+  });
+  save('log:2026-06-06', log6);
+
+  // ── 9 juin · Haut 1 S1 avec tempo ────────────────────────────────────
+  const log9 = load('log:2026-06-09') || {};
+  // Ne pas écraser des données réelles déjà saisies
+  if(!log9['ex_Haut 1_b1_0']) log9['ex_Haut 1_b1_0'] = {charge:'30', rpe:'6', fmt:'4×5 tempo 2-1-X-0'};
+  if(!log9['ex_Haut 1_b1_1']) log9['ex_Haut 1_b1_1'] = {charge:'44', rpe:'6', fmt:'3×6 tempo'};
+  if(!log9['ex_Haut 1_b1_2']) log9['ex_Haut 1_b1_2'] = {charge:'18', rpe:'6', fmt:'3×8 tempo (par haltère)'};
+  save('log:2026-06-09', log9);
+
+  // ── 10 juin · Bas 1 S1 avec tempo ────────────────────────────────────
+  const log10 = load('log:2026-06-10') || {};
+  if(!log10['ex_Bas 1_b1_1']) log10['ex_Bas 1_b1_1'] = {charge:'82', rpe:'6', fmt:'3×8 tempo'};
+  save('log:2026-06-10', log10);
+
+  localStorage.setItem(KEY,'1');
+}
+
+function renderRoutine(){
+  const log = getLog();
+  const done = log.routine || [];
+  const el = $('div',{style:{width:'100%',maxWidth:'100%',boxSizing:'border-box',overflowX:'hidden'}});
+  el.appendChild($('div',{class:'section-hdr'},'☀️ Routine du Matin'));
+
+  const cats = [...new Set(ROUTINE_MATIN.map(r=>r.cat))];
+  const curCat = S.routineCat || cats[0];
+
+  const seg = $('div',{class:'seg-ctrl'});
+  cats.forEach(cat=>{
+    seg.appendChild($('button',{
+      class:'seg-btn'+(curCat===cat?' active':''),
+      onclick:()=>{ S.routineCat=cat; render(); }
+    }, cat));
+  });
+  el.appendChild(seg);
+
+  const filtered = ROUTINE_MATIN.filter(r=>r.cat===curCat);
+  const card = $('div',{class:'card'});
+
+  const doneCount = filtered.filter(r=>done.includes(r.id)).length;
+  const progress = filtered.length > 0 ? Math.round(doneCount/filtered.length*100) : 0;
+  const pbar = $('div',{style:{marginBottom:'12px'}},
+    $('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:'4px'}},
+      $('span',{style:{fontSize:'11px',color:'#64748b'}},'Progression'),
+      $('span',{style:{fontSize:'11px',fontWeight:'700',color: progress===100?'#10b981':'#f5a623'}},`${doneCount}/${filtered.length}`),
+    ),
+    $('div',{style:{height:'4px',background:'#1e2d42',borderRadius:'2px'}},
+      $('div',{style:{height:'100%',width:progress+'%',background: progress===100?'#10b981':'#f5a623',borderRadius:'2px',transition:'width .3s'}})
+    )
+  );
+  card.appendChild(pbar);
+
+  filtered.forEach(item=>{
+    const isDone = done.includes(item.id);
+    const row = $('div',{
+      class:'check-item',
+      onclick:()=>{
+        const l=getLog(); const d=[...(l.routine||[])];
+        const idx=d.indexOf(item.id); if(idx>-1) d.splice(idx,1); else d.push(item.id);
+        l.routine=d; saveLog(l); render();
+      }
+    },
+      $('div',{class:'check-box'+(isDone?' done':'')}, isDone?'✓':''),
+      $('div',{style:{flex:1}},
+        $('div',{style:{display:'flex',alignItems:'center',gap:'6px',marginBottom:'2px',minWidth:'0',width:'100%'}},
+          $('span',{class:'cat-badge cat-'+(item.cat==='CARs'?'cars':item.cat.indexOf('Renfo')>=0?'renfo':'resp'),style:{flexShrink:'0',whiteSpace:'nowrap',fontSize:'9px'}},item.cat.indexOf('obligatoire')>=0?'★★★':item.cat.indexOf('optionnel')>=0?'opt':item.cat==='CARs'?'CARs':item.cat.indexOf('Respir')>=0?'resp':item.cat.indexOf('Unipodal')>=0?'équil':item.cat),
+          $('span',{style:{fontSize:'13px',fontWeight:isDone?'400':'600',color:isDone?'#475569':'var(--text)',textDecoration:isDone?'line-through':'none',minWidth:'0',flex:'1',overflowWrap:'break-word'}},item.icon+' '+item.name),
+          $('span',{style:{fontSize:'10px',color:item.priority==='★★★'?'#f5a623':'#475569',marginLeft:'auto'}},item.priority),
+        ),
+        $('div',{style:{fontSize:'11px',color:'#475569'}},item.detail),
+      ),
+      $('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e,item.note); }}, '?')
+    );
+    card.appendChild(row);
+  });
+  el.appendChild(card);
+
+  // GTG rapide
+  const gtgCard = $('div',{class:'card'},
+    $('div',{class:'card-title'},'🔁 GTG — Dans la journée'),
+    $('div',{style:{fontSize:'12px',color:'#64748b',marginBottom:'8px'}},'Militaire 3 reps @20kg · Chaise iso G/D · Dead hang 15s · 3-4×/jour'),
+    $('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.tab='gtg'; render(); }},'→ Voir le GTG complet')
+  );
+  el.appendChild(gtgCard);
+
+  // ── MÉMO : à réintégrer au retour métropole (mi-août) ──
+  const memoCard = $('div',{class:'card',style:{background:'#1a1a2e',borderColor:'#7c3aed',marginTop:'14px',width:'100%',maxWidth:'100%',boxSizing:'border-box',overflowX:'hidden'}});
+  const memoItems=[
+    ['— FEUILLE DE ROUTE PÉRIODISÉE —', '2-3 priorités par phase, le reste en maintien. Le sommeil conditionne le passage d\'une phase à l\'autre plus que le calendrier. Détail complet dans le PDF.'],
+    ['PHASE 0 · Guyane (→ 10 août)', 'S5 déload · S6-S8 Bloc 3 Puissance · S9 tests. Rien de nouveau. Priorités : sommeil, IT band silencieux, finir sans blessure. BOLT à tester.'],
+    ['PHASE 1 · Transition (mi-août → fin sept)', '1) Sommeil/circadien (recalage post-Guyane). 2) Aérobie : Z2 vélo Assioma 3-4×/sem en août, puis SEUIL dès début septembre (SV2 ~166, après 2-3 sem de réamorçage). 3) Force en MAINTIEN 2×/sem + landmine. 4) HARNAIS cou dès septembre (iso léger, valider position kiné). 5) PODOLOGUE (semelles = cause racine IT band), leg curl/ext progressif, retour course SI IT band OK 3 sem. Fin sept : batterie tests = baseline Cycle 2.'],
+    ['🎯 TEST STAGE (oct-janv, date à confirmer)', 'Capacité opérationnelle intégrée. Phase 1 : déplacement escaliers/montées + enchaîné 20 pompes/50s gainage/4 tractions strictes. Phase 2 : parcours chrono en TENUE (ceinturon+arme+gilet) — pneu (tirage/traction/retournés), container, mannequin, <2min. Coups d\'arrêt sac. TON MATÉRIEL couvre tout : tapis 21km/h+15%, pneus voiture, escalier 4km ou échelle grange, gilet 10kg, sac. Base actuelle = ~80%. BLOC SPÉCIFIQUE dès septembre (4-6 sem avant test) : 1) dénivelé progressif EN GILET (marche inclinée 15%, PAS courir à 15% = danger IT band ; escaliers quand genou tolère). 2) Parcours simulé chrono en gilet 1×/sem. 3) T2 pré-fatigué (pompes/gainage/tractions essoufflé). Le test structure le Cycle 2. Caler dès date connue.'],
+    ['PHASE 2 · Cycle 2 aérobie (oct → déc)', 'Pyramide : Z2 volume + 1 seuil/sem (SV2 ~166) + VO2max 4×4 dès sem 5-6. Cible : VMA 16+, VO2max ~50. Force 2-3×/sem progression lente. ENTRENT ICI : harnais cou (iso), grip varié (anneaux/kimono/pinch 2 disques), plio AVEC décélération d\'abord, rotationnel landmine, RSA fin de phase (sur base aérobie posée), crawl si piscine (prudence épaule G).'],
+    ['PHASE 2+ · ajouts (Cycle 2)', 'TEST HRR revient ICI (retiré de Guyane) : de préférence sur effort cyclique (vélo/montée) = vrai marqueur de récup cardiaque, sans le trou de tolérance lactique des burpees. VÉLOCITÉ/dynamic effort (force→puissance, 50-60% vitesse max, app de mesure). TESTS PUISSANCE traçables : CMJ (app MyJump) + lancer med ball. WORK CAPACITY EVENTS 1×/sem (sandbag getup+carry, AMRAP total-corps, événement pneu chrono = transfert test stage). CORE SOUS CHARGE (sandbag, 3 plans). Régimes tri-phasiques (excentrique→iso→concentrique) : à réfléchir.'],
+    ['🛒 Sandbag (seul achat vraiment utile)', 'Le seul outil qui manque. Work capacity + core chargé + patterns du test stage. ~30€ ou DIY (sac militaire + gravier/sable scellé, charge ajustable). Au retour.'],
+    ['PHASE 3 · 2027 T1 : combat + IPSC', 'Boxe/BJJ club 2-3×/sem SI poignet réglé — le physique passe en SOUTIEN (2 force + 1 conditioning + Z2). RSA/transitions/grip se développent SUR LE TAPIS. IPSC : bascule G17, BlazePod sert les 2 mondes. Sprint court 10-30m si course réintégrée 8+ sem. Aisance hauteur : exposition progressive.'],
+    ['PHASE 4 · Modèle BI-MODAL permanent', 'Ta réalité = alternance maison/déplacements. Mode MAISON = progression (combat+force+aérobie+tir). Mode DÉPLACEMENT = template nomade (le Be Ready Guyane recyclé : KB+PDC+élastiques+rounds), objectif MAINTIEN. Retour : 1 sem reprise -30%. Zone tropicale : ré-acclimatation chaleur 10-14 j. Révision annuelle : batterie tests + standards (militaire 0,75×PDC, bench 1,25×, RDL 2×, pull-ups 20, BOLT >35s). Au-delà : durer bat exploser.'],
+    ['⚠ Règle de délestage épaule G', 'Press vertical 3×/sem + GTG quotidien sur coiffe en tendinopathie. Si dégradation : couper 1) GTG militaire → 2) ISO militaire H3 → 3) DB press H2 → dernier recours militaire lourd H1. Un étage à la fois, observer 4-5 j. Face pull + rotation ext ne se coupent JAMAIS.'],
+    ['═══ MATÉRIEL MAISON (métropole) ═══', 'Inventaire complet, organisé par catégorie. Tu es SUR-équipé — rien à acheter sauf BlazePod (optionnel). Le facteur limitant n\'est pas le matériel, c\'est le sommeil/récup.'],
+    ['FORCE — barre/charges', 'Rack, barres + poids, haltères, kettlebells (16/20/28). Banc plat + incliné + lombaire. Cale Nordic curl.'],
+    ['FORCE — machines', 'Presse à cuisse, leg extension, leg curl, butterfly, tirage vertical, tirage horizontal, poussée horizontale, poulies haute + basse.'],
+    ['CARDIO', 'Home-trainer + vélo Assioma Duo (puissance précise = Z2/seuil/VO2max propres). Tapis de course pente 15% (marche inclinée Z2, course quand IT band réglé). Corde à sauter (⚠ impact, genou G réglé d\'abord). Gilet lesté modulable jusqu\'à 10 kg (réplique le port du gilet pare-balles, marche lestée/rucking).'],
+    ['TIRAGE / GRIP', 'Anneaux gym (prise neutre, doux poignet G), TRX, barre traction, barres dips, poignées pompes, kimono (grip en tenant les manches). Couvre tous les types de grip sauf pinch dédié.'],
+    ['COMBAT / PUISSANCE', 'Landmine (press doux épaule G + rotationnel), sac de frappe (prudence poignet G), mannequin JJB (transitions sol + grip + position basse), slamballs (vertical explosif), med ball (rotationnel), masse + pneus tracteur (puissance brute), box jump (plio, redescente marchée).'],
+    ['RÉACTIVITÉ', 'Balles de tennis simples (réaction main-œil, lancer-attraper mur). BlazePod en projet (voir plus bas).'],
+    ['MOBILITÉ / ÉTIREMENT', 'Barre d\'étirement (jusqu\'au grand écart — hanche/adducteurs, position basse combat, progressif jamais à froid), tapis de gym, élastiques.'],
+    ['RÉCUPÉRATION / MASSAGE', 'Rouleau de massage, balles de massage simples, cannes de massage (atteindre dos/trapèzes), balles doubles type peanut (de part et d\'autre de la colonne). ⚠ Pour l\'IT band G : masser le TFL + grand fessier (qui tendent la bandelette), PAS la bandelette elle-même. Utile MAINTENANT.'],
+    ['SUIVI', 'Ceinture Polar H10 (FC fiable même sur mouvements saccadés — règle le problème du capteur optique vu en conditionnement). Bandes BFR bras + jambes.'],
+    ['LANDMINE — détail (utiliser TÔT)', 'Couteau suisse, doux épaule G. PRESS = poussée verticale arquée, contourne la limite stabilité épaule G (12kg overhead). TWIST = puissance rotationnelle guidée. RDL/rows/squats angle différent. Prise neutre = OK poignet G.'],
+    ['SAC — détail (prudence poignet G)', 'Frappe réelle : transmission force, gainage impact, conditionnement spécifique. ⚠ Impact irrite kyste poignet G. Léger, poignets bandés, technique propre. Pieds/genoux/coudes d\'abord. Frappe intensive = 2027.'],
+    ['MANNEQUIN JJB — détail', 'Le plus spécifique combat-sol. Transitions (garde, montées, se relever) + grip de contrôle + position basse + conditionnement grappling. Sans charge poignet pour les transitions ; contrôle intensif à doser.'],
+    ['SLAMBALLS — détail', 'Balistique total-corps : overhead → claquer au sol à fond. Chaîne postérieure, gainage, cardio-puissance. ⚠ overhead = épaule G, mais dynamique/bref donc mieux toléré.'],
+    ['BlazePod — PROJET d\'achat', 'SEUL achat à vraie valeur. Lumières réactives programmables = temps de réaction MESURÉ sur signal imprévisible (donnée de progression objective). Réaction simple/choix/combiné déplacement-frappe. Spécifique combat + opérateur. Alternative gratuite : partenaire qui annonce des signaux au hasard.'],
+    ['⚠ GARDE-FOU anti-surcharge', 'Cette liste est longue. NE PAS tout empiler. Choisir 2-3 priorités par bloc, faire tourner. Un programme qui vise 15 qualités n\'en développe aucune. Le sommeil + la récup restent la limite. Mieux vaut 3 qualités bien travaillées que 10 effleurées.'],
+    ['Densification', 'Haut 3 actif, structure 3 Haut/2 Bas, plus de volume — SEULEMENT quand sommeil réglé.'],
+  ];
+  // Scinder : avant le marqueur matériel = métropole, après = matériel
+  let _matIdx = memoItems.findIndex(([t])=>t.indexOf('MATÉRIEL MAISON')>=0);
+  if(_matIdx<0) _matIdx = memoItems.length;
+  const metroItems = memoItems.slice(0, _matIdx);
+  const matItems = memoItems.slice(_matIdx);
+  const mkCollapsible = (titre, items, coul) => {
+    const wrap=$('div',{style:{marginBottom:'6px',width:'100%',boxSizing:'border-box'}});
+    const open={v:false};
+    const btn=$('button',{style:{width:'100%',boxSizing:'border-box',textAlign:'left',background:'#0d1b2a',border:'1px solid '+coul,borderRadius:'8px',padding:'10px 12px',color:coul,fontWeight:'700',fontSize:'13px',cursor:'pointer'}},titre+'  ▼');
+    const body=$('div',{style:{display:'none',marginTop:'6px',width:'100%',boxSizing:'border-box',overflowWrap:'break-word'}});
+    items.forEach(([t,d])=>{
+      body.appendChild($('div',{style:{marginBottom:'8px',width:'100%',boxSizing:'border-box',overflowWrap:'break-word'}},
+        $('div',{style:{fontWeight:'600',fontSize:'12px',color:'#e0e1dd',overflowWrap:'break-word'}},'• '+t),
+        $('div',{style:{fontSize:'11px',color:'#94a3b8',lineHeight:'1.4',marginLeft:'8px',overflowWrap:'break-word'}},d)
+      ));
+    });
+    btn.onclick=()=>{ open.v=!open.v; body.style.display=open.v?'block':'none'; btn.textContent=titre+(open.v?'  ▲':'  ▼'); };
+    wrap.appendChild(btn); wrap.appendChild(body);
+    return wrap;
+  };
+  memoCard.appendChild(mkCollapsible('🗺 Feuille de route périodisée (phases 0-4)', metroItems, '#a78bfa'));
+  if(matItems.length) memoCard.appendChild(mkCollapsible('🏠 Matériel maison', matItems, '#06b6d4'));
+  memoCard.appendChild($('div',{style:{fontSize:'11px',color:'#f5a623',marginTop:'8px',fontStyle:'italic',overflowWrap:'break-word'}},'⚠ Rien de tout ça maintenant : sommeil déficitaire = ajouter du volume serait contre-productif. Mémo pour le retour, sommeil réglé.'));
+  el.appendChild(memoCard);
+
+  return el;
+}
+
+// ── ONGLET 2 — SÉANCE ────────────────────────────────────────────────────
+
+// ── SÉANCES COMPRESSÉES (jour rouge : sommeil<6h / HRV-10% / douleur) ──────────
+const COMPRESSED_SESSIONS = {
+  'Haut 1': ['Primer léger', 'Militaire 3×3 RIR 2-3', 'Face pull + rotation externe', 'Hardstyle plank'],
+  'Bas 1': ['Bulgarian 2×8 PDC', 'RDL 3×5 (−15%)', 'Clamshell + Petersen', 'Pallof'],
+  'Haut 3': ['ISO bench (tenues)', 'Bench 2×8 léger', 'Pull-ups 2×6', 'Face pull'],
+  'Bas 2': ['Zercher pad 3×5 (−15%)', 'Good morning léger', 'Copenhagen activation', 'Hardstyle plank'],
+  'Haut 2': ['Bench 3×3 RIR 2', 'Chins 3×5', 'Prophylaxie épaule (face pull + rot. ext.)'],
+  'AGT': ['4 efforts seulement (swings + rotation réduits)', 'Récup complète', 'Pas de finisher'],
+  'Conditioning': ['2 circuits seulement', 'Test HRR maintenu', 'Intensité modérée'],
+};
+
+function renderSeance(){
+  const log = getLog();
+  const el = $('div',{});
+
+  // Sélecteur de séance
+  const seanceKeys = Object.keys(SEANCES);
+  const curKey = S.seanceKey || seanceKeys[0];
+  const seance = SEANCES[curKey];
+  const blocData = seance.blocs[S.bloc] || seance.blocs[1];
+
+  el.appendChild($('div',{class:'section-hdr'},'🏋️ Choisir la Séance'));
+
+  // Bandeau séance compressée (si jour rouge détecté)
+  try {
+    const flags = computeFlags();
+    const compFlag = flags.find(f=>f.compressed);
+    if(compFlag){
+      const compData = COMPRESSED_SESSIONS[curKey];
+      const banner = $('div',{class:'card',style:{borderColor:'#e67e22',background:'#2a1f14'}});
+      banner.appendChild($('div',{class:'card-title',style:{color:'#e67e22'}},'🗜️ '+compFlag.metric));
+      banner.appendChild($('div',{style:{fontSize:'12px',color:'#c9a06a',marginBottom:'8px'}},'Signaux de récupération basse. Version allégée du jour (garde le mouvement, réduis le volume) :'));
+      if(compData){
+        const ul=$('div',{style:{fontSize:'13px',lineHeight:'1.7'}});
+        compData.forEach(x=>ul.appendChild($('div',{},'• '+x)));
+        banner.appendChild(ul);
+      } else {
+        banner.appendChild($('div',{style:{fontSize:'12px',color:'#8a94a6'}},'Réduis le volume de ~40% et l\'intensité, garde les patterns principaux.'));
+      }
+      banner.appendChild($('div',{style:{fontSize:'11px',color:'#8a94a6',marginTop:'8px',fontStyle:'italic'}},'Ne saute pas la séance — allège-la. Le mouvement aide la récupération.'));
+      el.appendChild(banner);
+    }
+  } catch(e){}
+
+
+  // Sélecteur
+  const selCard = $('div',{class:'card'});
+  selCard.appendChild($('div',{class:'lbl'},'Séance du jour'));
+  const selRow = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'10px'}});
+  seanceKeys.forEach(key=>{
+    const s=SEANCES[key];
+    const active=key===curKey;
+    selRow.appendChild($('button',{
+      class:'btn btn-sm',
+      style:{background:active?s.color+'33':'#111d2e',borderColor:active?s.color:'#1e2d42',color:active?s.color:'#64748b',border:'1.5px solid',fontWeight:active?'700':'500'},
+      onclick:()=>{ S.seanceKey=key; render(); }
+    },key));
+  });
+  selCard.appendChild(selRow);
+
+  // Info séance
+  selCard.appendChild($('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap'}},
+    $('span',{class:'tag tag-grey'},`Bloc ${S.bloc}`),
+    $('span',{class:'tag tag-grey'},blocData.duree),
+    $('span',{class:'tag tag-red'},'RPE '+blocData.rpe),
+    $('div',{style:{display:'flex',alignItems:'center',gap:'6px',marginLeft:'auto'}},
+      $('button',{style:{background:'none',border:'none',color:'#64748b',fontSize:'20px',cursor:'pointer',padding:'0 2px',lineHeight:'1'},
+        onclick:()=>{if(S.week>1){S.week--;S.bloc=getBlocId(S.week);render();}}
+      },'‹'),
+      $('span',{style:{fontSize:'13px',fontWeight:'700',color:'#f0f4ff',minWidth:'26px',textAlign:'center'}},'S'+S.week),
+      $('button',{style:{background:'none',border:'none',color:'#64748b',fontSize:'20px',cursor:'pointer',padding:'0 2px',lineHeight:'1'},
+        onclick:()=>{if(S.week<9){S.week++;S.bloc=getBlocId(S.week);render();}}
+      },'›'),
+      $('button',{style:{background:'none',border:'1px solid #1e2d42',color:'#3b82f6',fontSize:'10px',cursor:'pointer',padding:'2px 6px',borderRadius:'6px',marginLeft:'2px'},
+        onclick:()=>{const d=Math.floor((today-new Date('2026-06-09'))/(7*24*3600*1000));S.week=Math.max(1,Math.min(9,d+1));S.bloc=getBlocId(S.week);render();}
+      },'\u21a9')
+    )
+  ));
+  el.appendChild(selCard);
+
+
+  // ── 9-week progress bar ──────────────────────────────────────────────
+  const blocColors={'FONDATIONS':'#3b82f6','FORCE & ALACTIQUE':'#8b5cf6','PUISSANCE':'#e63946','DÉLOAD + TESTS':'#10b981'};
+  const progCard=$('div',{class:'card',style:{paddingTop:'10px',paddingBottom:'10px'}});
+  const progRow=$('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}});
+  progRow.appendChild($('span',{style:{fontSize:'11px',color:blocData.color,fontWeight:'700'}},blocData.name));
+  progRow.appendChild($('span',{style:{fontSize:'10px',color:'#475569',marginLeft:'auto'}},'S'+S.week+' / 9'));
+  progCard.appendChild(progRow);
+  const segsRow=$('div',{style:{display:'flex',gap:'3px'}});
+  for(let w=1;w<=9;w++){
+    const bId=getBlocId(w);
+    const bData=BLOCS.find(b=>b.id===bId);
+    const col=bData?bData.color:'#1e2d42';
+    const isActive=w===S.week;
+    const isPast=w<S.week;
+    segsRow.appendChild($('div',{
+      style:{
+        flex:'1',height:isActive?'8px':'5px',
+        borderRadius:'3px',
+        background:isPast?col+'99':isActive?col:'#1e2d42',
+        transition:'all .3s',
+        cursor:'pointer',
+        outline:isActive?'2px solid '+col:'none',
+        outlineOffset:'1px'
+      },
+      onclick:()=>{S.week=w;S.bloc=getBlocId(w);render();}
+    }));
+  }
+  progCard.appendChild(segsRow);
+  el.appendChild(progCard);
+
+  // Priming
+  if(blocData.priming && blocData.priming.length){
+    const primCard = $('div',{class:'card'});
+    primCard.appendChild($('div',{class:'card-title',style:{color:'#f5a623'}},'⚡ PRIMING — 5 min · RPE ≤3/10 · zéro fatigue'));
+    blocData.priming.forEach((p,i)=>{
+      primCard.appendChild($('div',{class:'priming-item'},
+        $('span',{style:{color:'#f5a623',fontSize:'10px',marginTop:'2px'}},`${i+1}.`),
+        $('span',{},p)
+      ));
+    });
+    el.appendChild(primCard);
+  }
+
+  // Exercices
+  const semLabels = getSemLabels(S.bloc);
+  const startWk = BLOCS.find(b=>b.id===S.bloc)?.weeks[0]||1;
+  const semInBloc = Math.max(1,Math.min(4,S.week-startWk+1));
+
+  blocData.exercices.forEach((ex,idx)=>{
+    const exKey = `ex_${curKey}_b${S.bloc}_${idx}`;
+    const exLog = log[exKey] || {sets:{}};
+    const numSets = parseInt(ex.fmt)||4;
+    const setsCount = ex.fmt.includes('rounds')||ex.fmt.includes('R') ? 5 : (parseInt(ex.fmt)||4);
+
+    const card = $('div',{class:'ex-card'+(ex.priorite?' prio':'')});
+
+    // Header
+    const hdr = $('div',{class:'ex-header'});
+    hdr.appendChild($('span',{class:'ex-num'},ex.num));
+    hdr.appendChild($('span',{class:'ex-name'+(ex.priorite?' prio':'')},ex.name));
+    hdr.appendChild($('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e, ex.note); }},'?'));
+    card.appendChild(hdr);
+
+    // Grid infos
+    const _semIdx=(()=>{
+      const w=S.week;
+      if(w<=1) return 0;          // S1 (B1) → s1
+      if(w<=4) return w-2;        // B2: S2→0(s1), S3→1(s2), S4→2(s3 pic)
+      if(w===5) return 3;         // S5 → dl (déload mi-bloc)
+      if(w<=8) return w-6;        // B3: S6→0(s1), S7→1(s2), S8→2(s3)
+      return 3;                   // S9 → dl
+    })();
+    const weekVal=[ex.s1,ex.s2,ex.s3,ex.dl][_semIdx]||ex.s1;
+    const rTimers=parseReposAll(ex.repos);
+    const tempoMatchEx=(ex.note||'').match(/Tempo\s+([0-9X]-[0-9X]-[0-9X]-[0-9X])/i);
+    const cleanExName=ex.name.replace(/[\u2605\u26a0]\s*/g,'').replace(/\s*\u00b7.*$/,'').trim().substring(0,40);
+
+    const grid = $('div',{class:'ex-grid'});
+    grid.appendChild($('div',{class:'ex-cell'},
+      $('div',{class:'ex-cell-lbl'},'Format'),
+      $('div',{class:'ex-cell-val purple'},ex.fmt),
+    ));
+    {
+      const reposCell=$('div',{class:'ex-cell'});
+      reposCell.appendChild($('div',{class:'ex-cell-lbl'},'Repos'));
+      if(rTimers.length>0){
+        const btnWrap=$('div',{class:'timer-btns'});
+        rTimers.forEach(t=>{
+          const ctx=ex.fmt+(weekVal&&weekVal!=='—'?' · '+weekVal:'');
+          btnWrap.appendChild($('button',{
+            class:'timer-btn',
+            onclick:(e)=>{e.stopPropagation();startTimer(t.sec,ctx);}
+          },'⏱ '+t.lbl));
+        });
+        reposCell.appendChild(btnWrap);
+      } else {
+        reposCell.appendChild($('div',{class:'ex-cell-val red'},ex.repos));
+      }
+      grid.appendChild(reposCell);
+      if(tempoMatchEx){
+        grid.appendChild($('div',{class:'ex-cell'},
+          $('div',{class:'ex-cell-lbl'},'Tempo'),
+          $('div',{class:'ex-cell-val teal'},tempoMatchEx[1])
+        ));
+      }
+    }
+    grid.appendChild($('div',{class:'ex-cell'},
+      $('div',{class:'ex-cell-lbl'},'RPE exercice'),
+      $('div',{class:'ex-cell-val gold'},ex.rpe),
+    ));
+    if(ex.dl&&ex.dl!=='—'&&ex.dl!=='-')
+      grid.appendChild($('div',{class:'ex-cell'},
+        $('div',{class:'ex-cell-lbl'},semLabels[3]||'DL'),
+        $('div',{class:'ex-cell-val grey',style:{color:'#475569'}},ex.dl),
+      ));
+    card.appendChild(grid);
+
+    // Semaines progression
+    const semRow = $('div',{class:'ex-semaines'});
+    [{lbl:semLabels[0],val:ex.s1},{lbl:semLabels[1],val:ex.s2},{lbl:semLabels[2],val:ex.s3},{lbl:semLabels[3],val:ex.dl}].filter(s=>s.val&&s.val!=='—'&&s.val!=='-').forEach((s,si)=>{
+      const isActive = (si+1)===semInBloc;
+      const semEl = $('div',{class:'ex-sem'+(isActive?' active':'')},
+        $('div',{class:'ex-sem-lbl'},s.lbl),
+        $('div',{class:'ex-sem-val',style:{color:isActive?'#3b82f6':'#94a3b8'}},s.val||'—'),
+      );
+      semRow.appendChild(semEl);
+    });
+    card.appendChild(semRow);
+
+    // Charge modifiable
+    const chargeRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px',background:'#0d1525',borderRadius:'7px',padding:'7px 8px'}});
+    chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'Top set (kg):'));
+    const chargeInput = $('input',{
+      class:'input-mod',type:'text',
+      placeholder: [ex.s1,ex.s2,ex.s3][Math.min(semInBloc-1,2)]||'—',
+      value: exLog.charge||'',
+      oninput:(e)=>{ exLog.charge=e.target.value; exLog.fmt=ex.fmt||''; log[exKey]=exLog; saveLog(log); }
+    });
+    chargeRow.appendChild(chargeInput);
+    chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'RPE réel:'));
+    const rpeInput = $('input',{
+      class:'input-mod',type:'number',min:'1',max:'10',
+      placeholder:'—',
+      value: exLog.rpe||'',
+      oninput:(e)=>{ exLog.rpe=e.target.value; exLog.fmt=ex.fmt||''; log[exKey]=exLog; saveLog(log); }
+    });
+    chargeRow.appendChild(rpeInput);
+    card.appendChild(chargeRow);
+
+    // Sets à cocher
+    card.appendChild($('div',{style:{fontSize:'10px',color:'#475569',marginBottom:'5px',fontWeight:'600',textTransform:'uppercase',letterSpacing:'.4px'}},'Séries effectuées:'));
+    const setsRow = $('div',{class:'sets-row'});
+    const maxSets = Math.max(2, Math.min(10, setsCount));
+    for(let s=1; s<=maxSets; s++){
+      const isDone = exLog.sets[s];
+      const chip = $('div',{
+        class:'set-chip'+(isDone?' done':''),
+        onclick:()=>{
+          const wasDone=exLog.sets[s];
+          exLog.sets[s]=!exLog.sets[s];
+          log[exKey]=exLog; saveLog(log);
+          render(); // Update chip visually first
+          if(!wasDone&&rTimers.length>0){
+            const doneN=Object.values(exLog.sets).filter(Boolean).length;
+            const timerCtxObj={name:cleanExName,fmt:ex.fmt,charge:weekVal&&weekVal!=='—'?weekVal:null,setNum:doneN,totalSets:setsCount,tempo:tempoMatchEx?tempoMatchEx[1]:null};
+            setTimeout(()=>startTimer(rTimers[0].sec,timerCtxObj), 500);
+          }
+        }
+      }, isDone?'✓':' ', `Set ${s}`);
+      setsRow.appendChild(chip);
+    }
+    card.appendChild(setsRow);
+
+    // Notes perso
+    const notesEl = $('textarea',{
+      class:'textarea-field',rows:'2',
+      placeholder:'Notes perso (optionnel)…',
+      style:{fontSize:'11px'},
+    });
+    notesEl.value = exLog.notes||'';
+    notesEl.oninput = (e)=>{ exLog.notes=e.target.value; log[exKey]=exLog; saveLog(log); };
+    card.appendChild(notesEl);
+
+    el.appendChild(card);
+  });
+
+  // Récup respiratoire post-effort — conditioning only
+  if(S.seanceKey==='Conditioning'){
+  const recupCard = $('div',{class:'card'},
+    $('div',{class:'card-title',style:{color:'#06b6d4'}},'🌬️ Récupération Respiratoire Post-Effort'),
+    $('div',{style:{fontSize:'12px',color:'#64748b',lineHeight:'1.6'}},
+      '1. Expire lente 6s bouche ouverte (vider CO₂)\n'+
+      '2. 4-7-8 × 3: inhale nasal 4s → hold 7s → exhale bouche 8s\n'+
+      '3. Sigh physiologique × 2: double inhale nasal court+long → exhale complète\n'+
+      '4. Chrono: noter temps jusqu\'à FC <130 bpm'
+    ),
+    $('div',{style:{marginTop:'8px',display:'flex',alignItems:'center',gap:'8px'}},
+      $('span',{style:{fontSize:'11px',color:'#475569'}},'Temps récup FC<130:'),
+      $('input',{class:'input-mod',type:'text',placeholder:'ex: 1m30s',
+        value:(log.recupTime||''),
+        oninput:(e)=>{ updateLog('recupTime',e.target.value); }
+      })
+    )
+  );
+  el.appendChild(recupCard);
+  } // end conditioning only
+
+  return el;
+}
+
+// ── ONGLET 3 — GTG ───────────────────────────────────────────────────────
+
+function renderGTG(){
+  const log = getLog();
+  const gtgLog = log.gtg || {};
+  const el = $('div',{});
+  
+  el.appendChild($('div',{class:'section-hdr'},'🔁 GTG — Grease The Groove'));
+  el.appendChild($('div',{class:'card',style:{background:'#0d1a0d',borderColor:'#10b98133'}},
+    $('div',{style:{fontSize:'12px',color:'#10b981',lineHeight:'1.5'}},
+      '★ Jamais à l\'échec · Jamais fatigué · 50-80% du max · 3-4× par jour\n'+
+      'Espacer les passages de 30min minimum · GTG quotidien = ↑↑ progression'
+    )
+  ));
+
+  GTG_EXERCICES.forEach(ex=>{
+    const exLog = gtgLog[ex.id] || {passages:[]};
+    const card = $('div',{class:'card'});
+
+    card.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}},
+      $('span',{style:{fontSize:'20px'}},ex.icon),
+      $('div',{style:{flex:1}},
+        $('div',{style:{fontWeight:'700',fontSize:'13px',color:'var(--text)'}},ex.name),
+        $('div',{style:{fontSize:'11px',color:'#64748b'}},ex.reps+' · '+ex.charge+' · RPE '+ex.rpe+' · '+ex.freq),
+      ),
+      $('button',{class:'info-btn',onclick:(e)=>showTooltip(e,ex.note)},'?')
+    ));
+
+    // Passages de la journée
+    card.appendChild($('div',{style:{fontSize:'10px',color:'#475569',fontWeight:'600',textTransform:'uppercase',letterSpacing:'.4px',marginBottom:'6px'}},'Passages aujourd\'hui:'));
+    const passRow = $('div',{class:'sets-row'});
+    for(let p=1;p<=4;p++){
+      const done = exLog.passages.includes(p);
+      const chip = $('div',{
+        class:'set-chip'+(done?' done':''),
+        onclick:()=>{
+          const l=getLog(); const g=l.gtg||{};
+          const el_=(g[ex.id]||{passages:[]});
+          const idx=el_.passages.indexOf(p);
+          if(idx>-1) el_.passages.splice(idx,1); else el_.passages.push(p);
+          g[ex.id]=el_; l.gtg=g; saveLog(l); render();
+        }
+      }, done?'✓':'○', ` ${p}e passage`);
+      passRow.appendChild(chip);
+    }
+    card.appendChild(passRow);
+
+    // Note rapide
+    const noteInput = $('input',{
+      class:'input-field',type:'text',
+      placeholder:'Note rapide…',
+      style:{marginTop:'8px',fontSize:'12px',padding:'7px 10px'},
+      value:exLog.note||'',
+      oninput:(e)=>{
+        const l=getLog(); const g=l.gtg||{};
+        const ex_=(g[ex.id]||{passages:[]});
+        ex_.note=e.target.value; g[ex.id]=ex_; l.gtg=g; saveLog(l);
+      }
+    });
+    card.appendChild(noteInput);
+
+    el.appendChild(card);
+  });
+
+  return el;
+}
+
+// ── ONGLET 4 — BILAN ─────────────────────────────────────────────────────
+
+function renderBilan(){
+  const log = getLog();
+  const el = $('div',{style:{width:'100%',minWidth:'100%',display:'flex',flexDirection:'column',alignItems:'stretch',boxSizing:'border-box'}});
+  el.appendChild($('div',{class:'section-hdr'},'📊 Bilan du Jour'));
+
+  // Matin / Soir toggle
+  // Export / Import bar
+  el.appendChild($('div',{style:{display:'flex',gap:'8px',marginBottom:'12px'}},
+    $('button',{class:'btn btn-ghost btn-sm',style:{flex:'1'},onclick:exportCSV},'⬇ CSV'),
+    $('button',{class:'btn btn-ghost btn-sm',style:{flex:'1'},onclick:exportJSON},'⬇ JSON'),
+    $('button',{class:'btn btn-ghost btn-sm',style:{flex:'1'},onclick:importHistory},'⬆ Import'),
+  ));
+
+  const subTab = S.bilanSub || 'matin';
+  const seg = $('div',{class:'seg-ctrl'});
+  ['matin','soir','journal','calendrier','stats'].forEach(t=>{
+    seg.appendChild($('button',{
+      class:'seg-btn'+(subTab===t?' active':''),
+      onclick:()=>{ S.bilanSub=t; render(); }
+    }, t==='matin'?'🌅 Matin':t==='soir'?'🌙 Soir':t==='stats'?'📈 Stats':t==='calendrier'?'📅 Cal':'📓 Journal'));
+  });
+  el.appendChild(seg);
+
+  if(subTab==='stats'){
+    el.appendChild(renderStats());
+    return el;
+  }
+
+  if(subTab==='matin'){
+    const m = log.matin || {};
+
+    // HRV + FC repos + BOLT
+    el.appendChild(renderFlagsCard());
+
+    const vitalsCard = $('div',{class:'card'});
+    vitalsCard.appendChild($('div',{class:'card-title'},'⚡ Marqueurs physiologiques'));
+    [
+      {id:'hrv',lbl:'VFC (HRV) Garmin (ms)',placeholder:'ex: 52',type:'number'},
+      {id:'fc_repos',lbl:'FC repos (bpm) — valeur nuit de la montre',placeholder:'ex: 48 (30-90)',type:'number',min:30,max:90,help:'FC repos = valeur mesurée par la montre pendant la nuit (méthode standardisée, pas la prise au réveil manuelle).'},
+      {id:'bolt',lbl:'Score BOLT (secondes)',placeholder:'ex: 18',type:'number'}].forEach(f=>{
+      vitalsCard.appendChild($('div',{style:{marginBottom:'10px'}},
+        $('div',{class:'lbl'},f.lbl),
+        $('input',{class:'input-field',type:f.type,placeholder:f.placeholder,
+          value:m[f.id]||'',
+          oninput:(e)=>{
+            let v=e.target.value;
+            if(f.id==='fc_repos' && v!==''){
+              const n=Number(v);
+              if(n<30||n>90){ e.target.style.borderColor='#e74c3c'; e.target.title='FC repos hors plage 30-90 — vérifier (valeur nuit de la montre)'; }
+              else { e.target.style.borderColor=''; e.target.title=''; }
+            }
+            m[f.id]=v; log.matin=m; saveLog(log);
+          }
+        }),
+        f.help?$('div',{class:'lbl',style:{fontSize:'11px',color:'#8a94a6',marginTop:'2px'}},f.help):null
+      ));
+    });
+    el.appendChild(vitalsCard);
+
+    // Sommeil
+    const sleepCard = $('div',{class:'card'});
+    sleepCard.appendChild($('div',{class:'card-title'},'😴 Sommeil'));
+    sleepCard.appendChild($('div',{style:{marginBottom:'10px'}},
+      $('div',{class:'lbl'},'Durée (heures)'),
+      $('input',{class:'input-field',type:'number',min:'0',max:'12',step:'0.5',placeholder:'ex: 7.5',
+        value:m.sleep_hours||'',oninput:(e)=>{ m.sleep_hours=e.target.value; log.matin=m; saveLog(log); }
+      })
+    ));
+    sleepCard.appendChild($('div',{class:'lbl'},'Qualité du sommeil'));
+    const sqRow = $('div',{class:'scale-row'});
+    for(let v=1;v<=5;v++){
+      sqRow.appendChild($('button',{
+        class:'scale-btn'+(m.sleep_quality===v?' sel':''),
+        onclick:()=>{ m.sleep_quality=v; log.matin=m; saveLog(log); render(); }
+      },[,'😩','😕','😐','😊','🔥'][v]));
+    }
+    sleepCard.appendChild(sqRow);
+    el.appendChild(sleepCard);
+
+    // Énergie + Motivation + Stress
+    const emCard = $('div',{class:'card'});
+    emCard.appendChild($('div',{class:'card-title'},'💪 État du matin'));
+    [
+      {id:'energie',lbl:'Énergie (1-5)',emojis:['','😩','😕','😐','😊','🔥']},
+      {id:'motivation',lbl:'Motivation (1-5)',emojis:['','🥱','😕','🙂','💪','🔥']},
+      {id:'stress',lbl:'Niveau de stress (1=calme, 5=très stressé)',emojis:['','😌','🙂','😐','😤','😰']}].forEach(f=>{
+      emCard.appendChild($('div',{style:{marginBottom:'12px'}},
+        $('div',{class:'lbl'},f.lbl),
+        $('div',{class:'scale-row'},
+          ...[1,2,3,4,5].map(v=>$('button',{
+            class:'scale-btn'+(m[f.id]===v?' sel':''),
+            onclick:()=>{ m[f.id]=v; log.matin=m; saveLog(log); render(); }
+          },f.emojis[v]))
+        )
+      ));
+    });
+    el.appendChild(emCard);
+
+    // Douleurs
+    const painCard = $('div',{class:'card'});
+    painCard.appendChild($('div',{class:'card-title'},'🩹 Douleurs'));
+    [
+      {id:'douleur_genou',lbl:'Genou gauche (IT band)'},
+      {id:'douleur_poignet',lbl:'Poignet gauche'},
+      {id:'douleur_epaule',lbl:'Épaule gauche (tendinopathie)'}].forEach(f=>{
+      painCard.appendChild($('div',{style:{marginBottom:'10px'}},
+        $('div',{class:'lbl'},f.lbl),
+        $('div',{class:'pain-row'},
+          ...[
+            {v:'aucune',l:'Aucune',e:'✅'},
+            {v:'légère',l:'Légère',e:'⚠️'},
+            {v:'forte',l:'Forte',e:'🛑'}].map(o=>$('div',{
+            class:'pain-btn'+(m[f.id]===o.v?' sel':''),
+            onclick:()=>{ m[f.id]=o.v; log.matin=m; saveLog(log); render(); }
+          },
+            $('div',{style:{fontSize:'18px'}},o.e),
+            $('div',{style:{fontSize:'11px',fontWeight:'600',marginTop:'3px'}},o.l)
+          ))
+        )
+      ));
+    });
+    el.appendChild(painCard);
+
+    // Compléments matin
+    const compCard = $('div',{class:'card'});
+    compCard.appendChild($('div',{class:'card-title'},'💊 Compléments du matin'));
+    const compDone = m.complements || [];
+    [
+      {id:'multi',lbl:'Multivitamine'},
+      {id:'creatine',lbl:'Créatine 3-5g'},
+      {id:'omega3',lbl:'Oméga-3'}].forEach(c=>{
+      const done = compDone.includes(c.id);
+      compCard.appendChild($('div',{
+        class:'check-item',
+        onclick:()=>{
+          const d=[...compDone]; const idx=d.indexOf(c.id);
+          if(idx>-1) d.splice(idx,1); else d.push(c.id);
+          m.complements=d; log.matin=m; saveLog(log); render();
+        }
+      },
+        $('div',{class:'check-box'+(done?' done':'')},done?'✓':''),
+        $('span',{style:{fontSize:'13px',fontWeight:done?'400':'600',color:done?'#475569':'var(--text)',textDecoration:done?'line-through':'none'}},c.lbl)
+      ));
+    });
+    el.appendChild(compCard);
+
+    // Notes matin
+    el.appendChild($('div',{class:'card'},
+      $('div',{class:'card-title'},'📝 Notes du matin'),
+      $('textarea',{class:'textarea-field',rows:'3',placeholder:'Ressenti, préoccupations, observations…',
+        value:m.notes||'',
+        oninput:(e)=>{ m.notes=e.target.value; log.matin=m; saveLog(log); }
+      })
+    ));
+
+  } else if(subTab==='soir') {
+    // SOIR
+    const s = log.soir || {};
+
+    // Cohérence cardiaque
+    const cohCard = $('div',{class:'card'});
+    cohCard.appendChild($('div',{class:'card-title'},'💓 Cohérence cardiaque du soir'));
+    const cohDone = s.coherence || false;
+    cohCard.appendChild($('div',{
+      class:'check-item',
+      onclick:()=>{ s.coherence=!cohDone; log.soir=s; saveLog(log); render(); }
+    },
+      $('div',{class:'check-box'+(cohDone?' done':'')},cohDone?'✓':''),
+      $('div',{},
+        $('div',{style:{fontWeight:'600',fontSize:'13px'}},'5s IN / 5s OUT × 10 min'),
+        $('div',{style:{fontSize:'11px',color:'#64748b'}},'Avant le coucher · ↑ HRV · Sommeil profond')
+      )
+    ));
+    el.appendChild(cohCard);
+
+    // Bilan séance
+    const seanceCard = $('div',{class:'card'});
+    seanceCard.appendChild($('div',{class:'card-title'},'🏋️ Bilan de la séance'));
+    seanceCard.appendChild($('div',{style:{marginBottom:'10px'}},
+      $('div',{class:'lbl'},'Séance effectuée'),
+      $('div',{class:'pain-row'},
+        ...[
+          {v:'faite',l:'✅ Faite'},
+          {v:'partielle',l:'⚠️ Partielle'},
+          {v:'modifiee',l:'🔄 Modifiée'},
+          {v:'manquee',l:'❌ Manquée'}].map(o=>$('div',{
+          class:'pain-btn'+(s.seance===o.v?' sel':''),
+          onclick:()=>{ s.seance=o.v; log.soir=s; saveLog(log); render(); }
+        },$('div',{style:{fontSize:'12px',fontWeight:'700'}},o.l)))
+      )
+    ));
+    seanceCard.appendChild($('div',{style:{marginBottom:'10px'}},
+      $('div',{class:'lbl'},'RPE global de la séance (1-10)'),
+      $('input',{class:'input-field',type:'number',min:'1',max:'10',placeholder:'1-10',
+        value:s.rpe||'',oninput:(e)=>{ s.rpe=e.target.value; log.soir=s; saveLog(log); }
+      })
+    ));
+    el.appendChild(seanceCard);
+
+    // Magnésium + heure coucher
+    const nightCard = $('div',{class:'card'});
+    nightCard.appendChild($('div',{class:'card-title'},'🌙 Récupération nocturne'));
+    const magDone = s.magnesium || false;
+    nightCard.appendChild($('div',{
+      class:'check-item',style:{marginBottom:'8px'},
+      onclick:()=>{ s.magnesium=!magDone; log.soir=s; saveLog(log); render(); }
+    },
+      $('div',{class:'check-box'+(magDone?' done':'')},magDone?'✓':''),
+      $('div',{},
+        $('div',{style:{fontWeight:'600',fontSize:'13px'}},'Magnésium glycinate 300-400mg'),
+        $('div',{style:{fontSize:'11px',color:'#64748b'}},'Soir avant coucher · Récupération neuromusculaire')
+      )
+    ));
+    nightCard.appendChild($('div',{style:{fontSize:'12px',color:'#3a86ff',marginTop:'10px',padding:'10px',background:'#3a86ff15',borderRadius:'8px',lineHeight:'1.5'}},'😴 Respiration 4-7-8 au lit (aide endormissement) : inspire nez 4s → retiens 7s → expire bouche 8s. ×3-4 cycles, lumières éteintes. Active le frein vagal, prépare au sommeil.'));
+    nightCard.appendChild($('div',{class:'lbl'},'Heure prévue de coucher'));
+    nightCard.appendChild($('input',{class:'input-field',type:'time',
+      value:s.bedtime||'',
+      oninput:(e)=>{ s.bedtime=e.target.value; log.soir=s; saveLog(log); }
+    }));
+    nightCard.appendChild($('div',{class:'lbl',style:{marginTop:'10px'}},'Nombre de pas (Garmin)'));
+    nightCard.appendChild($('input',{class:'input-field',type:'number',inputmode:'numeric',placeholder:'ex : 8500',
+      value:s.pas||'',
+      oninput:(e)=>{ s.pas=e.target.value; log.soir=s; saveLog(log); }
+    }));
+    el.appendChild(nightCard);
+
+    // Humeur + notes soir
+    const moodCard = $('div',{class:'card'});
+    moodCard.appendChild($('div',{class:'card-title'},'😊 Humeur du soir'));
+    const moodRow = $('div',{class:'mood-row'});
+    ['😩','😕','😐','😊','🔥'].forEach((m_,i)=>{
+      moodRow.appendChild($('div',{
+        class:'mood-btn'+(s.mood===i+1?' sel':''),
+        onclick:()=>{ s.mood=i+1; log.soir=s; saveLog(log); render(); }
+      },m_));
+    });
+    moodCard.appendChild(moodRow);
+    el.appendChild(moodCard);
+
+    el.appendChild($('div',{class:'card'},
+      $('div',{class:'card-title'},'📝 Notes du soir'),
+      $('textarea',{class:'textarea-field',rows:'3',placeholder:'Comment s\'est passée la journée, réflexions, pour demain…',
+        value:s.notes||'',
+        oninput:(e)=>{ s.notes=e.target.value; log.soir=s; saveLog(log); }
+      })
+    ));
+  }
+
+  if(subTab==='calendrier'){
+    // Mois affiché (S.calMonth = offset depuis le mois courant, 0 = courant)
+    const calOffset = S.calMonth || 0;
+    const now = new Date();
+    const viewDate = new Date(now.getFullYear(), now.getMonth()+calOffset, 1);
+    const yr = viewDate.getFullYear(); const mo = viewDate.getMonth();
+    const moNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    // Couleurs par séance
+    const seanceColors = {'Haut 1':'#1E3A5F','Bas 1':'#06b6d4','AGT':'#10b981','Haut 2':'#7C3AED','Bas 2':'#e63946','Conditioning':'#f5a623','Z2 Swings':'#3b82f6','Haut 3':'#a78bfa'};
+    // Construire map date -> séances faites (via clés ex_)
+    const dayMap = {};
+    Object.keys(localStorage).filter(k=>k.startsWith('log:')).forEach(k=>{
+      const ds = k.slice(4);
+      try {
+        const entry = JSON.parse(localStorage.getItem(k));
+        const sess = new Set();
+        Object.keys(entry).forEach(ek=>{
+          if(ek.startsWith('ex_') && entry[ek] && (entry[ek].charge||entry[ek].rpe||entry[ek].notes)){
+            const nm = ek.slice(3).replace(/_b\d+_\d+.*$/,'');
+            if(seanceColors[nm]) sess.add(nm);
+          }
+        });
+        // routine faite ?
+        const hasRoutine = entry.routine && entry.routine.length>0;
+        if(sess.size>0 || hasRoutine || (entry.soir&&entry.soir.seance)) dayMap[ds] = {sess:[...sess], routine:hasRoutine, entry};
+      } catch(e){}
+    });
+    // En-tête navigation mois
+    const navRow = $('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}});
+    navRow.appendChild($('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.calMonth=(S.calMonth||0)-1; render(); }},'‹'));
+    navRow.appendChild($('div',{style:{fontWeight:'700',fontSize:'15px'}},moNames[mo]+' '+yr));
+    navRow.appendChild($('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.calMonth=(S.calMonth||0)+1; render(); }},'›'));
+    el.appendChild(navRow);
+    // Grille calendrier
+    const grid = $('div',{style:{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'3px',width:'100%',boxSizing:'border-box'}});
+    ['L','M','M','J','V','S','D'].forEach(d=>grid.appendChild($('div',{style:{textAlign:'center',fontSize:'10px',color:'#64748b',fontWeight:'600',padding:'2px 0'}},d)));
+    // Premier jour (lundi=0)
+    let firstDay = new Date(yr,mo,1).getDay(); firstDay = firstDay===0?6:firstDay-1;
+    const daysInMonth = new Date(yr,mo+1,0).getDate();
+    for(let i=0;i<firstDay;i++) grid.appendChild($('div',{}));
+    const todayS = (new Date()).toISOString().slice(0,10);
+    for(let d=1;d<=daysInMonth;d++){
+      const ds = yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      const dayData = dayMap[ds];
+      const isToday = ds===todayS;
+      const cell = $('div',{style:{aspectRatio:'1',border:isToday?'2px solid #f5a623':'1px solid #1e2d42',borderRadius:'6px',padding:'2px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-start',cursor:dayData?'pointer':'default',boxSizing:'border-box',minWidth:'0',overflow:'hidden'}});
+      cell.appendChild($('div',{style:{fontSize:'10px',color:dayData?'#e0e1dd':'#475569',fontWeight:isToday?'700':'400'}},String(d)));
+      if(dayData){
+        const abbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Conditioning':'Cond','Z2 Swings':'Z2','Haut 3':'H3'};
+        const labels=$('div',{style:{display:'flex',flexDirection:'column',gap:'1px',width:'100%',marginTop:'1px',alignItems:'stretch'}});
+        dayData.sess.forEach(s=>labels.appendChild($('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:seanceColors[s]||'#64748b',borderRadius:'3px',padding:'1px 2px',textAlign:'center',lineHeight:'1.2',overflow:'hidden',whiteSpace:'nowrap'}},abbr[s]||s)));
+        if(dayData.routine && dayData.sess.length===0) labels.appendChild($('div',{style:{fontSize:'8px',color:'#94a3b8',textAlign:'center'}},'routine'));
+        cell.appendChild(labels);
+        cell.onclick=()=>{ S.bilanSub='journal'; S.journalDetail=ds; S.journalDetailData=dayData.entry; render(); };
+      }
+      grid.appendChild(cell);
+    }
+    el.appendChild(grid);
+    // Légende
+    const leg=$('div',{style:{marginTop:'14px',display:'flex',flexWrap:'wrap',gap:'8px'}});
+    const legAbbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Conditioning':'Cond','Z2 Swings':'Z2','Haut 3':'H3'};
+    Object.entries(seanceColors).forEach(([nm,col])=>{
+      leg.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'4px',fontSize:'11px',color:'#94a3b8'}},
+        $('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:col,borderRadius:'3px',padding:'1px 4px'}},legAbbr[nm]||nm), nm));
+    });
+    el.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',fontWeight:'600',marginTop:'10px',marginBottom:'4px'}},'Légende'));
+    el.appendChild(leg);
+    el.appendChild($('div',{style:{fontSize:'11px',color:'#475569',marginTop:'10px',fontStyle:'italic'}},'Touche un jour avec séance pour voir le détail. Cadre orange = aujourd\'hui.'));
+    return el;
+  }
+
+  if(subTab==='journal'){
+    // ── Vue détail d'une journée (clic sur historique) ──
+    if(S.journalDetail && S.journalDetailData){
+      const dd=S.journalDetail; const entry=S.journalDetailData;
+      const mm=entry.matin||{}; const ss=entry.soir||{};
+      el.appendChild($('button',{class:'btn-back',style:{marginBottom:'10px'},
+        onclick:()=>{ S.journalDetail=null; S.journalDetailData=null; render(); }
+      },'‹ Retour'));
+      el.appendChild($('div',{class:'section-hdr'},'📅 '+dd));
+      const card1=$('div',{class:'card'});
+      card1.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px'}},'☀ Matin'));
+      const r1=(l,v)=>{ if(v!==undefined&&v!==''&&v!==null) card1.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},l),$('span',{style:{fontWeight:'600'}},String(v)))); };
+      r1('Sommeil',(mm.sommeil_h||mm.sleep_hours||'?')+'h'); r1('Énergie',mm.energie); r1('Motivation',mm.motivation); r1('Stress',mm.stress); r1('HRV',mm.hrv); r1('FC repos',mm.fc_repos); r1('BOLT',mm.bolt); r1('Poignet G',mm.douleur_poignet); r1('Genou G',mm.douleur_genou); r1('Épaule G',mm.douleur_epaule);
+      if(mm.notes) card1.appendChild($('div',{style:{marginTop:'6px',fontSize:'12px',fontStyle:'italic',color:'#475569'}},'« '+mm.notes+' »'));
+      el.appendChild(card1);
+      const card2=$('div',{class:'card'});
+      card2.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px'}},'★ Soir'));
+      const r2=(l,v)=>{ if(v!==undefined&&v!==''&&v!==null) card2.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},l),$('span',{style:{fontWeight:'600'}},String(v)))); };
+      r2('Séance',ss.seance); r2('RPE',ss.rpe); r2('Humeur',ss.mood); r2('Pas',ss.pas); r2('Coucher',ss.bedtime);
+      if(ss.notes) card2.appendChild($('div',{style:{marginTop:'6px',fontSize:'12px',fontStyle:'italic',color:'#475569'}},'« '+ss.notes+' »'));
+      el.appendChild(card2);
+      const jt=[['Ressenti',entry.journal_ressenti],['Positif',entry.journal_positif],['À améliorer',entry.journal_ameliorer]].filter(x=>x[1]);
+      if(jt.length){ const jc=$('div',{class:'card'}); jc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px'}},'📓 Journal')); jt.forEach(([l,t])=>jc.appendChild($('div',{style:{fontSize:'12px',padding:'3px 0'}},$('span',{style:{color:'#64748b',fontWeight:'600'}},l+' : '),t))); el.appendChild(jc); }
+      const exK=Object.keys(entry).filter(k=>k.startsWith('ex_')&&entry[k]&&(entry[k].charge||entry[k].rpe||entry[k].notes));
+      if(exK.length){ const ec=$('div',{class:'card'}); ec.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px'}},'🏋 Charges & notes'));
+        exK.forEach(k=>{ const v=entry[k]; const nm=k.replace(/^ex_/,'').replace(/_b\d+_\d+.*$/,'');
+          const row=$('div',{style:{padding:'3px 0',borderBottom:'1px solid #1e2d42'}});
+          row.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px'}},$('span',{style:{color:'#64748b'}},nm),$('span',{style:{fontWeight:'600'}},(v.charge||'')+(v.rpe?' · RPE '+v.rpe:'')+(v.fmt?' · '+v.fmt:''))));
+          if(v.notes) row.appendChild($('div',{style:{fontSize:'11px',fontStyle:'italic',color:'#94a3b8',marginTop:'2px'}},'« '+v.notes+' »'));
+          ec.appendChild(row); });
+        el.appendChild(ec); }
+      // GTG exécuté ce jour-là
+      if(entry.gtg && Object.keys(entry.gtg).length){
+        const gtgNames={'militaire_gtg':'Militaire 20kg','wall_sit_gtg':'Wall sit','dead_hang_gtg':'Dead hang','iso_vert':'ISO vertical'};
+        const gc=$('div',{class:'card'}); gc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px'}},'🔁 GTG du jour'));
+        let any=false;
+        Object.keys(entry.gtg).forEach(gid=>{
+          const p=entry.gtg[gid]; const nb=(p&&p.passages)?p.passages.length:0;
+          if(nb>0){ any=true; gc.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},gtgNames[gid]||gid),$('span',{style:{fontWeight:'600'}},nb+' passage'+(nb>1?'s':'')))); }
+        });
+        if(any) el.appendChild(gc);
+      }
+      // Routine / Renfo / Mobilité / Respiration faits ce jour-là
+      if(entry.routine && entry.routine.length){
+        const rc=$('div',{class:'card'}); rc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px'}},'🧘 Routine du jour'));
+        // Grouper par catégorie via ROUTINE_MATIN
+        const byCat={};
+        entry.routine.forEach(rid=>{
+          const item=ROUTINE_MATIN.find(x=>x.id===rid);
+          if(item){ const cat=item.cat.indexOf('CARs')>=0?'Mobilité (CARs)':item.cat.indexOf('Respir')>=0?'Respiration':item.cat.indexOf('Renfo')>=0?'Renfo':item.cat.indexOf('Unipodal')>=0?'Équilibre':item.cat; (byCat[cat]=byCat[cat]||[]).push(item.name); }
+        });
+        Object.keys(byCat).forEach(cat=>{
+          rc.appendChild($('div',{style:{fontSize:'11px',color:'#06b6d4',fontWeight:'600',marginTop:'4px'}},cat));
+          rc.appendChild($('div',{style:{fontSize:'12px',color:'#94a3b8',marginLeft:'6px',lineHeight:'1.4'}},byCat[cat].join(' · ')));
+        });
+        el.appendChild(rc);
+      }
+      return el;
+    }
+    const log2=getLog();
+    
+    el.appendChild($('div',{class:'card'},
+      $('div',{class:'card-title'},'💭 Ressenti général'),
+      $('textarea',{class:'textarea-field',rows:'3',style:{width:'100%',boxSizing:'border-box'},placeholder:'Comment je me suis senti aujourd\'hui…',
+        value:log2.journal_ressenti||'',
+        oninput:(e)=>{ log2.journal_ressenti=e.target.value; saveLog(log2); }
+      })
+    ));
+    el.appendChild($('div',{class:'card'},
+      $('div',{class:'card-title'},'✅ Ce qui a bien marché'),
+      $('textarea',{class:'textarea-field',rows:'2',style:{width:'100%',boxSizing:'border-box'},placeholder:'Points positifs, PR, sensations…',
+        value:log2.journal_positif||'',
+        oninput:(e)=>{ log2.journal_positif=e.target.value; saveLog(log2); }
+      })
+    ));
+    el.appendChild($('div',{class:'card'},
+      $('div',{class:'card-title'},'🔧 À améliorer'),
+      $('textarea',{class:'textarea-field',rows:'2',style:{width:'100%',boxSizing:'border-box'},placeholder:'Technique, récup, nutrition, sommeil…',
+        value:log2.journal_ameliorer||'',
+        oninput:(e)=>{ log2.journal_ameliorer=e.target.value; saveLog(log2); }
+      })
+    ));
+    // Historique compact
+    el.appendChild($('div',{class:'section-hdr',style:{marginTop:'8px'}},'📅 Historique'));
+    const histKeys=Object.keys(localStorage).filter(k=>k.startsWith('log:')).sort().reverse().slice(0,60);
+    if(!histKeys.length){
+      el.appendChild($('div',{style:{textAlign:'center',padding:'16px',color:'#475569',fontSize:'13px'}},'Aucun historique.'));
+    } else {
+      histKeys.forEach(k=>{
+        const dateStr=k.slice(4);
+        try{
+          const entry=JSON.parse(localStorage.getItem(k));
+          const m=entry.matin||{};const s=entry.soir||{};
+          const row=$('div',{class:'history-row',onclick:()=>{ S.journalDetail=dateStr; S.journalDetailData=entry; render(); }});
+          row.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
+            $('div',{style:{fontSize:'13px',fontWeight:'600'}},dateStr),
+            $('div',{style:{display:'flex',gap:'6px',fontSize:'11px',color:'#64748b'}},
+              m.energie?$('span',{},'⚡'+m.energie):null,
+              s.rpe?$('span',{},'RPE '+s.rpe):null,
+              m.bolt?$('span',{},'BOLT '+m.bolt+'s'):null
+            )
+          ));
+          if(entry.journal_ressenti||entry.journal_positif){
+            row.appendChild($('div',{style:{fontSize:'11px',color:'#3b82f6',marginTop:'2px',fontStyle:'italic'}},
+              (entry.journal_ressenti||entry.journal_positif||'').slice(0,60)+'…'
+            ));
+          }
+          el.appendChild(row);
+        }catch(e){}
+      });
+    }
+  }
+    // ── État hors ligne + Sync (en bas du journal) ──
+    // ── Diagnostic hors ligne (SW + cache) ──
+    const diagCard = $('div',{class:'card',style:{background:'#0d1b2a'}});
+    diagCard.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#fff'}},'📡 État hors ligne'));
+    const diagBody = $('div',{style:{fontSize:'12px',color:'#e0e1dd',lineHeight:'1.6'}},'Appuie sur Vérifier…');
+    diagCard.appendChild(diagBody);
+    diagCard.appendChild($('button',{class:'btn-back',style:{marginTop:'8px',background:'#3a86ff'},
+      onclick:async()=>{
+        let lines=[];
+        lines.push('Service Worker : '+(window.__swStatus||'?'));
+        if('serviceWorker' in navigator){
+          const reg=await navigator.serviceWorker.getRegistration();
+          lines.push('Enregistrement : '+(reg?'oui':'NON'));
+          lines.push('Contrôle la page : '+(navigator.serviceWorker.controller?'oui ✓':'NON ✗'));
+        } else { lines.push('serviceWorker non supporté par ce navigateur'); }
+        if('caches' in window){
+          try{
+            const keys=await caches.keys();
+            lines.push('Caches : '+(keys.join(', ')||'aucun'));
+            if(keys.length){
+              const cache=await caches.open(keys[0]);
+              const reqs=await cache.keys();
+              lines.push('Fichiers en cache : '+reqs.length);
+              lines.push(reqs.map(r=>r.url.split('/').pop()||'/').join(', '));
+            }
+          }catch(e){ lines.push('Erreur cache : '+e.message); }
+        } else { lines.push('caches API non supportée'); }
+        diagBody.innerHTML = lines.map(l=>'• '+l).join('<br>');
+      }
+    },'Vérifier l\'état hors ligne'));
+    el.appendChild(diagCard);
+
+    // ── Sync Firebase (déplacé depuis GTG) ──
+    // Firebase sync status
+    const fbOk=!!(db&&_uid);
+    const fbBg=fbOk?'#E1F5EE':'#FEF3C7'; const fbCol=fbOk?'#085041':'#92400E';
+    const fbCard=$('div',{style:{background:fbBg,borderRadius:'8px',padding:'10px 12px',marginBottom:'10px'}});
+    fbCard.appendChild($('div',{style:{fontWeight:'600',fontSize:'12px',color:fbCol,marginBottom:'4px'}},
+      fbOk?'✓ Firebase connecté — données synchronisées':'⚠ Firebase hors ligne — données locales'));
+    // Sync ID display + copy button
+    const uidRow=$('div',{style:{display:'flex',gap:'6px',alignItems:'center',marginBottom:'6px'}});
+    const uidInput=$('input',{type:'text',value:_uid||'',readOnly:true,
+      style:{flex:'1',fontSize:'9px',padding:'4px 6px',borderRadius:'5px',border:'1px solid #cbd5e1',background:'white',color:'#334155',fontFamily:'monospace'}});
+    const copyBtn=$('button',{style:{padding:'4px 8px',borderRadius:'5px',background:'#1D9E75',color:'white',fontSize:'10px',border:'none',cursor:'pointer',whiteSpace:'nowrap'},
+      onclick:()=>{ navigator.clipboard.writeText(_uid||'').then(()=>{ copyBtn.textContent='✓ Copié'; setTimeout(()=>{ copyBtn.textContent='Copier'; },1500); }); }
+    },'Copier');
+    uidRow.appendChild(uidInput); uidRow.appendChild(copyBtn);
+    fbCard.appendChild(uidRow);
+    // Paste ID from other device
+    const pasteRow=$('div',{style:{display:'flex',gap:'6px',alignItems:'center'}});
+    const pasteInput=$('input',{type:'text',placeholder:'Coller l\'ID de l\'autre appareil…',
+      style:{flex:'1',fontSize:'9px',padding:'4px 6px',borderRadius:'5px',border:'1px solid #cbd5e1',background:'white',color:'#334155',fontFamily:'monospace'}});
+    const applyBtn=$('button',{style:{padding:'4px 8px',borderRadius:'5px',background:'#3B82F6',color:'white',fontSize:'10px',border:'none',cursor:'pointer',whiteSpace:'nowrap'},
+      onclick:()=>{
+        const v=pasteInput.value.trim();
+        if(v.length>4){ localStorage.setItem('be_ready_uid',v); _uid=v; applyBtn.textContent='✓ OK'; setTimeout(()=>location.reload(),800); }
+      }
+    },'Appliquer');
+    pasteRow.appendChild(pasteInput); pasteRow.appendChild(applyBtn);
+    fbCard.appendChild(pasteRow);
+    el.appendChild(fbCard);
+
+
+  return el;
+}
+
+// ── ONGLET 5 — JOURNAL ───────────────────────────────────────────────────
+
+
+function exportCSV(){
+  const keys=Object.keys(localStorage).filter(k=>k.startsWith('log:')).sort();
+  if(!keys.length){alert('Aucun log à exporter.');return;}
+  const H=['Date','Énergie','Motivation','Douleur','HRV','BOLT','Sommeil_h','Qualité_sommeil','Séance','RPE','Humeur','Notes_matin','Ressenti','Positif','À_améliorer'];
+  const esc=v=>('"'+(v||'').toString().replace(/"/g,'""')+'"');
+  const rows=[H.map(esc).join(',')];
+  keys.forEach(k=>{
+    try{
+      const d=JSON.parse(localStorage.getItem(k));
+      const m=d.matin||{};const s=d.soir||{};
+      rows.push([k.slice(4),m.energie,m.motivation,m.douleur,m.hrv,m.bolt,m.sleep_hours,m.sleep_quality,
+        s.seance,s.rpe,s.mood,m.notes,d.journal_ressenti,d.journal_positif,d.journal_ameliorer].map(esc).join(','));
+    }catch(e){}
+  });
+  const blob=new Blob(['\uFEFF'+rows.join('\n')],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='training-history-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+
+function exportJSON(){
+  const keys=Object.keys(localStorage).filter(k=>k.startsWith('log:')).sort();
+  if(!keys.length){alert('Aucun log.');return;}
+  const data={exportDate:new Date().toISOString(),programStart:localStorage.getItem('programStart')||null,totalJours:keys.length,logs:{}};
+  keys.forEach(k=>{try{data.logs[k.slice(4)]=JSON.parse(localStorage.getItem(k));}catch(e){}});
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='training-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function importHistory(){
+  const input=document.createElement('input');
+  input.type='file';input.accept='.json';
+  input.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const data=JSON.parse(ev.target.result);
+        const logs=data.logs||data;
+        const allDates=Object.keys(logs).filter(d=>d.match(/^\d{4}-\d{2}-\d{2}$/));
+        const dateRange=allDates.length?allDates.sort()[0]+' au '+allDates.sort().slice(-1)[0]:'aucune';
+        let n=0, merged=0;
+        Object.entries(logs).forEach(([date,entry])=>{
+          if(!date.match(/^\d{4}-\d{2}-\d{2}$/)) return; // skip non-date keys
+          const existKey='log:'+date;
+          const existing=localStorage.getItem(existKey);
+          if(!existing){
+            localStorage.setItem(existKey,JSON.stringify(entry)); n++;
+          } else {
+            // Fusion : compléter les champs manquants sans écraser ceux déjà remplis
+            try{
+              const cur=JSON.parse(existing);
+              let changed=false;
+              Object.entries(entry).forEach(([k,v])=>{
+                if(cur[k]===undefined || cur[k]===null || cur[k]==='' || (typeof cur[k]==='object' && Object.keys(cur[k]||{}).length===0)){
+                  cur[k]=v; changed=true;
+                }
+              });
+              if(changed){ localStorage.setItem(existKey,JSON.stringify(cur)); merged++; }
+            }catch(e){ localStorage.setItem(existKey,JSON.stringify(entry)); n++; }
+          }
+        });
+        // Importer aussi les autres clés (baselines, ts, etc.) si présentes hors 'logs'
+        if(data.logs){
+          Object.entries(data).forEach(([k,v])=>{
+            if(k==='logs'||k==='exportDate'||k==='programStart'||k==='totalJours') return;
+            if(typeof v==='string' && !localStorage.getItem(k)){ localStorage.setItem(k,v); }
+          });
+        }
+        alert('Fichier lu : '+allDates.length+' dates ('+dateRange+').\n\nRésultat : '+n+' nouvelle(s) + '+merged+' complétée(s).\n\nSi 0+0 : ces dates existent déjà identiques dans cette app.');
+        render();
+      }catch(ex){alert('Fichier invalide.');}
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function renderJournal(){
+  const el = $('div',{});
+
+  // ── Vue détail d'une journée (clic sur historique) ──
+  if(S.journalDetail && S.journalDetailData){
+    const d=S.journalDetail; const entry=S.journalDetailData;
+    const m=entry.matin||{}; const s=entry.soir||{};
+    el.appendChild($('button',{class:'btn-back',style:{marginBottom:'10px'},
+      onclick:()=>{ S.journalDetail=null; S.journalDetailData=null; render(); }
+    },'‹ Retour à l\'historique'));
+    el.appendChild($('div',{class:'section-hdr'},'📅 '+d));
+
+    // Matin
+    const mc=$('div',{class:'card'});
+    mc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#0d1b2a'}},'☀ Matin'));
+    const mrow=(lbl,val)=> val!==undefined&&val!==''&&val!==null ? mc.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},lbl),$('span',{style:{fontWeight:'600'}},String(val)))) : null;
+    mrow('Sommeil',(m.sommeil_h||m.sleep_hours||'?')+'h'+(m.sommeil||m.sleep_quality?' (q'+(m.sommeil||m.sleep_quality)+'/5)':''));
+    mrow('Énergie',m.energie); mrow('Motivation',m.motivation); mrow('Stress',m.stress);
+    mrow('HRV',m.hrv); mrow('FC repos',m.fc_repos); mrow('BOLT',m.bolt?m.bolt+'s':'');
+    mrow('Douleur poignet G',m.douleur_poignet); mrow('Douleur genou G',m.douleur_genou);
+    if(m.notes) mc.appendChild($('div',{style:{marginTop:'6px',fontSize:'12px',fontStyle:'italic',color:'#475569'}},'« '+m.notes+' »'));
+    el.appendChild(mc);
+
+    // Soir
+    const sc=$('div',{class:'card'});
+    sc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#0d1b2a'}},'★ Soir'));
+    const srow=(lbl,val)=> val!==undefined&&val!==''&&val!==null ? sc.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},lbl),$('span',{style:{fontWeight:'600'}},String(val)))) : null;
+    srow('Séance',s.seance); srow('RPE séance',s.rpe); srow('Humeur',s.mood);
+    srow('Nombre de pas',s.pas); srow('Heure coucher',s.bedtime);
+    if(s.notes) sc.appendChild($('div',{style:{marginTop:'6px',fontSize:'12px',fontStyle:'italic',color:'#475569'}},'« '+s.notes+' »'));
+    el.appendChild(sc);
+
+    // Journal
+    const jtexts=[['Ressenti',entry.journal_ressenti],['Positif',entry.journal_positif],['À améliorer',entry.journal_ameliorer]].filter(x=>x[1]);
+    if(jtexts.length){
+      const jc=$('div',{class:'card'});
+      jc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#0d1b2a'}},'📓 Journal'));
+      jtexts.forEach(([lbl,txt])=>{
+        jc.appendChild($('div',{style:{fontSize:'12px',padding:'3px 0'}},$('span',{style:{color:'#64748b',fontWeight:'600'}},lbl+' : '),txt));
+      });
+      el.appendChild(jc);
+    }
+
+    // Séances (charges)
+    const exKeys=Object.keys(entry).filter(k=>k.startsWith('ex_'));
+    if(exKeys.length){
+      const ec=$('div',{class:'card'});
+      ec.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#0d1b2a'}},'🏋 Charges saisies'));
+      exKeys.forEach(k=>{
+        const v=entry[k]; if(!v||(!v.charge&&!v.rpe)) return;
+        const nm=k.replace(/^ex_/,'').replace(/_b\d+_\d+$/,'');
+        ec.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',padding:'2px 0'}},
+          $('span',{style:{color:'#64748b'}},nm),
+          $('span',{style:{fontWeight:'600'}},(v.charge||'')+(v.rpe?' · RPE '+v.rpe:''))
+        ));
+      });
+      el.appendChild(ec);
+    }
+    return el;
+  }
+
+
+
+  // Entrée du jour
+  const todayCard = $('div',{class:'card'});
+  const log = getLog();
+  todayCard.appendChild($('div',{class:'card-title',style:{color:'#f5a623'}},`📌 Aujourd'hui — ${DAYS_FULL[DOW]} ${today.getDate()} ${MONTHS[today.getMonth()]}`));
+
+  todayCard.appendChild($('div',{class:'lbl'},'Ressenti général'));
+  todayCard.appendChild($('textarea',{class:'textarea-field',rows:'3',placeholder:'Comment tu te sens, observations générales…',
+    value:log.journal_ressenti||'',
+    oninput:(e)=>{ log.journal_ressenti=e.target.value; saveLog(log); }
+  }));
+  todayCard.appendChild($('div',{class:'lbl',style:{marginTop:'8px'}},'Séance — ce qui s\'est bien passé'));
+  todayCard.appendChild($('textarea',{class:'textarea-field',rows:'2',style:{width:'100%',boxSizing:'border-box'},placeholder:'Points positifs…',
+    value:log.journal_positif||'',
+    oninput:(e)=>{ log.journal_positif=e.target.value; saveLog(log); }
+  }));
+  todayCard.appendChild($('div',{class:'lbl',style:{marginTop:'8px'}},'À améliorer / À retenir'));
+  todayCard.appendChild($('textarea',{class:'textarea-field',rows:'2',placeholder:'Points à améliorer, ajustements techniques…',
+    value:log.journal_ameliorer||'',
+    oninput:(e)=>{ log.journal_ameliorer=e.target.value; saveLog(log); }
+  }));
+  el.appendChild(todayCard);
+
+  // Historique
+  el.appendChild($('div',{class:'card-title',style:{marginBottom:'8px'}},`📅 Historique (${Object.keys(localStorage).filter(k=>k.startsWith('log:')).length} jours)`));
+
+  const keys = Object.keys(localStorage).filter(k=>k.startsWith('log:')).sort().reverse();
+  if(keys.length===0){
+    el.appendChild($('div',{style:{textAlign:'center',padding:'24px',color:'#475569',fontSize:'13px'}},'Aucun historique.\nCommence par ton bilan matin !'));
+    return el;
+  }
+
+  keys.slice(0,30).forEach(key=>{
+    try{
+      const entry = JSON.parse(localStorage.getItem(key));
+      const dateStr = key.slice(4);
+      const d = new Date(dateStr+'T12:00:00');
+      const m = entry.matin || {};
+      const s = entry.soir || {};
+      const score = m.energie && m.motivation ? Math.round((m.energie+m.motivation)/2) : null;
+      const scoreColor = score ? (score>=4?'#10b981':score>=3?'#f5a623':'#e63946') : '#475569';
+
+      const row = $('div',{class:'history-row',onclick:()=>{ S.journalDetail=dateStr; S.journalDetailData=entry; render(); }},
+        $('div',{class:'history-dot',style:{background:scoreColor+'22',color:scoreColor}}, score?score:'—'),
+        $('div',{style:{flex:1}},
+          $('div',{style:{fontWeight:'600',fontSize:'13px'}},
+            `${DAYS_FULL[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`
+          ),
+          $('div',{style:{fontSize:'11px',color:'#475569',marginTop:'2px'}},
+            [
+              m.energie?`⚡${m.energie}`:'',
+              m.motivation?`💪${m.motivation}`:'',
+              m.bolt?`BOLT:${m.bolt}s`:'',
+              m.hrv?`HRV:${m.hrv}`:'',
+              s.seance?`Séance:${s.seance}`:''].filter(Boolean).join(' · ')
+          ),
+          (entry.journal_ressenti||entry.journal_positif) ? $('div',{style:{fontSize:'11px',color:'#3b82f6',marginTop:'2px',fontStyle:'italic'}},
+            (entry.journal_ressenti||entry.journal_positif||'').slice(0,60)+'…'
+          ) : null
+        ),
+        $('div',{style:{color:'#2d3f56',fontSize:'20px'}},'›'),
+      );
+
+      el.appendChild(row);
+    }catch(e){}
+  });
+
+  return el;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+
+render();
+
+// Firebase en arrière-plan
+initFirebase().then(ok=>{
+  if(ok){
+    syncFromFirebase().then(()=>render());
+  }
+});
+
+
+</script>
+</body>
+</html>
