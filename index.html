@@ -44,6 +44,3340 @@ input,select,textarea{box-sizing:border-box}
 </head>
 <body>
 <div id="root"></div>
+<script id="moteur-catalogue-data" type="application/json">{
+  "meta": {
+    "nom": "Be Ready — Catalogue d'exercices",
+    "version": "1.2",
+    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet).",
+    "usage_app": "L'app filtre exercises[] par window courante (equipement dispo) + qualites prioritaires de la phase active + contraindications actives (flags bilan du jour), puis assemble la séance. Les charges viennent des baselines/e1RM stockés séparément (état, pas catalogue)."
+  },
+  "taxonomies": {
+    "qualities": [
+      {
+        "id": "force_max",
+        "label": "Force maximale"
+      },
+      {
+        "id": "alactique",
+        "label": "Puissance alactique / explosivité"
+      },
+      {
+        "id": "repetition_puissance",
+        "label": "Répétition de puissance"
+      },
+      {
+        "id": "glycolytique",
+        "label": "Glycolytique / brûlure"
+      },
+      {
+        "id": "aerobie_base",
+        "label": "Aérobie base (Z2)"
+      },
+      {
+        "id": "aerobie_seuil",
+        "label": "Seuil / VO2max"
+      },
+      {
+        "id": "recup_cardiaque",
+        "label": "Récupération cardiaque"
+      },
+      {
+        "id": "endurance_posturale",
+        "label": "Endurance posturale (port charge)"
+      },
+      {
+        "id": "force_unilat_antiasym",
+        "label": "Force unilatérale / anti-asymétrie"
+      },
+      {
+        "id": "anti_extension",
+        "label": "Anti-extension tronc"
+      },
+      {
+        "id": "anti_rotation",
+        "label": "Anti-rotation / anti-flexion latérale"
+      },
+      {
+        "id": "grip_prehension",
+        "label": "Grip / préhension"
+      },
+      {
+        "id": "mobilite",
+        "label": "Mobilité articulaire"
+      },
+      {
+        "id": "proprioception_pied",
+        "label": "Proprioception / pied plat"
+      },
+      {
+        "id": "respiration_tolerance_co2",
+        "label": "Respiration / tolérance CO2"
+      },
+      {
+        "id": "work_capacity",
+        "label": "Capacité de travail / opérateur"
+      },
+      {
+        "id": "puissance_rotation",
+        "label": "Puissance rotationnelle"
+      },
+      {
+        "id": "combat_specifique",
+        "label": "Combat spécifique (frappe/sol)"
+      },
+      {
+        "id": "reactivite",
+        "label": "Réactivité / temps de réaction"
+      }
+    ],
+    "equipment": [
+      {
+        "id": "kb",
+        "label": "Kettlebell(s)"
+      },
+      {
+        "id": "barre_disques",
+        "label": "Barre + disques"
+      },
+      {
+        "id": "banc",
+        "label": "Banc plat/incliné"
+      },
+      {
+        "id": "banc_lombaire",
+        "label": "Banc lombaire horizontal / GHD"
+      },
+      {
+        "id": "barre_traction",
+        "label": "Barre de traction"
+      },
+      {
+        "id": "trx",
+        "label": "TRX / anneaux"
+      },
+      {
+        "id": "elastiques",
+        "label": "Élastiques"
+      },
+      {
+        "id": "poids_du_corps",
+        "label": "Poids du corps"
+      },
+      {
+        "id": "velo",
+        "label": "Vélo / home-trainer"
+      },
+      {
+        "id": "tapis",
+        "label": "Tapis incliné"
+      },
+      {
+        "id": "sandbag",
+        "label": "Sandbag"
+      },
+      {
+        "id": "pneu",
+        "label": "Pneu"
+      },
+      {
+        "id": "mannequin",
+        "label": "Mannequin JJB"
+      },
+      {
+        "id": "sac_frappe",
+        "label": "Sac de frappe"
+      },
+      {
+        "id": "med_ball",
+        "label": "Med ball / slamball"
+      },
+      {
+        "id": "landmine",
+        "label": "Landmine"
+      },
+      {
+        "id": "harnais_tete",
+        "label": "Harnais de tête"
+      },
+      {
+        "id": "gilet_lest",
+        "label": "Gilet lesté"
+      },
+      {
+        "id": "corde_a_sauter",
+        "label": "Corde à sauter"
+      },
+      {
+        "id": "piscine",
+        "label": "Piscine"
+      },
+      {
+        "id": "blazepod",
+        "label": "BlazePod / réactivité"
+      },
+      {
+        "id": "aucun",
+        "label": "Aucun matériel"
+      }
+    ],
+    "windows": [
+      {
+        "id": "maison",
+        "label": "Maison (Allier) — matériel complet",
+        "equipment_available": [
+          "kb",
+          "barre_disques",
+          "banc",
+          "banc_lombaire",
+          "barre_traction",
+          "trx",
+          "elastiques",
+          "poids_du_corps",
+          "velo",
+          "tapis",
+          "sandbag",
+          "pneu",
+          "mannequin",
+          "sac_frappe",
+          "med_ball",
+          "landmine",
+          "harnais_tete",
+          "gilet_lest",
+          "corde_a_sauter",
+          "piscine",
+          "blazepod"
+        ]
+      },
+      {
+        "id": "guyane",
+        "label": "Guyane (déployé) — matériel réduit",
+        "equipment_available": [
+          "kb",
+          "barre_disques",
+          "banc",
+          "barre_traction",
+          "banc_lombaire",
+          "trx",
+          "elastiques",
+          "poids_du_corps"
+        ]
+      },
+      {
+        "id": "paris",
+        "label": "Paris (déploiement 3x8h) — matériel ~Guyane",
+        "equipment_available": [
+          "kb",
+          "barre_disques",
+          "barre_traction",
+          "trx",
+          "elastiques",
+          "poids_du_corps"
+        ]
+      },
+      {
+        "id": "nomade",
+        "label": "Nomade (hôtels) — TRX + KB modulable + élastiques",
+        "equipment_available": [
+          "kb",
+          "trx",
+          "elastiques",
+          "poids_du_corps"
+        ]
+      }
+    ],
+    "categories": [
+      {
+        "id": "haut_force",
+        "label": "Haut du corps — force"
+      },
+      {
+        "id": "haut_iso_volume",
+        "label": "Haut du corps — iso/volume (léger)"
+      },
+      {
+        "id": "bas_force",
+        "label": "Bas du corps — force"
+      },
+      {
+        "id": "prophylaxie_epaule",
+        "label": "Prophylaxie épaule"
+      },
+      {
+        "id": "prophylaxie_genou_pied",
+        "label": "Prophylaxie genou/pied/IT band"
+      },
+      {
+        "id": "prophylaxie_poignet",
+        "label": "Prophylaxie poignet"
+      },
+      {
+        "id": "gainage",
+        "label": "Gainage / tronc"
+      },
+      {
+        "id": "alactique_finisher",
+        "label": "Finisher alactique (AGT)"
+      },
+      {
+        "id": "conditionnement",
+        "label": "Conditionnement / rounds"
+      },
+      {
+        "id": "aerobie",
+        "label": "Aérobie (Z2/seuil/VO2max)"
+      },
+      {
+        "id": "work_capacity_opérateur",
+        "label": "Work capacity / opérateur"
+      },
+      {
+        "id": "gtg",
+        "label": "GTG quotidien"
+      },
+      {
+        "id": "cars_mobilite",
+        "label": "CARs / mobilité"
+      },
+      {
+        "id": "respiration",
+        "label": "Respiration"
+      },
+      {
+        "id": "test",
+        "label": "Test / mesure"
+      },
+      {
+        "id": "combat",
+        "label": "Combat (2027+)"
+      }
+    ],
+    "contraindications": [
+      {
+        "id": "epaule_G",
+        "label": "Épaule G — tendinopathie coiffe, règle de délestage"
+      },
+      {
+        "id": "poignet_G",
+        "label": "Poignet G — kyste synovial, pas de suspension/frappe lourde avant 2027"
+      },
+      {
+        "id": "genou_G_itband",
+        "label": "IT band / genou G — zéro impact tant que point douloureux actif"
+      },
+      {
+        "id": "coude_G_epicondyle",
+        "label": "Coude G — épicondyle médial, ab wheel proscrit"
+      },
+      {
+        "id": "cervicales",
+        "label": "Cervicales — jamais en fatigue, technique parfaite"
+      }
+    ],
+    "patterns": [
+      {
+        "id": "squat",
+        "label": "Squat - force membres inferieurs"
+      },
+      {
+        "id": "hinge",
+        "label": "Hinge - puissance de hanche"
+      },
+      {
+        "id": "hinge_explosif",
+        "label": "Hinge explosif - puissance transferable"
+      },
+      {
+        "id": "push_horizontal",
+        "label": "Push horizontal - force de poussee"
+      },
+      {
+        "id": "push_vertical",
+        "label": "Push vertical - force au-dessus de la tete"
+      },
+      {
+        "id": "pull_horizontal",
+        "label": "Pull horizontal - tirage"
+      },
+      {
+        "id": "pull_vertical",
+        "label": "Pull vertical - suspension / traction"
+      },
+      {
+        "id": "carry",
+        "label": "Carry - gainage sous charge"
+      },
+      {
+        "id": "rotation_anti_rotation",
+        "label": "Rotation / anti-rotation - transmission de force"
+      },
+      {
+        "id": "none",
+        "label": "Hors pattern (prophylaxie, GTG, CARs, respiration, test, cardio, combat)"
+      }
+    ],
+    "severity_scale": [
+      {
+        "v": 0,
+        "label": "aucune"
+      },
+      {
+        "v": 1,
+        "label": "legere"
+      },
+      {
+        "v": 2,
+        "label": "forte"
+      }
+    ]
+  },
+  "exercises": [
+    {
+      "id": "militaire_barre",
+      "name": "Militaire barre (strict press)",
+      "category": "haut_force",
+      "qualities": [
+        "force_max",
+        "alactique"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": 4,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "kb_press_militaire",
+        "delestage_next_step": "iso_militaire_overcoming"
+      },
+      "test_baseline_field": "militaire_1RM_est",
+      "notes": "Priorité n°1 du programme. G en premier n/a (bilatéral).",
+      "pattern": "push_vertical",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": true
+    },
+    {
+      "id": "kb_press_militaire",
+      "name": "KB press militaire (unilatéral)",
+      "category": "haut_force",
+      "qualities": [
+        "force_max",
+        "alactique"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": 4,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Substitut militaire barre en fenêtre nomade/matériel réduit.",
+      "pattern": "push_vertical",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "iso_militaire_overcoming",
+      "name": "ISO militaire overcoming (porte)",
+      "category": "haut_iso_volume",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "aucun"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": 2,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Fallback GTG sans barre. 8s à 100% contre encadrement de porte.",
+      "pattern": "push_vertical",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "pendlay_row",
+      "name": "Pendlay Row",
+      "category": "haut_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "trx_row"
+      },
+      "pattern": "pull_horizontal",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "trx_row",
+      "name": "TRX Row",
+      "category": "haut_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "trx"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Tirage horizontal doux pour poignet G — prioriser en nomade.",
+      "pattern": "pull_horizontal",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "db_bench_incline",
+      "name": "DB Bench incliné",
+      "category": "haut_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "banc"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "pompes_poignees"
+      },
+      "pattern": "push_horizontal",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "bench_plat_barre",
+      "name": "Bench plat barre",
+      "category": "haut_force",
+      "qualities": [
+        "force_max",
+        "alactique"
+      ],
+      "equipment_required": [
+        "barre_disques",
+        "banc"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "pompes_poignees"
+      },
+      "test_baseline_field": "bench_1RM_est",
+      "pattern": "push_horizontal",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": true
+    },
+    {
+      "id": "pompes_poignees",
+      "name": "Pompes (poignées)",
+      "category": "haut_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Poignées protègent le poignet G — à emporter en nomade.",
+      "pattern": "push_horizontal",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "chin_ups",
+      "name": "Chin-ups / Pull-ups",
+      "category": "haut_force",
+      "qualities": [
+        "force_max",
+        "grip_prehension"
+      ],
+      "equipment_required": [
+        "barre_traction"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "trx_row_lesté_ou_anneaux"
+      },
+      "notes": "Sangle poignet G obligatoire sur tous les tirages verticaux/RDL/Gorilla.",
+      "test_baseline_field": "pullups_max",
+      "pattern": "pull_vertical",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "gorilla_row",
+      "name": "Gorilla Row",
+      "category": "haut_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "unilateral_alt",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "pull_horizontal",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "db_press_vertical",
+      "name": "DB Press vertical",
+      "category": "haut_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": 3,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "push_vertical",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "face_pull",
+      "name": "Face Pull élastique",
+      "category": "prophylaxie_epaule",
+      "qualities": [],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Ne se coupe JAMAIS, même en délestage total épaule G.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "rotation_ext_epaule",
+      "name": "Rotation externe élastique",
+      "category": "prophylaxie_epaule",
+      "qualities": [],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Ne se coupe JAMAIS.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "nuque_iso_elastique",
+      "name": "Nuque ISO élastique (4 directions)",
+      "category": "haut_iso_volume",
+      "qualities": [
+        "endurance_posturale"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "cervicales"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "hardstyle_plank",
+      "name": "Hardstyle Plank",
+      "category": "gainage",
+      "qualities": [
+        "anti_extension"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "rotation_anti_rotation",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "hollow_hold",
+      "name": "Hollow Hold",
+      "category": "gainage",
+      "qualities": [
+        "anti_extension"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "rotation_anti_rotation",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "row_bucheron",
+      "name": "Row bûcheron",
+      "category": "haut_iso_volume",
+      "qualities": [],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "unilateral_alt",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "pull_horizontal",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "elevations_laterales",
+      "name": "Élévations latérales DB",
+      "category": "haut_iso_volume",
+      "qualities": [],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": 2,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "shrug",
+      "name": "Shrug barre/DB",
+      "category": "haut_iso_volume",
+      "qualities": [],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "curl_biceps_bfr",
+      "name": "Curl biceps DB · BFR",
+      "category": "haut_iso_volume",
+      "qualities": [],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "extension_triceps_bfr",
+      "name": "Extension triceps DB · BFR",
+      "category": "haut_iso_volume",
+      "qualities": [],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "bulgarian_split_squat",
+      "name": "Bulgarian Split Squat",
+      "category": "bas_force",
+      "qualities": [
+        "force_unilat_antiasym"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "test_baseline_field": "bulgarian_asymetrie_pct",
+      "pattern": "squat",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "rdl",
+      "name": "Romanian Deadlift (RDL)",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "kb_rdl"
+      },
+      "test_baseline_field": "rdl_1RM_est",
+      "pattern": "hinge",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "kb_rdl",
+      "name": "KB RDL (sangle poignet)",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "hinge",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "copenhagen_adductor",
+      "name": "Copenhagen adductor",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "force_unilat_antiasym"
+      ],
+      "equipment_required": [
+        "banc"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "clamshell_renforce"
+      },
+      "pattern": "none",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "pallof_press",
+      "name": "Pallof press élastique",
+      "category": "gainage",
+      "qualities": [
+        "anti_rotation"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "rotation_anti_rotation",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "planche_laterale",
+      "name": "Planche latérale",
+      "category": "gainage",
+      "qualities": [
+        "anti_rotation"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "rotation_anti_rotation",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "dragon_flag",
+      "name": "Dragon flag",
+      "category": "gainage",
+      "qualities": [
+        "anti_extension"
+      ],
+      "equipment_required": [
+        "banc"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "coude_G_epicondyle"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Remplace l'ab wheel (proscrit définitivement).",
+      "pattern": "rotation_anti_rotation",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "farmer_carry",
+      "name": "Farmer carry",
+      "category": "bas_force",
+      "qualities": [
+        "endurance_posturale",
+        "grip_prehension"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "carry",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "zercher_squat",
+      "name": "Zercher squat",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "kb_goblet_front_squat"
+      },
+      "pattern": "squat",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "kb_goblet_front_squat",
+      "name": "KB goblet / front squat",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "squat",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "nordic_curl_elastique",
+      "name": "Nordic Curl élastique (excentrique)",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "banc_lombaire"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane"
+      ],
+      "substitutes": {
+        "paris": "trx_leg_curl",
+        "nomade": "trx_leg_curl"
+      },
+      "pattern": "hinge",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "trx_leg_curl",
+      "name": "TRX leg curl",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "trx"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "hinge",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "good_morning",
+      "name": "Good Morning (hinge)",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "good_morning_elastique"
+      },
+      "pattern": "hinge",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "good_morning_elastique",
+      "name": "Good Morning élastique",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "hinge",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "back_extension",
+      "name": "Back extension banc",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "banc_lombaire"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane"
+      ],
+      "substitutes": {},
+      "pattern": "hinge",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "kb_swing_alactique_28",
+      "name": "KB Swing 28kg 2 bras — alactique",
+      "category": "alactique_finisher",
+      "qualities": [
+        "alactique",
+        "repetition_puissance"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "2 bras uniquement (épaule G). Récup complète entre efforts.",
+      "pattern": "hinge_explosif",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "chop_lift_elastique",
+      "name": "Chop/Lift élastique explosif",
+      "category": "alactique_finisher",
+      "qualities": [
+        "alactique",
+        "puissance_rotation"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "unilateral_alt",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "rotation_anti_rotation",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "swings_rapides_3030",
+      "name": "Swings rapides 30/30",
+      "category": "conditionnement",
+      "qualities": [
+        "glycolytique"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Remplace le bearcrawl (revient plus tard). Substitut cardio propre au sprint.",
+      "pattern": "hinge_explosif",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "sprawls_shadow",
+      "name": "Sprawls + Shadow boxing",
+      "category": "conditionnement",
+      "qualities": [
+        "glycolytique",
+        "combat_specifique"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "kb_clean",
+      "name": "KB Clean (D prioritaire)",
+      "category": "conditionnement",
+      "qualities": [
+        "glycolytique",
+        "alactique"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "unilateral_alt",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Pas de snatch (épaule G).",
+      "pattern": "hinge_explosif",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "mountain_climbers",
+      "name": "Mountain climbers",
+      "category": "conditionnement",
+      "qualities": [
+        "glycolytique"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {
+        "poignet_sensible": "kb_swing_substitut"
+      },
+      "notes": "Charge en extension poignet — KB swings recommandé si poignet sensible.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "kb_swing_z2",
+      "name": "KB Swings Z2 (cadence modérée, nasal)",
+      "category": "aerobie",
+      "qualities": [
+        "aerobie_base"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Substitut course/vélo — respiration nasale = indicateur Z2.",
+      "pattern": "hinge_explosif",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "step_ups_lents",
+      "name": "Step-ups lents (alternative douce)",
+      "category": "aerobie",
+      "qualities": [
+        "aerobie_base"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Si swings fatiguent grip/épaule G.",
+      "pattern": "squat",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "velo_z2_seuil_vo2max",
+      "name": "Vélo (Z2 / seuil / VO2max, capteur puissance)",
+      "category": "aerobie",
+      "qualities": [
+        "aerobie_base",
+        "aerobie_seuil"
+      ],
+      "equipment_required": [
+        "velo"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {
+        "paris": "kb_swing_z2",
+        "nomade": "kb_swing_z2"
+      },
+      "notes": "Zéro impact, mesure propre — outil roi du développement aérobie en fenêtre maison.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "marche_lestee_tapis",
+      "name": "Marche lestée inclinée (tapis 15%)",
+      "category": "aerobie",
+      "qualities": [
+        "aerobie_base",
+        "work_capacity"
+      ],
+      "equipment_required": [
+        "tapis",
+        "gilet_lest"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "notes": "Simulateur T1 du test de stage.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "course_retour_conditionnel",
+      "name": "Course (retour conditionnel)",
+      "category": "aerobie",
+      "qualities": [
+        "aerobie_base",
+        "aerobie_seuil"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "genou_G_itband"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Prérequis: IT band silencieux 3 sem. Protocole 4min/1min → continu, +10%/sem max.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "sandbag_work_capacity",
+      "name": "Sandbag (getup, carry, to-shoulder)",
+      "category": "work_capacity_opérateur",
+      "qualities": [
+        "work_capacity",
+        "anti_rotation"
+      ],
+      "equipment_required": [
+        "sandbag"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "carry",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "med_ball_rotationnel",
+      "name": "Med ball rotationnel",
+      "category": "work_capacity_opérateur",
+      "qualities": [
+        "puissance_rotation"
+      ],
+      "equipment_required": [
+        "med_ball"
+      ],
+      "side_rule": "unilateral_alt",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {
+        "nomade": "chop_lift_elastique"
+      },
+      "pattern": "rotation_anti_rotation",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "pneu_tirage_traction",
+      "name": "Pneu (tirage / traction / retournés)",
+      "category": "work_capacity_opérateur",
+      "qualities": [
+        "work_capacity"
+      ],
+      "equipment_required": [
+        "pneu"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "notes": "Spécifique test de stage — non réplicable hors maison.",
+      "pattern": "carry",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "mannequin_jjb",
+      "name": "Mannequin JJB (dégagement, transitions)",
+      "category": "work_capacity_opérateur",
+      "qualities": [
+        "work_capacity",
+        "combat_specifique"
+      ],
+      "equipment_required": [
+        "mannequin"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "notes": "Utilisable dès maintenant, qualités physiques pas techniques.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "sac_frappe_conditionnement",
+      "name": "Sac de frappe (conditionnement/coups d'arrêt)",
+      "category": "work_capacity_opérateur",
+      "qualities": [
+        "work_capacity",
+        "combat_specifique"
+      ],
+      "equipment_required": [
+        "sac_frappe"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "notes": "Pieds/paumes d'abord tant que poignet G fragile. Frappe intensive = 2027.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "harnais_tete",
+      "name": "Harnais de tête (iso puis dynamique)",
+      "category": "prophylaxie_epaule",
+      "qualities": [
+        "endurance_posturale"
+      ],
+      "equipment_required": [
+        "harnais_tete"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "cervicales"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "notes": "ISO d'abord, charge minime, avis kiné avant charge. Jamais en fatigue.",
+      "pattern": "none",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "natation_crawl",
+      "name": "Natation crawl",
+      "category": "aerobie",
+      "qualities": [
+        "aerobie_base"
+      ],
+      "equipment_required": [
+        "piscine"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "notes": "Brasse interdite (genou G).",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "landmine_press_row",
+      "name": "Landmine (press/row/twist)",
+      "category": "haut_force",
+      "qualities": [
+        "force_max",
+        "puissance_rotation"
+      ],
+      "equipment_required": [
+        "landmine"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "notes": "Trajectoire arquée douce pour épaule G — bon substitut militaire en charge lourde progressive.",
+      "pattern": "push_vertical",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "boxe_bjj_club",
+      "name": "Boxe / BJJ club",
+      "category": "combat",
+      "qualities": [
+        "combat_specifique"
+      ],
+      "equipment_required": [
+        "aucun"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "notes": "2027, conditionnel poignet G réglé.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "ipsc_tir",
+      "name": "IPSC / tir (Glock 17 Production)",
+      "category": "combat",
+      "qualities": [
+        "reactivite"
+      ],
+      "equipment_required": [
+        "blazepod"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "clamshell_g_first",
+      "name": "Clamshell G first",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "OBLIGATOIRE quotidien, sans exception. Fessier moyen G = cause racine IT band.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "clamshell_renforce",
+      "name": "Clamshell renforcé (substitut Copenhagen nomade)",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "petersen_step_up",
+      "name": "Petersen Step-up G first",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "OBLIGATOIRE quotidien tant que douleur patte d'oie présente.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "calf_raise_g_first",
+      "name": "Calf raise G first",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "OBLIGATOIRE quotidien. Poids sur bord externe du pied.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "short_foot",
+      "name": "Short foot",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "FONDAMENTAL — cause racine pied plat → valgus → IT band.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "ancrage_tripod",
+      "name": "Ancrage tripod",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "intrinseques_pied",
+      "name": "Intrinsèques pied (towel curls, orteils)",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "tib_raises",
+      "name": "Tib raises",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "eversion_inversion_cheville",
+      "name": "Éversion/inversion cheville",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "renfo_poignet_g",
+      "name": "Renfo poignet G (flex/ext excentrique léger)",
+      "category": "prophylaxie_poignet",
+      "qualities": [],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "severity_overrides": {
+        "poignet_G": 2
+      },
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "lateral_band_walk",
+      "name": "Lateral band walk",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [
+        "proprioception_pied"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "hip_9090_pails_rails",
+      "name": "Hip 90/90 PAILs/RAILs",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Jamais à froid, fin de séance uniquement.",
+      "pattern": "none",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "epaule_g_pails_rails",
+      "name": "Épaule G PAILs/RAILs",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Jamais à froid. Amplitude non-douloureuse uniquement.",
+      "pattern": "none",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "air_squat_bfr",
+      "name": "Air squat BFR",
+      "category": "bas_force",
+      "qualities": [],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "squat",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "gtg_militaire",
+      "name": "GTG Militaire (3-4 passes/jour)",
+      "category": "gtg",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": 1,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "iso_militaire_overcoming"
+      },
+      "notes": "1er étage à couper si délestage épaule G (le volume invisible).",
+      "pattern": "push_vertical",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "gtg_wall_sit",
+      "name": "GTG Wall sit",
+      "category": "gtg",
+      "qualities": [
+        "endurance_posturale"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "gtg_dead_hang",
+      "name": "GTG Dead hang",
+      "category": "gtg",
+      "qualities": [
+        "grip_prehension",
+        "endurance_posturale"
+      ],
+      "equipment_required": [
+        "barre_traction"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "gtg_wall_sit"
+      },
+      "notes": "Stop si douleur poignet G.",
+      "pattern": "pull_vertical",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "cars_epaule",
+      "name": "CARs Épaule",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Avant chaque séance force.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "cars_hanche",
+      "name": "CARs Hanche",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "cars_poignet_g",
+      "name": "CARs Poignet G",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Quotidien obligatoire, jamais douloureux.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "severity_overrides": {
+        "poignet_G": 2
+      },
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "cars_cheville",
+      "name": "CARs Cheville",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "cars_cervicales",
+      "name": "CARs Cervicales",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "cervicales"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "notes": "Jamais cercle complet, prudence.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "severity_overrides": {
+        "cervicales": 2
+      },
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "test_bolt",
+      "name": "Test BOLT",
+      "category": "respiration",
+      "qualities": [
+        "respiration_tolerance_co2"
+      ],
+      "equipment_required": [
+        "aucun"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "test_baseline_field": "bolt_score_median",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "box_breathing",
+      "name": "Box breathing",
+      "category": "respiration",
+      "qualities": [
+        "respiration_tolerance_co2"
+      ],
+      "equipment_required": [
+        "aucun"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "coherence_cardiaque",
+      "name": "Cohérence cardiaque",
+      "category": "respiration",
+      "qualities": [
+        "respiration_tolerance_co2"
+      ],
+      "equipment_required": [
+        "aucun"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "humming_expiratoire",
+      "name": "Humming expiratoire",
+      "category": "respiration",
+      "qualities": [
+        "respiration_tolerance_co2"
+      ],
+      "equipment_required": [
+        "aucun"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "test_cmj_broad_jump",
+      "name": "Test CMJ / Broad jump",
+      "category": "test",
+      "qualities": [
+        "alactique"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "test_baseline_field": "cmj_broadjump_cm",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "test_dropoff_kb",
+      "name": "Test Drop-off KB (répétition puissance)",
+      "category": "test",
+      "qualities": [
+        "repetition_puissance"
+      ],
+      "equipment_required": [
+        "kb"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "test_baseline_field": "dropoff_pct",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "test_wall_sit",
+      "name": "Test Wall sit G/D",
+      "category": "test",
+      "qualities": [
+        "endurance_posturale"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "test_baseline_field": "wallsit_g_d_sec",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "test_marche_lestee",
+      "name": "Test Marche lestée 1600m @10kg",
+      "category": "test",
+      "qualities": [
+        "aerobie_base",
+        "work_capacity"
+      ],
+      "equipment_required": [
+        "gilet_lest"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "genou_G_itband"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {},
+      "test_baseline_field": "marche_1600m_min",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "test_hrr",
+      "name": "Test HRR (récupération cardiaque)",
+      "category": "test",
+      "qualities": [
+        "recup_cardiaque"
+      ],
+      "equipment_required": [
+        "poids_du_corps"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "test_baseline_field": "hrr_sec",
+      "notes": "Post-Guyane: de préférence sur effort cyclique (vélo/montée), plus fiable que burpees.",
+      "pattern": "none",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false
+    }
+  ]
+}</script>
+<script id="moteur-templates-data" type="application/json">{
+  "meta": {
+    "nom": "Be Ready — Templates de séance",
+    "version": "1.0",
+    "description": "Couche intermédiaire entre le catalogue d'exercices (exercices individuels) et le moteur de l'app (choix du jour). Chaque type de séance définit ses créneaux (slots) : quelle(s) qualité(s) et catégorie(s) du catalogue chaque slot doit couvrir. L'app résout ensuite chaque slot en un exercice concret selon la fenêtre active (matériel dispo) et les contre-indications du jour, en suivant la chaîne de substituts du catalogue.",
+    "regle_bascule": "mode = 'semaine_classique' par défaut. mode = 'bloc_qualite' seulement si duree_fenetre_jours >= 28 (maison OU déplacement — le lieu ne décide pas, la durée décide). En semaine classique, seules les séances avec semaine_classique=true sont proposées ; les autres restent visibles mais verrouillées dans l'app.",
+    "resolution_slot": "Pour un slot donné : filtrer catalogue.exercises par category (et qualities si précisé) -> exclure ceux dont une contraindication est un flag actif du bilan du jour -> parmi les restants, garder ceux dont current_window ∈ windows_ok -> si aucun ne matche, suivre substitutes du meilleur candidat pour la fenêtre. side_rule G_first du catalogue reste prioritaire à volume/charge égal."
+  },
+  "session_types": [
+    {
+      "id": "haut_1",
+      "nom": "Haut 1",
+      "frequence_cible": "1x/semaine, début de semaine (SNC frais)",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "force_max",
+        "alactique"
+      ],
+      "objectif": "Push vertical lourd (priorité n°1 du programme) + tirage horizontal + primer alactique.",
+      "slots": [
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "qualities": [
+            "mobilite"
+          ],
+          "obligatoire": true,
+          "note": "CARs épaule + rotation thoracique avant tout.",
+          "exercice_pref": "cars_epaule"
+        },
+        {
+          "role": "primer_alactique",
+          "category": "alactique_finisher",
+          "qualities": [
+            "alactique"
+          ],
+          "obligatoire": false,
+          "actif_si": "bloc_qualite ou energie suffisante",
+          "exercice_pref": "kb_swing_alactique_28"
+        },
+        {
+          "role": "push_vertical_principal",
+          "category": "haut_force",
+          "qualities": [
+            "force_max"
+          ],
+          "exercice_pref": "militaire_barre",
+          "obligatoire": true
+        },
+        {
+          "role": "tirage_horizontal",
+          "category": "haut_force",
+          "qualities": [
+            "force_max"
+          ],
+          "exercice_pref": "pendlay_row",
+          "obligatoire": true
+        },
+        {
+          "role": "push_horizontal_secondaire",
+          "category": "haut_force",
+          "exercice_pref": "db_bench_incline",
+          "obligatoire": false
+        },
+        {
+          "role": "tirage_vertical",
+          "category": "haut_force",
+          "qualities": [
+            "grip_prehension"
+          ],
+          "exercice_pref": "chin_ups",
+          "obligatoire": true
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
+          "obligatoire": true,
+          "note": "Face pull + rotation ext — ne se coupe jamais, même en délestage.",
+          "exercice_pref": "face_pull"
+        },
+        {
+          "role": "prophylaxie_nuque",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false
+        },
+        {
+          "role": "gainage_finisher",
+          "category": "gainage",
+          "qualities": [
+            "anti_extension"
+          ],
+          "exercice_pref": "hardstyle_plank",
+          "obligatoire": true
+        }
+      ]
+    },
+    {
+      "id": "haut_2",
+      "nom": "Haut 2 + AGT",
+      "frequence_cible": "1x/semaine, fin de semaine",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "force_max",
+        "alactique"
+      ],
+      "objectif": "Bench prioritaire + traction lestée + épaule, puis finisher alactique complet (AGT).",
+      "slots": [
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "obligatoire": true,
+          "exercice_pref": "cars_epaule"
+        },
+        {
+          "role": "push_horizontal_principal",
+          "category": "haut_force",
+          "qualities": [
+            "force_max"
+          ],
+          "exercice_pref": "bench_plat_barre",
+          "obligatoire": true
+        },
+        {
+          "role": "push_vertical_secondaire",
+          "category": "haut_force",
+          "exercice_pref": "db_press_vertical",
+          "obligatoire": false,
+          "contrainte": "epaule_G tier 3"
+        },
+        {
+          "role": "tirage_lesté",
+          "category": "haut_force",
+          "exercice_pref": "chin_ups",
+          "obligatoire": true
+        },
+        {
+          "role": "tirage_unilateral",
+          "category": "haut_force",
+          "exercice_pref": "gorilla_row",
+          "obligatoire": false
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
+          "obligatoire": true,
+          "exercice_pref": "face_pull"
+        },
+        {
+          "role": "gainage_finisher",
+          "category": "gainage",
+          "exercice_pref": "hardstyle_plank",
+          "obligatoire": true
+        },
+        {
+          "role": "agt_finisher",
+          "category": "alactique_finisher",
+          "qualities": [
+            "alactique",
+            "puissance_rotation"
+          ],
+          "obligatoire": true,
+          "note": "KB swing 28kg 2 bras + chop/lift élastique. Récup complète entre efforts, 8-12 efforts max.",
+          "exercice_pref": "kb_swing_alactique_28"
+        }
+      ]
+    },
+    {
+      "id": "haut_3",
+      "nom": "Haut 3 (léger)",
+      "frequence_cible": "au besoin selon énergie — jamais si HRV/sommeil dégradés",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": false,
+      "qualites_prioritaires": [],
+      "objectif": "ISO + volume, respiration nerveuse. Aucune barre lourde. Optionnel — sauter si épaule G sensible.",
+      "slots": [
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "obligatoire": true,
+          "exercice_pref": "cars_epaule"
+        },
+        {
+          "role": "iso_volume_push",
+          "category": "haut_iso_volume",
+          "exercice_pref": "bench_plat_barre",
+          "obligatoire": true,
+          "note": "En mode ISO overcoming + volume léger, jamais lourd."
+        },
+        {
+          "role": "iso_volume_militaire",
+          "category": "haut_iso_volume",
+          "exercice_pref": "militaire_barre",
+          "obligatoire": false,
+          "note": "Sauter si épaule G sensible ou GTG militaire déjà complet."
+        },
+        {
+          "role": "tirage_volume",
+          "category": "haut_force",
+          "exercice_pref": "chin_ups",
+          "obligatoire": true
+        },
+        {
+          "role": "accessoires_haut",
+          "category": "haut_iso_volume",
+          "obligatoire": false,
+          "note": "Row bûcheron, élévations latérales, shrug, curl/extension BFR — au choix selon temps."
+        },
+        {
+          "role": "gainage_finisher",
+          "category": "gainage",
+          "exercice_pref": "hollow_hold",
+          "obligatoire": true
+        }
+      ]
+    },
+    {
+      "id": "bas_1",
+      "nom": "Bas 1",
+      "frequence_cible": "1x/semaine",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "force_unilat_antiasym",
+        "force_max"
+      ],
+      "objectif": "Unilatéral genou-dominant, hinge, gainage anti-rotation, carry.",
+      "slots": [
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "qualities": [
+            "mobilite"
+          ],
+          "obligatoire": true,
+          "note": "CARs hanche + activation clamshell/Petersen.",
+          "exercice_pref": "cars_hanche"
+        },
+        {
+          "role": "unilateral_genou",
+          "category": "bas_force",
+          "qualities": [
+            "force_unilat_antiasym"
+          ],
+          "exercice_pref": "bulgarian_split_squat",
+          "obligatoire": true,
+          "note": "G en premier, fixe la charge du D."
+        },
+        {
+          "role": "hinge_principal",
+          "category": "bas_force",
+          "qualities": [
+            "force_max"
+          ],
+          "exercice_pref": "rdl",
+          "obligatoire": true
+        },
+        {
+          "role": "adducteur_unilateral",
+          "category": "prophylaxie_genou_pied",
+          "exercice_pref": "copenhagen_adductor",
+          "obligatoire": true
+        },
+        {
+          "role": "anti_rotation",
+          "category": "gainage",
+          "qualities": [
+            "anti_rotation"
+          ],
+          "exercice_pref": "pallof_press",
+          "obligatoire": true
+        },
+        {
+          "role": "anti_extension_finisher",
+          "category": "gainage",
+          "exercice_pref": "dragon_flag",
+          "obligatoire": false
+        },
+        {
+          "role": "carry",
+          "category": "bas_force",
+          "qualities": [
+            "endurance_posturale"
+          ],
+          "exercice_pref": "farmer_carry",
+          "obligatoire": false
+        }
+      ]
+    },
+    {
+      "id": "bas_2",
+      "nom": "Bas 2",
+      "frequence_cible": "1x/semaine",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "force_max"
+      ],
+      "objectif": "Squat bilatéral, chaîne postérieure excentrique, anti-extension.",
+      "slots": [
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "obligatoire": true,
+          "exercice_pref": "cars_hanche"
+        },
+        {
+          "role": "squat_bilateral",
+          "category": "bas_force",
+          "qualities": [
+            "force_max"
+          ],
+          "exercice_pref": "zercher_squat",
+          "obligatoire": true
+        },
+        {
+          "role": "chaine_posterieure_excentrique",
+          "category": "bas_force",
+          "exercice_pref": "nordic_curl_elastique",
+          "obligatoire": true
+        },
+        {
+          "role": "hinge_secondaire",
+          "category": "bas_force",
+          "exercice_pref": "good_morning",
+          "obligatoire": false
+        },
+        {
+          "role": "anti_rotation_ou_laterale",
+          "category": "gainage",
+          "exercice_pref": "planche_laterale",
+          "obligatoire": true
+        },
+        {
+          "role": "anti_extension_finisher",
+          "category": "gainage",
+          "exercice_pref": "dragon_flag",
+          "obligatoire": false
+        },
+        {
+          "role": "back_extension",
+          "category": "bas_force",
+          "exercice_pref": "back_extension",
+          "obligatoire": false
+        }
+      ]
+    },
+    {
+      "id": "seuil",
+      "nom": "Seuil (SV2)",
+      "frequence_cible": "1x/semaine dès que la base Z2 tient (fenêtre maison surtout)",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_seuil"
+      ],
+      "objectif": "Intervalles 8-12 min à SV2 (~166 bpm). Développe le seuil, pas la base.",
+      "slots": [
+        {
+          "role": "aerobie_seuil",
+          "category": "aerobie",
+          "qualities": [
+            "aerobie_seuil"
+          ],
+          "exercice_pref": "velo_z2_seuil_vo2max",
+          "obligatoire": true,
+          "note": "Substitut sans vélo (déplacement) : marche/course rapide si IT band OK, sinon KB swings cadence haute en dernier recours (imprécis pour le seuil)."
+        }
+      ]
+    },
+    {
+      "id": "vo2max",
+      "nom": "VO2max",
+      "frequence_cible": "1x/semaine en phase développement aérobie, jamais 2 séances hautes intensité aérobie le même jour que seuil",
+      "semaine_classique": false,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_seuil"
+      ],
+      "objectif": "Intervalles courts 4x4 min à >170 bpm. Réservé aux phases où la base aérobie est déjà réamorcée.",
+      "slots": [
+        {
+          "role": "aerobie_vo2max",
+          "category": "aerobie",
+          "qualities": [
+            "aerobie_seuil"
+          ],
+          "exercice_pref": "velo_z2_seuil_vo2max",
+          "obligatoire": true,
+          "note": "Nécessite mesure de puissance/FC fiable — vélo Assioma en priorité. Non reproductible fidèlement en nomade."
+        }
+      ]
+    },
+    {
+      "id": "vma",
+      "nom": "VMA (test/développement)",
+      "frequence_cible": "ponctuel — test de contrôle ou bloc développement course",
+      "semaine_classique": false,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_seuil"
+      ],
+      "objectif": "Mesure ou développement de la vitesse maximale aérobie. Conditionné au protocole retour course (IT band silencieux 3 sem).",
+      "slots": [
+        {
+          "role": "vma_effort",
+          "category": "aerobie",
+          "exercice_pref": "course_retour_conditionnel",
+          "obligatoire": true,
+          "contrainte": "genou_G_itband — bloqué si flag actif"
+        }
+      ]
+    },
+    {
+      "id": "conditioning_glycolytique",
+      "nom": "Conditioning glycolytique (rounds)",
+      "frequence_cible": "1x/semaine, samedi type",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "glycolytique"
+      ],
+      "objectif": "Rounds 3min/1min combat/cyclique — survivre à l'acidose, pas la base aérobie.",
+      "slots": [
+        {
+          "role": "round_1",
+          "category": "conditionnement",
+          "exercice_pref": "swings_rapides_3030",
+          "obligatoire": true
+        },
+        {
+          "role": "round_2",
+          "category": "conditionnement",
+          "exercice_pref": "sprawls_shadow",
+          "obligatoire": true
+        },
+        {
+          "role": "round_3",
+          "category": "conditionnement",
+          "exercice_pref": "kb_clean",
+          "obligatoire": true
+        },
+        {
+          "role": "round_4",
+          "category": "conditionnement",
+          "exercice_pref": "mountain_climbers",
+          "obligatoire": false,
+          "contrainte": "poignet_G — remplacer par kb_swing si sensible"
+        }
+      ]
+    },
+    {
+      "id": "work_capacity",
+      "nom": "Work capacity / opérateur",
+      "frequence_cible": "1x/semaine — fenêtre maison seulement (matériel dédié)",
+      "semaine_classique": false,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "work_capacity"
+      ],
+      "objectif": "Charge instable, transport, transitions — transfert direct au test de stage. N'existe qu'en fenêtre maison.",
+      "slots": [
+        {
+          "role": "sandbag_ou_pneu",
+          "category": "work_capacity_opérateur",
+          "exercice_pref": "sandbag_work_capacity",
+          "obligatoire": true
+        },
+        {
+          "role": "mannequin_ou_sac",
+          "category": "work_capacity_opérateur",
+          "exercice_pref": "mannequin_jjb",
+          "obligatoire": false
+        },
+        {
+          "role": "carry_lourd",
+          "category": "bas_force",
+          "exercice_pref": "farmer_carry",
+          "obligatoire": false
+        }
+      ],
+      "note": "En nomade/Paris, cette séance n'a pas d'équivalent réel — elle reste verrouillée jusqu'au retour maison plutôt que de forcer un substitut dégradé."
+    },
+    {
+      "id": "z2",
+      "nom": "Z2 (aérobie base, courte)",
+      "frequence_cible": "2-4x/semaine, quotidien idéalement en base",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_base"
+      ],
+      "objectif": "Base aérobie, zéro impact, respiration nasale = capteur de zone.",
+      "slots": [
+        {
+          "role": "aerobie_base_courte",
+          "category": "aerobie",
+          "qualities": [
+            "aerobie_base"
+          ],
+          "exercice_pref": "velo_z2_seuil_vo2max",
+          "obligatoire": true,
+          "note": "Substitut universel toutes fenêtres : kb_swing_z2 ou marche nasale."
+        }
+      ]
+    },
+    {
+      "id": "z2_long",
+      "nom": "Z2 long (sortie longue)",
+      "frequence_cible": "1x/semaine, dimanche type",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_base"
+      ],
+      "objectif": "Durée plutôt qu'intensité — 45-60+ min. Peut intégrer dénivelé si test de stage approche.",
+      "slots": [
+        {
+          "role": "aerobie_base_longue",
+          "category": "aerobie",
+          "qualities": [
+            "aerobie_base"
+          ],
+          "exercice_pref": "velo_z2_seuil_vo2max",
+          "obligatoire": true,
+          "note": "Rando lestée, natation crawl (si piscine, prudence épaule G), ou marche lestée inclinée en substitut selon fenêtre."
+        }
+      ]
+    }
+  ],
+  "regles_transverses": {
+    "gtg_et_routines": "GTG (militaire/wall sit/dead hang), CARs, renfo obligatoire quotidien (clamshell/Petersen/calf raise G first) et respiration sont hors slots de séance — affichés à part dans l'app, tous les jours, indépendamment du mode et du type de séance choisi.",
+    "delestage_epaule": "Si flag épaule_G actif niveau 3-4 (bilan du jour), les slots haut_force taggés force_max sur push vertical/horizontal basculent automatiquement vers leur substitut ou sont retirés selon l'étage atteint (catalogue.delestage_tier) — jamais les slots prophylaxie_epaule.",
+    "flag_rouge_seance_compressee": "Sommeil <6h OU HRV -10% OU douleur ≥ modérée -> volume -50% sur tous les slots non-obligatoires du template choisi, jamais d'annulation totale sauf demande explicite.",
+    "priorite_qualites_phase": "La phase active (définie ailleurs, hors ce fichier) fixe 2-3 qualités prioritaires. Les session_types dont qualites_prioritaires recoupe la phase sont proposés en premier dans l'app ; les autres restent disponibles mais en second plan."
+  }
+}</script>
+<script id="moteur-periodisation-data" type="application/json">{
+  "meta": {
+    "nom": "Be Ready — Périodisation bloc qualité",
+    "version": "4.0",
+    "description": "Cycle appliqué automatiquement dès qu'un bloc qualité est actif (fenêtre déclarée ou écoulée >= 28 jours), sauf si un focus manuel est choisi (force / puissance / préparation tests / semaine tests), qui prime toujours sur le calcul automatique. Pas de semaine d'adaptation : la puissance suit toujours une semaine de déload de force donc n'a pas besoin de réadaptation, et la force est travaillée toute l'année donc n'en a pas besoin non plus. Chaque bloc de 4 semaines = 3 semaines progressives (léger -> modéré -> pic) sur UNE qualité, puis 1 semaine de déload avant de rebasculer sur l'autre qualité. cycle_index = floor(jours_ecoules_depuis_debut_bloc_qualite / 28) ; type = cycle_index pair -> force, impair -> puissance. semaine_du_cycle = floor(jours_ecoules / 7) % 4 + 1. v4.0: le cycle automatique reste TOUJOURS en bloc Force (pas d'alternance auto vers Puissance) -- Puissance est disponible uniquement via le focus manuel, quand la personne juge que cluster/PAP est approprie ce jour-la (pas de risque poignet/genou). L'aerobie_seuil ne recoit plus de protocole de cycle (Seuil/VO2max progressent par duree/regularite, pas par top-set/cluster, cf manuel)."
+  },
+  "protocoles": {
+    "top_set_backoff_leger": {
+      "nom": "Top Set + Back-off (léger)",
+      "description": "Montée vers un Top Set sous-maximal (RIR2-3), puis back-off pour le volume.",
+      "rpe": "6-7",
+      "format": "5×3 → Top Set (léger) + back-off"
+    },
+    "top_set_backoff_modere": {
+      "nom": "Top Set + Back-off (modéré)",
+      "description": "Montée vers un Top Set plus proche du maximum (RIR1-2), back-off ajusté.",
+      "rpe": "7-8",
+      "format": "5×3 → Top Set (modéré) + back-off"
+    },
+    "top_set_backoff_pic": {
+      "nom": "Top Set + Back-off (pic)",
+      "description": "Top Set au RIR1, back-off réduit. Pic de la vague avant déload.",
+      "rpe": "8-9",
+      "format": "5×3 → Top Set (pic, RIR1) + back-off"
+    },
+    "cluster_pap_leger": {
+      "nom": "Cluster / PAP (léger)",
+      "description": "Cluster ou PAP à charge sous-maximale, vitesse prioritaire sur la charge.",
+      "rpe": "7",
+      "format": "Cluster 2+2+2 (léger) ou PAP"
+    },
+    "cluster_pap_modere": {
+      "nom": "Cluster / PAP (modéré)",
+      "description": "Cluster/PAP à charge plus proche du pic, vitesse toujours maintenue de bout en bout.",
+      "rpe": "8",
+      "format": "Cluster 2+2+2 (modéré) ou PAP"
+    },
+    "cluster_pap_pic": {
+      "nom": "Cluster / PAP (pic)",
+      "description": "Cluster/PAP au pic de charge tant que la vitesse ne chute pas. Dernière semaine avant déload.",
+      "rpe": "9",
+      "format": "Cluster 2+2+2 (pic) ou PAP"
+    },
+    "deload": {
+      "nom": "Déload",
+      "description": "Volume et charge réduits (~-50%), technique maintenue. Consolidation, pas régression. Sert aussi de transition avant de rebasculer sur l'autre qualité — pas besoin de semaine d'adaptation après.",
+      "rpe": "4-5",
+      "format": "3×3 déload"
+    },
+    "prep_test": {
+      "nom": "Préparation test",
+      "description": "Montée par paliers vers des singles/triples sous-maximaux, vitesse gardée, sans chercher le max.",
+      "rpe": "7-8",
+      "format": "Paliers 50%×5 / 70%×3 / 85%×1 vers sous-max"
+    },
+    "test_officiel": {
+      "nom": "Test officiel",
+      "description": "Test 1RM/3RM ou max de répétitions. Échauffement progressif standard (50%×5 / 70%×3 / 85%×1 / 93%×3).",
+      "rpe": "9-10",
+      "format": "Test 1RM/3RM ou max reps"
+    },
+    "primer_alactique_ref": {
+      "nom": "Primer alactique",
+      "description": "2-3 efforts explosifs courts, récupération courte, avant le lift principal (potentiation).",
+      "rpe": "9-10 (effort), récup courte",
+      "format": "2-3×8s + récup courte"
+    },
+    "agt_pic_ref": {
+      "nom": "AGT pic",
+      "description": "Efforts alactiques maximaux, récupération complète entre efforts (8-12 efforts max/séance).",
+      "rpe": "10 (effort), récup complète",
+      "format": "4-8×8s récup complète"
+    }
+  },
+  "cycles": {
+    "force": {
+      "label": "Bloc Force maximale",
+      "semaines": [
+        {
+          "semaine": 1,
+          "phase": "leger",
+          "volume_pct": 100,
+          "protocole_par_qualite": {
+            "force_max": "top_set_backoff_leger",
+            "alactique": "primer_alactique_ref"
+          }
+        },
+        {
+          "semaine": 2,
+          "phase": "modere",
+          "volume_pct": 100,
+          "protocole_par_qualite": {
+            "force_max": "top_set_backoff_modere",
+            "alactique": "primer_alactique_ref"
+          }
+        },
+        {
+          "semaine": 3,
+          "phase": "pic",
+          "volume_pct": 100,
+          "protocole_par_qualite": {
+            "force_max": "top_set_backoff_pic",
+            "alactique": "primer_alactique_ref"
+          }
+        },
+        {
+          "semaine": 4,
+          "phase": "deload",
+          "volume_pct": 50,
+          "protocole_par_qualite": {
+            "force_max": "deload",
+            "alactique": "deload"
+          }
+        }
+      ]
+    },
+    "puissance": {
+      "label": "Bloc Puissance / force-vitesse",
+      "semaines": [
+        {
+          "semaine": 1,
+          "phase": "leger",
+          "volume_pct": 100,
+          "protocole_par_qualite": {
+            "force_max": "cluster_pap_leger",
+            "alactique": "agt_pic_ref"
+          }
+        },
+        {
+          "semaine": 2,
+          "phase": "modere",
+          "volume_pct": 100,
+          "protocole_par_qualite": {
+            "force_max": "cluster_pap_modere",
+            "alactique": "agt_pic_ref"
+          }
+        },
+        {
+          "semaine": 3,
+          "phase": "pic",
+          "volume_pct": 100,
+          "protocole_par_qualite": {
+            "force_max": "cluster_pap_pic",
+            "alactique": "agt_pic_ref"
+          }
+        },
+        {
+          "semaine": 4,
+          "phase": "deload",
+          "volume_pct": 50,
+          "protocole_par_qualite": {
+            "force_max": "deload",
+            "alactique": "deload"
+          }
+        }
+      ]
+    }
+  },
+  "focus_manuel": {
+    "force": {
+      "label": "Force max (fixe, hors cycle auto)",
+      "protocole_par_qualite": {
+        "force_max": "top_set_backoff_modere",
+        "alactique": "primer_alactique_ref"
+      },
+      "volume_pct": 100
+    },
+    "puissance": {
+      "label": "Puissance (fixe, hors cycle auto)",
+      "protocole_par_qualite": {
+        "force_max": "cluster_pap_modere",
+        "alactique": "agt_pic_ref"
+      },
+      "volume_pct": 100
+    },
+    "prep_tests": {
+      "label": "Préparation tests",
+      "protocole_par_qualite": {
+        "force_max": "prep_test",
+        "alactique": "prep_test"
+      },
+      "volume_pct": 80
+    },
+    "semaine_tests": {
+      "label": "Semaine tests",
+      "protocole_par_qualite": {
+        "force_max": "test_officiel",
+        "alactique": "test_officiel"
+      },
+      "volume_pct": 60
+    }
+  },
+  "notes": [
+    "Le focus manuel prime toujours sur le calcul automatique du cycle — utile pour caler une préparation de test ou une semaine de tests sans attendre que le cycle Force/Puissance tombe au bon moment.",
+    "Pas de semaine d'adaptation : la puissance suit toujours une semaine de déload de force (déjà 'adaptée' par le repos), et la force est développée toute l'année donc reste familière.",
+    "Guyane (programme historique figé, 9 semaines jusqu'au 10 août 2026) garde sa propre structure S1-S9 telle quelle — ce cycle s'applique aux blocs qualité futurs.",
+    "L'alternance Force -> Puissance -> Force... continue tant que le bloc qualité dure et qu'aucun focus manuel n'est actif."
+  ]
+}</script>
 <script type="module">
 
 // ── FIREBASE ──────────────────────────────────────────────────────────────
@@ -436,14 +3770,14 @@ const ROUTINE_MATIN = [
   {id:'cars_poignet',cat:'CARs',icon:'⭕',name:'CARs Poignet G',detail:'5×/dir · 30s · DOUX',priority:'★★★',note:'Poignet G sensible = QUOTIDIEN OBLIGATOIRE. Jamais douloureux. Flexion/ext/prono/supination.'},
   {id:'cars_cheville',cat:'CARs',icon:'⭕',name:'CARs Cheville',detail:'5×/sens · 30s',priority:'★★',note:'Stance et footwork MMA. Dorsiflexion active = tronc vertical au squat = quads.'},
   {id:'cars_cervicales',cat:'CARs',icon:'⭕',name:'CARs Cervicales',detail:'3×/dir · 20s · PRUDENCE',priority:'★',note:'Jamais cercle complet. Rotation lente + flexion latérale. Stop si douleur.'},
-  {id:'clamshell',cat:'Renfo ★★★ obligatoire',icon:'🦵',name:'Clamshell G FIRST',detail:'3 × 15/côté · élastique léger',priority:'★★★',note:'Fessier moyen G = cause racine IT band. Quotidien SANS EXCEPTION. G d\'abord.'},
-  {id:'petersen',cat:'Renfo ★★★ obligatoire',icon:'🦵',name:'Petersen Step-up G FIRST',detail:'2 × 10/jambe · BW',priority:'★★★',note:'Orteils sur bord marche 10-15cm. Genou monte vers la pointe. VMO. IT band rehab. Quotidien jusqu\'à disparition douleur.'},
-  {id:'balance',cat:'Unipodal brossage de dents',icon:'🦶',name:'Balance unipodale · brosse-dents',detail:'30s G · 30s D · puis yeux fermés',priority:'★',note:'Pendant le brossage. G EN PREMIER. Yeux fermés = objectif progressif. Aucun équipement. Zéro coût de temps.'},
+  {id:'clamshell',cat:'Renfo obligatoire',icon:'🦵',name:'Clamshell G FIRST',detail:'3 × 15/côté · élastique léger',priority:'★★★',note:'Fessier moyen G = cause racine IT band. Quotidien SANS EXCEPTION. G d\'abord.'},
+  {id:'petersen',cat:'Renfo obligatoire',icon:'🦵',name:'Petersen Step-up G FIRST',detail:'2 × 10/jambe · BW',priority:'★★★',note:'Orteils sur bord marche 10-15cm. Genou monte vers la pointe. VMO. IT band rehab. Quotidien jusqu\'à disparition douleur.'},
+  {id:'balance',cat:'Renfo obligatoire',icon:'🦶',name:'Balance unipodale · brosse-dents',detail:'30s G · 30s D · puis yeux fermés',priority:'★',note:'Pendant le brossage. G EN PREMIER. Yeux fermés = objectif progressif. Aucun équipement. Zéro coût de temps.'},
   {id:'bolt',cat:'Respiration',icon:'🌬️',name:'Test BOLT',detail:'1 test · matin avant box breathing',priority:'★★',note:'Expire normalement → pince nez → chrono premier désir. Score >25s fin Bloc 2. Départ ~15s normal.'},
   {id:'box_breathing',cat:'Respiration',icon:'🌬️',name:'Box Breathing',detail:'4s/4s/4s/4s × 5 min · → 5s en S3',priority:'★★★',note:'Inhale nasal 4s → hold 4s → exhale bouche 4s → hold 4s. ↑ CO₂ tolérance. Matin à jeun.'},
   {id:'coherence',cat:'Respiration',icon:'💓',name:'Cohérence Cardiaque',detail:'5 min couché · soir',priority:'★★★',note:'5s inhale nasal + 5s exhale bouche. 5 min couché le soir. ↑ HRV.'},
   {id:'humming',cat:'Respiration',icon:'🎵',name:'Humming expiratoire',detail:'3–5 min · post-séance ou soir',priority:'★★',note:'Fredonner pendant l\'expiration (mmm). ↑ NO nasal. ↑ tolérance CO₂. Après séance ou avant sommeil.'},
-  {id:'calf_raise',cat:'Renfo ★★★ obligatoire',icon:'🦵',name:'Calf raise G FIRST · sur bord marche',detail:'3 × 15/jambe · BW',priority:'★★★',note:'G EN PREMIER. Talon descend sous le niveau du pied. Descente 3s. Mollet + proprioception cheville. \u26a0 PIEDS PLATS : garder le poids sur le BORD EXTERNE du pied (ne pas s\'effondrer vers l\'int\u00e9rieur) pour solliciter le TIBIAL POST\u00c9RIEUR, le muscle qui soutient la vo\u00fbte.'},
+  {id:'calf_raise',cat:'Renfo obligatoire',icon:'🦵',name:'Calf raise G FIRST · sur bord marche',detail:'3 × 15/jambe · BW',priority:'★★★',note:'G EN PREMIER. Talon descend sous le niveau du pied. Descente 3s. Mollet + proprioception cheville. \u26a0 PIEDS PLATS : garder le poids sur le BORD EXTERNE du pied (ne pas s\'effondrer vers l\'int\u00e9rieur) pour solliciter le TIBIAL POST\u00c9RIEUR, le muscle qui soutient la vo\u00fbte.'},
   {id:'short_foot',cat:'Renfo optionnel',icon:'🦶',name:'Short foot (pieds plats)',detail:'2-3×10 tenues 5-10s',priority:'',note:'FONDAMENTAL pieds plats. Pied \u00e0 plat, rapprocher la base du gros orteil vers le talon pour CR\u00c9ER une vo\u00fbte, SANS recroqueviller les orteils. R\u00e9active tibial post\u00e9rieur + intrins\u00e8ques. Lien direct avec genou G (pied plat \u2192 valgus genou \u2192 IT band).'},
   {id:'tripod',cat:'Renfo optionnel',icon:'🦶',name:'Ancrage tripod',detail:'debout / squat / fente',priority:'',note:'R\u00e9partir le poids sur 3 points : base gros orteil + base petit orteil + talon. Maintenir la vo\u00fbte active en charge. \u00c0 pratiquer debout, en squat, en fente \u2014 r\u00e9entra\u00eene le pied \u00e0 ne pas s\'effondrer.'},
   {id:'foot_intrinsics',cat:'Renfo optionnel',icon:'🦶',name:'Intrins\u00e8ques pied',detail:'towel curls + orteils',priority:'',note:'Towel curls (agripper serviette avec orteils), \u00e9carter les orteils, relev\u00e9 gros orteil seul puis les 4 autres. R\u00e9veille la musculature profonde du pied. Travail pieds nus progressif sur surfaces vari\u00e9es.'},
@@ -455,6 +3789,414 @@ const ROUTINE_MATIN = [
   {id:'shoulder_pailrail',cat:'Renfo optionnel',icon:'🦴',name:'Épaule G PAILs/RAILs',detail:'2×90s/côté · fin de séance',priority:'',note:'Jamais à froid (après une séance haut). Gagne amplitude ACTIVE + solidité articulaire de l\'épaule G fragile. Position d\'étirement passif 90s, puis contraction PAILs (pousser dans l\'étirement) 10-20s, puis RAILs (tirer hors de l\'étirement, contracter l\'agoniste) 10-20s. Cible flexion + rotation externe (les amplitudes limitées de l\'épaule G).'},
   {id:'bfr_squat',cat:'Renfo optionnel',icon:'🦵',name:'Air squat BFR · sangles cuisses',detail:'4 séries : 30+15+15+15 · 30s repos',priority:'',note:'Sangles réglables autour des cuisses (~7/10, restriction veineuse). N’importe quel jour, idéalement en activation AVANT une séance jambes (Bas 1 ou Bas 2). Réveille quadriceps + VMO (soutien genou) SANS charge articulaire — utile genou G. Bilatéral (2 jambes ensemble). Surveiller amplitude si IT band/genou G parle.'}
 ];
+
+// ── MOTEUR DE SÉANCE — catalogue, templates, périodisation ─────────────────
+const MCAT = JSON.parse(document.getElementById('moteur-catalogue-data').textContent);
+const MTPL = JSON.parse(document.getElementById('moteur-templates-data').textContent);
+const MPER = JSON.parse(document.getElementById('moteur-periodisation-data').textContent);
+
+const M_EX_BY_ID = {}; MCAT.exercises.forEach(e => M_EX_BY_ID[e.id] = e);
+const M_EX_BY_ID_NAME = {}; MCAT.exercises.forEach(e => M_EX_BY_ID_NAME[e.id] = e.name);
+const M_QUAL_LABEL = {}; MCAT.taxonomies.qualities.forEach(q => M_QUAL_LABEL[q.id] = q.label);
+const M_EQUIP_LABEL = {}; MCAT.taxonomies.equipment.forEach(e => M_EQUIP_LABEL[e.id] = e.label);
+const M_CONTRA_LABEL = {}; MCAT.taxonomies.contraindications.forEach(c => M_CONTRA_LABEL[c.id] = c.label);
+const M_CATS_LABEL = {}; MCAT.taxonomies.categories.forEach(c => M_CATS_LABEL[c.id] = c.label);
+const M_MAISON_EQUIPMENT = MCAT.taxonomies.windows.find(w => w.id === 'maison').equipment_available;
+const GUYANE_FIN = new Date('2026-08-10');
+
+// Durées prévues proposées quand on choisit une fenêtre (en jours). 'null' = indéterminée.
+const M_DUREE_OPTIONS = [
+  {v:7,   lbl:'≤ 1 semaine'},
+  {v:14,  lbl:'2 semaines'},
+  {v:21,  lbl:'3 semaines'},
+  {v:28,  lbl:'4 semaines ou plus'},
+  {v:null,lbl:'Indéterminée (au jour le jour)'}
+];
+
+function loadMoteurState(){
+  const stored = load('moteur_state');
+  const base = {
+    mode: 'maison',
+    equipDeplacement: [],
+    windowStart: todayStr,
+    dureePrevueJours: null,
+    delestageEpauleTier: 0,
+    delestageAutoDate: null,
+    expandedSession: null,
+    focusManuel: 'auto'
+  };
+  return stored ? Object.assign(base, stored) : base;
+}
+let MS = loadMoteurState();
+function saveMoteurState(){ save('moteur_state', MS); render(); }
+
+function moteurCurrentIsoWeek(){
+  const d = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+  const day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  const week = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return d.getUTCFullYear() + '-W' + String(week).padStart(2,'0');
+}
+function loadMoteurMissions(){
+  const stored = load('moteur_missions');
+  const wk = moteurCurrentIsoWeek();
+  if(stored && stored.isoWeek === wk) return stored;
+  return { isoWeek: wk, completed: {} };
+}
+let MMISSIONS = loadMoteurMissions();
+function saveMoteurMissions(){ save('moteur_missions', MMISSIONS); render(); }
+function moteurMarkSessionDone(sessionId){
+  MMISSIONS = loadMoteurMissions(); // re-check week rollover before writing
+  MMISSIONS.completed[sessionId] = (MMISSIONS.completed[sessionId]||0) + 1;
+  saveMoteurMissions();
+}
+function moteurMissionTarget(freqText){
+  const m = /(\d+)\s*x/i.exec(freqText||'');
+  return m ? Number(m[1]) : null;
+}
+
+function moteurEquipment(){
+  const always = ['poids_du_corps', 'aucun'];
+  const base = MS.mode === 'maison' ? M_MAISON_EQUIPMENT : MS.equipDeplacement;
+  return Array.from(new Set([...base, ...always]));
+}
+function moteurWindowElapsedDays(){
+  const start = new Date(MS.windowStart);
+  return Math.floor((today - start) / 86400000);
+}
+function moteurBlocQualiteActive(){
+  if(MS.dureePrevueJours != null) return MS.dureePrevueJours >= 28;
+  return moteurWindowElapsedDays() >= 28;
+}
+function moteurCycleWeek(){
+  if(!moteurBlocQualiteActive()) return null;
+  return Math.floor(moteurWindowElapsedDays()/7) % 4 + 1;
+}
+// Le cycle automatique reste TOUJOURS en bloc Force (RM + aérobie à travailler en priorité).
+// Puissance (cluster/PAP) n'est disponible que via le focus manuel, quand c'est jugé pertinent
+// ce jour-là (pas de risque poignet/genou avec des mouvements PAP jambes ou bench).
+function moteurCycleType(){
+  if(!moteurBlocQualiteActive()) return null;
+  return 'force';
+}
+// Le focus manuel (Force / Puissance / Préparation tests / Semaine tests) prime toujours
+// sur le calcul automatique du cycle. 'auto' = laisser le cycle Force décider.
+function moteurCycleInfo(){
+  if(MS.focusManuel && MS.focusManuel !== 'auto'){
+    const f = MPER.focus_manuel[MS.focusManuel];
+    if(f) return {type: MS.focusManuel, typeLabel: f.label, phase: 'focus_manuel',
+      volume_pct: f.volume_pct, protocole_par_qualite: f.protocole_par_qualite, manuel: true};
+  }
+  const w = moteurCycleWeek();
+  const type = moteurCycleType();
+  if(!w || !type) return null;
+  const info = MPER.cycles[type].semaines.find(c=>c.semaine===w);
+  return Object.assign({type, typeLabel: MPER.cycles[type].label, manuel:false}, info);
+}
+// Top Set (Militaire/Bench), Cluster (Militaire/Bench), PAP (RDL/Bulgarian), Legeard 3-7
+// (Pendlay/Chin-ups/Gorilla) — reprend exactement la répartition de méthode de Guyane par bloc.
+const M_FORCE_TOPSET = new Set(['militaire_barre','bench_plat_barre']);
+const M_PUISSANCE_METHOD = {
+  militaire_barre:'cluster', bench_plat_barre:'cluster',
+  rdl:'pap', bulgarian_split_squat:'pap',
+  pendlay_row:'legeard', chin_ups:'legeard', gorilla_row:'legeard'
+};
+const M_METHOD_FORMATS = {
+  top_set: {leger:'5×3 → Top Set (léger) + back-off', modere:'5×3 → Top Set (modéré) + back-off', pic:'5×3 → Top Set (pic, RIR1) + back-off',
+    rpe:{leger:'6-7',modere:'7-8',pic:'8-9'}, nom:'Top Set + Back-off'},
+  cluster: {leger:'Cluster 2+2+2 (léger)', modere:'Cluster 2+2+2 (modéré)', pic:'Cluster 2+2+2 (pic)',
+    rpe:{leger:'7',modere:'8',pic:'9'}, nom:'Cluster 2+2+2'},
+  pap: {leger:'PAP léger → geste explosif', modere:'PAP modéré → geste explosif', pic:'PAP pic → geste explosif',
+    rpe:{leger:'7',modere:'8',pic:'9'}, nom:'PAP (Post Activation Potentiation)'},
+  legeard: {leger:'3→7 paliers @60% (léger)', modere:'3→7 paliers @65% (modéré)', pic:'3→7 paliers @70% (pic)',
+    rpe:{leger:'7',modere:'8',pic:'8-9'}, nom:'Legeard 3-7'}
+};
+// Tests barre : toujours 3RM, sauf Militaire (5RM, plus sûr pour l'épaule). Jamais de 1RM (trop risqué).
+const M_TEST_FORMAT = {
+  militaire_barre:'Test 5RM (jamais 1RM)', bench_plat_barre:'Test 3RM (jamais 1RM)',
+  pendlay_row:'Test 3RM (jamais 1RM)', rdl:'Test 3RM (jamais 1RM)', zercher_squat:'Test 3RM (jamais 1RM)',
+  chin_ups:'Test max reps strict'
+};
+function moteurProtocolFor(ex){
+  const info = moteurCycleInfo();
+  if(!info) return null;
+  // Primer/AGT alactique — s'applique largement, indépendamment du mouvement porteur.
+  if(ex.category === 'alactique_finisher' && info.protocole_par_qualite && info.protocole_par_qualite.alactique){
+    const protoId = info.protocole_par_qualite.alactique;
+    const p = MPER.protocoles[protoId];
+    return {nom:p.nom, format:p.format, rpe:p.rpe, phase:info.phase, volume_pct:info.volume_pct};
+  }
+  // Focus tests — format spécifique par exercice, sinon pas de protocole affiché pour cet exercice.
+  if(MS.focusManuel === 'semaine_tests'){
+    const t = M_TEST_FORMAT[ex.id];
+    return t ? {nom:'Test officiel', format:t, rpe:'9-10', phase:'focus_manuel', volume_pct:info.volume_pct} : null;
+  }
+  if(MS.focusManuel === 'prep_tests'){
+    return M_TEST_FORMAT[ex.id] ? {nom:'Préparation test', format:'Paliers progressifs vers sous-max, vitesse gardée', rpe:'7-8', phase:'focus_manuel', volume_pct:info.volume_pct} : null;
+  }
+  // Déload — toujours pareil, quel que soit le type de cycle.
+  if(info.phase === 'deload'){
+    return {nom:'Déload', format:'3×3 déload', rpe:'4-5', phase:'deload', volume_pct:50};
+  }
+  const cycleType = info.type;
+  let method = null;
+  if(cycleType === 'force') method = M_FORCE_TOPSET.has(ex.id) ? 'top_set' : null;
+  else if(cycleType === 'puissance') method = M_PUISSANCE_METHOD[ex.id] || null;
+  if(!method) return null;
+  const mf = M_METHOD_FORMATS[method];
+  const phaseKey = ['leger','modere','pic'].includes(info.phase) ? info.phase : 'modere';
+  return {nom:mf.nom, format:mf[phaseKey], rpe:mf.rpe[phaseKey], phase:info.phase, volume_pct:info.volume_pct};
+}
+// Format standard par défaut quand aucun protocole de cycle ne s'applique (fidèle aux prescriptions
+// réelles de Guyane pour les mouvements secondaires/accessoires, pas de top-set partout).
+function moteurDefaultFormat(ex){
+  if(ex.progression_type === 'aucun') return null;
+  if(ex.pattern === 'carry') return '3×30-40m';
+  if(ex.category === 'bas_force') return ex.side_rule === 'G_first' ? '3-4×8/côté' : '3-4×6-8';
+  if(ex.category === 'haut_force') return '3-4×6-8';
+  if(ex.category === 'gainage') return '3×10-20s';
+  if(['prophylaxie_epaule','prophylaxie_genou_pied','prophylaxie_poignet'].includes(ex.category)) return '2-3×10-15';
+  if(ex.category === 'haut_iso_volume') return '3×10-15';
+  if(ex.category === 'alactique_finisher') return '3-4×8s récup complète';
+  return '3×8-10';
+}
+function moteurDefaultRpe(ex){
+  if(['bas_force','haut_force'].includes(ex.category)) return '6-7';
+  return null;
+}
+
+// ── Repos & notes réels de Guyane (recherche par mot-clé, pas de duplication de texte) ──
+const M_GUYANE_KEYWORDS = {
+  militaire_barre:['militaire'], pendlay_row:['pendlay'], db_bench_incline:['db bench','bench inclin'],
+  chin_ups:['chin-up'], face_pull:['face pull'], rotation_ext_epaule:['rotation ext'],
+  nuque_iso_elastique:['nuque iso'], hardstyle_plank:['hardstyle plank'], hollow_hold:['hollow hold'],
+  bench_plat_barre:['bench plat'], db_press_vertical:['db press vertical'], gorilla_row:['gorilla row'],
+  bulgarian_split_squat:['bulgarian'], rdl:['romanian dl','rdl'], copenhagen_adductor:['copenhagen'],
+  pallof_press:['pallof'], planche_laterale:['planche latérale','planche laterale'],
+  dragon_flag:['dragon flag'], farmer_carry:['farmer carry'], zercher_squat:['zercher'],
+  nordic_curl_elastique:['nordic curl'], good_morning:['good morning'], back_extension:['back extension'],
+  kb_swing_alactique_28:['kb swing 28'], chop_lift_elastique:['chop/lift','chop lift'],
+  shrug:['shrug'], elevations_laterales:['élévations latérales','elevations laterales'],
+  curl_biceps_bfr:['curl biceps'], extension_triceps_bfr:['extension triceps'], row_bucheron:['row bûcheron','row bucheron']
+};
+function moteurFindGuyaneRef(exId){
+  const kws = M_GUYANE_KEYWORDS[exId];
+  if(!kws) return null;
+  for(const seanceKey of Object.keys(SEANCES)){
+    const seance = SEANCES[seanceKey];
+    for(const blocNum of [2,3,1,4]){
+      const bloc = seance.blocs[blocNum];
+      if(!bloc || !bloc.exercices) continue;
+      for(const ex of bloc.exercices){
+        const nameLower = (ex.name||'').toLowerCase();
+        if(kws.some(k=>nameLower.includes(k))) return {repos: ex.repos, note: ex.note, rpe: ex.rpe};
+      }
+    }
+  }
+  return null;
+}
+
+
+const M_CHARGE_SEED = {
+  militaire_barre: {load:35, unit:'kg'}, bench_plat_barre: {load:70, unit:'kg'}, rdl: {load:100, unit:'kg'},
+  pendlay_row: {load:60, unit:'kg'}, zercher_squat: {load:60, unit:'kg (estimation, proxy back squat)'},
+  good_morning: {load:40, unit:'kg'}, landmine_press_row: {load:20, unit:'kg (par bras)'}, back_extension: {load:0, unit:'kg lesté'},
+  db_bench_incline: {load:18, unit:'kg/main'}, db_press_vertical: {load:14, unit:'kg/main'}, gorilla_row: {load:20, unit:'kg'},
+  kb_press_militaire: {load:16, unit:'kg (KB)'}, kb_rdl: {load:20, unit:'kg (KB)'}, kb_goblet_front_squat: {load:16, unit:'kg (KB)'},
+  kb_swing_alactique_28: {load:28, unit:'kg (KB)'}, kb_swing_z2: {load:20, unit:'kg (KB)'}, kb_clean: {load:16, unit:'kg (KB)'},
+  chin_ups: {load:0, unit:'kg lesté (PDC de base)'}, farmer_carry: {load:20, unit:'kg/main'},
+  sandbag_work_capacity: {load:20, unit:'kg'}
+};
+function moteurExKey(exId){ return 'ex_moteur_'+exId; }
+// Cherche le log le plus récent (aujourd'hui compris) où cet exercice a été renseigné.
+function moteurLastExerciseLog(exId){
+  const key = moteurExKey(exId);
+  const todayEntry = getLog()[key];
+  if(todayEntry) return {date: todayStr, entry: todayEntry};
+  const dayKeys = Object.keys(localStorage).filter(k=>k.startsWith('log:')).sort().reverse();
+  for(const dk of dayKeys){
+    let l; try{ l = JSON.parse(localStorage.getItem(dk)); }catch(e){ continue; }
+    if(l && l[key]) return {date: dk.slice(4), entry: l[key]};
+  }
+  return null;
+}
+function moteurGetChargeUnit(exId){ return M_CHARGE_SEED[exId] ? M_CHARGE_SEED[exId].unit : 'kg'; }
+function moteurGetCharge(exId){
+  const last = moteurLastExerciseLog(exId);
+  if(last && last.entry.charge != null && last.entry.charge !== '') return last.entry.charge;
+  if(M_CHARGE_SEED[exId]) return M_CHARGE_SEED[exId].load;
+  return null;
+}
+// Dernière fois que cet exercice a été fait AVANT aujourd'hui (pour afficher "ancien poids/reps, fait le ...")
+function moteurLastPastLog(exId){
+  const key = moteurExKey(exId);
+  const dayKeys = Object.keys(localStorage).filter(k=>k.startsWith('log:') && k.slice(4)!==todayStr).sort().reverse();
+  for(const dk of dayKeys){
+    let l; try{ l = JSON.parse(localStorage.getItem(dk)); }catch(e){ continue; }
+    if(l && l[key] && (l[key].charge != null && l[key].charge !== '')) return {date: dk.slice(4), entry: l[key]};
+  }
+  return null;
+}
+function moteurDaysAgo(dateStr){ return Math.floor((today - new Date(dateStr)) / 86400000); }
+function moteurSetTodayField(exId, field, val){
+  const log = getLog();
+  const key = moteurExKey(exId);
+  const entry = log[key] || {sets:{}};
+  entry[field] = val;
+  log[key] = entry;
+  saveLog(log);
+  render();
+}
+// RPE réel (1-10, déjà le standard de l'app) -> RIR approximatif pour la règle de progression du manuel.
+function moteurRpeToApproxRIR(rpe){
+  const r = Number(rpe);
+  if(!r) return null;
+  return Math.max(0, Math.min(4, 10 - r));
+}
+function moteurProgressionSuggestion(exId){
+  const ex = M_EX_BY_ID[exId];
+  const last = moteurLastExerciseLog(exId);
+  if(!ex || !last || last.entry.rpe == null || last.entry.rpe === '') return null;
+  // Une donnée trop ancienne ne sert pas à valider un poids aujourd'hui — seulement informatif
+  // au-delà de 10 jours (le corps a pu changer, mieux vaut resaisir un RPE frais avant de suggérer).
+  if(last.date !== todayStr && moteurDaysAgo(last.date) > 10) return null;
+  const rir = moteurRpeToApproxRIR(last.entry.rpe);
+  if(rir == null) return null;
+  if(ex.progression_type === 'barre'){
+    const step = ex.category === 'bas_force' ? 3 : 1.5;
+    if(rir >= 3) return {action:'augmenter', text:'+'+step+' kg conseillé (RPE '+last.entry.rpe+' → marge élevée)'};
+    if(rir === 2) return {action:'maintenir_ou_leger', text:'Maintenir ou +'+(step/2)+' kg'};
+    if(rir === 1) return {action:'maintenir', text:'Conserver la charge (proche du max)'};
+    return {action:'reduire', text:'Réduire légèrement ou répéter la séance (RPE '+last.entry.rpe+')'};
+  }
+  if(ex.progression_type === 'halteres_kb'){
+    if(rir >= 3) return {action:'augmenter', text:'Palier disponible le plus proche (ou changement de KB)'};
+    if(rir === 2) return {action:'maintenir_ou_leger', text:'Maintenir, palier suivant si séance très propre'};
+    if(rir === 1) return {action:'maintenir', text:'Conserver la charge/le KB actuel'};
+    return {action:'reduire', text:'Revenir au palier/KB précédent'};
+  }
+  if(ex.progression_type === 'isometrie'){
+    if(rir >= 3) return {action:'augmenter', text:'+2-5s de tenue'};
+    return {action:'maintenir', text:'Maintenir la durée'};
+  }
+  return null;
+}
+function moteurApplyProgression(exId){
+  const ex = M_EX_BY_ID[exId];
+  const sugg = moteurProgressionSuggestion(exId);
+  if(!sugg || ex.progression_type !== 'barre') return;
+  const cur = Number(moteurGetCharge(exId)) || 0;
+  const step = ex.category === 'bas_force' ? 3 : 1.5;
+  let next = cur;
+  if(sugg.action === 'augmenter') next = cur + step;
+  else if(sugg.action === 'maintenir_ou_leger') next = cur + step/2;
+  else if(sugg.action === 'reduire') next = Math.max(0, cur - step/2);
+  moteurSetTodayField(exId, 'charge', Math.round(next*2)/2);
+}
+
+// ── Sévérité des contre-indications : dérivée du Bilan du jour (source unique) ──
+const M_PAIN_SEVERITY = {aucune:0, 'légère':1, forte:2};
+function moteurSeverityFromBilan(){
+  const m = (getLog().matin) || {};
+  return {
+    genou_G_itband: M_PAIN_SEVERITY[m.douleur_genou] || 0,
+    poignet_G: M_PAIN_SEVERITY[m.douleur_poignet] || 0,
+    coude_G_epicondyle: M_PAIN_SEVERITY[m.douleur_coude] || 0,
+    cervicales: M_PAIN_SEVERITY[m.douleur_cervicales] || 0,
+    epaule_G_pain: M_PAIN_SEVERITY[m.douleur_epaule] || 0
+  };
+}
+// Suggestion auto de l'étage de délestage épaule à partir de la douleur déclarée dans le Bilan,
+// une seule fois par jour (l'utilisateur garde la main pour l'ajuster ensuite).
+function moteurMaybeAutoSuggestDelestage(){
+  if(MS.delestageAutoDate === todayStr) return;
+  const sev = moteurSeverityFromBilan().epaule_G_pain;
+  MS.delestageEpauleTier = sev>=2 ? 3 : (sev>=1 ? 1 : 0);
+  MS.delestageAutoDate = todayStr;
+  save('moteur_state', MS);
+}
+
+function moteurExerciseStatus(exId){
+  const ex = M_EX_BY_ID[exId];
+  if(!ex) return {ok:false, reason:'Exercice introuvable'};
+  const avail = moteurEquipment();
+  const missing = ex.equipment_required.filter(r => !avail.includes(r));
+  if(missing.length) return {ok:false, reason:'Matériel manquant : ' + missing.map(m=>M_EQUIP_LABEL[m]||m).join(', ')};
+  const sev = moteurSeverityFromBilan();
+  for(const c of (ex.contraindications||[])){
+    if(c === 'epaule_G'){
+      if(ex.delestage_tier != null && ex.delestage_tier <= MS.delestageEpauleTier){
+        return {ok:false, reason:'Délestage épaule G actif (étage ' + ex.delestage_tier + ' coupé)'};
+      }
+    } else {
+      const threshold = (ex.severity_overrides && ex.severity_overrides[c] != null) ? ex.severity_overrides[c] : 1;
+      if((sev[c]||0) >= threshold){
+        return {ok:false, reason:'Contre-indication active (' + (sev[c]>=2?'forte':'légère') + ') : ' + (M_CONTRA_LABEL[c]||c)};
+      }
+    }
+  }
+  return {ok:true, reason:null};
+}
+
+// Résolution d'un slot : préférence déclarée -> substituts déclarés -> repli par PATTERN
+// (même mouvement fonctionnel) -> repli par simple catégorie/qualité en dernier recours.
+function moteurResolveSlot(slot, usedIds){
+  const pref = slot.exercice_pref;
+  const prefEx = pref ? M_EX_BY_ID[pref] : null;
+  const wantedQualities = slot.qualities || (prefEx ? prefEx.qualities : []) || [];
+  const wantedPattern = prefEx ? prefEx.pattern : null;
+
+  function tryFind(predicateExtra){
+    return MCAT.exercises.find(e => !usedIds.has(e.id) && predicateExtra(e) && moteurExerciseStatus(e.id).ok);
+  }
+  function fallback(excludeId){
+    if(wantedPattern && wantedPattern !== 'none'){
+      const byPattern = tryFind(e => e.id !== excludeId && e.pattern === wantedPattern);
+      if(byPattern) return {ex: byPattern, viaPattern:true};
+    }
+    const byCategory = tryFind(e => e.id !== excludeId && e.category === slot.category &&
+      (!wantedQualities.length || wantedQualities.some(q => e.qualities.includes(q))));
+    if(byCategory) return {ex: byCategory, viaPattern:false};
+    return null;
+  }
+
+  if(pref){
+    const st = moteurExerciseStatus(pref);
+    if(st.ok && !usedIds.has(pref)) return {exId: pref, substituted:false};
+    if(prefEx && prefEx.substitutes){
+      for(const subId of Object.values(prefEx.substitutes)){
+        const subSt = moteurExerciseStatus(subId);
+        if(subSt.ok && !usedIds.has(subId)) return {exId: subId, substituted:true, from: pref, blockedReason: st.reason};
+      }
+    }
+    const alt = fallback(pref);
+    if(alt) return {exId: alt.ex.id, substituted:true, from: pref, blockedReason: st.reason, viaPattern: alt.viaPattern};
+    return {exId: null, blocked:true, blockedReason: st.reason || 'Aucun substitut disponible'};
+  }
+  const alt = fallback(null);
+  if(alt) return {exId: alt.ex.id, substituted:false};
+  return {exId: null, blocked:true, blockedReason: 'Aucun exercice disponible dans cette catégorie'};
+}
+function moteurResolveSession(session){
+  const usedIds = new Set();
+  const results = [];
+  session.slots.forEach(slot=>{
+    const r = Object.assign({slot}, moteurResolveSlot(slot, usedIds));
+    if(r.exId) usedIds.add(r.exId);
+    results.push(r);
+  });
+  const oblFails = results.filter(r => r.slot.obligatoire && r.blocked);
+  const optFails = results.filter(r => !r.slot.obligatoire && r.blocked);
+  let status = 'ok';
+  if(oblFails.length) status = 'blocked';
+  else if(optFails.length || results.some(r=>r.substituted)) status = 'partial';
+  return {results, status, oblFails, optFails};
+}
+function moteurSessionLockedByPhase(session){
+  if(session.semaine_classique) return false;
+  return !moteurBlocQualiteActive();
+}
 
 // ── STATE ─────────────────────────────────────────────────────────────────
 
@@ -988,6 +4730,7 @@ function render(){
   const views = {
     routine: renderRoutine,
     seance: renderSeance,
+    seanceG: renderSeanceGuyane,
     gtg: renderGTG,
     bilan: renderBilan,
   };
@@ -999,6 +4742,7 @@ function render(){
   [
     {id:'routine',icon:'☀️',lbl:'Routine'},
     {id:'seance',icon:'🏋️',lbl:'Séance'},
+    {id:'seanceG',icon:'🌴',lbl:'Séance G'},
     {id:'gtg',icon:'🔁',lbl:'GTG'},
     {id:'bilan',icon:'📊',lbl:'Bilan'}].forEach(item=>{
     const tab = $('button',{
@@ -1314,9 +5058,8 @@ function renderRoutine(){
       $('div',{class:'check-box'+(isDone?' done':'')}, isDone?'✓':''),
       $('div',{style:{flex:1}},
         $('div',{style:{display:'flex',alignItems:'center',gap:'6px',marginBottom:'2px',minWidth:'0',width:'100%'}},
-          $('span',{class:'cat-badge cat-'+(item.cat==='CARs'?'cars':item.cat.indexOf('Renfo')>=0?'renfo':'resp'),style:{flexShrink:'0',whiteSpace:'nowrap',fontSize:'9px'}},item.cat.indexOf('obligatoire')>=0?'★★★':item.cat.indexOf('optionnel')>=0?'opt':item.cat==='CARs'?'CARs':item.cat.indexOf('Respir')>=0?'resp':item.cat.indexOf('Unipodal')>=0?'équil':item.cat),
+          $('span',{class:'cat-badge cat-'+(item.cat==='CARs'?'cars':item.cat.indexOf('Renfo')>=0?'renfo':'resp'),style:{flexShrink:'0',whiteSpace:'nowrap',fontSize:'9px'}},item.cat.indexOf('obligatoire')>=0?'obligatoire':item.cat.indexOf('optionnel')>=0?'optionnel':item.cat==='CARs'?'CARs':item.cat.indexOf('Respir')>=0?'resp':item.cat),
           $('span',{style:{fontSize:'13px',fontWeight:isDone?'400':'600',color:isDone?'#475569':'var(--text)',textDecoration:isDone?'line-through':'none',minWidth:'0',flex:'1',overflowWrap:'break-word'}},item.icon+' '+item.name),
-          $('span',{style:{fontSize:'10px',color:item.priority==='★★★'?'#f5a623':'#475569',marginLeft:'auto'}},item.priority),
         ),
         $('div',{style:{fontSize:'11px',color:'#475569'}},item.detail),
       ),
@@ -1334,62 +5077,6 @@ function renderRoutine(){
   );
   el.appendChild(gtgCard);
 
-  // ── MÉMO : à réintégrer au retour métropole (mi-août) ──
-  const memoCard = $('div',{class:'card',style:{background:'#1a1a2e',borderColor:'#7c3aed',marginTop:'14px',width:'100%',maxWidth:'100%',boxSizing:'border-box',overflowX:'hidden'}});
-  const memoItems=[
-    ['— FEUILLE DE ROUTE PÉRIODISÉE —', '2-3 priorités par phase, le reste en maintien. Le sommeil conditionne le passage d\'une phase à l\'autre plus que le calendrier. Détail complet dans le PDF.'],
-    ['PHASE 0 · Guyane (→ 10 août)', 'S5 déload · S6-S8 Bloc 3 Puissance · S9 tests. Rien de nouveau. Priorités : sommeil, IT band silencieux, finir sans blessure. BOLT à tester.'],
-    ['PHASE 1 · Transition (mi-août → fin sept)', '1) Sommeil/circadien (recalage post-Guyane). 2) Aérobie : Z2 vélo Assioma 3-4×/sem en août, puis SEUIL dès début septembre (SV2 ~166, après 2-3 sem de réamorçage). 3) Force en MAINTIEN 2×/sem + landmine. 4) HARNAIS cou dès septembre (iso léger, valider position kiné). 5) PODOLOGUE (semelles = cause racine IT band), leg curl/ext progressif, retour course SI IT band OK 3 sem. Fin sept : batterie tests = baseline Cycle 2.'],
-    ['🎯 TEST STAGE (oct-janv, date à confirmer)', 'Capacité opérationnelle intégrée. Phase 1 : déplacement escaliers/montées + enchaîné 20 pompes/50s gainage/4 tractions strictes. Phase 2 : parcours chrono en TENUE (ceinturon+arme+gilet) — pneu (tirage/traction/retournés), container, mannequin, <2min. Coups d\'arrêt sac. TON MATÉRIEL couvre tout : tapis 21km/h+15%, pneus voiture, escalier 4km ou échelle grange, gilet 10kg, sac. Base actuelle = ~80%. BLOC SPÉCIFIQUE dès septembre (4-6 sem avant test) : 1) dénivelé progressif EN GILET (marche inclinée 15%, PAS courir à 15% = danger IT band ; escaliers quand genou tolère). 2) Parcours simulé chrono en gilet 1×/sem. 3) T2 pré-fatigué (pompes/gainage/tractions essoufflé). Le test structure le Cycle 2. Caler dès date connue.'],
-    ['PHASE 2 · Cycle 2 aérobie (oct → déc)', 'Pyramide : Z2 volume + 1 seuil/sem (SV2 ~166) + VO2max 4×4 dès sem 5-6. Cible : VMA 16+, VO2max ~50. Force 2-3×/sem progression lente. ENTRENT ICI : harnais cou (iso), grip varié (anneaux/kimono/pinch 2 disques), plio AVEC décélération d\'abord, rotationnel landmine, RSA fin de phase (sur base aérobie posée), crawl si piscine (prudence épaule G).'],
-    ['PHASE 2+ · ajouts (Cycle 2)', 'TEST HRR revient ICI (retiré de Guyane) : de préférence sur effort cyclique (vélo/montée) = vrai marqueur de récup cardiaque, sans le trou de tolérance lactique des burpees. VÉLOCITÉ/dynamic effort (force→puissance, 50-60% vitesse max, app de mesure). TESTS PUISSANCE traçables : CMJ (app MyJump) + lancer med ball. WORK CAPACITY EVENTS 1×/sem (sandbag getup+carry, AMRAP total-corps, événement pneu chrono = transfert test stage). CORE SOUS CHARGE (sandbag, 3 plans). Régimes tri-phasiques (excentrique→iso→concentrique) : à réfléchir.'],
-    ['🛒 Sandbag (seul achat vraiment utile)', 'Le seul outil qui manque. Work capacity + core chargé + patterns du test stage. ~30€ ou DIY (sac militaire + gravier/sable scellé, charge ajustable). Au retour.'],
-    ['PHASE 3 · 2027 T1 : combat + IPSC', 'Boxe/BJJ club 2-3×/sem SI poignet réglé — le physique passe en SOUTIEN (2 force + 1 conditioning + Z2). RSA/transitions/grip se développent SUR LE TAPIS. IPSC : bascule G17, BlazePod sert les 2 mondes. Sprint court 10-30m si course réintégrée 8+ sem. Aisance hauteur : exposition progressive.'],
-    ['PHASE 4 · Modèle BI-MODAL permanent', 'Ta réalité = alternance maison/déplacements. Mode MAISON = progression (combat+force+aérobie+tir). Mode DÉPLACEMENT = template nomade (le Be Ready Guyane recyclé : KB+PDC+élastiques+rounds), objectif MAINTIEN. Retour : 1 sem reprise -30%. Zone tropicale : ré-acclimatation chaleur 10-14 j. Révision annuelle : batterie tests + standards (militaire 0,75×PDC, bench 1,25×, RDL 2×, pull-ups 20, BOLT >35s). Au-delà : durer bat exploser.'],
-    ['⚠ Règle de délestage épaule G', 'Press vertical 3×/sem + GTG quotidien sur coiffe en tendinopathie. Si dégradation : couper 1) GTG militaire → 2) ISO militaire H3 → 3) DB press H2 → dernier recours militaire lourd H1. Un étage à la fois, observer 4-5 j. Face pull + rotation ext ne se coupent JAMAIS.'],
-    ['═══ MATÉRIEL MAISON (métropole) ═══', 'Inventaire complet, organisé par catégorie. Tu es SUR-équipé — rien à acheter sauf BlazePod (optionnel). Le facteur limitant n\'est pas le matériel, c\'est le sommeil/récup.'],
-    ['FORCE — barre/charges', 'Rack, barres + poids, haltères, kettlebells (16/20/28). Banc plat + incliné + lombaire. Cale Nordic curl.'],
-    ['FORCE — machines', 'Presse à cuisse, leg extension, leg curl, butterfly, tirage vertical, tirage horizontal, poussée horizontale, poulies haute + basse.'],
-    ['CARDIO', 'Home-trainer + vélo Assioma Duo (puissance précise = Z2/seuil/VO2max propres). Tapis de course pente 15% (marche inclinée Z2, course quand IT band réglé). Corde à sauter (⚠ impact, genou G réglé d\'abord). Gilet lesté modulable jusqu\'à 10 kg (réplique le port du gilet pare-balles, marche lestée/rucking).'],
-    ['TIRAGE / GRIP', 'Anneaux gym (prise neutre, doux poignet G), TRX, barre traction, barres dips, poignées pompes, kimono (grip en tenant les manches). Couvre tous les types de grip sauf pinch dédié.'],
-    ['COMBAT / PUISSANCE', 'Landmine (press doux épaule G + rotationnel), sac de frappe (prudence poignet G), mannequin JJB (transitions sol + grip + position basse), slamballs (vertical explosif), med ball (rotationnel), masse + pneus tracteur (puissance brute), box jump (plio, redescente marchée).'],
-    ['RÉACTIVITÉ', 'Balles de tennis simples (réaction main-œil, lancer-attraper mur). BlazePod en projet (voir plus bas).'],
-    ['MOBILITÉ / ÉTIREMENT', 'Barre d\'étirement (jusqu\'au grand écart — hanche/adducteurs, position basse combat, progressif jamais à froid), tapis de gym, élastiques.'],
-    ['RÉCUPÉRATION / MASSAGE', 'Rouleau de massage, balles de massage simples, cannes de massage (atteindre dos/trapèzes), balles doubles type peanut (de part et d\'autre de la colonne). ⚠ Pour l\'IT band G : masser le TFL + grand fessier (qui tendent la bandelette), PAS la bandelette elle-même. Utile MAINTENANT.'],
-    ['SUIVI', 'Ceinture Polar H10 (FC fiable même sur mouvements saccadés — règle le problème du capteur optique vu en conditionnement). Bandes BFR bras + jambes.'],
-    ['LANDMINE — détail (utiliser TÔT)', 'Couteau suisse, doux épaule G. PRESS = poussée verticale arquée, contourne la limite stabilité épaule G (12kg overhead). TWIST = puissance rotationnelle guidée. RDL/rows/squats angle différent. Prise neutre = OK poignet G.'],
-    ['SAC — détail (prudence poignet G)', 'Frappe réelle : transmission force, gainage impact, conditionnement spécifique. ⚠ Impact irrite kyste poignet G. Léger, poignets bandés, technique propre. Pieds/genoux/coudes d\'abord. Frappe intensive = 2027.'],
-    ['MANNEQUIN JJB — détail', 'Le plus spécifique combat-sol. Transitions (garde, montées, se relever) + grip de contrôle + position basse + conditionnement grappling. Sans charge poignet pour les transitions ; contrôle intensif à doser.'],
-    ['SLAMBALLS — détail', 'Balistique total-corps : overhead → claquer au sol à fond. Chaîne postérieure, gainage, cardio-puissance. ⚠ overhead = épaule G, mais dynamique/bref donc mieux toléré.'],
-    ['BlazePod — PROJET d\'achat', 'SEUL achat à vraie valeur. Lumières réactives programmables = temps de réaction MESURÉ sur signal imprévisible (donnée de progression objective). Réaction simple/choix/combiné déplacement-frappe. Spécifique combat + opérateur. Alternative gratuite : partenaire qui annonce des signaux au hasard.'],
-    ['⚠ GARDE-FOU anti-surcharge', 'Cette liste est longue. NE PAS tout empiler. Choisir 2-3 priorités par bloc, faire tourner. Un programme qui vise 15 qualités n\'en développe aucune. Le sommeil + la récup restent la limite. Mieux vaut 3 qualités bien travaillées que 10 effleurées.'],
-    ['Densification', 'Haut 3 actif, structure 3 Haut/2 Bas, plus de volume — SEULEMENT quand sommeil réglé.'],
-  ];
-  // Scinder : avant le marqueur matériel = métropole, après = matériel
-  let _matIdx = memoItems.findIndex(([t])=>t.indexOf('MATÉRIEL MAISON')>=0);
-  if(_matIdx<0) _matIdx = memoItems.length;
-  const metroItems = memoItems.slice(0, _matIdx);
-  const matItems = memoItems.slice(_matIdx);
-  const mkCollapsible = (titre, items, coul) => {
-    const wrap=$('div',{style:{marginBottom:'6px',width:'100%',boxSizing:'border-box'}});
-    const open={v:false};
-    const btn=$('button',{style:{width:'100%',boxSizing:'border-box',textAlign:'left',background:'#0d1b2a',border:'1px solid '+coul,borderRadius:'8px',padding:'10px 12px',color:coul,fontWeight:'700',fontSize:'13px',cursor:'pointer'}},titre+'  ▼');
-    const body=$('div',{style:{display:'none',marginTop:'6px',width:'100%',boxSizing:'border-box',overflowWrap:'break-word'}});
-    items.forEach(([t,d])=>{
-      body.appendChild($('div',{style:{marginBottom:'8px',width:'100%',boxSizing:'border-box',overflowWrap:'break-word'}},
-        $('div',{style:{fontWeight:'600',fontSize:'12px',color:'#e0e1dd',overflowWrap:'break-word'}},'• '+t),
-        $('div',{style:{fontSize:'11px',color:'#94a3b8',lineHeight:'1.4',marginLeft:'8px',overflowWrap:'break-word'}},d)
-      ));
-    });
-    btn.onclick=()=>{ open.v=!open.v; body.style.display=open.v?'block':'none'; btn.textContent=titre+(open.v?'  ▲':'  ▼'); };
-    wrap.appendChild(btn); wrap.appendChild(body);
-    return wrap;
-  };
-  memoCard.appendChild(mkCollapsible('🗺 Feuille de route périodisée (phases 0-4)', metroItems, '#a78bfa'));
-  if(matItems.length) memoCard.appendChild(mkCollapsible('🏠 Matériel maison', matItems, '#06b6d4'));
-  memoCard.appendChild($('div',{style:{fontSize:'11px',color:'#f5a623',marginTop:'8px',fontStyle:'italic',overflowWrap:'break-word'}},'⚠ Rien de tout ça maintenant : sommeil déficitaire = ajouter du volume serait contre-productif. Mémo pour le retour, sommeil réglé.'));
-  el.appendChild(memoCard);
-
   return el;
 }
 
@@ -1406,7 +5093,176 @@ const COMPRESSED_SESSIONS = {
   'Conditioning': ['2 circuits seulement', 'Test HRR maintenu', 'Intensité modérée'],
 };
 
+// ── Séance pilotée par le Moteur (post-Guyane) — même UI riche, données dynamiques ──
 function renderSeance(){
+  return S.moteurSessionId ? renderMoteurSeanceDetail() : renderMoteurSeanceList();
+}
+
+function renderMoteurSeanceDetail(){
+  const el = $('div',{});
+  const session = MTPL.session_types.find(s=>s.id===S.moteurSessionId);
+  if(!session){
+    el.appendChild($('div',{class:'card'},'Séance introuvable.',
+      $('button',{class:'btn btn-ghost btn-sm',style:{marginTop:'8px'},onclick:()=>{ S.moteurSessionId=null; render(); }},'← Retour à la liste')));
+    return el;
+  }
+
+  el.appendChild($('button',{class:'btn-back',style:{marginBottom:'10px'},
+    onclick:()=>{ S.moteurSessionId=null; render(); }
+  },'‹ Retour à la liste'));
+
+  el.appendChild($('div',{class:'section-hdr'},'🏋️ '+session.nom));
+
+  // Focus / cycle actif
+  const cyc = moteurCycleInfo();
+  if(cyc){
+    el.appendChild($('div',{class:'card',style:{paddingTop:'10px',paddingBottom:'10px'}},
+      $('span',{class:'tag tag-purple'},'🔁 '+cyc.typeLabel),
+      $('span',{style:{marginLeft:'8px',fontSize:'11px',color:'#64748b'}},session.objectif||'')
+    ));
+  } else {
+    el.appendChild($('div',{class:'card',style:{paddingTop:'10px',paddingBottom:'10px',fontSize:'11.5px',color:'#64748b'}},session.objectif||''));
+  }
+
+  const res = moteurResolveSession(session);
+
+  res.results.forEach(r=>{
+    const slot = r.slot;
+    if(!r.exId){
+      el.appendChild($('div',{class:'card',style:{borderColor:'#e63946'}},
+        $('div',{style:{fontSize:'10px',textTransform:'uppercase',color:'#475569',letterSpacing:'.4px',marginBottom:'4px'}},slot.role.replace(/_/g,' ')),
+        $('div',{style:{fontSize:'13px',fontWeight:600,color:'#ff8087'}},'⚠ Indisponible — '+(r.blockedReason||''))
+      ));
+      return;
+    }
+    const ex = M_EX_BY_ID[r.exId];
+    const proto = moteurProtocolFor(ex);
+    const guyaneRef = moteurFindGuyaneRef(ex.id);
+    const exKey = moteurExKey(ex.id);
+    const exLog = getLog()[exKey] || {sets:{}};
+    const tooltipNote = (guyaneRef && guyaneRef.note) || ex.note || '';
+
+    const card = $('div',{class:'ex-card'});
+    const hdr = $('div',{class:'ex-header'});
+    hdr.appendChild($('span',{class:'ex-num'},'●'));
+    hdr.appendChild($('span',{class:'ex-name'}, ex.name));
+    if(r.substituted) hdr.appendChild($('span',{class:'tag tag-purple',style:{fontSize:'9px'}},r.viaPattern?'même pattern':'substitué'));
+    if(tooltipNote) hdr.appendChild($('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e, tooltipNote); }},'?'));
+    card.appendChild(hdr);
+    card.appendChild($('div',{style:{fontSize:'9.5px',textTransform:'uppercase',color:'#475569',letterSpacing:'.4px',marginTop:'-4px',marginBottom:'6px'}},
+      slot.role.replace(/_/g,' ')+(slot.obligatoire?'':' (optionnel)')));
+    if(r.substituted && r.from) card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginBottom:'4px'}},'Remplace : '+(M_EX_BY_ID_NAME[r.from]||r.from)));
+    if(slot.note) card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginBottom:'6px'}},slot.note));
+
+    // Grid infos (format / repos / RPE cible) — priorité: protocole de cycle > format standard Guyane
+    const format = proto ? proto.format : moteurDefaultFormat(ex);
+    const rpeCible = proto ? proto.rpe : (moteurDefaultRpe(ex) || (guyaneRef && guyaneRef.rpe) || null);
+    const grid = $('div',{class:'ex-grid'});
+    grid.appendChild($('div',{class:'ex-cell'},
+      $('div',{class:'ex-cell-lbl'},'Format'),
+      $('div',{class:'ex-cell-val purple'}, format || '—')
+    ));
+    const NO_REPOS_CATEGORIES = new Set(['cars_mobilite','respiration','test']);
+    if(!NO_REPOS_CATEGORIES.has(ex.category)){
+      const reposCell = $('div',{class:'ex-cell'});
+      reposCell.appendChild($('div',{class:'ex-cell-lbl'},'Repos'));
+      if(guyaneRef && guyaneRef.repos){
+        const rTimers = parseReposAll(guyaneRef.repos);
+        if(rTimers.length){
+          const btnWrap = $('div',{class:'timer-btns'});
+          rTimers.forEach(t=>btnWrap.appendChild($('button',{class:'timer-btn',onclick:(e)=>{ e.stopPropagation(); startTimer(t.sec, ex.name); }},'⏱ '+t.lbl)));
+          reposCell.appendChild(btnWrap);
+        } else {
+          reposCell.appendChild($('div',{class:'ex-cell-val red'},guyaneRef.repos));
+        }
+      } else {
+        const btnWrap = $('div',{class:'timer-btns'});
+        [['90s',90],['2 min',120]].forEach(([lbl,sec])=>btnWrap.appendChild($('button',{class:'timer-btn',onclick:(e)=>{ e.stopPropagation(); startTimer(sec, ex.name); }},'⏱ '+lbl)));
+        reposCell.appendChild(btnWrap);
+      }
+      grid.appendChild(reposCell);
+    }
+    if(rpeCible) grid.appendChild($('div',{class:'ex-cell'},
+      $('div',{class:'ex-cell-lbl'},'RPE cible'),
+      $('div',{class:'ex-cell-val gold'}, rpeCible)
+    ));
+    card.appendChild(grid);
+
+    if(ex.progression_type !== 'aucun'){
+      // Repère "dernière fois" si l'exercice n'a pas été refait depuis un moment
+      const pastLog = moteurLastPastLog(ex.id);
+      if(pastLog && !exLog.charge){
+        const daysAgo = moteurDaysAgo(pastLog.date);
+        const [y,mo,da] = pastLog.date.split('-');
+        card.appendChild($('div',{style:{fontSize:'10.5px',color:'#f5a623',marginBottom:'6px'}},
+          '📌 Dernière fois : '+pastLog.entry.charge+' '+moteurGetChargeUnit(ex.id)+
+          (pastLog.entry.rpe?' · RPE '+pastLog.entry.rpe:'')+' — le '+da+'/'+mo+'/'+y+' (il y a '+daysAgo+' j)'));
+      }
+
+      // Charge + RPE réel (mêmes champs que le reste de l'app — pas de doublon RIR)
+      const unit = moteurGetChargeUnit(ex.id);
+      const seedOrLast = moteurGetCharge(ex.id);
+      const chargeRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px',background:'#0d1525',borderRadius:'7px',padding:'7px 8px',flexWrap:'wrap'}});
+      if(ex.progression_type !== 'isometrie'){
+        chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'Charge ('+unit+'):'));
+        chargeRow.appendChild($('input',{class:'input-mod',type:'number',step:'0.5',
+          value: exLog.charge!=null?exLog.charge:'', placeholder: seedOrLast!=null?String(seedOrLast):'—',
+          oninput:(e)=>moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value))
+        }));
+      }
+      chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'RPE réel:'));
+      chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'10',
+        value: exLog.rpe||'', placeholder:'—',
+        oninput:(e)=>moteurSetTodayField(ex.id,'rpe', e.target.value)
+      }));
+      card.appendChild(chargeRow);
+
+      const sugg = moteurProgressionSuggestion(ex.id);
+      if(sugg){
+        const suggRow = $('div',{style:{display:'flex',alignItems:'center',gap:'6px',marginBottom:'8px',flexWrap:'wrap'}},
+          $('span',{style:{fontSize:'10.5px',color:'#3b82f6'}},'→ '+sugg.text)
+        );
+        if(ex.progression_type === 'barre'){
+          suggRow.appendChild($('button',{class:'btn btn-ghost btn-sm',style:{fontSize:'9.5px',padding:'3px 8px'},
+            onclick:()=>moteurApplyProgression(ex.id)},'Appliquer'));
+        }
+        card.appendChild(suggRow);
+      }
+    }
+
+    // Sets à cocher
+    card.appendChild($('div',{style:{fontSize:'10px',color:'#475569',marginBottom:'5px',fontWeight:'600',textTransform:'uppercase',letterSpacing:'.4px'}},'Séries effectuées:'));
+    const setsRow = $('div',{class:'sets-row'});
+    const fmtDigits = format ? parseInt(format) : null;
+    const maxSets = Math.max(2, Math.min(6, fmtDigits || 3));
+    for(let s=1; s<=maxSets; s++){
+      const isDone = exLog.sets && exLog.sets[s];
+      setsRow.appendChild($('div',{
+        class:'set-chip'+(isDone?' done':''),
+        onclick:()=>{
+          const l = getLog(); const e2 = l[exKey] || {sets:{}};
+          e2.sets = e2.sets || {}; e2.sets[s] = !e2.sets[s];
+          l[exKey] = e2; saveLog(l); render();
+        }
+      }, isDone?'✓':' ', 'Set '+s));
+    }
+    card.appendChild(setsRow);
+
+    // Notes perso
+    const notesEl = $('textarea',{class:'textarea-field',rows:'2',placeholder:'Notes perso (optionnel)…',style:{fontSize:'11px'}});
+    notesEl.value = exLog.notes||'';
+    notesEl.oninput = (e)=>moteurSetTodayField(ex.id,'notes', e.target.value);
+    card.appendChild(notesEl);
+
+    el.appendChild(card);
+  });
+
+  el.appendChild($('button',{class:'btn btn-ghost btn-sm',style:{marginTop:'6px'},onclick:()=>{ S.moteurSessionId=null; render(); }},'← Retour à la liste'));
+
+  return el;
+}
+
+function renderSeanceGuyane(){
   const log = getLog();
   const el = $('div',{});
 
@@ -1416,7 +5272,16 @@ function renderSeance(){
   const seance = SEANCES[curKey];
   const blocData = seance.blocs[S.bloc] || seance.blocs[1];
 
-  el.appendChild($('div',{class:'section-hdr'},'🏋️ Choisir la Séance'));
+  el.appendChild($('div',{class:'section-hdr'},'🏋️ Choisir la Séance (Guyane)'));
+
+  if(today > new Date('2026-07-27')){
+    el.appendChild($('div',{class:'card',style:{background:'#1a2d4a',border:'1px solid #3b82f6',fontSize:'11.5px',color:'#94a3b8'}},
+      'Guyane se termine le 10 août. L\'onglet ',
+      $('b',{style:{color:'#fff'}},'🏋️ Séance'),
+      ' prendra le relais ensuite (fenêtres, matériel, missions).',
+      $('button',{class:'btn btn-ghost btn-sm',style:{marginTop:'6px',display:'block'},onclick:()=>{ S.tab='seance'; render(); }},'→ Voir le nouveau Séance')
+    ));
+  }
 
   // Bandeau séance compressée (si jour rouge détecté)
   try {
@@ -1859,7 +5724,9 @@ function renderBilan(){
     [
       {id:'douleur_genou',lbl:'Genou gauche (IT band)'},
       {id:'douleur_poignet',lbl:'Poignet gauche'},
-      {id:'douleur_epaule',lbl:'Épaule gauche (tendinopathie)'}].forEach(f=>{
+      {id:'douleur_epaule',lbl:'Épaule gauche (tendinopathie)'},
+      {id:'douleur_coude',lbl:'Coude gauche (épicondyle)'},
+      {id:'douleur_cervicales',lbl:'Cervicales'}].forEach(f=>{
       painCard.appendChild($('div',{style:{marginBottom:'10px'}},
         $('div',{class:'lbl'},f.lbl),
         $('div',{class:'pain-row'},
@@ -2156,35 +6023,8 @@ function renderBilan(){
         oninput:(e)=>{ log2.journal_ameliorer=e.target.value; saveLog(log2); }
       })
     ));
-    // Historique compact
-    el.appendChild($('div',{class:'section-hdr',style:{marginTop:'8px'}},'📅 Historique'));
-    const histKeys=Object.keys(localStorage).filter(k=>k.startsWith('log:')).sort().reverse().slice(0,60);
-    if(!histKeys.length){
-      el.appendChild($('div',{style:{textAlign:'center',padding:'16px',color:'#475569',fontSize:'13px'}},'Aucun historique.'));
-    } else {
-      histKeys.forEach(k=>{
-        const dateStr=k.slice(4);
-        try{
-          const entry=JSON.parse(localStorage.getItem(k));
-          const m=entry.matin||{};const s=entry.soir||{};
-          const row=$('div',{class:'history-row',onclick:()=>{ S.journalDetail=dateStr; S.journalDetailData=entry; render(); }});
-          row.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
-            $('div',{style:{fontSize:'13px',fontWeight:'600'}},dateStr),
-            $('div',{style:{display:'flex',gap:'6px',fontSize:'11px',color:'#64748b'}},
-              m.energie?$('span',{},'⚡'+m.energie):null,
-              s.rpe?$('span',{},'RPE '+s.rpe):null,
-              m.bolt?$('span',{},'BOLT '+m.bolt+'s'):null
-            )
-          ));
-          if(entry.journal_ressenti||entry.journal_positif){
-            row.appendChild($('div',{style:{fontSize:'11px',color:'#3b82f6',marginTop:'2px',fontStyle:'italic'}},
-              (entry.journal_ressenti||entry.journal_positif||'').slice(0,60)+'…'
-            ));
-          }
-          el.appendChild(row);
-        }catch(e){}
-      });
-    }
+    // (Historique compact retiré — le Calendrier remplit déjà ce rôle. Le détail d'une journée
+    // reste accessible en cliquant une case du Calendrier, qui pose le même état ci-dessus.)
   }
     // ── État hors ligne + Sync (en bas du journal) ──
     // ── Diagnostic hors ligne (SW + cache) ──
@@ -2338,134 +6178,186 @@ function importHistory(){
   input.click();
 }
 
-function renderJournal(){
+
+// ── ONGLET MOTEUR — mode maison/déplacement, matériel, durée, séances ──────
+// Qualités jugées prioritaires selon le focus/cycle actif — sert à mettre en valeur les séances
+// pertinentes (ex. ni VMA, ni VO2max, ni work capacity ne sont mis en avant en focus Force max).
+function moteurRelevantQualities(){
+  const info = moteurCycleInfo();
+  if(!info) return null;
+  if(info.type === 'force') return ['force_max'];
+  if(info.type === 'puissance') return ['alactique','repetition_puissance'];
+  if(info.type === 'prep_tests' || info.type === 'semaine_tests') return ['force_max'];
+  return null;
+}
+function moteurSessionRelevant(session){
+  const q = moteurRelevantQualities();
+  if(!q) return false;
+  return (session.qualites_prioritaires||[]).some(x=>q.includes(x));
+}
+
+function renderMoteurSeanceList(){
+  moteurMaybeAutoSuggestDelestage();
   const el = $('div',{});
 
-  // ── Vue détail d'une journée (clic sur historique) ──
-  if(S.journalDetail && S.journalDetailData){
-    const d=S.journalDetail; const entry=S.journalDetailData;
-    const m=entry.matin||{}; const s=entry.soir||{};
-    el.appendChild($('button',{class:'btn-back',style:{marginBottom:'10px'},
-      onclick:()=>{ S.journalDetail=null; S.journalDetailData=null; render(); }
-    },'‹ Retour à l\'historique'));
-    el.appendChild($('div',{class:'section-hdr'},'📅 '+d));
-
-    // Matin
-    const mc=$('div',{class:'card'});
-    mc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#0d1b2a'}},'☀ Matin'));
-    const mrow=(lbl,val)=> val!==undefined&&val!==''&&val!==null ? mc.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},lbl),$('span',{style:{fontWeight:'600'}},String(val)))) : null;
-    mrow('Sommeil',(m.sommeil_h||m.sleep_hours||'?')+'h'+(m.sommeil||m.sleep_quality?' (q'+(m.sommeil||m.sleep_quality)+'/5)':''));
-    mrow('Énergie',m.energie); mrow('Motivation',m.motivation); mrow('Stress',m.stress);
-    mrow('HRV',m.hrv); mrow('FC repos',m.fc_repos); mrow('BOLT',m.bolt?m.bolt+'s':'');
-    mrow('Douleur poignet G',m.douleur_poignet); mrow('Douleur genou G',m.douleur_genou);
-    if(m.notes) mc.appendChild($('div',{style:{marginTop:'6px',fontSize:'12px',fontStyle:'italic',color:'#475569'}},'« '+m.notes+' »'));
-    el.appendChild(mc);
-
-    // Soir
-    const sc=$('div',{class:'card'});
-    sc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#0d1b2a'}},'★ Soir'));
-    const srow=(lbl,val)=> val!==undefined&&val!==''&&val!==null ? sc.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},lbl),$('span',{style:{fontWeight:'600'}},String(val)))) : null;
-    srow('Séance',s.seance); srow('RPE séance',s.rpe); srow('Humeur',s.mood);
-    srow('Nombre de pas',s.pas); srow('Heure coucher',s.bedtime);
-    if(s.notes) sc.appendChild($('div',{style:{marginTop:'6px',fontSize:'12px',fontStyle:'italic',color:'#475569'}},'« '+s.notes+' »'));
-    el.appendChild(sc);
-
-    // Journal
-    const jtexts=[['Ressenti',entry.journal_ressenti],['Positif',entry.journal_positif],['À améliorer',entry.journal_ameliorer]].filter(x=>x[1]);
-    if(jtexts.length){
-      const jc=$('div',{class:'card'});
-      jc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#0d1b2a'}},'📓 Journal'));
-      jtexts.forEach(([lbl,txt])=>{
-        jc.appendChild($('div',{style:{fontSize:'12px',padding:'3px 0'}},$('span',{style:{color:'#64748b',fontWeight:'600'}},lbl+' : '),txt));
-      });
-      el.appendChild(jc);
-    }
-
-    // Séances (charges)
-    const exKeys=Object.keys(entry).filter(k=>k.startsWith('ex_'));
-    if(exKeys.length){
-      const ec=$('div',{class:'card'});
-      ec.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px',color:'#0d1b2a'}},'🏋 Charges saisies'));
-      exKeys.forEach(k=>{
-        const v=entry[k]; if(!v||(!v.charge&&!v.rpe)) return;
-        const nm=k.replace(/^ex_/,'').replace(/_b\d+_\d+$/,'');
-        ec.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',padding:'2px 0'}},
-          $('span',{style:{color:'#64748b'}},nm),
-          $('span',{style:{fontWeight:'600'}},(v.charge||'')+(v.rpe?' · RPE '+v.rpe:''))
-        ));
-      });
-      el.appendChild(ec);
-    }
-    return el;
+  if(today <= GUYANE_FIN){
+    el.appendChild($('div',{class:'card',style:{background:'#1a2d4a',border:'1px solid #3b82f6'}},
+      $('div',{style:{fontSize:'12px',color:'#94a3b8'}},
+        '📍 Programme Guyane en cours jusqu\'au 10 août. L\'onglet ',
+        $('b',{style:{color:'#fff'}},'Séance G'),
+        ' reste la référence pour tes charges jusque-là. Ce Séance devient l\'outil principal ensuite — tu peux déjà t\'en servir pour préparer la suite.')
+    ));
   }
 
-
-
-  // Entrée du jour
-  const todayCard = $('div',{class:'card'});
-  const log = getLog();
-  todayCard.appendChild($('div',{class:'card-title',style:{color:'#f5a623'}},`📌 Aujourd'hui — ${DAYS_FULL[DOW]} ${today.getDate()} ${MONTHS[today.getMonth()]}`));
-
-  todayCard.appendChild($('div',{class:'lbl'},'Ressenti général'));
-  todayCard.appendChild($('textarea',{class:'textarea-field',rows:'3',placeholder:'Comment tu te sens, observations générales…',
-    value:log.journal_ressenti||'',
-    oninput:(e)=>{ log.journal_ressenti=e.target.value; saveLog(log); }
-  }));
-  todayCard.appendChild($('div',{class:'lbl',style:{marginTop:'8px'}},'Séance — ce qui s\'est bien passé'));
-  todayCard.appendChild($('textarea',{class:'textarea-field',rows:'2',style:{width:'100%',boxSizing:'border-box'},placeholder:'Points positifs…',
-    value:log.journal_positif||'',
-    oninput:(e)=>{ log.journal_positif=e.target.value; saveLog(log); }
-  }));
-  todayCard.appendChild($('div',{class:'lbl',style:{marginTop:'8px'}},'À améliorer / À retenir'));
-  todayCard.appendChild($('textarea',{class:'textarea-field',rows:'2',placeholder:'Points à améliorer, ajustements techniques…',
-    value:log.journal_ameliorer||'',
-    oninput:(e)=>{ log.journal_ameliorer=e.target.value; saveLog(log); }
-  }));
-  el.appendChild(todayCard);
-
-  // Historique
-  el.appendChild($('div',{class:'card-title',style:{marginBottom:'8px'}},`📅 Historique (${Object.keys(localStorage).filter(k=>k.startsWith('log:')).length} jours)`));
-
-  const keys = Object.keys(localStorage).filter(k=>k.startsWith('log:')).sort().reverse();
-  if(keys.length===0){
-    el.appendChild($('div',{style:{textAlign:'center',padding:'24px',color:'#475569',fontSize:'13px'}},'Aucun historique.\nCommence par ton bilan matin !'));
-    return el;
-  }
-
-  keys.slice(0,30).forEach(key=>{
-    try{
-      const entry = JSON.parse(localStorage.getItem(key));
-      const dateStr = key.slice(4);
-      const d = new Date(dateStr+'T12:00:00');
-      const m = entry.matin || {};
-      const s = entry.soir || {};
-      const score = m.energie && m.motivation ? Math.round((m.energie+m.motivation)/2) : null;
-      const scoreColor = score ? (score>=4?'#10b981':score>=3?'#f5a623':'#e63946') : '#475569';
-
-      const row = $('div',{class:'history-row',onclick:()=>{ S.journalDetail=dateStr; S.journalDetailData=entry; render(); }},
-        $('div',{class:'history-dot',style:{background:scoreColor+'22',color:scoreColor}}, score?score:'—'),
-        $('div',{style:{flex:1}},
-          $('div',{style:{fontWeight:'600',fontSize:'13px'}},
-            `${DAYS_FULL[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`
-          ),
-          $('div',{style:{fontSize:'11px',color:'#475569',marginTop:'2px'}},
-            [
-              m.energie?`⚡${m.energie}`:'',
-              m.motivation?`💪${m.motivation}`:'',
-              m.bolt?`BOLT:${m.bolt}s`:'',
-              m.hrv?`HRV:${m.hrv}`:'',
-              s.seance?`Séance:${s.seance}`:''].filter(Boolean).join(' · ')
-          ),
-          (entry.journal_ressenti||entry.journal_positif) ? $('div',{style:{fontSize:'11px',color:'#3b82f6',marginTop:'2px',fontStyle:'italic'}},
-            (entry.journal_ressenti||entry.journal_positif||'').slice(0,60)+'…'
-          ) : null
-        ),
-        $('div',{style:{color:'#2d3f56',fontSize:'20px'}},'›'),
-      );
-
-      el.appendChild(row);
-    }catch(e){}
+  // ── Carte mode / matériel / durée ──
+  const cardMode = $('div',{class:'card'});
+  cardMode.appendChild($('div',{class:'card-title'},'OÙ ES-TU ?'));
+  const toggles = $('div',{class:'seg-ctrl'});
+  [['maison','🏠 Maison'],['deplacement','🧳 Déplacement']].forEach(([m,lbl])=>{
+    toggles.appendChild($('button',{class:'seg-btn'+(MS.mode===m?' active':''),onclick:()=>{
+      if(MS.mode!==m){ MS.mode=m; MS.windowStart=todayStr; MS.dureePrevueJours=null; saveMoteurState(); }
+    }},lbl));
   });
+  cardMode.appendChild(toggles);
+
+  if(MS.mode==='deplacement'){
+    cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'6px'}},'Matériel disponible sur place'));
+    const grid = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
+    MCAT.taxonomies.equipment.filter(e=>e.id!=='aucun').forEach(e=>{
+      const active = MS.equipDeplacement.includes(e.id);
+      grid.appendChild($('span',{class:'tag '+(active?'tag-green':'tag-grey'),style:{cursor:'pointer'},onclick:()=>{
+        if(active) MS.equipDeplacement = MS.equipDeplacement.filter(x=>x!==e.id);
+        else MS.equipDeplacement = [...MS.equipDeplacement, e.id];
+        saveMoteurState();
+      }},(active?'✓ ':'')+e.label));
+    });
+    cardMode.appendChild(grid);
+  }
+
+  cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'6px'}},
+    MS.mode==='maison' ? 'Durée prévue de ce séjour maison' : 'Durée prévue de ce déplacement'));
+  const dureeSel = $('select',{class:'input-field',onchange:(e)=>{
+    const v = e.target.value; MS.dureePrevueJours = v==='null' ? null : Number(v); saveMoteurState();
+  }});
+  M_DUREE_OPTIONS.forEach(o=>{
+    const opt = $('option',{value: o.v===null?'null':String(o.v)}, o.lbl);
+    if((MS.dureePrevueJours===null && o.v===null) || (MS.dureePrevueJours===o.v)) opt.setAttribute('selected','selected');
+    dureeSel.appendChild(opt);
+  });
+  cardMode.appendChild(dureeSel);
+
+  const blocActive = moteurBlocQualiteActive();
+  const elapsed = moteurWindowElapsedDays();
+  const statusLine = $('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',background:'#111d2e',borderRadius:'8px',padding:'8px 10px',marginTop:'8px',fontSize:'12px'}},
+    $('span',{},'Fenêtre en cours : ', $('b',{style:{color:'#f5a623'}}, elapsed+' j écoulés')),
+    $('span',{style:{fontWeight:700,color: blocActive?'#10b981':'#94a3b8'}}, blocActive?'🔓 Bloc qualité débloqué':'🔒 Semaine classique')
+  );
+  cardMode.appendChild(statusLine);
+  if(MS.dureePrevueJours!=null){
+    cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'4px'}},
+      'Durée déclarée : '+MS.dureePrevueJours+' j — décide dès le premier jour, indépendamment des jours réellement écoulés.'));
+  }
+  if(blocActive){
+    const cyc = moteurCycleInfo();
+    const phaseLbl = {leger:'Semaine 1 — Léger', modere:'Semaine 2 — Modéré', pic:'Semaine 3 — Pic',
+      deload:'Semaine 4 — Déload (-50%)', focus_manuel:'Focus manuel actif'}[cyc.phase] || cyc.phase;
+    cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#8b5cf6',marginTop:'4px',fontWeight:600}},
+      '🔁 '+cyc.typeLabel+' — '+phaseLbl));
+  } else if(MS.focusManuel && MS.focusManuel !== 'auto'){
+    const cyc = moteurCycleInfo();
+    cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#8b5cf6',marginTop:'4px',fontWeight:600}},
+      '🔁 '+cyc.typeLabel+' (focus manuel, actif même en semaine classique)'));
+  }
+  el.appendChild(cardMode);
+
+  // ── Carte focus manuel (prime sur le calcul automatique) ──
+  const cardFocus = $('div',{class:'card'});
+  cardFocus.appendChild($('div',{class:'card-title'},'FOCUS ACTUEL'));
+  cardFocus.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'6px'}},
+    'Automatique = cycle Force/Puissance calculé (bloc qualité). Choisir un focus fixe pour préparer un test ou forcer une qualité, quel que soit le cycle en cours.'));
+  const focusSel = $('select',{class:'input-field',onchange:(e)=>{ MS.focusManuel = e.target.value; saveMoteurState(); }});
+  [['auto','Automatique (cycle Force/Puissance)'],
+   ['force','Force max (fixe)'],['puissance','Puissance (fixe)'],
+   ['prep_tests','Préparation tests'],['semaine_tests','Semaine tests']].forEach(([v,lbl])=>{
+    const opt=$('option',{value:v},lbl); if(MS.focusManuel===v) opt.setAttribute('selected','selected'); focusSel.appendChild(opt);
+  });
+  cardFocus.appendChild(focusSel);
+  el.appendChild(cardFocus);
+
+  // ── Carte bilan du jour (dérivée du Bilan — source unique) ──
+  const sev = moteurSeverityFromBilan();
+  const cardBilan = $('div',{class:'card'});
+  cardBilan.appendChild($('div',{class:'card-title'},'CONTRE-INDICATIONS DU JOUR'));
+  cardBilan.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'6px'}},
+    'Repris automatiquement depuis ton Bilan du matin.'));
+  const sevGrid = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
+  [['poignet_G','Poignet G'],['genou_G_itband','Genou G / IT band'],['coude_G_epicondyle','Coude G'],['cervicales','Cervicales']].forEach(([id,lbl])=>{
+    const s = sev[id]||0;
+    const cls = s>=2?'tag-red':(s>=1?'tag-gold':'tag-grey');
+    const txt = s>=2?'forte':(s>=1?'légère':'aucune');
+    sevGrid.appendChild($('span',{class:'tag '+cls},lbl+' · '+txt));
+  });
+  cardBilan.appendChild(sevGrid);
+  cardBilan.appendChild($('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.tab='bilan'; render(); }},'→ Modifier dans Bilan'));
+
+  cardBilan.appendChild($('div',{class:'lbl',style:{marginTop:'10px'}},'Délestage épaule G (étage coupé aujourd\'hui)'));
+  const delestSel = $('select',{class:'input-field',onchange:(e)=>{ MS.delestageEpauleTier=Number(e.target.value); saveMoteurState(); }});
+  [[0,'Aucun délestage'],[1,'Étage 1 — GTG militaire coupé'],[2,'Étage 2 — + ISO militaire léger coupé'],
+   [3,'Étage 3 — + DB press coupé'],[4,'Étage 4 — + militaire lourd coupé (total)']].forEach(([v,lbl])=>{
+    const opt=$('option',{value:v},lbl); if(MS.delestageEpauleTier===v) opt.setAttribute('selected','selected'); delestSel.appendChild(opt);
+  });
+  cardBilan.appendChild(delestSel);
+  cardBilan.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginTop:'4px'}},
+    'Suggestion auto depuis la douleur épaule du Bilan — ajustable ici si besoin.'));
+  el.appendChild(cardBilan);
+
+  // ── Carte liste unique des séances : barrée = déjà faite cette semaine, grisée = pas prévu vu
+  // le matériel, encadrée = pertinente pour le focus actuel (ex. pas VMA/VO2max/work capacity en Force max) ──
+  MMISSIONS = loadMoteurMissions();
+  const cardSessions = $('div',{class:'card'});
+  cardSessions.appendChild($('div',{class:'card-title'},'SÉANCE DU JOUR'));
+  cardSessions.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'8px'}},
+    'Tap une séance faisable pour l\'ouvrir (charges, RPE, séries, timers). Barrée = déjà faite cette semaine. Encadrée = prioritaire pour le focus actuel.'));
+  MTPL.session_types.forEach(session=>{
+    const lockedByPhase = moteurSessionLockedByPhase(session);
+    const target = moteurMissionTarget(session.frequence_cible);
+    const done = MMISSIONS.completed[session.id]||0;
+    const doneThisWeek = target ? done>=target : done>0;
+    let statusTag, reasonTxt='';
+    if(lockedByPhase){
+      statusTag = $('span',{class:'tag tag-red'},'Réservé bloc qualité');
+      reasonTxt = 'Débloqué si la fenêtre déclarée ou écoulée atteint 28 j.';
+    } else {
+      const res = moteurResolveSession(session);
+      if(res.status==='ok') statusTag = $('span',{class:'tag tag-green'},'Faisable');
+      else if(res.status==='partial') statusTag = $('span',{class:'tag tag-gold'},'Adaptée');
+      else statusTag = $('span',{class:'tag tag-red'},'Impossible');
+      if(res.status==='blocked') reasonTxt = res.oblFails.map(f=>f.blockedReason).join(' · ');
+      else if(res.status==='partial') reasonTxt = res.results.filter(r=>r.substituted).length+' exercice(s) substitué(s).';
+    }
+    const canOpen = !lockedByPhase && (()=>{ const r=moteurResolveSession(session); return r.status!=='blocked'; })();
+    const relevant = !lockedByPhase && moteurSessionRelevant(session);
+    const nameEl = $('div',{style:{fontWeight:700,fontSize:'13px',
+      textDecoration: doneThisWeek?'line-through':'none', color: doneThisWeek?'#475569':'#f0f4f8'}},session.nom);
+    const headerRow = $('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}}, nameEl, statusTag);
+    const item = $('div',{class:'ex-card',style:{
+      cursor: canOpen?'pointer':'default', opacity: lockedByPhase?0.55:1,
+      border: relevant?'1.5px solid #f5a623':undefined
+    },
+      onclick:()=>{
+        if(!canOpen) return;
+        S.moteurSessionId=session.id;
+        moteurMarkSessionDone(session.id);
+        render();
+      }
+    },
+      headerRow,
+      doneThisWeek ? $('div',{style:{fontSize:'10.5px',color:'#10b981',marginTop:'2px'}},'✓ Fait '+done+(target?'/'+target:'')+' cette semaine') : null,
+      reasonTxt ? $('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'4px'}},reasonTxt) : null
+    );
+    cardSessions.appendChild(item);
+  });
+  el.appendChild(cardSessions);
 
   return el;
 }
