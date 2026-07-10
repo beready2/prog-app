@@ -2747,7 +2747,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "haut_2",
-      "nom": "Haut 2 + AGT",
+      "nom": "Haut 2",
       "frequence_cible": "1x/semaine, fin de semaine",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -2815,23 +2815,39 @@ input,select,textarea{box-sizing:border-box}
           "category": "gainage",
           "exercice_pref": "hardstyle_plank",
           "obligatoire": true
+        }
+      ]
+    },
+    {
+      "id": "agt",
+      "nom": "AGT",
+      "frequence_cible": "1x/semaine (après Haut 2)",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "alactique",
+        "repetition_puissance"
+      ],
+      "objectif": "Finisher alactique complet — puissance pure, récupération complète entre efforts.",
+      "slots": [
+        {
+          "role": "agt_principal",
+          "category": "alactique_finisher",
+          "exercice_pref": "kb_swing_alactique_28",
+          "obligatoire": true,
+          "note": "8-12 efforts max par séance, récup complète entre chaque."
         },
         {
-          "role": "agt_finisher",
+          "role": "agt_rotation",
           "category": "alactique_finisher",
-          "qualities": [
-            "alactique",
-            "puissance_rotation"
-          ],
-          "obligatoire": true,
-          "note": "KB swing 28kg 2 bras + chop/lift élastique. Récup complète entre efforts, 8-12 efforts max.",
-          "exercice_pref": "kb_swing_alactique_28"
+          "exercice_pref": "chop_lift_elastique",
+          "obligatoire": false
         }
       ]
     },
     {
       "id": "haut_3",
-      "nom": "Haut 3 (léger)",
+      "nom": "Haut 3",
       "frequence_cible": "au besoin selon énergie — jamais si HRV/sommeil dégradés",
       "semaine_classique": true,
       "eligible_bloc_qualite": false,
@@ -3011,7 +3027,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "seuil",
-      "nom": "Seuil (SV2)",
+      "nom": "Seuil",
       "frequence_cible": "1x/semaine dès que la base Z2 tient (fenêtre maison surtout)",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -3057,7 +3073,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "vma",
-      "nom": "VMA (test/développement)",
+      "nom": "VMA",
       "frequence_cible": "ponctuel — test de contrôle ou bloc développement course",
       "semaine_classique": false,
       "eligible_bloc_qualite": true,
@@ -3077,7 +3093,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "conditioning_glycolytique",
-      "nom": "Conditioning glycolytique (rounds)",
+      "nom": "Conditioning",
       "frequence_cible": "1x/semaine, samedi type",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -3115,7 +3131,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "work_capacity",
-      "nom": "Work capacity / opérateur",
+      "nom": "Work capacity",
       "frequence_cible": "1x/semaine — fenêtre maison seulement (matériel dédié)",
       "semaine_classique": false,
       "eligible_bloc_qualite": true,
@@ -3147,7 +3163,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "z2",
-      "nom": "Z2 (aérobie base, courte)",
+      "nom": "Z2",
       "frequence_cible": "2-4x/semaine, quotidien idéalement en base",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -3170,7 +3186,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "z2_long",
-      "nom": "Z2 long (sortie longue)",
+      "nom": "Z2 long",
       "frequence_cible": "1x/semaine, dimanche type",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -4021,6 +4037,9 @@ function moteurFindGuyaneRef(exId){
       if(!bloc || !bloc.exercices) continue;
       for(const ex of bloc.exercices){
         const nameLower = (ex.name||'').toLowerCase();
+        // Ignorer les lignes combinées ("Face Pull + Rotation ext") — elles mélangent le format
+        // de deux exercices en un seul champ ambigu. On préfère une ligne à un seul exercice.
+        if(nameLower.includes(' + ')) continue;
         if(kws.some(k=>nameLower.includes(k))) return {repos: ex.repos, note: ex.note, rpe: ex.rpe, fmt: ex.fmt};
       }
     }
@@ -4029,7 +4048,7 @@ function moteurFindGuyaneRef(exId){
 }
 // Priming réel de Guyane (bloc 2), affiché en une ligne compacte au-dessus des cartes d'exercice —
 // remplace les slots CARs/primer par leur présentation minimaliste d'origine.
-const M_GUYANE_SESSION_KEY = {haut_1:'Haut 1', haut_2:'Haut 2', haut_3:'Haut 3', bas_1:'Bas 1', bas_2:'Bas 2'};
+const M_GUYANE_SESSION_KEY = {haut_1:'Haut 1', haut_2:'Haut 2', haut_3:'Haut 3', bas_1:'Bas 1', bas_2:'Bas 2', agt:'AGT'};
 function moteurFindGuyanePriming(session){
   const seanceKey = M_GUYANE_SESSION_KEY[session.id];
   if(!seanceKey || !SEANCES[seanceKey]) return null;
@@ -4872,7 +4891,6 @@ function getAllExerciseData(){
         [/db press vertical/i,'DB Press vertical'],
         [/pendlay/i,'Pendlay Row'],
         [/gorilla/i,'Gorilla Row'],
-        [/chin-ups lest/i,'Chin-ups lestés'],
         [/chin-ups|pull-up/i,'Chin-ups'],
         [/romanian|^rdl|\brdl\b/i,'RDL'],
         [/zercher/i,'Zercher'],
@@ -5350,13 +5368,13 @@ function renderSessionCards(el, session){
         chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'Charge ('+unit+'):'));
         chargeRow.appendChild($('input',{class:'input-mod',type:'number',step:'0.5',
           value: exLog.charge!=null?exLog.charge:'', placeholder: seedOrLast!=null?String(seedOrLast):'—',
-          onchange:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value)); render(); }
+          onchange:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value)); moteurSetTodayField(ex.id,'fmt', format||''); render(); }
         }));
       }
       chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'RPE réel:'));
       chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'10',
         value: exLog.rpe||'', placeholder:'—',
-        onchange:(e)=>{ moteurSetTodayField(ex.id,'rpe', e.target.value); render(); }
+        onchange:(e)=>{ moteurSetTodayField(ex.id,'rpe', e.target.value); moteurSetTodayField(ex.id,'fmt', format||''); render(); }
       }));
       card.appendChild(chargeRow);
 
