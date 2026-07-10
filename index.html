@@ -649,7 +649,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "chin_ups",
-      "name": "Chin-ups / Pull-ups",
+      "name": "Chin-ups (prise supination)",
       "category": "haut_force",
       "qualities": [
         "force_max",
@@ -671,7 +671,7 @@ input,select,textarea{box-sizing:border-box}
       "substitutes": {
         "nomade": "trx_row_lesté_ou_anneaux"
       },
-      "notes": "Sangle poignet G obligatoire sur tous les tirages verticaux/RDL/Gorilla.",
+      "notes": "Sangle poignet G obligatoire sur tous les tirages verticaux/RDL/Gorilla. Chin-ups (prise supination, paumes vers soi) preferes aux Pull-ups (pronation) : meilleur recrutement biceps/dorsaux et moins de contrainte sur l'epaule G en tendinopathie.",
       "test_baseline_field": "pullups_max",
       "pattern": "pull_vertical",
       "progression_type": "halteres_kb",
@@ -2722,6 +2722,13 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "face_pull"
         },
         {
+          "role": "prophylaxie_rotation_ext",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": true,
+          "note": "Superset avec face pull — ne se coupe jamais."
+        },
+        {
           "role": "prophylaxie_nuque",
           "category": "haut_iso_volume",
           "exercice_pref": "nuque_iso_elastique",
@@ -2789,6 +2796,19 @@ input,select,textarea{box-sizing:border-box}
           "category": "prophylaxie_epaule",
           "obligatoire": true,
           "exercice_pref": "face_pull"
+        },
+        {
+          "role": "prophylaxie_rotation_ext",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": true,
+          "note": "Superset avec face pull — ne se coupe jamais."
+        },
+        {
+          "role": "prophylaxie_nuque",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false
         },
         {
           "role": "gainage_finisher",
@@ -3846,10 +3866,21 @@ function loadMoteurMissions(){
 }
 let MMISSIONS = loadMoteurMissions();
 function saveMoteurMissions(){ save('moteur_missions', MMISSIONS); render(); }
-function moteurMarkSessionDone(sessionId){
-  MMISSIONS = loadMoteurMissions(); // re-check week rollover before writing
-  MMISSIONS.completed[sessionId] = (MMISSIONS.completed[sessionId]||0) + 1;
+// Idempotent : cocher/décocher "fait aujourd'hui" pour une séance. Ouvrir une séance ne compte plus
+// automatiquement — seule la case "Séance effectuée" en bas du détail marque le jour.
+function moteurToggleSessionDoneToday(sessionId){
+  MMISSIONS = loadMoteurMissions();
+  const arr = MMISSIONS.completed[sessionId] || [];
+  const idx = arr.indexOf(todayStr);
+  if(idx>=0) arr.splice(idx,1); else arr.push(todayStr);
+  MMISSIONS.completed[sessionId] = arr;
   saveMoteurMissions();
+}
+function moteurIsSessionDoneToday(sessionId){
+  return (MMISSIONS.completed[sessionId]||[]).includes(todayStr);
+}
+function moteurSessionDoneCountThisWeek(sessionId){
+  return (MMISSIONS.completed[sessionId]||[]).length;
 }
 function moteurMissionTarget(freqText){
   const m = /(\d+)\s*x/i.exec(freqText||'');
@@ -3903,8 +3934,8 @@ const M_PUISSANCE_METHOD = {
   pendlay_row:'legeard', chin_ups:'legeard', gorilla_row:'legeard'
 };
 const M_METHOD_FORMATS = {
-  top_set: {leger:'5×3 → Top Set (léger) + back-off', modere:'5×3 → Top Set (modéré) + back-off', pic:'5×3 → Top Set (pic, RIR1) + back-off',
-    rpe:{leger:'6-7',modere:'7-8',pic:'8-9'}, nom:'Top Set + Back-off'},
+  top_set: {leger:'5×3 → Top Set (RIR1) + back-off', modere:'5×3 → Top Set (RIR1) + back-off', pic:'5×3 → Top Set (RIR1) + back-off',
+    rpe:{leger:'9',modere:'9',pic:'9'}, nom:'Top Set + Back-off'},
   cluster: {leger:'Cluster 2+2+2 (léger)', modere:'Cluster 2+2+2 (modéré)', pic:'Cluster 2+2+2 (pic)',
     rpe:{leger:'7',modere:'8',pic:'9'}, nom:'Cluster 2+2+2'},
   pap: {leger:'PAP léger → geste explosif', modere:'PAP modéré → geste explosif', pic:'PAP pic → geste explosif',
@@ -3990,11 +4021,20 @@ function moteurFindGuyaneRef(exId){
       if(!bloc || !bloc.exercices) continue;
       for(const ex of bloc.exercices){
         const nameLower = (ex.name||'').toLowerCase();
-        if(kws.some(k=>nameLower.includes(k))) return {repos: ex.repos, note: ex.note, rpe: ex.rpe};
+        if(kws.some(k=>nameLower.includes(k))) return {repos: ex.repos, note: ex.note, rpe: ex.rpe, fmt: ex.fmt};
       }
     }
   }
   return null;
+}
+// Priming réel de Guyane (bloc 2), affiché en une ligne compacte au-dessus des cartes d'exercice —
+// remplace les slots CARs/primer par leur présentation minimaliste d'origine.
+const M_GUYANE_SESSION_KEY = {haut_1:'Haut 1', haut_2:'Haut 2', haut_3:'Haut 3', bas_1:'Bas 1', bas_2:'Bas 2'};
+function moteurFindGuyanePriming(session){
+  const seanceKey = M_GUYANE_SESSION_KEY[session.id];
+  if(!seanceKey || !SEANCES[seanceKey]) return null;
+  const bloc = SEANCES[seanceKey].blocs[2] || SEANCES[seanceKey].blocs[1];
+  return (bloc && bloc.priming) ? bloc.priming : null;
 }
 
 
@@ -4024,7 +4064,8 @@ function moteurLastExerciseLog(exId){
 function moteurGetChargeUnit(exId){ return M_CHARGE_SEED[exId] ? M_CHARGE_SEED[exId].unit : 'kg'; }
 function moteurGetCharge(exId){
   const last = moteurLastExerciseLog(exId);
-  if(last && last.entry.charge != null && last.entry.charge !== '') return last.entry.charge;
+  if(last && last.entry.charge != null && last.entry.charge !== '' &&
+     (last.date === todayStr || moteurDaysAgo(last.date) <= 10)) return last.entry.charge;
   if(M_CHARGE_SEED[exId]) return M_CHARGE_SEED[exId].load;
   return null;
 }
@@ -4046,7 +4087,7 @@ function moteurSetTodayField(exId, field, val){
   entry[field] = val;
   log[key] = entry;
   saveLog(log);
-  render();
+  // Pas de render() ici : un rebuild complet du DOM à chaque frappe fait perdre le focus du champ.
 }
 // RPE réel (1-10, déjà le standard de l'app) -> RIR approximatif pour la règle de progression du manuel.
 function moteurRpeToApproxRIR(rpe){
@@ -4598,17 +4639,21 @@ document.addEventListener('visibilitychange',()=>{
 // Service worker registration for offline mode
 // ── Service Worker (fichier externe requis sur le serveur) ──
 window.__swStatus = 'non supporté';
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('sport-pwa-sw.js')
-      .then(async reg=>{
-        window.__swStatus='enregistré';
-        await navigator.serviceWorker.ready;
-        window.__swStatus = navigator.serviceWorker.controller ? 'actif ✓' : 'prêt — recharge pour activer';
-      })
-      .catch(e=>{ window.__swStatus='ÉCHEC : '+e.message; console.warn('SW failed:',e); });
-  });
-}
+try {
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      try {
+        navigator.serviceWorker.register('sport-pwa-sw.js')
+          .then(async reg=>{
+            window.__swStatus='enregistré';
+            await navigator.serviceWorker.ready;
+            window.__swStatus = navigator.serviceWorker.controller ? 'actif ✓' : 'prêt — recharge pour activer';
+          })
+          .catch(e=>{ window.__swStatus='ÉCHEC : '+e.message; console.warn('SW failed:',e); });
+      } catch(e){ window.__swStatus='non disponible dans ce contexte'; }
+    });
+  }
+} catch(e){ window.__swStatus='non disponible dans ce contexte'; }
 function render(){
   const _ps=document.querySelector('.scroll'); const _st=_ps?_ps.scrollTop:0;
   const root = document.getElementById('root');
@@ -4797,18 +4842,29 @@ function getAllExerciseData(){
       if(!key.startsWith('ex_')) return;
       const entry = log[key];
       if(!entry || (!entry.charge && !entry.rpe)) return;
-      // Resolve exercise name from key: ex_<seance>_b<bloc>_<idx>
-      const m = key.match(/^ex_(.+)_b(\d)_(\d+)(?:_\w+)?$/);
-      if(!m) return;
-      const seanceName=m[1], blocId=Number(m[2]), exIdx=Number(m[3]);
-      const seance=SEANCES[seanceName];
-      if(!seance||!seance.blocs||!seance.blocs[blocId]) return;
-      const exList=seance.blocs[blocId].exercices||[];
-      const ex=exList[exIdx];
-      if(!ex) return;
-      // Normalize name: strip stars/icons, keep core
-      let baseName=ex.name.replace(/[\u2605\u26a1\u26a0]/g,'').replace(/\s+/g,' ').trim().split('\u00b7')[0].trim();
-      // Canonicalisation : fusionner les variantes du même exercice (noms changés entre blocs)
+
+      let baseName, blocId, fmtVal;
+      const mMoteur = key.match(/^ex_moteur_(.+)$/);
+      if(mMoteur){
+        // Nouveau moteur (post-Guyane) : clé = ex_moteur_<exerciceId du catalogue>
+        const exObj = (typeof M_EX_BY_ID_NAME!=='undefined') ? M_EX_BY_ID_NAME[mMoteur[1]] : null;
+        baseName = exObj || mMoteur[1];
+        blocId = 0; fmtVal = entry.fmt||'';
+      } else {
+        // Ancien format Guyane : ex_<seance>_b<bloc>_<idx>
+        const m = key.match(/^ex_(.+)_b(\d)_(\d+)(?:_\w+)?$/);
+        if(!m) return;
+        const seanceName=m[1], blocNum=Number(m[2]), exIdx=Number(m[3]);
+        const seance=SEANCES[seanceName];
+        if(!seance||!seance.blocs||!seance.blocs[blocNum]) return;
+        const exList=seance.blocs[blocNum].exercices||[];
+        const ex=exList[exIdx];
+        if(!ex) return;
+        baseName=ex.name.replace(/[\u2605\u26a1\u26a0]/g,'').replace(/\s+/g,' ').trim().split('\u00b7')[0].trim();
+        blocId = blocNum; fmtVal = ex.fmt||'';
+      }
+      // Canonicalisation : fusionner les variantes du même exercice (noms changés entre blocs, et entre
+      // l'ancien système Guyane et le nouveau moteur — mêmes mouvements, même bucket de stats)
       const _canon=[
         [/militaire/i,'Militaire'],
         [/db bench inclin/i,'DB Bench incliné'],
@@ -4817,24 +4873,25 @@ function getAllExerciseData(){
         [/pendlay/i,'Pendlay Row'],
         [/gorilla/i,'Gorilla Row'],
         [/chin-ups lest/i,'Chin-ups lestés'],
-        [/chin-ups supination/i,'Chin-ups'],
-        [/romanian|rdl/i,'RDL'],
+        [/chin-ups|pull-up/i,'Chin-ups'],
+        [/romanian|^rdl|\brdl\b/i,'RDL'],
         [/zercher/i,'Zercher'],
         [/copenhagen/i,'Copenhagen'],
         [/bulgarian/i,'Bulgarian'],
         [/nordic/i,'Nordic Curl'],
         [/pallof/i,'Pallof'],
         [/face pull/i,'Face Pull'],
+        [/rotation ext/i,'Rotation externe'],
         [/nuque/i,'Nuque ISO'],
         [/farmer carry/i,'Farmer carry'],
         [/alactique|kb swing/i,'Alactique KB'],
         [/dragon flag/i,'Dragon flag'],
-        [/pull-ups/i,'Pull-ups'],
         [/back extension/i,'Back extension'],
       ];
       for(const [re,name] of _canon){ if(re.test(baseName)){ baseName=name; break; } }
       if(!data[baseName]) data[baseName]=[];
       const chargeNum=(()=>{
+        if(typeof entry.charge === 'number') return entry.charge;
         let raw=String(entry.charge||'').replace(',','.').trim();
         if(!raw) return null;
         // Format "NxM" ou "Nx M kg" → prendre M (la charge par main), pas N (le nombre)
@@ -4847,8 +4904,8 @@ function getAllExerciseData(){
         let m1=raw.match(/(\d+(?:\.\d+)?)/);
         return m1?parseFloat(m1[1]):null;
       })();
-      if(isNaN(chargeNum)||chargeNum===null) return; // skip if no charge entered
-      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw:entry.charge||'', rpe:Number(entry.rpe)||null, fmt:entry.fmt||'', bloc:blocId});
+      if(chargeNum===null||isNaN(chargeNum)) return; // skip if no charge entered
+      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw: entry.charge!=null?String(entry.charge):'', rpe:Number(entry.rpe)||null, fmt:fmtVal, bloc:blocId});
     });
   }
   // Sort each by date
@@ -5095,21 +5152,74 @@ const COMPRESSED_SESSIONS = {
 
 // ── Séance pilotée par le Moteur (post-Guyane) — même UI riche, données dynamiques ──
 function renderSeance(){
-  return S.moteurSessionId ? renderMoteurSeanceDetail() : renderMoteurSeanceList();
-}
-
-function renderMoteurSeanceDetail(){
+  moteurMaybeAutoSuggestDelestage();
   const el = $('div',{});
-  const session = MTPL.session_types.find(s=>s.id===S.moteurSessionId);
-  if(!session){
-    el.appendChild($('div',{class:'card'},'Séance introuvable.',
-      $('button',{class:'btn btn-ghost btn-sm',style:{marginTop:'8px'},onclick:()=>{ S.moteurSessionId=null; render(); }},'← Retour à la liste')));
-    return el;
+  MMISSIONS = loadMoteurMissions();
+
+  if(today <= GUYANE_FIN){
+    el.appendChild($('div',{class:'card',style:{background:'#1a2d4a',border:'1px solid #3b82f6',fontSize:'11.5px',color:'#94a3b8'}},
+      '📍 Programme Guyane en cours jusqu\'au 10 août. L\'onglet ',
+      $('b',{style:{color:'#fff'}},'Séance G'),
+      ' reste la référence pour tes charges jusque-là.'
+    ));
   }
 
-  el.appendChild($('button',{class:'btn-back',style:{marginBottom:'10px'},
-    onclick:()=>{ S.moteurSessionId=null; render(); }
-  },'‹ Retour à la liste'));
+  // ── Sélecteur compact des séances — statut (couleur), fait cette semaine (barré),
+  // pertinent pour le focus (encadré doré). Remplace l'ancienne liste pleine largeur. ──
+  let current = MTPL.session_types.find(s=>s.id===S.moteurSessionId);
+  const currentStillOk = current && !moteurSessionLockedByPhase(current) && moteurResolveSession(current).status!=='blocked';
+  if(!current || !currentStillOk){
+    current = MTPL.session_types.find(s=>{
+      if(moteurSessionLockedByPhase(s)) return false;
+      return moteurResolveSession(s).status!=='blocked';
+    }) || MTPL.session_types[0];
+    S.moteurSessionId = current.id;
+  }
+
+  const selectorCard = $('div',{class:'card',style:{paddingBottom:'8px'}});
+  const selectorWrap = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px'}});
+  MTPL.session_types.forEach(session=>{
+    const lockedByPhase = moteurSessionLockedByPhase(session);
+    const target = moteurMissionTarget(session.frequence_cible);
+    const done = moteurSessionDoneCountThisWeek(session.id);
+    const doneThisWeek = target ? done>=target : done>0;
+    let statusColor, canOpen;
+    if(lockedByPhase){ statusColor='#e63946'; canOpen=false; }
+    else {
+      const r = moteurResolveSession(session);
+      canOpen = r.status!=='blocked';
+      statusColor = r.status==='ok' ? '#10b981' : r.status==='partial' ? '#f5a623' : '#e63946';
+    }
+    const relevant = !lockedByPhase && moteurSessionRelevant(session);
+    const isSel = current.id===session.id;
+    selectorWrap.appendChild($('button',{
+      style:{
+        padding:'6px 9px', borderRadius:'8px', fontSize:'11px', fontWeight:'700',
+        cursor: canOpen?'pointer':'default',
+        border: relevant?'1.5px solid #f5a623':(isSel?'1px solid #3b82f6':'1px solid #1e2d42'),
+        background: isSel?'#1a2942':'#111d2e',
+        color: !canOpen?'#475569':(doneThisWeek?'#64748b':'#f0f4f8'),
+        textDecoration: doneThisWeek?'line-through':'none',
+        opacity: lockedByPhase?0.5:1,
+        display:'inline-flex', alignItems:'center', gap:'5px'
+      },
+      onclick:()=>{ if(!canOpen) return; S.moteurSessionId=session.id; render(); }
+    },
+      $('span',{style:{width:'7px',height:'7px',borderRadius:'50%',background:statusColor,flexShrink:'0'}}),
+      session.nom
+    ));
+  });
+  selectorCard.appendChild(selectorWrap);
+  selectorCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'6px'}},
+    '🟢 faisable · 🟠 adaptée · 🔴 impossible/verrouillée · encadré doré = prioritaire focus actuel · barré = fait cette semaine'));
+  el.appendChild(selectorCard);
+
+  renderSessionCards(el, current);
+  return el;
+}
+
+// Construit les cartes d'exercice de la séance sélectionnée, directement dans `el` (pas de page séparée).
+function renderSessionCards(el, session){
 
   el.appendChild($('div',{class:'section-hdr'},'🏋️ '+session.nom));
 
@@ -5126,8 +5236,41 @@ function renderMoteurSeanceDetail(){
 
   const res = moteurResolveSession(session);
 
+  // Bandeau séance compressée — même détection que Guyane (sommeil/HRV/douleur), même présentation.
+  try {
+    const flags = computeFlags();
+    const compFlag = flags.find(f=>f.compressed);
+    if(compFlag){
+      const guyaneKey = M_GUYANE_SESSION_KEY[session.id];
+      const compData = guyaneKey ? COMPRESSED_SESSIONS[guyaneKey] : null;
+      const banner = $('div',{class:'card',style:{borderColor:'#e67e22',background:'#2a1f14'}});
+      banner.appendChild($('div',{class:'card-title',style:{color:'#e67e22'}},'🗜️ '+compFlag.metric));
+      banner.appendChild($('div',{style:{fontSize:'12px',color:'#c9a06a',marginBottom:'8px'}},'Signaux de récupération basse. Version allégée du jour (garde le mouvement, réduis le volume) :'));
+      if(compData){
+        const ul=$('div',{style:{fontSize:'13px',lineHeight:'1.7'}});
+        compData.forEach(x=>ul.appendChild($('div',{},'• '+x)));
+        banner.appendChild(ul);
+      } else {
+        banner.appendChild($('div',{style:{fontSize:'12px',color:'#8a94a6'}},'Réduis le volume de ~40% et l\'intensité, garde les patterns principaux.'));
+      }
+      banner.appendChild($('div',{style:{fontSize:'11px',color:'#8a94a6',marginTop:'8px',fontStyle:'italic'}},'Ne saute pas la séance — allège-la. Le mouvement aide la récupération.'));
+      el.appendChild(banner);
+    }
+  } catch(e){}
+
+  // Priming minimaliste — même présentation qu'avant (une ligne compacte), pas de carte complète.
+  const primingList = moteurFindGuyanePriming(session);
+  if(primingList && primingList.length){
+    el.appendChild($('div',{class:'card',style:{paddingTop:'8px',paddingBottom:'8px',fontSize:'11.5px',color:'#94a3b8'}},
+      $('span',{style:{color:'#f5a623',fontWeight:700}},'Priming : '),
+      primingList.join(' · ')
+    ));
+  }
+  const MINIMAL_ROLES = new Set(['cars_echauffement','primer_alactique']);
+
   res.results.forEach(r=>{
     const slot = r.slot;
+    if(MINIMAL_ROLES.has(slot.role)) return; // couvert par la ligne de priming ci-dessus
     if(!r.exId){
       el.appendChild($('div',{class:'card',style:{borderColor:'#e63946'}},
         $('div',{style:{fontSize:'10px',textTransform:'uppercase',color:'#475569',letterSpacing:'.4px',marginBottom:'4px'}},slot.role.replace(/_/g,' ')),
@@ -5154,34 +5297,34 @@ function renderMoteurSeanceDetail(){
     if(r.substituted && r.from) card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginBottom:'4px'}},'Remplace : '+(M_EX_BY_ID_NAME[r.from]||r.from)));
     if(slot.note) card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginBottom:'6px'}},slot.note));
 
-    // Grid infos (format / repos / RPE cible) — priorité: protocole de cycle > format standard Guyane
-    const format = proto ? proto.format : moteurDefaultFormat(ex);
-    const rpeCible = proto ? proto.rpe : (moteurDefaultRpe(ex) || (guyaneRef && guyaneRef.rpe) || null);
+    // Grid infos (format / repos / tempo / RPE cible) — priorité: protocole de cycle > format standard Guyane
+    const format = proto ? proto.format : ((guyaneRef && guyaneRef.fmt) ? guyaneRef.fmt : moteurDefaultFormat(ex));
+    const rpeCible = proto ? proto.rpe : ((guyaneRef && guyaneRef.rpe) || moteurDefaultRpe(ex) || null);
+    const tempoSource = ((guyaneRef && guyaneRef.note)||'') + ' ' + ((guyaneRef && guyaneRef.fmt)||'') + ' ' + (format||'');
+    const tempoMatch = tempoSource.match(/[Tt]empo\s+([0-9X]-[0-9X]-[0-9X]-[0-9X])/);
     const grid = $('div',{class:'ex-grid'});
     grid.appendChild($('div',{class:'ex-cell'},
       $('div',{class:'ex-cell-lbl'},'Format'),
       $('div',{class:'ex-cell-val purple'}, format || '—')
     ));
     const NO_REPOS_CATEGORIES = new Set(['cars_mobilite','respiration','test']);
+    const rTimers = (guyaneRef && guyaneRef.repos) ? parseReposAll(guyaneRef.repos) : [{sec:90,lbl:'90s'},{sec:120,lbl:'2 min'}];
     if(!NO_REPOS_CATEGORIES.has(ex.category)){
       const reposCell = $('div',{class:'ex-cell'});
       reposCell.appendChild($('div',{class:'ex-cell-lbl'},'Repos'));
-      if(guyaneRef && guyaneRef.repos){
-        const rTimers = parseReposAll(guyaneRef.repos);
-        if(rTimers.length){
-          const btnWrap = $('div',{class:'timer-btns'});
-          rTimers.forEach(t=>btnWrap.appendChild($('button',{class:'timer-btn',onclick:(e)=>{ e.stopPropagation(); startTimer(t.sec, ex.name); }},'⏱ '+t.lbl)));
-          reposCell.appendChild(btnWrap);
-        } else {
-          reposCell.appendChild($('div',{class:'ex-cell-val red'},guyaneRef.repos));
-        }
-      } else {
+      if(rTimers.length){
         const btnWrap = $('div',{class:'timer-btns'});
-        [['90s',90],['2 min',120]].forEach(([lbl,sec])=>btnWrap.appendChild($('button',{class:'timer-btn',onclick:(e)=>{ e.stopPropagation(); startTimer(sec, ex.name); }},'⏱ '+lbl)));
+        rTimers.forEach(t=>btnWrap.appendChild($('button',{class:'timer-btn',onclick:(e)=>{ e.stopPropagation(); startTimer(t.sec, ex.name); }},'⏱ '+t.lbl)));
         reposCell.appendChild(btnWrap);
+      } else {
+        reposCell.appendChild($('div',{class:'ex-cell-val red'},guyaneRef.repos));
       }
       grid.appendChild(reposCell);
     }
+    if(tempoMatch) grid.appendChild($('div',{class:'ex-cell'},
+      $('div',{class:'ex-cell-lbl'},'Tempo'),
+      $('div',{class:'ex-cell-val teal'}, tempoMatch[1])
+    ));
     if(rpeCible) grid.appendChild($('div',{class:'ex-cell'},
       $('div',{class:'ex-cell-lbl'},'RPE cible'),
       $('div',{class:'ex-cell-val gold'}, rpeCible)
@@ -5207,13 +5350,13 @@ function renderMoteurSeanceDetail(){
         chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'Charge ('+unit+'):'));
         chargeRow.appendChild($('input',{class:'input-mod',type:'number',step:'0.5',
           value: exLog.charge!=null?exLog.charge:'', placeholder: seedOrLast!=null?String(seedOrLast):'—',
-          oninput:(e)=>moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value))
+          onchange:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value)); render(); }
         }));
       }
       chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'RPE réel:'));
       chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'10',
         value: exLog.rpe||'', placeholder:'—',
-        oninput:(e)=>moteurSetTodayField(ex.id,'rpe', e.target.value)
+        onchange:(e)=>{ moteurSetTodayField(ex.id,'rpe', e.target.value); render(); }
       }));
       card.appendChild(chargeRow);
 
@@ -5241,8 +5384,13 @@ function renderMoteurSeanceDetail(){
         class:'set-chip'+(isDone?' done':''),
         onclick:()=>{
           const l = getLog(); const e2 = l[exKey] || {sets:{}};
-          e2.sets = e2.sets || {}; e2.sets[s] = !e2.sets[s];
+          e2.sets = e2.sets || {};
+          const wasDone = e2.sets[s];
+          e2.sets[s] = !wasDone;
           l[exKey] = e2; saveLog(l); render();
+          if(!wasDone && rTimers.length>0){
+            setTimeout(()=>startTimer(rTimers[0].sec, ex.name), 500);
+          }
         }
       }, isDone?'✓':' ', 'Set '+s));
     }
@@ -5257,9 +5405,15 @@ function renderMoteurSeanceDetail(){
     el.appendChild(card);
   });
 
-  el.appendChild($('button',{class:'btn btn-ghost btn-sm',style:{marginTop:'6px'},onclick:()=>{ S.moteurSessionId=null; render(); }},'← Retour à la liste'));
-
-  return el;
+  const isDoneToday = moteurIsSessionDoneToday(session.id);
+  el.appendChild($('div',{class:'card',style:{cursor:'pointer',background: isDoneToday?'#0d2b1f':undefined,borderColor: isDoneToday?'#10b981':undefined},
+    onclick:()=>moteurToggleSessionDoneToday(session.id)
+  },
+    $('div',{class:'check-item',style:{cursor:'pointer'}},
+      $('div',{class:'check-box'+(isDoneToday?' done':'')}, isDoneToday?'✓':''),
+      $('div',{style:{fontWeight:700,fontSize:'13px'}},'Séance effectuée aujourd\'hui')
+    )
+  ));
 }
 
 function renderSeanceGuyane(){
@@ -5635,13 +5789,89 @@ function renderBilan(){
 
   const subTab = S.bilanSub || 'matin';
   const seg = $('div',{class:'seg-ctrl'});
-  ['matin','soir','journal','calendrier','stats'].forEach(t=>{
+  ['matin','soir','calendrier','stats','reglages'].forEach(t=>{
     seg.appendChild($('button',{
       class:'seg-btn'+(subTab===t?' active':''),
       onclick:()=>{ S.bilanSub=t; render(); }
-    }, t==='matin'?'🌅 Matin':t==='soir'?'🌙 Soir':t==='stats'?'📈 Stats':t==='calendrier'?'📅 Cal':'📓 Journal'));
+    }, t==='matin'?'🌅 Matin':t==='soir'?'🌙 Soir':t==='stats'?'📈 Stats':t==='calendrier'?'📅 Cal':'⚙️ Réglages'));
   });
   el.appendChild(seg);
+
+  if(subTab==='reglages'){
+    el.appendChild($('div',{class:'card',style:{paddingTop:'10px',paddingBottom:'10px',fontSize:'11px',color:'#64748b'}},
+      'Mode, matériel, durée de fenêtre et focus d\'entraînement — utilisés par l\'onglet Séance pour choisir et adapter les séances.'));
+
+    const cardMode = $('div',{class:'card'});
+    cardMode.appendChild($('div',{class:'card-title'},'OÙ ES-TU ?'));
+    const toggles = $('div',{class:'seg-ctrl'});
+    [['maison','🏠 Maison'],['deplacement','🧳 Déplacement']].forEach(([m,lbl])=>{
+      toggles.appendChild($('button',{class:'seg-btn'+(MS.mode===m?' active':''),onclick:()=>{
+        if(MS.mode!==m){ MS.mode=m; MS.windowStart=todayStr; MS.dureePrevueJours=null; saveMoteurState(); }
+      }},lbl));
+    });
+    cardMode.appendChild(toggles);
+    if(MS.mode==='deplacement'){
+      cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'6px'}},'Matériel disponible sur place'));
+      const grid = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
+      MCAT.taxonomies.equipment.filter(e=>e.id!=='aucun').forEach(e=>{
+        const active = MS.equipDeplacement.includes(e.id);
+        grid.appendChild($('span',{class:'tag '+(active?'tag-green':'tag-grey'),style:{cursor:'pointer'},onclick:()=>{
+          if(active) MS.equipDeplacement = MS.equipDeplacement.filter(x=>x!==e.id);
+          else MS.equipDeplacement = [...MS.equipDeplacement, e.id];
+          saveMoteurState();
+        }},(active?'✓ ':'')+e.label));
+      });
+      cardMode.appendChild(grid);
+    }
+    cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'6px'}},
+      MS.mode==='maison' ? 'Durée prévue de ce séjour maison' : 'Durée prévue de ce déplacement'));
+    const dureeSel = $('select',{class:'input-field',onchange:(e)=>{
+      const v = e.target.value; MS.dureePrevueJours = v==='null' ? null : Number(v); saveMoteurState();
+    }});
+    M_DUREE_OPTIONS.forEach(o=>{
+      const opt = $('option',{value: o.v===null?'null':String(o.v)}, o.lbl);
+      if((MS.dureePrevueJours===null && o.v===null) || (MS.dureePrevueJours===o.v)) opt.setAttribute('selected','selected');
+      dureeSel.appendChild(opt);
+    });
+    cardMode.appendChild(dureeSel);
+    const blocActive = moteurBlocQualiteActive();
+    const elapsed = moteurWindowElapsedDays();
+    cardMode.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',background:'#111d2e',borderRadius:'8px',padding:'8px 10px',marginTop:'8px',fontSize:'12px'}},
+      $('span',{},'Fenêtre en cours : ', $('b',{style:{color:'#f5a623'}}, elapsed+' j écoulés')),
+      $('span',{style:{fontWeight:700,color: blocActive?'#10b981':'#94a3b8'}}, blocActive?'🔓 Bloc qualité débloqué':'🔒 Semaine classique')
+    ));
+    if(blocActive){
+      const cyc = moteurCycleInfo();
+      const phaseLbl = {leger:'Semaine 1 — Léger', modere:'Semaine 2 — Modéré', pic:'Semaine 3 — Pic',
+        deload:'Semaine 4 — Déload (-50%)', focus_manuel:'Focus manuel actif'}[cyc.phase] || cyc.phase;
+      cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#8b5cf6',marginTop:'4px',fontWeight:600}},'🔁 '+cyc.typeLabel+' — '+phaseLbl));
+    }
+    el.appendChild(cardMode);
+
+    const cardFocus = $('div',{class:'card'});
+    cardFocus.appendChild($('div',{class:'card-title'},'FOCUS ACTUEL'));
+    cardFocus.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'6px'}},
+      'Automatique = cycle Force/Puissance calculé (bloc qualité). Choisir un focus fixe pour préparer un test ou forcer une qualité.'));
+    const focusSel = $('select',{class:'input-field',onchange:(e)=>{ MS.focusManuel = e.target.value; saveMoteurState(); }});
+    [['auto','Automatique (cycle Force/Puissance)'],
+     ['force','Force max (fixe)'],['puissance','Puissance (fixe)'],
+     ['prep_tests','Préparation tests'],['semaine_tests','Semaine tests']].forEach(([v,lbl])=>{
+      const opt=$('option',{value:v},lbl); if(MS.focusManuel===v) opt.setAttribute('selected','selected'); focusSel.appendChild(opt);
+    });
+    cardFocus.appendChild(focusSel);
+    el.appendChild(cardFocus);
+
+    cardFocus.appendChild($('div',{class:'lbl',style:{marginTop:'10px'}},'Délestage épaule G (étage coupé aujourd\'hui)'));
+    const delestSel = $('select',{class:'input-field',onchange:(e)=>{ MS.delestageEpauleTier=Number(e.target.value); saveMoteurState(); }});
+    [[0,'Aucun délestage'],[1,'Étage 1 — GTG militaire coupé'],[2,'Étage 2 — + ISO militaire léger coupé'],
+     [3,'Étage 3 — + DB press coupé'],[4,'Étage 4 — + militaire lourd coupé (total)']].forEach(([v,lbl])=>{
+      const opt=$('option',{value:v},lbl); if(MS.delestageEpauleTier===v) opt.setAttribute('selected','selected'); delestSel.appendChild(opt);
+    });
+    cardFocus.appendChild(delestSel);
+    cardFocus.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginTop:'4px'}},
+      'Suggestion auto depuis la douleur épaule du Bilan matin — ajustable ici si besoin.'));
+    return el;
+  }
 
   if(subTab==='stats'){
     el.appendChild(renderStats());
@@ -5866,6 +6096,29 @@ function renderBilan(){
       $('textarea',{class:'textarea-field',rows:'3',placeholder:'Comment s\'est passée la journée, réflexions, pour demain…',
         value:s.notes||'',
         oninput:(e)=>{ s.notes=e.target.value; log.soir=s; saveLog(log); }
+      })
+    ));
+
+    // ── Journal (fusionné ici — l'ancien sous-onglet Journal a disparu) ──
+    el.appendChild($('div',{class:'card'},
+      $('div',{class:'card-title'},'💭 Ressenti général'),
+      $('textarea',{class:'textarea-field',rows:'3',placeholder:'Comment je me suis senti aujourd\'hui…',
+        value:log.journal_ressenti||'',
+        oninput:(e)=>{ log.journal_ressenti=e.target.value; saveLog(log); }
+      })
+    ));
+    el.appendChild($('div',{class:'card'},
+      $('div',{class:'card-title'},'✅ Ce qui a bien marché'),
+      $('textarea',{class:'textarea-field',rows:'2',placeholder:'Points positifs, PR, sensations…',
+        value:log.journal_positif||'',
+        oninput:(e)=>{ log.journal_positif=e.target.value; saveLog(log); }
+      })
+    ));
+    el.appendChild($('div',{class:'card'},
+      $('div',{class:'card-title'},'🔧 À améliorer'),
+      $('textarea',{class:'textarea-field',rows:'2',placeholder:'Technique, récup, nutrition, sommeil…',
+        value:log.journal_ameliorer||'',
+        oninput:(e)=>{ log.journal_ameliorer=e.target.value; saveLog(log); }
       })
     ));
   }
@@ -6196,171 +6449,6 @@ function moteurSessionRelevant(session){
   return (session.qualites_prioritaires||[]).some(x=>q.includes(x));
 }
 
-function renderMoteurSeanceList(){
-  moteurMaybeAutoSuggestDelestage();
-  const el = $('div',{});
-
-  if(today <= GUYANE_FIN){
-    el.appendChild($('div',{class:'card',style:{background:'#1a2d4a',border:'1px solid #3b82f6'}},
-      $('div',{style:{fontSize:'12px',color:'#94a3b8'}},
-        '📍 Programme Guyane en cours jusqu\'au 10 août. L\'onglet ',
-        $('b',{style:{color:'#fff'}},'Séance G'),
-        ' reste la référence pour tes charges jusque-là. Ce Séance devient l\'outil principal ensuite — tu peux déjà t\'en servir pour préparer la suite.')
-    ));
-  }
-
-  // ── Carte mode / matériel / durée ──
-  const cardMode = $('div',{class:'card'});
-  cardMode.appendChild($('div',{class:'card-title'},'OÙ ES-TU ?'));
-  const toggles = $('div',{class:'seg-ctrl'});
-  [['maison','🏠 Maison'],['deplacement','🧳 Déplacement']].forEach(([m,lbl])=>{
-    toggles.appendChild($('button',{class:'seg-btn'+(MS.mode===m?' active':''),onclick:()=>{
-      if(MS.mode!==m){ MS.mode=m; MS.windowStart=todayStr; MS.dureePrevueJours=null; saveMoteurState(); }
-    }},lbl));
-  });
-  cardMode.appendChild(toggles);
-
-  if(MS.mode==='deplacement'){
-    cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'6px'}},'Matériel disponible sur place'));
-    const grid = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
-    MCAT.taxonomies.equipment.filter(e=>e.id!=='aucun').forEach(e=>{
-      const active = MS.equipDeplacement.includes(e.id);
-      grid.appendChild($('span',{class:'tag '+(active?'tag-green':'tag-grey'),style:{cursor:'pointer'},onclick:()=>{
-        if(active) MS.equipDeplacement = MS.equipDeplacement.filter(x=>x!==e.id);
-        else MS.equipDeplacement = [...MS.equipDeplacement, e.id];
-        saveMoteurState();
-      }},(active?'✓ ':'')+e.label));
-    });
-    cardMode.appendChild(grid);
-  }
-
-  cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'6px'}},
-    MS.mode==='maison' ? 'Durée prévue de ce séjour maison' : 'Durée prévue de ce déplacement'));
-  const dureeSel = $('select',{class:'input-field',onchange:(e)=>{
-    const v = e.target.value; MS.dureePrevueJours = v==='null' ? null : Number(v); saveMoteurState();
-  }});
-  M_DUREE_OPTIONS.forEach(o=>{
-    const opt = $('option',{value: o.v===null?'null':String(o.v)}, o.lbl);
-    if((MS.dureePrevueJours===null && o.v===null) || (MS.dureePrevueJours===o.v)) opt.setAttribute('selected','selected');
-    dureeSel.appendChild(opt);
-  });
-  cardMode.appendChild(dureeSel);
-
-  const blocActive = moteurBlocQualiteActive();
-  const elapsed = moteurWindowElapsedDays();
-  const statusLine = $('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',background:'#111d2e',borderRadius:'8px',padding:'8px 10px',marginTop:'8px',fontSize:'12px'}},
-    $('span',{},'Fenêtre en cours : ', $('b',{style:{color:'#f5a623'}}, elapsed+' j écoulés')),
-    $('span',{style:{fontWeight:700,color: blocActive?'#10b981':'#94a3b8'}}, blocActive?'🔓 Bloc qualité débloqué':'🔒 Semaine classique')
-  );
-  cardMode.appendChild(statusLine);
-  if(MS.dureePrevueJours!=null){
-    cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'4px'}},
-      'Durée déclarée : '+MS.dureePrevueJours+' j — décide dès le premier jour, indépendamment des jours réellement écoulés.'));
-  }
-  if(blocActive){
-    const cyc = moteurCycleInfo();
-    const phaseLbl = {leger:'Semaine 1 — Léger', modere:'Semaine 2 — Modéré', pic:'Semaine 3 — Pic',
-      deload:'Semaine 4 — Déload (-50%)', focus_manuel:'Focus manuel actif'}[cyc.phase] || cyc.phase;
-    cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#8b5cf6',marginTop:'4px',fontWeight:600}},
-      '🔁 '+cyc.typeLabel+' — '+phaseLbl));
-  } else if(MS.focusManuel && MS.focusManuel !== 'auto'){
-    const cyc = moteurCycleInfo();
-    cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#8b5cf6',marginTop:'4px',fontWeight:600}},
-      '🔁 '+cyc.typeLabel+' (focus manuel, actif même en semaine classique)'));
-  }
-  el.appendChild(cardMode);
-
-  // ── Carte focus manuel (prime sur le calcul automatique) ──
-  const cardFocus = $('div',{class:'card'});
-  cardFocus.appendChild($('div',{class:'card-title'},'FOCUS ACTUEL'));
-  cardFocus.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'6px'}},
-    'Automatique = cycle Force/Puissance calculé (bloc qualité). Choisir un focus fixe pour préparer un test ou forcer une qualité, quel que soit le cycle en cours.'));
-  const focusSel = $('select',{class:'input-field',onchange:(e)=>{ MS.focusManuel = e.target.value; saveMoteurState(); }});
-  [['auto','Automatique (cycle Force/Puissance)'],
-   ['force','Force max (fixe)'],['puissance','Puissance (fixe)'],
-   ['prep_tests','Préparation tests'],['semaine_tests','Semaine tests']].forEach(([v,lbl])=>{
-    const opt=$('option',{value:v},lbl); if(MS.focusManuel===v) opt.setAttribute('selected','selected'); focusSel.appendChild(opt);
-  });
-  cardFocus.appendChild(focusSel);
-  el.appendChild(cardFocus);
-
-  // ── Carte bilan du jour (dérivée du Bilan — source unique) ──
-  const sev = moteurSeverityFromBilan();
-  const cardBilan = $('div',{class:'card'});
-  cardBilan.appendChild($('div',{class:'card-title'},'CONTRE-INDICATIONS DU JOUR'));
-  cardBilan.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'6px'}},
-    'Repris automatiquement depuis ton Bilan du matin.'));
-  const sevGrid = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
-  [['poignet_G','Poignet G'],['genou_G_itband','Genou G / IT band'],['coude_G_epicondyle','Coude G'],['cervicales','Cervicales']].forEach(([id,lbl])=>{
-    const s = sev[id]||0;
-    const cls = s>=2?'tag-red':(s>=1?'tag-gold':'tag-grey');
-    const txt = s>=2?'forte':(s>=1?'légère':'aucune');
-    sevGrid.appendChild($('span',{class:'tag '+cls},lbl+' · '+txt));
-  });
-  cardBilan.appendChild(sevGrid);
-  cardBilan.appendChild($('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.tab='bilan'; render(); }},'→ Modifier dans Bilan'));
-
-  cardBilan.appendChild($('div',{class:'lbl',style:{marginTop:'10px'}},'Délestage épaule G (étage coupé aujourd\'hui)'));
-  const delestSel = $('select',{class:'input-field',onchange:(e)=>{ MS.delestageEpauleTier=Number(e.target.value); saveMoteurState(); }});
-  [[0,'Aucun délestage'],[1,'Étage 1 — GTG militaire coupé'],[2,'Étage 2 — + ISO militaire léger coupé'],
-   [3,'Étage 3 — + DB press coupé'],[4,'Étage 4 — + militaire lourd coupé (total)']].forEach(([v,lbl])=>{
-    const opt=$('option',{value:v},lbl); if(MS.delestageEpauleTier===v) opt.setAttribute('selected','selected'); delestSel.appendChild(opt);
-  });
-  cardBilan.appendChild(delestSel);
-  cardBilan.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginTop:'4px'}},
-    'Suggestion auto depuis la douleur épaule du Bilan — ajustable ici si besoin.'));
-  el.appendChild(cardBilan);
-
-  // ── Carte liste unique des séances : barrée = déjà faite cette semaine, grisée = pas prévu vu
-  // le matériel, encadrée = pertinente pour le focus actuel (ex. pas VMA/VO2max/work capacity en Force max) ──
-  MMISSIONS = loadMoteurMissions();
-  const cardSessions = $('div',{class:'card'});
-  cardSessions.appendChild($('div',{class:'card-title'},'SÉANCE DU JOUR'));
-  cardSessions.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'8px'}},
-    'Tap une séance faisable pour l\'ouvrir (charges, RPE, séries, timers). Barrée = déjà faite cette semaine. Encadrée = prioritaire pour le focus actuel.'));
-  MTPL.session_types.forEach(session=>{
-    const lockedByPhase = moteurSessionLockedByPhase(session);
-    const target = moteurMissionTarget(session.frequence_cible);
-    const done = MMISSIONS.completed[session.id]||0;
-    const doneThisWeek = target ? done>=target : done>0;
-    let statusTag, reasonTxt='';
-    if(lockedByPhase){
-      statusTag = $('span',{class:'tag tag-red'},'Réservé bloc qualité');
-      reasonTxt = 'Débloqué si la fenêtre déclarée ou écoulée atteint 28 j.';
-    } else {
-      const res = moteurResolveSession(session);
-      if(res.status==='ok') statusTag = $('span',{class:'tag tag-green'},'Faisable');
-      else if(res.status==='partial') statusTag = $('span',{class:'tag tag-gold'},'Adaptée');
-      else statusTag = $('span',{class:'tag tag-red'},'Impossible');
-      if(res.status==='blocked') reasonTxt = res.oblFails.map(f=>f.blockedReason).join(' · ');
-      else if(res.status==='partial') reasonTxt = res.results.filter(r=>r.substituted).length+' exercice(s) substitué(s).';
-    }
-    const canOpen = !lockedByPhase && (()=>{ const r=moteurResolveSession(session); return r.status!=='blocked'; })();
-    const relevant = !lockedByPhase && moteurSessionRelevant(session);
-    const nameEl = $('div',{style:{fontWeight:700,fontSize:'13px',
-      textDecoration: doneThisWeek?'line-through':'none', color: doneThisWeek?'#475569':'#f0f4f8'}},session.nom);
-    const headerRow = $('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}}, nameEl, statusTag);
-    const item = $('div',{class:'ex-card',style:{
-      cursor: canOpen?'pointer':'default', opacity: lockedByPhase?0.55:1,
-      border: relevant?'1.5px solid #f5a623':undefined
-    },
-      onclick:()=>{
-        if(!canOpen) return;
-        S.moteurSessionId=session.id;
-        moteurMarkSessionDone(session.id);
-        render();
-      }
-    },
-      headerRow,
-      doneThisWeek ? $('div',{style:{fontSize:'10.5px',color:'#10b981',marginTop:'2px'}},'✓ Fait '+done+(target?'/'+target:'')+' cette semaine') : null,
-      reasonTxt ? $('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'4px'}},reasonTxt) : null
-    );
-    cardSessions.appendChild(item);
-  });
-  el.appendChild(cardSessions);
-
-  return el;
-}
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 
