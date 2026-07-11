@@ -5186,14 +5186,15 @@ function getAllExerciseData(){
   return data;
 }
 
-// Ratios ×PDC (1RM) tels que donnés dans le manuel — convertis en 3RM (Epley ≈ ×0.909) pour être
-// directement comparables aux séances réelles en 5×3 (le top set d'un 5×3 est un effort proche du 3RM).
+// Ratios ×PDC (1RM), sourcés par exercice — convertis en 3RM (Epley ≈ ×0.909) pour être directement
+// comparables aux séances réelles en 5×3 (le top set d'un 5×3 est un effort proche du 3RM).
 const M_STANDARDS_RATIOS = {
-  bench_plat_barre: {label:'Bench Press', min:1, obj:1.25, exc:1.5},
-  militaire_barre: {label:'Military Press', min:0.5, obj:0.7, exc:0.85},
-  pendlay_row: {label:'Pendlay Row', min:0.8, obj:1, exc:1.2},
-  rdl: {label:'Romanian Deadlift', min:1.5, obj:2, exc:2.3},
-  zercher_squat: {label:'Zercher Squat', min:1, obj:1.5, exc:1.8},
+  bench_plat_barre: {label:'Bench Press', min:1.0, obj:1.25, exc:1.5, source:'MTI'},
+  rdl: {label:'Romanian Deadlift', min:1.5, obj:1.75, exc:2.0, source:'MTI (Hinge Lift)'},
+  zercher_squat: {label:'Zercher Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI (proxy Front Squat — pas de standard Zercher publié)'},
+  militaire_barre: {label:'Military Press', min:0.55, obj:0.9, exc:1.25, source:'ExRx (Press)'},
+  // Pendlay Row retiré : aucun standard externe (MTI/Dan John/ExRx) ne documente ce mouvement —
+  // suivi de progression personnelle uniquement, pas de repère sourcé.
 };
 const M_RM_FACTOR = 0.909; // 3RM ≈ 1RM × 0.909 (Epley)
 function moteurGetBodyweight(){
@@ -5206,11 +5207,19 @@ function moteurStandardsFor(exId){
   if(!r) return null;
   const pdc = moteurGetBodyweight();
   return {
-    label: r.label,
+    label: r.label, source: r.source,
     min: Math.round(r.min*pdc*M_RM_FACTOR),
     obj: Math.round(r.obj*pdc*M_RM_FACTOR),
     exc: Math.round(r.exc*pdc*M_RM_FACTOR)
   };
+}
+// Les repères 3RM n'ont de sens que si le format affiché EST un effort proche du 3RM (ex. le top
+// set d'un "5×3"). Sur un 4×5, 3×8, etc., la charge est structurellement plus légère — pas comparable.
+function moteurFormatIsThreeRM(fmt){
+  if(!fmt) return false;
+  if(/3RM/i.test(fmt)) return true;
+  const m = fmt.match(/[×x]\s*(\d+)/);
+  return !!(m && Number(m[1])===3);
 }
 
 function renderStats(){
@@ -5240,16 +5249,19 @@ function renderStats(){
       $('div',{style:{flex:'1',textAlign:'right'}},'Objectif'),$('div',{style:{flex:'1',textAlign:'right'}},'Excellence')));
     Object.keys(M_STANDARDS_RATIOS).forEach(exId=>{
       const s = moteurStandardsFor(exId);
-      tbl.appendChild($('div',{style:{display:'flex',padding:'3px 0',borderBottom:'1px solid #16202e'}},
-        $('div',{style:{flex:'2'}},s.label),
-        $('div',{style:{flex:'1',textAlign:'right',color:'#94a3b8'}},s.min+' kg'),
-        $('div',{style:{flex:'1',textAlign:'right',color:'#f5a623'}},s.obj+' kg'),
-        $('div',{style:{flex:'1',textAlign:'right',color:'#10b981'}},s.exc+' kg')
+      tbl.appendChild($('div',{style:{padding:'3px 0',borderBottom:'1px solid #16202e'}},
+        $('div',{style:{display:'flex'}},
+          $('div',{style:{flex:'2'}},s.label),
+          $('div',{style:{flex:'1',textAlign:'right',color:'#94a3b8'}},s.min+' kg'),
+          $('div',{style:{flex:'1',textAlign:'right',color:'#f5a623'}},s.obj+' kg'),
+          $('div',{style:{flex:'1',textAlign:'right',color:'#10b981'}},s.exc+' kg')
+        ),
+        $('div',{style:{fontSize:'9px',color:'#475569',marginTop:'1px'}},s.source)
       ));
     });
     stdCard.appendChild(tbl);
     stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'6px',fontStyle:'italic'}},
-      'Convertis depuis les ratios ×PDC du manuel (1RM), via Epley : 3RM ≈ 1RM×0.909. Recalcule automatiquement si tu changes ton poids de corps ci-dessus.'));
+      'Seuls Objectif et Excellence viennent réellement des sources citées (MTI publie 2 chiffres/mouvement, ExRx ses paliers Intermediate/Advanced). Le Minimum est un plancher interpolé sur les 4 exercices, sans exception. Convertis en 3RM (Epley ≈ 1RM×0.909). Military Press (ExRx) suit une méthodologie différente de Bench/RDL/Zercher (MTI) — pas directement comparables entre eux. Pendlay Row n\'a pas de standard externe publié — suivi en progression personnelle uniquement.'));
   }
   el.appendChild(stdCard);
 
@@ -5308,8 +5320,9 @@ function renderStats(){
   }
 
   // Build SVG chart
-  const M_BASENAME_TO_EXID = {'Militaire':'militaire_barre','Bench plat':'bench_plat_barre','Pendlay Row':'pendlay_row','RDL':'rdl','Zercher':'zercher_squat'};
-  const stdForChart = M_BASENAME_TO_EXID[_statsEx] ? moteurStandardsFor(M_BASENAME_TO_EXID[_statsEx]) : null;
+  const M_BASENAME_TO_EXID = {'Militaire':'militaire_barre','Bench plat':'bench_plat_barre','RDL':'rdl','Zercher':'zercher_squat'};
+  const stdForChart = (M_BASENAME_TO_EXID[_statsEx] && _statsFmt!=='__all__' && moteurFormatIsThreeRM(_statsFmt))
+    ? moteurStandardsFor(M_BASENAME_TO_EXID[_statsEx]) : null;
   const pts = data[_statsEx].filter(d=>d.charge!==null && (_statsFmt==='__all__' || !d.fmt || d.fmt===_statsFmt));
   if(pts.length===0){
     card.appendChild($('div',{style:{fontSize:'12px',color:'#475569'}},'Pas de charge numérique saisie pour cet exercice.'));
