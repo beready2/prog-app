@@ -47,8 +47,8 @@ input,select,textarea{box-sizing:border-box}
 <script id="moteur-catalogue-data" type="application/json">{
   "meta": {
     "nom": "Be Ready — Catalogue d'exercices",
-    "version": "1.2",
-    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet).",
+    "version": "1.3",
+    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet). v1.3 ajoute les machines maison (presse a cuisse, leg extension/curl, poulies haute/basse, butterfly) et des substituts lies aux contre-indications (pas seulement au materiel manquant) : ex. genou_G_itband -> presse_cuisse, poignet_G -> poulie.",
     "usage_app": "L'app filtre exercises[] par window courante (equipement dispo) + qualites prioritaires de la phase active + contraindications actives (flags bilan du jour), puis assemble la séance. Les charges viennent des baselines/e1RM stockés séparément (état, pas catalogue)."
   },
   "taxonomies": {
@@ -218,6 +218,30 @@ input,select,textarea{box-sizing:border-box}
       {
         "id": "aucun",
         "label": "Aucun matériel"
+      },
+      {
+        "id": "presse_cuisse",
+        "label": "Presse à cuisse"
+      },
+      {
+        "id": "leg_extension",
+        "label": "Leg extension"
+      },
+      {
+        "id": "leg_curl_machine",
+        "label": "Leg curl (machine)"
+      },
+      {
+        "id": "poulie_haute",
+        "label": "Poulie haute (tirage vertical)"
+      },
+      {
+        "id": "poulie_basse",
+        "label": "Poulie basse (tirage horizontal)"
+      },
+      {
+        "id": "butterfly",
+        "label": "Butterfly (pec deck)"
       }
     ],
     "windows": [
@@ -245,7 +269,13 @@ input,select,textarea{box-sizing:border-box}
           "gilet_lest",
           "corde_a_sauter",
           "piscine",
-          "blazepod"
+          "blazepod",
+          "presse_cuisse",
+          "leg_extension",
+          "leg_curl_machine",
+          "poulie_haute",
+          "poulie_basse",
+          "butterfly"
         ]
       },
       {
@@ -528,7 +558,9 @@ input,select,textarea{box-sizing:border-box}
         "barre_disques"
       ],
       "side_rule": "bilateral",
-      "contraindications": [],
+      "contraindications": [
+        "poignet_G"
+      ],
       "delestage_tier": null,
       "windows_ok": [
         "maison",
@@ -536,11 +568,15 @@ input,select,textarea{box-sizing:border-box}
         "paris"
       ],
       "substitutes": {
-        "nomade": "trx_row"
+        "nomade": "trx_row",
+        "poignet_G": "poulie_basse"
       },
       "pattern": "pull_horizontal",
       "progression_type": "barre",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {
+        "poignet_G": 1
+      }
     },
     {
       "id": "trx_row",
@@ -578,15 +614,18 @@ input,select,textarea{box-sizing:border-box}
         "banc"
       ],
       "side_rule": "bilateral",
-      "contraindications": [],
-      "delestage_tier": null,
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": 2,
       "windows_ok": [
         "maison",
         "guyane",
         "paris"
       ],
       "substitutes": {
-        "nomade": "pompes_poignees"
+        "nomade": "pompes_poignees",
+        "epaule_G": "butterfly"
       },
       "pattern": "push_horizontal",
       "progression_type": "halteres_kb",
@@ -669,7 +708,8 @@ input,select,textarea{box-sizing:border-box}
         "paris"
       ],
       "substitutes": {
-        "nomade": "trx_row_lesté_ou_anneaux"
+        "nomade": "trx_row_lesté_ou_anneaux",
+        "poignet_G": "poulie_haute"
       },
       "notes": "Sangle poignet G obligatoire sur tous les tirages verticaux/RDL/Gorilla. Chin-ups (prise supination, paumes vers soi) preferes aux Pull-ups (pronation) : meilleur recrutement biceps/dorsaux et moins de contrainte sur l'epaule G en tendinopathie.",
       "test_baseline_field": "pullups_max",
@@ -688,7 +728,9 @@ input,select,textarea{box-sizing:border-box}
         "kb"
       ],
       "side_rule": "unilateral_alt",
-      "contraindications": [],
+      "contraindications": [
+        "poignet_G"
+      ],
       "delestage_tier": null,
       "windows_ok": [
         "maison",
@@ -696,10 +738,15 @@ input,select,textarea{box-sizing:border-box}
         "paris",
         "nomade"
       ],
-      "substitutes": {},
+      "substitutes": {
+        "poignet_G": "poulie_basse"
+      },
       "pattern": "pull_horizontal",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {
+        "poignet_G": 1
+      }
     },
     {
       "id": "db_press_vertical",
@@ -971,7 +1018,9 @@ input,select,textarea{box-sizing:border-box}
         "kb"
       ],
       "side_rule": "G_first",
-      "contraindications": [],
+      "contraindications": [
+        "genou_G_itband"
+      ],
       "delestage_tier": null,
       "windows_ok": [
         "maison",
@@ -979,11 +1028,16 @@ input,select,textarea{box-sizing:border-box}
         "paris",
         "nomade"
       ],
-      "substitutes": {},
+      "substitutes": {
+        "genou_G_itband": "presse_cuisse"
+      },
       "test_baseline_field": "bulgarian_asymetrie_pct",
       "pattern": "squat",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {
+        "genou_G_itband": 1
+      }
     },
     {
       "id": "rdl",
@@ -997,7 +1051,8 @@ input,select,textarea{box-sizing:border-box}
       ],
       "side_rule": "bilateral",
       "contraindications": [
-        "poignet_G"
+        "poignet_G",
+        "genou_G_itband"
       ],
       "delestage_tier": null,
       "windows_ok": [
@@ -1006,12 +1061,16 @@ input,select,textarea{box-sizing:border-box}
         "paris"
       ],
       "substitutes": {
-        "nomade": "kb_rdl"
+        "nomade": "kb_rdl",
+        "genou_G_itband": "leg_curl_machine"
       },
       "test_baseline_field": "rdl_1RM_est",
       "pattern": "hinge",
       "progression_type": "barre",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {
+        "genou_G_itband": 2
+      }
     },
     {
       "id": "kb_rdl",
@@ -1175,7 +1234,9 @@ input,select,textarea{box-sizing:border-box}
         "barre_disques"
       ],
       "side_rule": "bilateral",
-      "contraindications": [],
+      "contraindications": [
+        "genou_G_itband"
+      ],
       "delestage_tier": null,
       "windows_ok": [
         "maison",
@@ -1183,11 +1244,15 @@ input,select,textarea{box-sizing:border-box}
         "paris"
       ],
       "substitutes": {
-        "nomade": "kb_goblet_front_squat"
+        "nomade": "kb_goblet_front_squat",
+        "genou_G_itband": "presse_cuisse"
       },
       "pattern": "squat",
       "progression_type": "barre",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {
+        "genou_G_itband": 1
+      }
     },
     {
       "id": "kb_goblet_front_squat",
@@ -1224,7 +1289,9 @@ input,select,textarea{box-sizing:border-box}
         "banc_lombaire"
       ],
       "side_rule": "bilateral",
-      "contraindications": [],
+      "contraindications": [
+        "genou_G_itband"
+      ],
       "delestage_tier": null,
       "windows_ok": [
         "maison",
@@ -1232,11 +1299,15 @@ input,select,textarea{box-sizing:border-box}
       ],
       "substitutes": {
         "paris": "trx_leg_curl",
-        "nomade": "trx_leg_curl"
+        "nomade": "trx_leg_curl",
+        "genou_G_itband": "leg_curl_machine"
       },
       "pattern": "hinge",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {
+        "genou_G_itband": 1
+      }
     },
     {
       "id": "trx_leg_curl",
@@ -2637,6 +2708,137 @@ input,select,textarea{box-sizing:border-box}
       "pattern": "none",
       "progression_type": "aucun",
       "protocole_cycle_eligible": false
+    },
+    {
+      "id": "presse_cuisse",
+      "name": "Presse à cuisse",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "presse_cuisse"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "squat",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false,
+      "notes": "Mouvement guidé, trajectoire fixe — charge le squat sans le stress de stabilisation du Zercher. Utile si genou G sensible (moins de valgus qu'un squat libre)."
+    },
+    {
+      "id": "leg_extension_machine",
+      "name": "Leg extension",
+      "category": "prophylaxie_genou_pied",
+      "qualities": [],
+      "equipment_required": [
+        "leg_extension"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "none",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {},
+      "notes": "Isolation quadriceps, charge ajustable finement — utile en renforcement progressif du genou G tant que la douleur n'est pas forte."
+    },
+    {
+      "id": "leg_curl_machine",
+      "name": "Leg curl (machine)",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "leg_curl_machine"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "hinge",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false,
+      "notes": "Isolation ischio-jambiers, alternative guidée au Nordic Curl — moins exigeant en contrôle excentrique."
+    },
+    {
+      "id": "poulie_haute",
+      "name": "Tirage poulie haute",
+      "category": "haut_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "poulie_haute"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "pull_vertical",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {},
+      "notes": "Prise et angle ajustables — plus tolérant pour le poignet G qu'une barre de traction fixe. Bon substitut chin-ups si le poignet est sensible."
+    },
+    {
+      "id": "poulie_basse",
+      "name": "Tirage poulie basse",
+      "category": "haut_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "poulie_basse"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "pull_horizontal",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {},
+      "notes": "Trajectoire guidée, prise neutre possible — plus doux pour le poignet G qu'un rowing barre/KB."
+    },
+    {
+      "id": "butterfly",
+      "name": "Butterfly (pec deck)",
+      "category": "haut_iso_volume",
+      "qualities": [],
+      "equipment_required": [
+        "butterfly"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "push_horizontal",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false,
+      "notes": "Isolation pectoraux, trajectoire guidée sans stress articulaire épaule G en fin d'amplitude contrôlée."
     }
   ]
 }</script>
@@ -2891,6 +3093,27 @@ input,select,textarea{box-sizing:border-box}
           "category": "gainage",
           "exercice_pref": "hollow_hold",
           "obligatoire": true
+        },
+        {
+          "role": "volume_poulie_haute",
+          "category": "haut_force",
+          "exercice_pref": "poulie_haute",
+          "obligatoire": false,
+          "note": "Volume tirage vertical supplémentaire à la maison."
+        },
+        {
+          "role": "volume_poulie_basse",
+          "category": "haut_force",
+          "exercice_pref": "poulie_basse",
+          "obligatoire": false,
+          "note": "Volume tirage horizontal supplémentaire à la maison."
+        },
+        {
+          "role": "volume_butterfly",
+          "category": "haut_iso_volume",
+          "exercice_pref": "butterfly",
+          "obligatoire": false,
+          "note": "Volume poussée horizontale supplémentaire à la maison, isolation pectoraux sans charge sur l'épaule G en fin d'amplitude."
         }
       ]
     },
@@ -3022,6 +3245,20 @@ input,select,textarea{box-sizing:border-box}
           "category": "bas_force",
           "exercice_pref": "back_extension",
           "obligatoire": false
+        },
+        {
+          "role": "volume_presse_cuisse",
+          "category": "bas_force",
+          "exercice_pref": "presse_cuisse",
+          "obligatoire": false,
+          "note": "Volume supplémentaire à la maison (presse à cuisse) — en plus du Zercher, pas seulement en remplacement."
+        },
+        {
+          "role": "volume_leg_curl",
+          "category": "bas_force",
+          "exercice_pref": "leg_curl_machine",
+          "obligatoire": false,
+          "note": "Volume ischio-jambiers supplémentaire à la maison."
         }
       ]
     },
@@ -3375,7 +3612,7 @@ input,select,textarea{box-sizing:border-box}
   },
   "focus_manuel": {
     "force": {
-      "label": "Force max (fixe, hors cycle auto)",
+      "label": "Force max",
       "protocole_par_qualite": {
         "force_max": "top_set_backoff_modere",
         "alactique": "primer_alactique_ref"
@@ -3383,7 +3620,7 @@ input,select,textarea{box-sizing:border-box}
       "volume_pct": 100
     },
     "puissance": {
-      "label": "Puissance (fixe, hors cycle auto)",
+      "label": "Puissance",
       "protocole_par_qualite": {
         "force_max": "cluster_pap_modere",
         "alactique": "agt_pic_ref"
@@ -3866,37 +4103,35 @@ function loadMoteurState(){
 let MS = loadMoteurState();
 function saveMoteurState(){ save('moteur_state', MS); render(); }
 
-function moteurCurrentIsoWeek(){
-  const d = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
-  const day = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-  const week = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-  return d.getUTCFullYear() + '-W' + String(week).padStart(2,'0');
+// Séances Moteur faites, stockées DANS le log du jour (log.moteur_sessions = [sessionId,...]) —
+// une seule source de vérité, cohérente avec tout le reste (export/import, calendrier).
+function moteurWeekDates(){
+  const dow = today.getDay() || 7; // 1=lundi..7=dimanche
+  const monday = new Date(today); monday.setDate(today.getDate()-(dow-1));
+  const dates=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(monday); d.setDate(monday.getDate()+i);
+    dates.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'));
+  }
+  return dates;
 }
-function loadMoteurMissions(){
-  const stored = load('moteur_missions');
-  const wk = moteurCurrentIsoWeek();
-  if(stored && stored.isoWeek === wk) return stored;
-  return { isoWeek: wk, completed: {} };
-}
-let MMISSIONS = loadMoteurMissions();
-function saveMoteurMissions(){ save('moteur_missions', MMISSIONS); render(); }
-// Idempotent : cocher/décocher "fait aujourd'hui" pour une séance. Ouvrir une séance ne compte plus
-// automatiquement — seule la case "Séance effectuée" en bas du détail marque le jour.
 function moteurToggleSessionDoneToday(sessionId){
-  MMISSIONS = loadMoteurMissions();
-  const arr = MMISSIONS.completed[sessionId] || [];
-  const idx = arr.indexOf(todayStr);
-  if(idx>=0) arr.splice(idx,1); else arr.push(todayStr);
-  MMISSIONS.completed[sessionId] = arr;
-  saveMoteurMissions();
+  const log = getLog();
+  const arr = log.moteur_sessions || [];
+  const idx = arr.indexOf(sessionId);
+  if(idx>=0) arr.splice(idx,1); else arr.push(sessionId);
+  log.moteur_sessions = arr;
+  saveLog(log);
+  render();
 }
 function moteurIsSessionDoneToday(sessionId){
-  return (MMISSIONS.completed[sessionId]||[]).includes(todayStr);
+  return (getLog().moteur_sessions||[]).includes(sessionId);
 }
 function moteurSessionDoneCountThisWeek(sessionId){
-  return (MMISSIONS.completed[sessionId]||[]).length;
+  return moteurWeekDates().filter(ds=>{
+    const l = ds===todayStr ? getLog() : (load('log:'+ds)||{});
+    return (l.moteur_sessions||[]).includes(sessionId);
+  }).length;
 }
 function moteurMissionTarget(freqText){
   const m = /(\d+)\s*x/i.exec(freqText||'');
@@ -4225,6 +4460,19 @@ function moteurResolveSlot(slot, usedIds){
     const st = moteurExerciseStatus(pref);
     if(st.ok && !usedIds.has(pref)) return {exId: pref, substituted:false};
     if(prefEx && prefEx.substitutes){
+      // Priorité : le substitut déclaré EXACTEMENT pour la contre-indication qui bloque cet exercice
+      // (ex. genou_G_itband -> presse_cuisse) — plus pertinent qu'un substitut générique par matériel.
+      const sev = moteurSeverityFromBilan();
+      const activeContra = (prefEx.contraindications||[]).find(c=>{
+        if(c==='epaule_G') return prefEx.delestage_tier!=null && prefEx.delestage_tier<=MS.delestageEpauleTier;
+        const threshold = (prefEx.severity_overrides && prefEx.severity_overrides[c]!=null) ? prefEx.severity_overrides[c] : 1;
+        return (sev[c]||0) >= threshold;
+      });
+      if(activeContra && prefEx.substitutes[activeContra]){
+        const subId = prefEx.substitutes[activeContra];
+        const subSt = moteurExerciseStatus(subId);
+        if(subSt.ok && !usedIds.has(subId)) return {exId: subId, substituted:true, from: pref, blockedReason: st.reason, viaContraindication:true};
+      }
       for(const subId of Object.values(prefEx.substitutes)){
         const subSt = moteurExerciseStatus(subId);
         if(subSt.ok && !usedIds.has(subId)) return {exId: subId, substituted:true, from: pref, blockedReason: st.reason};
@@ -4846,6 +5094,7 @@ document.addEventListener('click', e=>{ if(S.tooltipTarget && !S.tooltipTarget.c
 
 // ── STATS: progression chart per exercise ──────────────────────────────────
 let _statsEx = null;
+let _statsFmt = null;
 
 function getAllExerciseData(){
   // Scan all localStorage logs, collect {exName: [{date, charge, rpe}]}
@@ -4862,13 +5111,18 @@ function getAllExerciseData(){
       const entry = log[key];
       if(!entry || (!entry.charge && !entry.rpe)) return;
 
-      let baseName, blocId, fmtVal;
+      let baseName, blocId, fmtVal, sessionLabel;
       const mMoteur = key.match(/^ex_moteur_(.+)$/);
       if(mMoteur){
         // Nouveau moteur (post-Guyane) : clé = ex_moteur_<exerciceId du catalogue>
         const exObj = (typeof M_EX_BY_ID_NAME!=='undefined') ? M_EX_BY_ID_NAME[mMoteur[1]] : null;
         baseName = exObj || mMoteur[1];
         blocId = 0; fmtVal = entry.fmt||'';
+        const doneSessions = (log.moteur_sessions||[]).map(sid=>{
+          const st = (typeof MTPL!=='undefined') ? MTPL.session_types.find(s=>s.id===sid) : null;
+          return st ? st.nom : sid;
+        });
+        sessionLabel = doneSessions.length ? doneSessions.join('/') : 'Moteur';
       } else {
         // Ancien format Guyane : ex_<seance>_b<bloc>_<idx>
         const m = key.match(/^ex_(.+)_b(\d)_(\d+)(?:_\w+)?$/);
@@ -4881,6 +5135,7 @@ function getAllExerciseData(){
         if(!ex) return;
         baseName=ex.name.replace(/[\u2605\u26a1\u26a0]/g,'').replace(/\s+/g,' ').trim().split('\u00b7')[0].trim();
         blocId = blocNum; fmtVal = ex.fmt||'';
+        sessionLabel = seanceName;
       }
       // Canonicalisation : fusionner les variantes du même exercice (noms changés entre blocs, et entre
       // l'ancien système Guyane et le nouveau moteur — mêmes mouvements, même bucket de stats)
@@ -4923,7 +5178,7 @@ function getAllExerciseData(){
         return m1?parseFloat(m1[1]):null;
       })();
       if(chargeNum===null||isNaN(chargeNum)) return; // skip if no charge entered
-      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw: entry.charge!=null?String(entry.charge):'', rpe:Number(entry.rpe)||null, fmt:fmtVal, bloc:blocId});
+      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw: entry.charge!=null?String(entry.charge):'', rpe:Number(entry.rpe)||null, fmt:fmtVal, bloc:blocId, session:sessionLabel});
     });
   }
   // Sort each by date
@@ -4931,10 +5186,72 @@ function getAllExerciseData(){
   return data;
 }
 
+// Ratios ×PDC (1RM) tels que donnés dans le manuel — convertis en 3RM (Epley ≈ ×0.909) pour être
+// directement comparables aux séances réelles en 5×3 (le top set d'un 5×3 est un effort proche du 3RM).
+const M_STANDARDS_RATIOS = {
+  bench_plat_barre: {label:'Bench Press', min:1, obj:1.25, exc:1.5},
+  militaire_barre: {label:'Military Press', min:0.5, obj:0.7, exc:0.85},
+  pendlay_row: {label:'Pendlay Row', min:0.8, obj:1, exc:1.2},
+  rdl: {label:'Romanian Deadlift', min:1.5, obj:2, exc:2.3},
+  zercher_squat: {label:'Zercher Squat', min:1, obj:1.5, exc:1.8},
+};
+const M_RM_FACTOR = 0.909; // 3RM ≈ 1RM × 0.909 (Epley)
+function moteurGetBodyweight(){
+  const v = load('user_bodyweight_kg');
+  return (v!=null && v!=='') ? Number(v) : 75;
+}
+function moteurSetBodyweight(v){ save('user_bodyweight_kg', v); render(); }
+function moteurStandardsFor(exId){
+  const r = M_STANDARDS_RATIOS[exId];
+  if(!r) return null;
+  const pdc = moteurGetBodyweight();
+  return {
+    label: r.label,
+    min: Math.round(r.min*pdc*M_RM_FACTOR),
+    obj: Math.round(r.obj*pdc*M_RM_FACTOR),
+    exc: Math.round(r.exc*pdc*M_RM_FACTOR)
+  };
+}
+
 function renderStats(){
   const el = $('div',{style:{width:'100%',minWidth:'100%',display:'flex',flexDirection:'column',alignItems:'stretch',boxSizing:'border-box'}});
   const data = getAllExerciseData();
   const exNames = Object.keys(data).filter(n=>data[n].some(d=>d.charge!==null));
+  const bw = moteurGetBodyweight();
+
+  // ── Standards opérationnels — tous en 3RM, dépendent du poids de corps saisi ci-dessous ──
+  const stdCard = $('div',{class:'card'});
+  const stdBtn = $('button',{style:{width:'100%',textAlign:'left',background:'none',border:'none',color:'#f5a623',fontWeight:'700',fontSize:'13px',cursor:'pointer',padding:'0'},
+    onclick:()=>{ S.statsStdOpen=!S.statsStdOpen; render(); }
+  }, '🎯 Standards opérationnels (3RM)  '+(S.statsStdOpen?'▲':'▼'));
+  stdCard.appendChild(stdBtn);
+  if(S.statsStdOpen){
+    const bwRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginTop:'8px',marginBottom:'8px'}},
+      $('span',{style:{fontSize:'11px',color:'#94a3b8'}},'Ton poids de corps (kg) :'),
+      $('input',{class:'input-mod',type:'number',step:'0.5',value:String(bw),
+        onchange:(e)=>moteurSetBodyweight(e.target.value===''?75:Number(e.target.value))})
+    );
+    stdCard.appendChild(bwRow);
+    stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginBottom:'8px'}},
+      'Conservé jusqu\'à ce que tu le changes — détermine les poids ci-dessous et les repères sur les graphiques.'));
+    const tbl = $('div',{style:{marginTop:'2px',fontSize:'11px'}});
+    tbl.appendChild($('div',{style:{display:'flex',fontWeight:'700',color:'#64748b',borderBottom:'1px solid #1e2d42',paddingBottom:'4px',marginBottom:'4px'}},
+      $('div',{style:{flex:'2'}},'Exercice (3RM)'),$('div',{style:{flex:'1',textAlign:'right'}},'Min'),
+      $('div',{style:{flex:'1',textAlign:'right'}},'Objectif'),$('div',{style:{flex:'1',textAlign:'right'}},'Excellence')));
+    Object.keys(M_STANDARDS_RATIOS).forEach(exId=>{
+      const s = moteurStandardsFor(exId);
+      tbl.appendChild($('div',{style:{display:'flex',padding:'3px 0',borderBottom:'1px solid #16202e'}},
+        $('div',{style:{flex:'2'}},s.label),
+        $('div',{style:{flex:'1',textAlign:'right',color:'#94a3b8'}},s.min+' kg'),
+        $('div',{style:{flex:'1',textAlign:'right',color:'#f5a623'}},s.obj+' kg'),
+        $('div',{style:{flex:'1',textAlign:'right',color:'#10b981'}},s.exc+' kg')
+      ));
+    });
+    stdCard.appendChild(tbl);
+    stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'6px',fontStyle:'italic'}},
+      'Convertis depuis les ratios ×PDC du manuel (1RM), via Epley : 3RM ≈ 1RM×0.909. Recalcule automatiquement si tu changes ton poids de corps ci-dessus.'));
+  }
+  el.appendChild(stdCard);
 
   const card = $('div',{class:'card'});
   card.appendChild($('div',{class:'card-title'},'📈 Progression des charges'));
@@ -4958,19 +5275,49 @@ function renderStats(){
         background:n===_statsEx?'#1a2942':'#111d2e',
         color:n===_statsEx?'#3b82f6':'#94a3b8'
       },
-      onclick:()=>{ _statsEx=n; render(); }
+      onclick:()=>{ _statsEx=n; _statsFmt=null; render(); }
     }, n.length>22?n.substring(0,22)+'…':n));
   });
   card.appendChild(selRow);
 
+  // ── Filtre par format : un 5×3 (top set) et un 3×8 (volume) ne sont pas comparables sur le
+  // même graphique — la charge attendue diffère structurellement, pas seulement par progrès. ──
+  const allPts = data[_statsEx];
+  const distinctFmts = [...new Set(allPts.map(d=>d.fmt).filter(f=>f))];
+  if(!_statsFmt || (distinctFmts.length && !distinctFmts.includes(_statsFmt) && _statsFmt!=='__all__')){
+    _statsFmt = distinctFmts.length ? distinctFmts[distinctFmts.length-1] : '__all__';
+  }
+  if(distinctFmts.length>1){
+    const fmtRow = $('div',{style:{display:'flex',gap:'5px',flexWrap:'wrap',marginBottom:'10px'}});
+    fmtRow.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',width:'100%'}},'Format (poids non comparables entre formats différents) :'));
+    distinctFmts.forEach(f=>{
+      fmtRow.appendChild($('button',{
+        style:{padding:'4px 8px',borderRadius:'6px',fontSize:'10px',cursor:'pointer',
+          border:'1px solid '+(f===_statsFmt?'#8b5cf6':'#1e2d42'),
+          background:f===_statsFmt?'#241a3d':'#111d2e', color:f===_statsFmt?'#c4b5fd':'#64748b'},
+        onclick:()=>{ _statsFmt=f; render(); }
+      }, f));
+    });
+    fmtRow.appendChild($('button',{
+      style:{padding:'4px 8px',borderRadius:'6px',fontSize:'10px',cursor:'pointer',
+        border:'1px solid '+(_statsFmt==='__all__'?'#8b5cf6':'#1e2d42'),
+        background:_statsFmt==='__all__'?'#241a3d':'#111d2e', color:_statsFmt==='__all__'?'#c4b5fd':'#64748b'},
+      onclick:()=>{ _statsFmt='__all__'; render(); }
+    }, 'Tous (mélangé)'));
+    card.appendChild(fmtRow);
+  }
+
   // Build SVG chart
-  const pts = data[_statsEx].filter(d=>d.charge!==null);
+  const M_BASENAME_TO_EXID = {'Militaire':'militaire_barre','Bench plat':'bench_plat_barre','Pendlay Row':'pendlay_row','RDL':'rdl','Zercher':'zercher_squat'};
+  const stdForChart = M_BASENAME_TO_EXID[_statsEx] ? moteurStandardsFor(M_BASENAME_TO_EXID[_statsEx]) : null;
+  const pts = data[_statsEx].filter(d=>d.charge!==null && (_statsFmt==='__all__' || !d.fmt || d.fmt===_statsFmt));
   if(pts.length===0){
     card.appendChild($('div',{style:{fontSize:'12px',color:'#475569'}},'Pas de charge numérique saisie pour cet exercice.'));
   } else {
     const W=320,H=180,P={t:14,r:14,b:28,l:34};
     const vals=pts.map(p=>p.charge);
     let vMin=Math.min(...vals), vMax=Math.max(...vals);
+    if(stdForChart){ vMin=Math.min(vMin, stdForChart.min); vMax=Math.max(vMax, stdForChart.exc); }
     if(vMin===vMax){ vMin-=2; vMax+=2; }
     const pad=(vMax-vMin)*0.12; vMin-=pad; vMax+=pad;
     const x=i=>P.l+(pts.length===1?((W-P.l-P.r)/2):(i*(W-P.l-P.r)/(pts.length-1)));
@@ -4982,6 +5329,14 @@ function renderStats(){
       const gv=vMin+(vMax-vMin)*g/3, gy=y(gv);
       svg+='<line x1="'+P.l+'" y1="'+gy+'" x2="'+(W-P.r)+'" y2="'+gy+'" stroke="#1e2d42" stroke-width="1"/>';
       svg+='<text x="'+(P.l-5)+'" y="'+(gy+3)+'" fill="#475569" font-size="9" text-anchor="end">'+gv.toFixed(0)+'</text>';
+    }
+    // Repères standards (Min / Objectif / Excellence, en 3RM, selon le poids de corps saisi)
+    if(stdForChart){
+      [['min','#64748b','Min'],['obj','#f5a623','Obj'],['exc','#10b981','Exc']].forEach(([k,col,lbl])=>{
+        const gy=y(stdForChart[k]);
+        svg+='<line x1="'+P.l+'" y1="'+gy.toFixed(1)+'" x2="'+(W-P.r)+'" y2="'+gy.toFixed(1)+'" stroke="'+col+'" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.75"/>';
+        svg+='<text x="'+(W-P.r-2)+'" y="'+(gy-3).toFixed(1)+'" fill="'+col+'" font-size="8" text-anchor="end">'+lbl+' '+stdForChart[k]+'</text>';
+      });
     }
     // Line path
     if(pts.length>1){
@@ -5023,7 +5378,7 @@ function renderStats(){
       (delta>=0?'+':'')+delta.toFixed(1)+' kg ('+(first?((delta/first*100).toFixed(0)):'—')+'%)'));
     card.appendChild(sum);
     card.appendChild($('div',{style:{fontSize:'10px',color:'#475569',marginTop:'8px'}},
-      'Points = charge réellement saisie. 🟢 RPE ≤6 · 🟠 7-8 · 🔴 ≥9. ⚠ Comparer uniquement dans le même bloc — format et tempo changent entre blocs.'));
+      'Points = charge réellement saisie. 🟢 RPE ≤6 · 🟠 7-8 · 🔴 ≥9.'+(_statsFmt==='__all__'?' ⚠ Formats mélangés — les poids ne sont pas directement comparables entre eux.':' Filtré sur le format « '+_statsFmt+' ».')));
 
     // Data table: last entries with format
     const tbl=$('div',{style:{marginTop:'12px'}});
@@ -5032,8 +5387,8 @@ function renderStats(){
       const row=$('div',{style:{display:'flex',gap:'8px',alignItems:'center',padding:'5px 8px',background:'#0d1525',borderRadius:'6px',marginBottom:'4px',fontSize:'11px'}});
       row.appendChild($('span',{style:{color:'#475569',minWidth:'42px'}},p.date.substring(5).replace('-','/')));
       row.appendChild($('span',{style:{color:'#f0f4ff',fontWeight:'700',minWidth:'52px'}},p.chargeRaw||p.charge+' kg'));
-      row.appendChild($('span',{style:{color:'#8b5cf6',flex:'1'}},p.fmt||'B'+p.bloc));
-      row.appendChild($('span',{style:{color:'#475569',fontSize:'10px'}},'B'+p.bloc));
+      row.appendChild($('span',{style:{color:'#8b5cf6',flex:'1'}},p.fmt||'—'));
+      row.appendChild($('span',{style:{color:'#475569',fontSize:'10px'}},p.session||('B'+p.bloc)));
       if(p.rpe)row.appendChild($('span',{style:{color:p.rpe>=9?'#e63946':p.rpe>=7?'#f5a623':'#10b981',fontWeight:'700'}},'RPE '+p.rpe));
       tbl.appendChild(row);
     });
@@ -5172,15 +5527,6 @@ const COMPRESSED_SESSIONS = {
 function renderSeance(){
   moteurMaybeAutoSuggestDelestage();
   const el = $('div',{});
-  MMISSIONS = loadMoteurMissions();
-
-  if(today <= GUYANE_FIN){
-    el.appendChild($('div',{class:'card',style:{background:'#1a2d4a',border:'1px solid #3b82f6',fontSize:'11.5px',color:'#94a3b8'}},
-      '📍 Programme Guyane en cours jusqu\'au 10 août. L\'onglet ',
-      $('b',{style:{color:'#fff'}},'Séance G'),
-      ' reste la référence pour tes charges jusque-là.'
-    ));
-  }
 
   // ── Sélecteur compact des séances — statut (couleur), fait cette semaine (barré),
   // pertinent pour le focus (encadré doré). Remplace l'ancienne liste pleine largeur. ──
@@ -5307,7 +5653,8 @@ function renderSessionCards(el, session){
     const hdr = $('div',{class:'ex-header'});
     hdr.appendChild($('span',{class:'ex-num'},'●'));
     hdr.appendChild($('span',{class:'ex-name'}, ex.name));
-    if(r.substituted) hdr.appendChild($('span',{class:'tag tag-purple',style:{fontSize:'9px'}},r.viaPattern?'même pattern':'substitué'));
+    if(r.substituted) hdr.appendChild($('span',{class:'tag tag-purple',style:{fontSize:'9px'}},
+      r.viaContraindication?'substitué · contre-indication':(r.viaPattern?'même pattern':'substitué')));
     if(tooltipNote) hdr.appendChild($('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e, tooltipNote); }},'?'));
     card.appendChild(hdr);
     card.appendChild($('div',{style:{fontSize:'9.5px',textTransform:'uppercase',color:'#475569',letterSpacing:'.4px',marginTop:'-4px',marginBottom:'6px'}},
@@ -5445,15 +5792,6 @@ function renderSeanceGuyane(){
   const blocData = seance.blocs[S.bloc] || seance.blocs[1];
 
   el.appendChild($('div',{class:'section-hdr'},'🏋️ Choisir la Séance (Guyane)'));
-
-  if(today > new Date('2026-07-27')){
-    el.appendChild($('div',{class:'card',style:{background:'#1a2d4a',border:'1px solid #3b82f6',fontSize:'11.5px',color:'#94a3b8'}},
-      'Guyane se termine le 10 août. L\'onglet ',
-      $('b',{style:{color:'#fff'}},'🏋️ Séance'),
-      ' prendra le relais ensuite (fenêtres, matériel, missions).',
-      $('button',{class:'btn btn-ghost btn-sm',style:{marginTop:'6px',display:'block'},onclick:()=>{ S.tab='seance'; render(); }},'→ Voir le nouveau Séance')
-    ));
-  }
 
   // Bandeau séance compressée (si jour rouge détecté)
   try {
@@ -6149,8 +6487,9 @@ function renderBilan(){
     const yr = viewDate.getFullYear(); const mo = viewDate.getMonth();
     const moNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
     // Couleurs par séance
-    const seanceColors = {'Haut 1':'#1E3A5F','Bas 1':'#06b6d4','AGT':'#10b981','Haut 2':'#7C3AED','Bas 2':'#e63946','Conditioning':'#f5a623','Z2 Swings':'#3b82f6','Haut 3':'#a78bfa'};
-    // Construire map date -> séances faites (via clés ex_)
+    const seanceColors = {'Haut 1':'#1E3A5F','Bas 1':'#06b6d4','AGT':'#10b981','Haut 2':'#7C3AED','Bas 2':'#e63946','Conditioning':'#f5a623','Z2 Swings':'#3b82f6','Haut 3':'#a78bfa',
+      'Seuil':'#f97316','VO2max':'#eab308','VMA':'#facc15','Work capacity':'#8b5cf6','Z2':'#0ea5e9','Z2 long':'#0284c7'};
+    // Construire map date -> séances faites (via clés ex_ pour Guyane, log.moteur_sessions pour le Moteur)
     const dayMap = {};
     Object.keys(localStorage).filter(k=>k.startsWith('log:')).forEach(k=>{
       const ds = k.slice(4);
@@ -6158,10 +6497,14 @@ function renderBilan(){
         const entry = JSON.parse(localStorage.getItem(k));
         const sess = new Set();
         Object.keys(entry).forEach(ek=>{
-          if(ek.startsWith('ex_') && entry[ek] && (entry[ek].charge||entry[ek].rpe||entry[ek].notes)){
+          if(ek.startsWith('ex_') && !ek.startsWith('ex_moteur_') && entry[ek] && (entry[ek].charge||entry[ek].rpe||entry[ek].notes)){
             const nm = ek.slice(3).replace(/_b\d+_\d+.*$/,'');
             if(seanceColors[nm]) sess.add(nm);
           }
+        });
+        (entry.moteur_sessions||[]).forEach(sid=>{
+          const st = MTPL.session_types.find(s=>s.id===sid);
+          if(st) sess.add(st.nom);
         });
         // routine faite ?
         const hasRoutine = entry.routine && entry.routine.length>0;
@@ -6189,7 +6532,8 @@ function renderBilan(){
       const cell = $('div',{style:{aspectRatio:'1',border:isToday?'2px solid #f5a623':'1px solid #1e2d42',borderRadius:'6px',padding:'2px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-start',cursor:dayData?'pointer':'default',boxSizing:'border-box',minWidth:'0',overflow:'hidden'}});
       cell.appendChild($('div',{style:{fontSize:'10px',color:dayData?'#e0e1dd':'#475569',fontWeight:isToday?'700':'400'}},String(d)));
       if(dayData){
-        const abbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Conditioning':'Cond','Z2 Swings':'Z2','Haut 3':'H3'};
+        const abbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Conditioning':'Cond','Z2 Swings':'Z2','Haut 3':'H3',
+          'Seuil':'Seuil','VO2max':'VO2','VMA':'VMA','Work capacity':'WC','Z2':'Z2','Z2 long':'Z2L'};
         const labels=$('div',{style:{display:'flex',flexDirection:'column',gap:'1px',width:'100%',marginTop:'1px',alignItems:'stretch'}});
         dayData.sess.forEach(s=>labels.appendChild($('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:seanceColors[s]||'#64748b',borderRadius:'3px',padding:'1px 2px',textAlign:'center',lineHeight:'1.2',overflow:'hidden',whiteSpace:'nowrap'}},abbr[s]||s)));
         if(dayData.routine && dayData.sess.length===0) labels.appendChild($('div',{style:{fontSize:'8px',color:'#94a3b8',textAlign:'center'}},'routine'));
