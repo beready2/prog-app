@@ -4109,7 +4109,8 @@ const SEANCES = {
     }
   },
 };
-const SEANCE_PAR_JOUR = {1:'Haut 1',2:'Bas 1',3:'AGT',4:'Haut 2',5:'Bas 2',6:'Conditioning',0:null};
+// Semaine réelle : Lun H1, Mar B1, Mer H3, Jeu B2, Ven H2 (+AGT en finisher, pas un jour dédié), Sam Conditioning.
+const SEANCE_PAR_JOUR = {1:'Haut 1',2:'Bas 1',3:'Haut 3',4:'Bas 2',5:'Haut 2',6:'Conditioning',0:null};
 
 // ── GTG DATA ──────────────────────────────────────────────────────────────
 
@@ -4280,7 +4281,7 @@ const M_METHOD_FORMATS = {
 };
 // Tests barre : toujours 3RM, sauf Militaire (5RM, plus sûr pour l'épaule). Jamais de 1RM (trop risqué).
 const M_TEST_FORMAT = {
-  militaire_barre:'Test 5RM (jamais 1RM)', bench_plat_barre:'Test 3RM (jamais 1RM)',
+  militaire_barre:'Test 3RM (jamais 1RM)', bench_plat_barre:'Test 3RM (jamais 1RM)',
   pendlay_row:'Test 3RM (jamais 1RM)', rdl:'Test 3RM (jamais 1RM)', zercher_squat:'Test 3RM (jamais 1RM)',
   front_squat:'Test 3RM (RSA MTI — jamais 1RM)', chin_ups:'Test max reps strict'
 };
@@ -5304,11 +5305,49 @@ const M_STANDARDS_RATIOS = {
   zercher_squat: {label:'Zercher Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI, proxy Front Squat — pas de standard Zercher publié'},
 };
 const M_RM_FACTOR = 0.909; // 3RM ≈ 1RM × 0.909 (Epley)
+// e1RM honnête : Epley avec les reps réelles du format + la réserve (RIR = 10 − RPE, plafonné à 4).
+// Ne suppose plus que la dernière charge est un 3RM — un 4×6 @RPE 8 et un top set 5×3 @RPE 9
+// donnent chacun leur vraie estimation. Formats gérés : '3RM', '4×6', '3-4×6', '3×6-8' (borne
+// basse), rejet des durées ('2-3×8s'). Sans format ni RPE : défaut historique 3 reps, RIR 0.
+function moteurEst1RM(entry){
+  if(!entry || entry.charge==null || entry.charge==='') return null;
+  const w = parseFloat(String(entry.charge).replace(',','.'));
+  if(!isFinite(w) || w<=0) return null;
+  const fmt = entry.fmt ? String(entry.fmt) : '';
+  let reps = null;
+  let m = fmt.match(/(\d+)\s*RM/i);
+  if(m) reps = Number(m[1]);
+  if(reps==null){
+    m = fmt.match(/[×x]\s*(\d+)\s*([a-z]?)/i);
+    if(m && m[2].toLowerCase()!=='s') reps = Number(m[1]); // '×8s' = secondes, pas des reps
+  }
+  if(reps==null) reps = 3;
+  let rir = 0;
+  const rpe = parseFloat(entry.rpe);
+  if(isFinite(rpe)) rir = Math.min(4, Math.max(0, 10 - rpe));
+  return w * (1 + (reps + rir)/30);
+}
 function moteurGetBodyweight(){
   const v = load('user_bodyweight_kg');
   return (v!=null && v!=='') ? Number(v) : 75;
 }
 function moteurSetBodyweight(v){ save('user_bodyweight_kg', v); render(); }
+// Tractions strictes max (reps) — saisie dédiée pour le RSA : le champ charge de chin_ups
+// contient un LEST en kg (ex. +10), jamais des répétitions.
+function moteurGetPullupsMax(){
+  const v = load('user_pullups_max');
+  return (v!=null && v!=='') ? Number(v) : null;
+}
+function moteurSetPullupsMax(v){ save('user_pullups_max', v); render(); }
+// Tests de référence (RM réels) — saisis après chaque batterie (fin Guyane, mini-test S5, fin de
+// fenêtre maison). Quand un RM testé existe, le RSA et le % bench l'utilisent EN PRIORITÉ ;
+// champ vide = repli automatique sur l'e1RM estimé des dernières séances (Epley reps+RIR).
+function moteurGetTestRM(){ return load('user_test_rm') || {}; }
+function moteurSetTestRM(field, v){
+  const t = moteurGetTestRM();
+  if(v==null || v==='') delete t[field]; else t[field] = v;
+  save('user_test_rm', t); render();
+}
 function moteurStandardsFor(exId){
   const r = M_STANDARDS_RATIOS[exId];
   if(!r) return null;
@@ -5322,15 +5361,15 @@ function moteurRSAScore(){
   const pdc = moteurGetBodyweight();
   const est1RM = exId => {
     const last = moteurLastExerciseLog(exId);
-    if(!last || last.entry.charge==null) return null;
-    // 3RM -> 1RM approx (inverse Epley) : 1RM ≈ charge3RM / 0.909
-    return Number(last.entry.charge) / M_RM_FACTOR;
+    return last ? moteurEst1RM(last.entry) : null; // Epley reps réelles + RIR (plus de ÷0,909 aveugle)
   };
-  const fs = est1RM('front_squat') || est1RM('zercher_squat');
-  const hinge = est1RM('rdl');
-  const bench = est1RM('bench_plat_barre');
-  const pullLast = moteurLastExerciseLog('chin_ups');
-  const pullReps = pullLast ? Number(pullLast.entry.charge)||0 : null; // approximatif si pas de reps dediees
+  const trm = moteurGetTestRM();
+  const from3RM = v => { const n = Number(v); return (v!=null && v!=='' && isFinite(n) && n>0) ? n / M_RM_FACTOR : null; };
+  // RM testé prioritaire, e1RM estimé des séances en repli
+  const fs = from3RM(trm.front_squat_3rm) || est1RM('front_squat') || est1RM('zercher_squat');
+  const hinge = from3RM(trm.rdl_3rm) || est1RM('rdl');
+  const bench = from3RM(trm.bench_3rm) || est1RM('bench_plat_barre');
+  const pullReps = moteurGetPullupsMax(); // saisie dédiée — charge de chin_ups = lest en kg, pas des reps
   if(fs==null || hinge==null || bench==null) return null;
   const pullScore = pullReps!=null ? Math.min(pullReps,20) * 0.1 * pdc : 0;
   const score = (fs + hinge + bench + pullScore) / pdc;
@@ -5349,8 +5388,12 @@ function moteurFormatIsThreeRM(fmt){
 function moteurMilitairePctBench(){
   const m = moteurLastExerciseLog('militaire_barre');
   const b = moteurLastExerciseLog('bench_plat_barre');
-  if(!m || !b || m.entry.charge==null || b.entry.charge==null || !Number(b.entry.charge)) return null;
-  return Math.round((Number(m.entry.charge)/Number(b.entry.charge))*100);
+  const t = moteurGetTestRM();
+  const m3 = Number(t.militaire_3rm), b3 = Number(t.bench_3rm);
+  const m1 = (isFinite(m3) && m3>0) ? m3/M_RM_FACTOR : (m ? moteurEst1RM(m.entry) : null);
+  const b1 = (isFinite(b3) && b3>0) ? b3/M_RM_FACTOR : (b ? moteurEst1RM(b.entry) : null);
+  if(m1==null || b1==null || !b1) return null;
+  return Math.round((m1/b1)*100); // ratio de 1RM estimés — robuste même si les formats diffèrent (5RM vs 3RM, etc.)
 }
 
 function renderStats(){
@@ -5374,6 +5417,39 @@ function renderStats(){
     stdCard.appendChild(bwRow);
     stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginBottom:'8px'}},
       'Conservé jusqu\'à ce que tu le changes — détermine les poids ci-dessous et les repères sur les graphiques.'));
+    const puMax = moteurGetPullupsMax();
+    const puRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}},
+      $('span',{style:{fontSize:'11px',color:'#94a3b8'}},'Tractions strictes max (reps) :'),
+      $('input',{class:'input-mod',type:'number',step:'1',min:'0',value:puMax!=null?String(puMax):'',
+        onchange:(e)=>moteurSetPullupsMax(e.target.value===''?null:Number(e.target.value))})
+    );
+    stdCard.appendChild(puRow);
+    stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginBottom:'8px'}},
+      'Alimente le score RSA (plafonné à 20 par MTI). À mettre à jour après chaque test max reps — le champ charge des chin-ups (lest en kg) n\'est plus lu.'));
+    // ── Tests de référence (RM réels — prioritaires sur l'estimation) ──
+    const trm = moteurGetTestRM();
+    stdCard.appendChild($('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginTop:'4px',marginBottom:'6px'}},
+      'Tests de référence — RM réels (prioritaires sur l\'e1RM estimé)'));
+    const rmField = (lbl, field) => $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}},
+      $('span',{style:{fontSize:'11px',color:'#94a3b8',flex:'1'}},lbl),
+      $('input',{class:'input-mod',type:'number',step:'0.5',min:'0',value:trm[field]!=null?String(trm[field]):'',
+        onchange:(e)=>moteurSetTestRM(field, e.target.value===''?null:Number(e.target.value))}));
+    stdCard.appendChild(rmField('Squat avant / Zercher 3RM (kg) :','front_squat_3rm'));
+    stdCard.appendChild(rmField('RDL 3RM (kg) :','rdl_3rm'));
+    stdCard.appendChild(rmField('Bench 3RM (kg) :','bench_3rm'));
+    stdCard.appendChild(rmField('Militaire 3RM (kg) :','militaire_3rm'));
+    stdCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}},
+      $('span',{style:{fontSize:'11px',color:'#94a3b8',flex:'1'}},'Date de la batterie :'),
+      $('input',{class:'input-mod',type:'date',value:trm.date||'',
+        onchange:(e)=>moteurSetTestRM('date', e.target.value||null)})));
+    (function(){
+      let note = 'Champ vide = repli sur l\'e1RM estimé des dernières séances.';
+      if(trm.date){
+        const age = Math.floor((Date.now() - new Date(trm.date).getTime())/86400000);
+        if(isFinite(age) && age>=0) note = 'Batterie du '+trm.date+' ('+age+' j'+(age>70?' — retest conseillé, >8 semaines':'')+'). '+note;
+      }
+      stdCard.appendChild($('div',{style:{fontSize:'10px',color:(trm.date && (Date.now()-new Date(trm.date).getTime())/86400000>70)?'#f5a623':'#64748b',marginBottom:'8px'}}, note));
+    })();
     const tbl = $('div',{style:{marginTop:'2px',fontSize:'11px'}});
     tbl.appendChild($('div',{style:{display:'flex',fontWeight:'700',color:'#64748b',borderBottom:'1px solid #1e2d42',paddingBottom:'4px',marginBottom:'4px'}},
       $('div',{style:{flex:'2'}},'Exercice (3RM)'),$('div',{style:{flex:'1',textAlign:'right'}},'Min'),
@@ -5399,9 +5475,9 @@ function renderStats(){
     stdCard.appendChild($('div',{style:{marginTop:'10px',padding:'8px',background:'#111d2e',borderRadius:'7px'}},
       $('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginBottom:'3px'}},'🎯 MTI Relative Strength Assessment (score composite)'),
       $('div',{style:{fontSize:'16px',fontWeight:'700',color: rsa==null?'#475569':(rsa>=6.5?'#10b981':rsa>=5.75?'#f5a623':'#e63946')}},
-        rsa!=null ? rsa.toFixed(2)+' — '+(rsa>=6.5?'Excellent ✓':rsa>=5.75?'Good':'Poor (cible ≥5,75)') : 'Pas assez de données (Front Squat/Zercher, RDL et Bench requis)'),
+        rsa!=null ? rsa.toFixed(2)+' — '+(rsa>=6.5?'Excellent ✓':rsa>=5.75?'Good':'Poor (cible ≥5,75)') : 'Pas assez de données — Front Squat/Zercher, RDL et Bench requis, saisis via une séance du moteur'),
       $('div',{style:{fontSize:'9.5px',color:'#64748b',marginTop:'3px'}},
-        '(Front Squat/Zercher + RDL + Bench en 1RM estimé, + tractions×10%PDC plafonné à 20) ÷ PDC. Formule officielle MTI.')
+        '(Front Squat/Zercher + RDL + Bench en 1RM, + tractions×10%PDC plafonné à 20) ÷ PDC. Formule officielle MTI. Source par mouvement : RM testé si saisi ci-dessus, sinon e1RM estimé des dernières séances (Epley reps+RIR).')
     ));
 
     // ── Strict Press en % du Bench (pas de standard externe tactique — repère perso) ──
@@ -5410,7 +5486,7 @@ function renderStats(){
       $('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginBottom:'3px'}},'Military Press — % du Bench (repère perso, pas de standard MTI)'),
       $('div',{style:{fontSize:'16px',fontWeight:'700',color: pctB==null?'#475569':'#e8edf5'}},
         pctB!=null ? pctB+'%' : 'Pas assez de données'),
-      $('div',{style:{fontSize:'9.5px',color:'#64748b',marginTop:'3px'}},'Cible usuelle ~60-65% pour un pousseur équilibré (dernières charges Militaire/Bench saisies).')
+      $('div',{style:{fontSize:'9.5px',color:'#64748b',marginTop:'3px'}},'Cible usuelle ~60-65% pour un pousseur équilibré (ratio des 1RM estimés — Epley reps+RIR — des dernières charges Militaire/Bench).')
     ));
   }
   el.appendChild(stdCard);
