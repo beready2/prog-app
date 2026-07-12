@@ -47,8 +47,8 @@ input,select,textarea{box-sizing:border-box}
 <script id="moteur-catalogue-data" type="application/json">{
   "meta": {
     "nom": "Be Ready — Catalogue d'exercices",
-    "version": "1.3",
-    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet). v1.3 ajoute les machines maison (presse a cuisse, leg extension/curl, poulies haute/basse, butterfly) et des substituts lies aux contre-indications (pas seulement au materiel manquant) : ex. genou_G_itband -> presse_cuisse, poignet_G -> poulie.",
+    "version": "1.4",
+    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet). v1.3 ajoute les machines maison (presse a cuisse, leg extension/curl, poulies haute/basse, butterfly) et des substituts lies aux contre-indications (pas seulement au materiel manquant) : ex. genou_G_itband -> presse_cuisse, poignet_G -> poulie. v1.4 ajoute Front Squat (test RSA officiel MTI, prise croisee), Push Press et Squat Clean (standards MTI documentes, priorite future une fois epaule/poignet stabilises).",
     "usage_app": "L'app filtre exercises[] par window courante (equipement dispo) + qualites prioritaires de la phase active + contraindications actives (flags bilan du jour), puis assemble la séance. Les charges viennent des baselines/e1RM stockés séparément (état, pas catalogue)."
   },
   "taxonomies": {
@@ -2839,6 +2839,83 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "halteres_kb",
       "protocole_cycle_eligible": false,
       "notes": "Isolation pectoraux, trajectoire guidée sans stress articulaire épaule G en fin d'amplitude contrôlée."
+    },
+    {
+      "id": "front_squat",
+      "name": "Front Squat (prise croisée)",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {},
+      "pattern": "squat",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false,
+      "notes": "Test de référence du MTI Relative Strength Assessment (1RM). Prise croisée (pas prise clean) pour éviter l'extension du poignet G. S'entraîne en Zercher au quotidien (protège aussi le poignet, apporte un transfert opérationnel différent) — le Front Squat sert au test périodique, pas à l'entraînement courant."
+    },
+    {
+      "id": "push_press",
+      "name": "Push Press",
+      "category": "haut_force",
+      "qualities": [
+        "force_max",
+        "alactique"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_G"
+      ],
+      "delestage_tier": 4,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {},
+      "pattern": "push_vertical",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false,
+      "notes": "Standard MTI documenté (1,1×PDC). Meilleur transfert opérationnel que le strict press (jambes + épaule + gainage), mais plus explosif/plus de charge en réception — priorité future une fois l'épaule G stabilisée, pas immédiate."
+    },
+    {
+      "id": "squat_clean",
+      "name": "Squat Clean",
+      "category": "bas_force",
+      "qualities": [
+        "force_max",
+        "alactique"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G",
+        "epaule_G"
+      ],
+      "delestage_tier": 4,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "squat",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false,
+      "notes": "Standard MTI documenté (1,25×PDC). Mouvement technique (réception poignet en extension, épaule en position basse) — nécessite poignet/épaule sains et un apprentissage technique dédié avant tout test de charge. Pas prioritaire tant que le poignet G est en délestage."
     }
   ]
 }</script>
@@ -3259,6 +3336,13 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "leg_curl_machine",
           "obligatoire": false,
           "note": "Volume ischio-jambiers supplémentaire à la maison."
+        },
+        {
+          "role": "test_rsa_front_squat",
+          "category": "bas_force",
+          "exercice_pref": "front_squat",
+          "obligatoire": false,
+          "note": "Test périodique MTI Relative Strength Assessment — prise croisée (protège le poignet G). Pas un exercice d'entraînement courant (Zercher reste la référence quotidienne)."
         }
       ]
     },
@@ -4198,7 +4282,7 @@ const M_METHOD_FORMATS = {
 const M_TEST_FORMAT = {
   militaire_barre:'Test 5RM (jamais 1RM)', bench_plat_barre:'Test 3RM (jamais 1RM)',
   pendlay_row:'Test 3RM (jamais 1RM)', rdl:'Test 3RM (jamais 1RM)', zercher_squat:'Test 3RM (jamais 1RM)',
-  chin_ups:'Test max reps strict'
+  front_squat:'Test 3RM (RSA MTI — jamais 1RM)', chin_ups:'Test max reps strict'
 };
 function moteurProtocolFor(ex){
   const info = moteurCycleInfo();
@@ -4309,9 +4393,26 @@ function moteurLastExerciseLog(exId){
   const todayEntry = getLog()[key];
   if(todayEntry) return {date: todayStr, entry: todayEntry};
   const dayKeys = Object.keys(localStorage).filter(k=>k.startsWith('log:')).sort().reverse();
+  const kws = M_GUYANE_KEYWORDS[exId];
   for(const dk of dayKeys){
     let l; try{ l = JSON.parse(localStorage.getItem(dk)); }catch(e){ continue; }
-    if(l && l[key]) return {date: dk.slice(4), entry: l[key]};
+    if(!l) continue;
+    if(l[key]) return {date: dk.slice(4), entry: l[key]};
+    // Repli : historique Guyane (ex_<seance>_b<bloc>_<idx>) pour le même mouvement.
+    if(kws){
+      for(const k2 of Object.keys(l)){
+        const m = k2.match(/^ex_(.+)_b(\d)_(\d+)(?:_\w+)?$/);
+        if(!m) continue;
+        const seance = SEANCES[m[1]];
+        const bloc = seance && seance.blocs && seance.blocs[Number(m[2])];
+        const ex = bloc && bloc.exercices && bloc.exercices[Number(m[3])];
+        if(!ex) continue;
+        const nameLower = (ex.name||'').toLowerCase();
+        if(kws.some(kw=>nameLower.includes(kw)) && l[k2] && (l[k2].charge!=null && l[k2].charge!=='')){
+          return {date: dk.slice(4), entry: l[k2]};
+        }
+      }
+    }
   }
   return null;
 }
@@ -5149,6 +5250,7 @@ function getAllExerciseData(){
         [/chin-ups|pull-up/i,'Chin-ups'],
         [/romanian|^rdl|\brdl\b/i,'RDL'],
         [/zercher/i,'Zercher'],
+        [/front squat/i,'Front Squat'],
         [/copenhagen/i,'Copenhagen'],
         [/bulgarian/i,'Bulgarian'],
         [/nordic/i,'Nordic Curl'],
@@ -5188,13 +5290,18 @@ function getAllExerciseData(){
 
 // Ratios ×PDC (1RM), sourcés par exercice — convertis en 3RM (Epley ≈ ×0.909) pour être directement
 // comparables aux séances réelles en 5×3 (le top set d'un 5×3 est un effort proche du 3RM).
+// Le vrai MTI Relative Strength Assessment (màj janvier 2021) = Front Squat + Hinge Lift + Bench Press
+// (1RM chacun) + tractions strictes (plafond 20), score = (somme 1RM + tractions×10%PDC) / PDC.
+// Military Press n'est PAS dans le RSA ni dans aucun standard MTI — retiré des standards sourcés,
+// suivi à la place en % du Bench (repère auto-calibré, pas de prétention de standard externe).
 const M_STANDARDS_RATIOS = {
-  bench_plat_barre: {label:'Bench Press', min:1.0, obj:1.25, exc:1.5, source:'MTI'},
-  rdl: {label:'Romanian Deadlift', min:1.5, obj:1.75, exc:2.0, source:'MTI (Hinge Lift)'},
-  zercher_squat: {label:'Zercher Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI (proxy Front Squat — pas de standard Zercher publié)'},
-  militaire_barre: {label:'Military Press', min:0.55, obj:0.9, exc:1.25, source:'ExRx (Press)'},
-  // Pendlay Row retiré : aucun standard externe (MTI/Dan John/ExRx) ne documente ce mouvement —
-  // suivi de progression personnelle uniquement, pas de repère sourcé.
+  bench_plat_barre: {label:'Bench Press', min:1.0, obj:1.25, exc:1.5, source:'MTI (RSA)'},
+  rdl: {label:'Romanian Deadlift', min:1.5, obj:1.75, exc:2.0, source:'MTI Hinge Lift (RSA)'},
+  front_squat: {label:'Front Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI (RSA)'},
+  push_press: {label:'Push Press', min:null, obj:null, exc:1.1, source:'MTI (hors RSA — seule Excellence publiée)'},
+  squat_clean: {label:'Squat Clean', min:null, obj:null, exc:1.25, source:'MTI (hors RSA — seule Excellence publiée)'},
+  // Zercher Squat n'a pas de standard propre — approximé au même ratio que Front Squat, clairement noté.
+  zercher_squat: {label:'Zercher Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI, proxy Front Squat — pas de standard Zercher publié'},
 };
 const M_RM_FACTOR = 0.909; // 3RM ≈ 1RM × 0.909 (Epley)
 function moteurGetBodyweight(){
@@ -5206,12 +5313,28 @@ function moteurStandardsFor(exId){
   const r = M_STANDARDS_RATIOS[exId];
   if(!r) return null;
   const pdc = moteurGetBodyweight();
-  return {
-    label: r.label, source: r.source,
-    min: Math.round(r.min*pdc*M_RM_FACTOR),
-    obj: Math.round(r.obj*pdc*M_RM_FACTOR),
-    exc: Math.round(r.exc*pdc*M_RM_FACTOR)
+  const conv = v => v==null ? null : Math.round(v*pdc*M_RM_FACTOR);
+  return { label: r.label, source: r.source, min: conv(r.min), obj: conv(r.obj), exc: conv(r.exc) };
+}
+// Score composite du vrai MTI Relative Strength Assessment, à partir des derniers 1RM estimés connus
+// (dérivés des dernières charges/RPE saisies). Score ≥5 = "Good" ou mieux pour un athlète tactique.
+function moteurRSAScore(){
+  const pdc = moteurGetBodyweight();
+  const est1RM = exId => {
+    const last = moteurLastExerciseLog(exId);
+    if(!last || last.entry.charge==null) return null;
+    // 3RM -> 1RM approx (inverse Epley) : 1RM ≈ charge3RM / 0.909
+    return Number(last.entry.charge) / M_RM_FACTOR;
   };
+  const fs = est1RM('front_squat') || est1RM('zercher_squat');
+  const hinge = est1RM('rdl');
+  const bench = est1RM('bench_plat_barre');
+  const pullLast = moteurLastExerciseLog('chin_ups');
+  const pullReps = pullLast ? Number(pullLast.entry.charge)||0 : null; // approximatif si pas de reps dediees
+  if(fs==null || hinge==null || bench==null) return null;
+  const pullScore = pullReps!=null ? Math.min(pullReps,20) * 0.1 * pdc : 0;
+  const score = (fs + hinge + bench + pullScore) / pdc;
+  return Math.round(score*100)/100;
 }
 // Les repères 3RM n'ont de sens que si le format affiché EST un effort proche du 3RM (ex. le top
 // set d'un "5×3"). Sur un 4×5, 3×8, etc., la charge est structurellement plus légère — pas comparable.
@@ -5220,6 +5343,14 @@ function moteurFormatIsThreeRM(fmt){
   if(/3RM/i.test(fmt)) return true;
   const m = fmt.match(/[×x]\s*(\d+)/);
   return !!(m && Number(m[1])===3);
+}
+// Strict press suivi en % du Bench (pas de standard externe tactique pour ce mouvement) — repère
+// auto-calibré : cible usuelle ~60-65% pour un pousseur équilibré.
+function moteurMilitairePctBench(){
+  const m = moteurLastExerciseLog('militaire_barre');
+  const b = moteurLastExerciseLog('bench_plat_barre');
+  if(!m || !b || m.entry.charge==null || b.entry.charge==null || !Number(b.entry.charge)) return null;
+  return Math.round((Number(m.entry.charge)/Number(b.entry.charge))*100);
 }
 
 function renderStats(){
@@ -5252,16 +5383,35 @@ function renderStats(){
       tbl.appendChild($('div',{style:{padding:'3px 0',borderBottom:'1px solid #16202e'}},
         $('div',{style:{display:'flex'}},
           $('div',{style:{flex:'2'}},s.label),
-          $('div',{style:{flex:'1',textAlign:'right',color:'#94a3b8'}},s.min+' kg'),
-          $('div',{style:{flex:'1',textAlign:'right',color:'#f5a623'}},s.obj+' kg'),
-          $('div',{style:{flex:'1',textAlign:'right',color:'#10b981'}},s.exc+' kg')
+          $('div',{style:{flex:'1',textAlign:'right',color:'#94a3b8'}},s.min!=null?s.min+' kg':'—'),
+          $('div',{style:{flex:'1',textAlign:'right',color:'#f5a623'}},s.obj!=null?s.obj+' kg':'—'),
+          $('div',{style:{flex:'1',textAlign:'right',color:'#10b981'}},s.exc!=null?s.exc+' kg':'—')
         ),
         $('div',{style:{fontSize:'9px',color:'#475569',marginTop:'1px'}},s.source)
       ));
     });
     stdCard.appendChild(tbl);
     stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'6px',fontStyle:'italic'}},
-      'Seuls Objectif et Excellence viennent réellement des sources citées (MTI publie 2 chiffres/mouvement, ExRx ses paliers Intermediate/Advanced). Le Minimum est un plancher interpolé sur les 4 exercices, sans exception. Convertis en 3RM (Epley ≈ 1RM×0.909). Military Press (ExRx) suit une méthodologie différente de Bench/RDL/Zercher (MTI) — pas directement comparables entre eux. Pendlay Row n\'a pas de standard externe publié — suivi en progression personnelle uniquement.'));
+      'Objectif/Excellence viennent des sources citées (MTI publie ces 2 chiffres/mouvement — Push Press et Squat Clean n\'ont que l\'Excellence documentée). Le Minimum est un plancher que j\'interpole, jamais un chiffre publié. Convertis en 3RM (Epley ≈ 1RM×0.909). Zercher n\'a pas de standard propre — approximé via Front Squat. Military Press ne fait partie d\'aucun standard MTI (ni du RSA) — retiré d\'ici, suivi ci-dessous en % du Bench.'));
+
+    // ── Score RSA (vrai MTI Relative Strength Assessment) ──
+    const rsa = moteurRSAScore();
+    stdCard.appendChild($('div',{style:{marginTop:'10px',padding:'8px',background:'#111d2e',borderRadius:'7px'}},
+      $('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginBottom:'3px'}},'🎯 MTI Relative Strength Assessment (score composite)'),
+      $('div',{style:{fontSize:'16px',fontWeight:'700',color: rsa==null?'#475569':(rsa>=6.5?'#10b981':rsa>=5.75?'#f5a623':'#e63946')}},
+        rsa!=null ? rsa.toFixed(2)+' — '+(rsa>=6.5?'Excellent ✓':rsa>=5.75?'Good':'Poor (cible ≥5,75)') : 'Pas assez de données (Front Squat/Zercher, RDL et Bench requis)'),
+      $('div',{style:{fontSize:'9.5px',color:'#64748b',marginTop:'3px'}},
+        '(Front Squat/Zercher + RDL + Bench en 1RM estimé, + tractions×10%PDC plafonné à 20) ÷ PDC. Formule officielle MTI.')
+    ));
+
+    // ── Strict Press en % du Bench (pas de standard externe tactique — repère perso) ──
+    const pctB = moteurMilitairePctBench();
+    stdCard.appendChild($('div',{style:{marginTop:'8px',padding:'8px',background:'#111d2e',borderRadius:'7px'}},
+      $('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginBottom:'3px'}},'Military Press — % du Bench (repère perso, pas de standard MTI)'),
+      $('div',{style:{fontSize:'16px',fontWeight:'700',color: pctB==null?'#475569':'#e8edf5'}},
+        pctB!=null ? pctB+'%' : 'Pas assez de données'),
+      $('div',{style:{fontSize:'9.5px',color:'#64748b',marginTop:'3px'}},'Cible usuelle ~60-65% pour un pousseur équilibré (dernières charges Militaire/Bench saisies).')
+    ));
   }
   el.appendChild(stdCard);
 
@@ -5320,7 +5470,7 @@ function renderStats(){
   }
 
   // Build SVG chart
-  const M_BASENAME_TO_EXID = {'Militaire':'militaire_barre','Bench plat':'bench_plat_barre','RDL':'rdl','Zercher':'zercher_squat'};
+  const M_BASENAME_TO_EXID = {'Bench plat':'bench_plat_barre','RDL':'rdl','Zercher':'zercher_squat','Front Squat':'front_squat'};
   const stdForChart = (M_BASENAME_TO_EXID[_statsEx] && _statsFmt!=='__all__' && moteurFormatIsThreeRM(_statsFmt))
     ? moteurStandardsFor(M_BASENAME_TO_EXID[_statsEx]) : null;
   const pts = data[_statsEx].filter(d=>d.charge!==null && (_statsFmt==='__all__' || !d.fmt || d.fmt===_statsFmt));
