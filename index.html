@@ -44,7 +44,8 @@ input,select,textarea{box-sizing:border-box}
 </head>
 <body>
 <div id="root"></div>
-<script id="moteur-catalogue-data" type="application/json">{
+<script id="moteur-catalogue-data" type="application/json">
+{
   "meta": {
     "nom": "Be Ready — Catalogue d'exercices",
     "version": "1.4",
@@ -487,7 +488,7 @@ input,select,textarea{box-sizing:border-box}
         "delestage_next_step": "iso_militaire_overcoming"
       },
       "test_baseline_field": "militaire_1RM_est",
-      "notes": "Priorité n°1 du programme. G en premier n/a (bilatéral).",
+      "notes": "Priorité n°1 du programme. Bilatéral.",
       "pattern": "push_vertical",
       "progression_type": "barre",
       "protocole_cycle_eligible": true
@@ -1040,6 +1041,39 @@ input,select,textarea{box-sizing:border-box}
       }
     },
     {
+      "id": "deadlift_conventionnel",
+      "name": "Soulevé de terre (conventionnel)",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G",
+        "genou_G_itband"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "kb_rdl",
+        "genou_G_itband": "leg_curl_machine"
+      },
+      "pattern": "hinge",
+      "progression_type": "barre",
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {
+        "genou_G_itband": 2
+      },
+      "notes": "Tirage lourd depuis le sol — mouvement du top set Bas 1. Sangle poignet G. Départ plus fléchi qu'un RDL : même règle genou. Rampe technique : 2-3 séances de 5 modérés avant les premiers top sets (chapitre 11)."
+    },
+    {
       "id": "rdl",
       "name": "Romanian Deadlift (RDL)",
       "category": "bas_force",
@@ -1178,9 +1212,7 @@ input,select,textarea{box-sizing:border-box}
       "qualities": [
         "anti_extension"
       ],
-      "equipment_required": [
-        "banc"
-      ],
+      "equipment_required": [],
       "side_rule": "bilateral",
       "contraindications": [
         "coude_G_epicondyle"
@@ -1193,7 +1225,7 @@ input,select,textarea{box-sizing:border-box}
         "nomade"
       ],
       "substitutes": {},
-      "notes": "Remplace l'ab wheel (proscrit définitivement).",
+      "notes": "Remplace l'ab wheel (proscrit définitivement). Aucun matériel spécifique : un point d'ancrage solide (banc, cadre de lit, meuble lourd) et de la place suffisent.",
       "pattern": "rotation_anti_rotation",
       "progression_type": "isometrie",
       "protocole_cycle_eligible": false
@@ -2918,8 +2950,10 @@ input,select,textarea{box-sizing:border-box}
       "notes": "Standard MTI documenté (1,25×PDC). Mouvement technique (réception poignet en extension, épaule en position basse) — nécessite poignet/épaule sains et un apprentissage technique dédié avant tout test de charge. Pas prioritaire tant que le poignet G est en délestage."
     }
   ]
-}</script>
-<script id="moteur-templates-data" type="application/json">{
+}
+</script>
+<script id="moteur-templates-data" type="application/json">
+{
   "meta": {
     "nom": "Be Ready — Templates de séance",
     "version": "1.0",
@@ -2991,7 +3025,8 @@ input,select,textarea{box-sizing:border-box}
             "grip_prehension"
           ],
           "exercice_pref": "chin_ups",
-          "obligatoire": true
+          "obligatoire": true,
+          "note": "Chin-ups (supination) par défaut. Si pas de Haut 3 cette semaine : en pull-ups (pronation) pour garder l'exposition hebdo au geste testé."
         },
         {
           "role": "prophylaxie_epaule",
@@ -3157,7 +3192,8 @@ input,select,textarea{box-sizing:border-box}
           "role": "tirage_volume",
           "category": "haut_force",
           "exercice_pref": "chin_ups",
-          "obligatoire": true
+          "obligatoire": true,
+          "note": "En pull-ups (pronation) — volume léger, jamais douloureux (épaule G). Exposition hebdomadaire au geste du test max reps."
         },
         {
           "role": "accessoires_haut",
@@ -3204,50 +3240,47 @@ input,select,textarea{box-sizing:border-box}
         "force_unilat_antiasym",
         "force_max"
       ],
-      "objectif": "Unilatéral genou-dominant, hinge, gainage anti-rotation, carry.",
+      "objectif": "Hinge lourd (top set), unilatéral genou-dominant, ischio-jambiers, gainage anti-rotation, carry.",
       "slots": [
         {
           "role": "cars_echauffement",
           "category": "cars_mobilite",
-          "qualities": [
-            "mobilite"
-          ],
+          "exercice_pref": "cars_hanche",
           "obligatoire": true,
-          "note": "CARs hanche + activation clamshell/Petersen.",
-          "exercice_pref": "cars_hanche"
-        },
-        {
-          "role": "unilateral_genou",
-          "category": "bas_force",
-          "qualities": [
-            "force_unilat_antiasym"
-          ],
-          "exercice_pref": "bulgarian_split_squat",
-          "obligatoire": true,
-          "note": "G en premier, fixe la charge du D."
+          "note": "CARs hanche + activation clamshell/Petersen."
         },
         {
           "role": "hinge_principal",
           "category": "bas_force",
-          "qualities": [
-            "force_max"
-          ],
-          "exercice_pref": "rdl",
-          "obligatoire": true
+          "exercice_pref": "deadlift_conventionnel",
+          "obligatoire": true,
+          "note": "Jour LOURD du hinge — soulevé de terre en top set (focus Force, 5×3), back-off ensuite. Rampe : 2-3 séances de 5 modérés avant les premiers top sets."
         },
         {
-          "role": "adducteur_unilateral",
-          "category": "prophylaxie_genou_pied",
+          "role": "unilateral_genou",
+          "category": "bas_force",
+          "exercice_pref": "bulgarian_split_squat",
+          "obligatoire": true,
+          "note": "G en premier, fixe la charge du D. 3-4×8/côté — objectif reps/symétrie, jamais de top set."
+        },
+        {
+          "role": "ischio_jambiers",
+          "category": "bas_force",
+          "exercice_pref": "trx_leg_curl",
+          "obligatoire": true,
+          "note": "Progression : TRX leg curl → leg curl machine (maison, charge ajustable) → Nordic curl quand exécuté correctement."
+        },
+        {
+          "role": "adducteur_prophylaxie",
+          "category": "bas_force",
           "exercice_pref": "copenhagen_adductor",
-          "obligatoire": true
+          "obligatoire": true,
+          "note": "Prophylaxie patte d'oie/adducteurs — ne compte pas comme mouvement principal, ne se coupe pas."
         },
         {
           "role": "anti_rotation",
           "category": "gainage",
-          "qualities": [
-            "anti_rotation"
-          ],
-          "exercice_pref": "pallof_press",
+          "exercice_pref": "pallof_press_elastique",
           "obligatoire": true
         },
         {
@@ -3259,10 +3292,13 @@ input,select,textarea{box-sizing:border-box}
         {
           "role": "carry",
           "category": "bas_force",
-          "qualities": [
-            "endurance_posturale"
-          ],
           "exercice_pref": "farmer_carry",
+          "obligatoire": false
+        },
+        {
+          "role": "back_extension",
+          "category": "bas_force",
+          "exercice_pref": "back_extension_banc",
           "obligatoire": false
         }
       ]
@@ -3276,39 +3312,41 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "force_max"
       ],
-      "objectif": "Squat bilatéral, chaîne postérieure excentrique, anti-extension.",
+      "objectif": "Squat bilatéral lourd (top set), hinge volume, gainage. Optionnels : 1-2 max par séance — jamais tous.",
       "slots": [
         {
           "role": "cars_echauffement",
           "category": "cars_mobilite",
-          "obligatoire": true,
-          "exercice_pref": "cars_hanche"
+          "exercice_pref": "cars_hanche",
+          "obligatoire": true
         },
         {
           "role": "squat_bilateral",
           "category": "bas_force",
-          "qualities": [
-            "force_max"
-          ],
           "exercice_pref": "zercher_squat",
-          "obligatoire": true
+          "obligatoire": true,
+          "note": "Jour LOURD du squat — top set en focus Force (5×3), uniquement genou silencieux ; sinon substitution presse et le top set attend."
         },
         {
-          "role": "chaine_posterieure_excentrique",
+          "role": "hinge_volume",
           "category": "bas_force",
-          "exercice_pref": "nordic_curl_elastique",
-          "obligatoire": true
+          "exercice_pref": "rdl",
+          "obligatoire": true,
+          "format_fixe": "3-4×6, RIR 2",
+          "rpe_fixe": "7-8",
+          "note": "Jour VOLUME du hinge — jamais de top set ici, le lourd vit en Bas 1."
         },
         {
-          "role": "hinge_secondaire",
+          "role": "adducteur_prophylaxie",
           "category": "bas_force",
-          "exercice_pref": "good_morning",
-          "obligatoire": false
+          "exercice_pref": "copenhagen_adductor",
+          "obligatoire": true,
+          "note": "Prophylaxie patte d'oie/adducteurs — dans les DEUX séances Bas, ne se coupe pas. Sans banc : clamshell renforcé."
         },
         {
-          "role": "anti_rotation_ou_laterale",
+          "role": "anti_rotation",
           "category": "gainage",
-          "exercice_pref": "planche_laterale",
+          "exercice_pref": "pallof_press_elastique",
           "obligatoire": true
         },
         {
@@ -3318,31 +3356,24 @@ input,select,textarea{box-sizing:border-box}
           "obligatoire": false
         },
         {
-          "role": "back_extension",
+          "role": "carry",
           "category": "bas_force",
-          "exercice_pref": "back_extension",
+          "exercice_pref": "farmer_carry",
           "obligatoire": false
         },
         {
-          "role": "volume_presse_cuisse",
+          "role": "volume_quadriceps",
           "category": "bas_force",
-          "exercice_pref": "presse_cuisse",
+          "exercice_pref": "air_squat_bfr",
           "obligatoire": false,
-          "note": "Volume supplémentaire à la maison (presse à cuisse) — en plus du Zercher, pas seulement en remplacement."
-        },
-        {
-          "role": "volume_leg_curl",
-          "category": "bas_force",
-          "exercice_pref": "leg_curl_machine",
-          "obligatoire": false,
-          "note": "Volume ischio-jambiers supplémentaire à la maison."
+          "note": "À la maison : préférer la presse à cuisse (charge ajustable, moins de valgus)."
         },
         {
           "role": "test_rsa_front_squat",
           "category": "bas_force",
           "exercice_pref": "front_squat",
           "obligatoire": false,
-          "note": "Test périodique MTI Relative Strength Assessment — prise croisée (protège le poignet G). Pas un exercice d'entraînement courant (Zercher reste la référence quotidienne)."
+          "note": "Test périodique MTI RSA — prise croisée (protège le poignet G). N'apparaît que la semaine de test."
         }
       ]
     },
@@ -3535,7 +3566,8 @@ input,select,textarea{box-sizing:border-box}
     "flag_rouge_seance_compressee": "Sommeil <6h OU HRV -10% OU douleur ≥ modérée -> volume -50% sur tous les slots non-obligatoires du template choisi, jamais d'annulation totale sauf demande explicite.",
     "priorite_qualites_phase": "La phase active (définie ailleurs, hors ce fichier) fixe 2-3 qualités prioritaires. Les session_types dont qualites_prioritaires recoupe la phase sont proposés en premier dans l'app ; les autres restent disponibles mais en second plan."
   }
-}</script>
+}
+</script>
 <script id="moteur-periodisation-data" type="application/json">{
   "meta": {
     "nom": "Be Ready — Périodisation bloc qualité",
@@ -4263,7 +4295,10 @@ function moteurCycleInfo(){
 }
 // Top Set (Militaire/Bench), Cluster (Militaire/Bench), PAP (RDL/Bulgarian), Legeard 3-7
 // (Pendlay/Chin-ups/Gorilla) — reprend exactement la répartition de méthode de Guyane par bloc.
-const M_FORCE_TOPSET = new Set(['militaire_barre','bench_plat_barre']);
+// Bloc Force : top sets aussi sur le bas du corps — le 3RM RDL/Zercher ne monte pas qu'au volume.
+// Zercher reste gaté par le genou via les contre-indications (substitué si flag actif).
+// Bulgarian exclu volontairement : unilatéral anti-asymétrie, pas de standard 3RM, objectif reps/symétrie.
+const M_FORCE_TOPSET = new Set(['militaire_barre','bench_plat_barre','deadlift_conventionnel','zercher_squat']);
 const M_PUISSANCE_METHOD = {
   militaire_barre:'cluster', bench_plat_barre:'cluster',
   rdl:'pap', bulgarian_split_squat:'pap',
@@ -4281,9 +4316,9 @@ const M_METHOD_FORMATS = {
 };
 // Tests barre : toujours 3RM, sauf Militaire (5RM, plus sûr pour l'épaule). Jamais de 1RM (trop risqué).
 const M_TEST_FORMAT = {
-  militaire_barre:'Test 3RM (jamais 1RM)', bench_plat_barre:'Test 3RM (jamais 1RM)',
+  militaire_barre:'Test 3RM (jamais 1RM)', bench_plat_barre:'Test 3RM (jamais 1RM)', deadlift_conventionnel:'Test 3RM (jamais 1RM)',
   pendlay_row:'Test 3RM (jamais 1RM)', rdl:'Test 3RM (jamais 1RM)', zercher_squat:'Test 3RM (jamais 1RM)',
-  front_squat:'Test 3RM (RSA MTI — jamais 1RM)', chin_ups:'Test max reps strict'
+  front_squat:'Test 3RM (RSA MTI — jamais 1RM)', chin_ups:'Test max reps strict — pull-ups (pronation)'
 };
 function moteurProtocolFor(ex){
   const info = moteurCycleInfo();
@@ -4580,8 +4615,13 @@ function moteurResolveSlot(slot, usedIds){
         if(subSt.ok && !usedIds.has(subId)) return {exId: subId, substituted:true, from: pref, blockedReason: st.reason};
       }
     }
-    const alt = fallback(pref);
-    if(alt) return {exId: alt.ex.id, substituted:true, from: pref, blockedReason: st.reason, viaPattern: alt.viaPattern};
+    // Repli générique (pattern/catégorie) réservé aux slots OBLIGATOIRES : la séance doit avoir
+    // son mouvement. Un slot optionnel indisponible est sauté — jamais remplacé par l'exercice
+    // principal d'une autre séance (sinon Bas 2 se transforme en Bas 1 bis : RDL/Bulgarian dupliqués).
+    if(slot.obligatoire !== false){
+      const alt = fallback(pref);
+      if(alt) return {exId: alt.ex.id, substituted:true, from: pref, blockedReason: st.reason, viaPattern: alt.viaPattern};
+    }
     return {exId: null, blocked:true, blockedReason: st.reason || 'Aucun substitut disponible'};
   }
   const alt = fallback(null);
@@ -5367,7 +5407,7 @@ function moteurRSAScore(){
   const from3RM = v => { const n = Number(v); return (v!=null && v!=='' && isFinite(n) && n>0) ? n / M_RM_FACTOR : null; };
   // RM testé prioritaire, e1RM estimé des séances en repli
   const fs = from3RM(trm.front_squat_3rm) || est1RM('front_squat') || est1RM('zercher_squat');
-  const hinge = from3RM(trm.rdl_3rm) || est1RM('rdl');
+  const hinge = from3RM(trm.rdl_3rm) || est1RM('deadlift_conventionnel') || est1RM('rdl');
   const bench = from3RM(trm.bench_3rm) || est1RM('bench_plat_barre');
   const pullReps = moteurGetPullupsMax(); // saisie dédiée — charge de chin_ups = lest en kg, pas des reps
   if(fs==null || hinge==null || bench==null) return null;
@@ -5419,7 +5459,7 @@ function renderStats(){
       'Conservé jusqu\'à ce que tu le changes — détermine les poids ci-dessous et les repères sur les graphiques.'));
     const puMax = moteurGetPullupsMax();
     const puRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}},
-      $('span',{style:{fontSize:'11px',color:'#94a3b8'}},'Tractions strictes max (reps) :'),
+      $('span',{style:{fontSize:'11px',color:'#94a3b8'}},'Pull-ups stricts max (reps) :'),
       $('input',{class:'input-mod',type:'number',step:'1',min:'0',value:puMax!=null?String(puMax):'',
         onchange:(e)=>moteurSetPullupsMax(e.target.value===''?null:Number(e.target.value))})
     );
@@ -5435,7 +5475,7 @@ function renderStats(){
       $('input',{class:'input-mod',type:'number',step:'0.5',min:'0',value:trm[field]!=null?String(trm[field]):'',
         onchange:(e)=>moteurSetTestRM(field, e.target.value===''?null:Number(e.target.value))}));
     stdCard.appendChild(rmField('Squat avant / Zercher 3RM (kg) :','front_squat_3rm'));
-    stdCard.appendChild(rmField('RDL 3RM (kg) :','rdl_3rm'));
+    stdCard.appendChild(rmField('Hinge — Soulevé de terre / RDL 3RM (kg) :','rdl_3rm'));
     stdCard.appendChild(rmField('Bench 3RM (kg) :','bench_3rm'));
     stdCard.appendChild(rmField('Militaire 3RM (kg) :','militaire_3rm'));
     stdCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}},
@@ -5902,8 +5942,10 @@ function renderSessionCards(el, session){
     if(slot.note) card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginBottom:'6px'}},slot.note));
 
     // Grid infos (format / repos / tempo / RPE cible) — priorité: protocole de cycle > format standard Guyane
-    const format = proto ? proto.format : ((guyaneRef && guyaneRef.fmt) ? guyaneRef.fmt : moteurDefaultFormat(ex));
-    const rpeCible = proto ? proto.rpe : ((guyaneRef && guyaneRef.rpe) || moteurDefaultRpe(ex) || null);
+    // format_fixe / rpe_fixe : verrou au niveau du slot — prime sur tout protocole de cycle
+    // (ex. le RDL volume de Bas 2 reste 3-4×6 même en focus Force, le top set vit en Bas 1).
+    const format = slot.format_fixe ? slot.format_fixe : (proto ? proto.format : ((guyaneRef && guyaneRef.fmt) ? guyaneRef.fmt : moteurDefaultFormat(ex)));
+    const rpeCible = slot.rpe_fixe ? slot.rpe_fixe : (proto ? proto.rpe : ((guyaneRef && guyaneRef.rpe) || moteurDefaultRpe(ex) || null));
     const tempoSource = ((guyaneRef && guyaneRef.note)||'') + ' ' + ((guyaneRef && guyaneRef.fmt)||'') + ' ' + (format||'');
     const tempoMatch = tempoSource.match(/[Tt]empo\s+([0-9X]-[0-9X]-[0-9X]-[0-9X])/);
     const grid = $('div',{class:'ex-grid'});
