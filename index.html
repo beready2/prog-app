@@ -1176,10 +1176,13 @@ input,select,textarea{box-sizing:border-box}
         "paris",
         "nomade"
       ],
-      "substitutes": {},
+      "substitutes": {
+        "repli": "planche_laterale"
+      },
       "pattern": "rotation_anti_rotation",
       "progression_type": "isometrie",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "notes": "Substitut naturel : planche latérale (même famille anti-rotation)."
     },
     {
       "id": "planche_laterale",
@@ -1224,8 +1227,10 @@ input,select,textarea{box-sizing:border-box}
         "paris",
         "nomade"
       ],
-      "substitutes": {},
-      "notes": "Remplace l'ab wheel (proscrit définitivement). Aucun matériel spécifique : un point d'ancrage solide (banc, cadre de lit, meuble lourd) et de la place suffisent.",
+      "substitutes": {
+        "variation": "hardstyle_plank"
+      },
+      "notes": "Remplace l'ab wheel (proscrit définitivement). Aucun matériel spécifique : un point d'ancrage solide (banc, cadre de lit, meuble lourd) et de la place suffisent. Variation/repli : hardstyle plank (même famille anti-extension).",
       "pattern": "rotation_anti_rotation",
       "progression_type": "isometrie",
       "protocole_cycle_eligible": false
@@ -2948,6 +2953,55 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "barre",
       "protocole_cycle_eligible": false,
       "notes": "Standard MTI documenté (1,25×PDC). Mouvement technique (réception poignet en extension, épaule en position basse) — nécessite poignet/épaule sains et un apprentissage technique dédié avant tout test de charge. Pas prioritaire tant que le poignet G est en délestage."
+    },
+    {
+      "id": "t1_escaliers",
+      "name": "Escaliers / montées (T1)",
+      "category": "aerobie",
+      "qualities": [
+        "aerobie_seuil",
+        "work_capacity"
+      ],
+      "equipment_required": [],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "locomotion",
+      "progression_type": "duree",
+      "protocole_cycle_eligible": false,
+      "notes": "T1 du test de stage — montées d'escaliers ou de côte, allure soutenue, sac léger optionnel. Montées OK malgré l'IT band (faible impact) ; éviter les descentes rapides (ascenseur / descente lente)."
+    },
+    {
+      "id": "t2_enchaine",
+      "name": "T2 enchaîné (20 pompes + 50 s gainage + 4 tractions)",
+      "category": "work_capacity",
+      "qualities": [
+        "work_capacity"
+      ],
+      "equipment_required": [
+        "barre_traction"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "integre",
+      "progression_type": "qualite",
+      "protocole_cycle_eligible": false,
+      "notes": "Enchaînement du test de stage, réalisé SANS repos après T1. Le critère est la qualité des tractions essoufflé. En déplacement : repérer une barre de parc."
     }
   ]
 }
@@ -3280,7 +3334,7 @@ input,select,textarea{box-sizing:border-box}
         {
           "role": "anti_rotation",
           "category": "gainage",
-          "exercice_pref": "pallof_press_elastique",
+          "exercice_pref": "pallof_press",
           "obligatoire": true
         },
         {
@@ -3298,8 +3352,15 @@ input,select,textarea{box-sizing:border-box}
         {
           "role": "back_extension",
           "category": "bas_force",
-          "exercice_pref": "back_extension_banc",
+          "exercice_pref": "back_extension",
           "obligatoire": false
+        },
+        {
+          "role": "cou_optionnel",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false,
+          "note": "Cou — si pas déjà couvert en Haut cette semaine."
         }
       ]
     },
@@ -3325,7 +3386,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "bas_force",
           "exercice_pref": "zercher_squat",
           "obligatoire": true,
-          "note": "Jour LOURD du squat — top set en focus Force (5×3), uniquement genou silencieux ; sinon substitution presse et le top set attend."
+          "note": "Jour LOURD du squat — top set en focus Force, uniquement genou silencieux (sinon presse et le top set attend). Phase de reprise genou : tempo 3-1-X-1 sur les séries — le top set reste alors sous-maximal ; genou silencieux durablement : top set sans tempo, descente simplement contrôlée."
         },
         {
           "role": "hinge_volume",
@@ -3346,7 +3407,7 @@ input,select,textarea{box-sizing:border-box}
         {
           "role": "anti_rotation",
           "category": "gainage",
-          "exercice_pref": "pallof_press_elastique",
+          "exercice_pref": "pallof_press",
           "obligatoire": true
         },
         {
@@ -3374,6 +3435,13 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "front_squat",
           "obligatoire": false,
           "note": "Test périodique MTI RSA — prise croisée (protège le poignet G). N'apparaît que la semaine de test."
+        },
+        {
+          "role": "cou_optionnel",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false,
+          "note": "Cou — si pas déjà couvert en Haut cette semaine."
         }
       ]
     },
@@ -3478,6 +3546,38 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "mountain_climbers",
           "obligatoire": false,
           "contrainte": "poignet_G — remplacer par kb_swing si sensible"
+        }
+      ]
+    },
+    {
+      "id": "t1_t2",
+      "nom": "T1/T2 — Prépa test",
+      "frequence_cible": "1×/semaine dès que la fenêtre d'annonce du test est active",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "work_capacity",
+        "aerobie_seuil"
+      ],
+      "objectif": "Simulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
+      "slots": [
+        {
+          "role": "t1_denivele",
+          "category": "aerobie",
+          "exercice_pref": "t1_escaliers",
+          "obligatoire": true,
+          "format_fixe": "10-15 min de montées (escaliers / côte), allure soutenue",
+          "rpe_fixe": "7-8",
+          "note": "T1 — le dénivelé est le piège n°1 du test. Sac léger optionnel."
+        },
+        {
+          "role": "t2_enchaine",
+          "category": "work_capacity",
+          "exercice_pref": "t2_enchaine",
+          "obligatoire": true,
+          "format_fixe": "Enchaîné SANS repos : 20 pompes + 50 s gainage + 4 tractions strictes",
+          "rpe_fixe": "—",
+          "note": "Tractions propres en étant essoufflé = le critère. Barre requise (parc en déplacement) ; à défaut TRX row lesté strict, proxy dégradé."
         }
       ]
     },
@@ -4305,8 +4405,8 @@ const M_PUISSANCE_METHOD = {
   pendlay_row:'legeard', chin_ups:'legeard', gorilla_row:'legeard'
 };
 const M_METHOD_FORMATS = {
-  top_set: {leger:'5×3 → Top Set (RIR1) + back-off', modere:'5×3 → Top Set (RIR1) + back-off', pic:'5×3 → Top Set (RIR1) + back-off',
-    rpe:{leger:'9',modere:'9',pic:'9'}, nom:'Top Set + Back-off'},
+  top_set: {leger:'Montée → Top set ×3 (RIR 2) → back-off 2×5 à −10 %', modere:'Montée → Top set ×3 (RIR 1) → back-off 2×5 à −10 %', pic:'Montée → Top set ×3 (RIR 1) → back-off 1-2×3 à −8 %',
+    rpe:{leger:'8',modere:'9',pic:'9'}, nom:'Top Set + Back-off'},
   cluster: {leger:'Cluster 2+2+2 (léger)', modere:'Cluster 2+2+2 (modéré)', pic:'Cluster 2+2+2 (pic)',
     rpe:{leger:'7',modere:'8',pic:'9'}, nom:'Cluster 2+2+2'},
   pap: {leger:'PAP léger → geste explosif', modere:'PAP modéré → geste explosif', pic:'PAP pic → geste explosif',
@@ -5337,7 +5437,7 @@ function getAllExerciseData(){
 // suivi à la place en % du Bench (repère auto-calibré, pas de prétention de standard externe).
 const M_STANDARDS_RATIOS = {
   bench_plat_barre: {label:'Bench Press', min:1.0, obj:1.25, exc:1.5, source:'MTI (RSA)'},
-  rdl: {label:'Romanian Deadlift', min:1.5, obj:1.75, exc:2.0, source:'MTI Hinge Lift (RSA)'},
+  rdl: {label:'Hinge — Soulevé de terre (RDL volume)', min:1.5, obj:1.75, exc:2.0, source:'MTI Hinge Lift (RSA)'},
   front_squat: {label:'Front Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI (RSA)'},
   push_press: {label:'Push Press', min:null, obj:null, exc:1.1, source:'MTI (hors RSA — seule Excellence publiée)'},
   squat_clean: {label:'Squat Clean', min:null, obj:null, exc:1.25, source:'MTI (hors RSA — seule Excellence publiée)'},
@@ -5382,7 +5482,10 @@ function moteurSetPullupsMax(v){ save('user_pullups_max', v); render(); }
 // Tests de référence (RM réels) — saisis après chaque batterie (fin Guyane, mini-test S5, fin de
 // fenêtre maison). Quand un RM testé existe, le RSA et le % bench l'utilisent EN PRIORITÉ ;
 // champ vide = repli automatique sur l'e1RM estimé des dernières séances (Epley reps+RIR).
-function moteurGetTestRM(){ return load('user_test_rm') || {}; }
+function moteurGetTestRM(){
+  // Batterie du 13/07/2026 pré-remplie (RDL 3RM 100 kg, Zercher 3RM 52 kg) tant que rien n'est saisi.
+  return load('user_test_rm') || {rdl_3rm:100, front_squat_3rm:52, date:'2026-07-13'};
+}
 function moteurSetTestRM(field, v){
   const t = moteurGetTestRM();
   if(v==null || v==='') delete t[field]; else t[field] = v;
@@ -5455,8 +5558,6 @@ function renderStats(){
         onchange:(e)=>moteurSetBodyweight(e.target.value===''?75:Number(e.target.value))})
     );
     stdCard.appendChild(bwRow);
-    stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginBottom:'8px'}},
-      'Conservé jusqu\'à ce que tu le changes — détermine les poids ci-dessous et les repères sur les graphiques.'));
     const puMax = moteurGetPullupsMax();
     const puRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}},
       $('span',{style:{fontSize:'11px',color:'#94a3b8'}},'Pull-ups stricts max (reps) :'),
@@ -5464,8 +5565,6 @@ function renderStats(){
         onchange:(e)=>moteurSetPullupsMax(e.target.value===''?null:Number(e.target.value))})
     );
     stdCard.appendChild(puRow);
-    stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginBottom:'8px'}},
-      'Alimente le score RSA (plafonné à 20 par MTI). À mettre à jour après chaque test max reps — le champ charge des chin-ups (lest en kg) n\'est plus lu.'));
     // ── Tests de référence (RM réels — prioritaires sur l'estimation) ──
     const trm = moteurGetTestRM();
     stdCard.appendChild($('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginTop:'4px',marginBottom:'6px'}},
@@ -5474,9 +5573,9 @@ function renderStats(){
       $('span',{style:{fontSize:'11px',color:'#94a3b8',flex:'1'}},lbl),
       $('input',{class:'input-mod',type:'number',step:'0.5',min:'0',value:trm[field]!=null?String(trm[field]):'',
         onchange:(e)=>moteurSetTestRM(field, e.target.value===''?null:Number(e.target.value))}));
-    stdCard.appendChild(rmField('Squat avant / Zercher 3RM (kg) :','front_squat_3rm'));
-    stdCard.appendChild(rmField('Hinge — Soulevé de terre / RDL 3RM (kg) :','rdl_3rm'));
     stdCard.appendChild(rmField('Bench 3RM (kg) :','bench_3rm'));
+    stdCard.appendChild(rmField('Hinge — Soulevé de terre / RDL 3RM (kg) :','rdl_3rm'));
+    stdCard.appendChild(rmField('Squat avant / Zercher 3RM (kg) :','front_squat_3rm'));
     stdCard.appendChild(rmField('Militaire 3RM (kg) :','militaire_3rm'));
     stdCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}},
       $('span',{style:{fontSize:'11px',color:'#94a3b8',flex:'1'}},'Date de la batterie :'),
@@ -5508,7 +5607,7 @@ function renderStats(){
     });
     stdCard.appendChild(tbl);
     stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'6px',fontStyle:'italic'}},
-      'Objectif/Excellence viennent des sources citées (MTI publie ces 2 chiffres/mouvement — Push Press et Squat Clean n\'ont que l\'Excellence documentée). Le Minimum est un plancher que j\'interpole, jamais un chiffre publié. Convertis en 3RM (Epley ≈ 1RM×0.909). Zercher n\'a pas de standard propre — approximé via Front Squat. Military Press ne fait partie d\'aucun standard MTI (ni du RSA) — retiré d\'ici, suivi ci-dessous en % du Bench.'));
+      'Le Minimum est un plancher que j\'interpole, jamais un chiffre publié. Convertis en 3RM (Epley ≈ 1RM×0.909). Zercher n\'a pas de standard propre — approximé via Front Squat. Military Press ne fait partie d\'aucun standard MTI (ni du RSA) — retiré d\'ici, suivi ci-dessous en % du Bench.'));
 
     // ── Score RSA (vrai MTI Relative Strength Assessment) ──
     const rsa = moteurRSAScore();
