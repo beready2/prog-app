@@ -1727,7 +1727,7 @@ input,select,textarea{box-sizing:border-box}
         "nomade"
       ],
       "substitutes": {},
-      "notes": "Prérequis: IT band silencieux 3 sem. Protocole 4min/1min → continu, +10%/sem max.",
+      "notes": "Prérequis : IT band silencieux 3 semaines consécutives (compteur remis à zéro au dernier signal). Étape 1 : 4 min MARCHE / 1 min COURSE ×5-6, surface souple, Z2 basse 130-140 — la marche est une décharge cyclique du tendon, pas une récupération. Étape 2 : 3 marche / 2 course ×5. Étape 3 : continu 15 min, +10 %/sem max. Deux séances propres valident l'étape suivante ; un point externe fait redescendre d'une étape. Foam roll TFL + grand fessier après (jamais la bandelette).",
       "pattern": "none",
       "progression_type": "aucun",
       "protocole_cycle_eligible": false
@@ -3002,6 +3002,28 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "qualite",
       "protocole_cycle_eligible": false,
       "notes": "Enchaînement du test de stage, réalisé SANS repos après T1. Le critère est la qualité des tractions essoufflé. En déplacement : repérer une barre de parc."
+    },
+    {
+      "id": "test_ftp_20min",
+      "name": "Test FTP 20 min (zones vélo)",
+      "category": "test",
+      "qualities": [
+        "aerobie_seuil"
+      ],
+      "equipment_required": [
+        "velo"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "cyclique",
+      "progression_type": "duree",
+      "protocole_cycle_eligible": false,
+      "notes": "S2 de chaque grande fenêtre maison, jour frais, conditions standardisées (même heure, ventilateur, hydraté). Protocole : 15 min échauffement progressif + 3×1 min cadence haute · 5 min à fond (vidange) · 10 min facile · 20 min au maximum soutenable régulier (Assioma + H10). Résultats : FTP = 95 % de la puissance moyenne des 20 min · FC SV2 vélo = FC moyenne des 15 dernières minutes · Z2 = 56-75 % FTP (contre-vérifiée au nasal) · seuil 91-105 % · VO2max 106-120 %. Zones VÉLO uniquement — distinctes des zones course (ancres tapis 2023/2025/2026), qui seront ré-ancrées au retour course."
     }
   ]
 }
@@ -3203,7 +3225,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "alactique_finisher",
           "exercice_pref": "kb_swing_alactique_28",
           "obligatoire": true,
-          "note": "8-12 efforts max par séance, récup complète entre chaque."
+          "note": "8-12 efforts max par séance, récup complète entre chaque. Passage 28→32 kg : drop-off <5 % à 28 sur deux mesures consécutives → 32 kg sur les 3-4 premiers efforts (les plus frais), puis étendre. Mesure de drop-off de référence : sur AGT autonome, à frais."
         },
         {
           "role": "agt_rotation",
@@ -3308,14 +3330,15 @@ input,select,textarea{box-sizing:border-box}
           "category": "bas_force",
           "exercice_pref": "deadlift_conventionnel",
           "obligatoire": true,
-          "note": "Jour LOURD du hinge — soulevé de terre en top set (focus Force, 5×3), back-off ensuite. Rampe : 2-3 séances de 5 modérés avant les premiers top sets."
+          "note": "Jour LOURD du hinge — soulevé de terre en top set (focus Force, 5×3), back-off ensuite. Rampe : 2-3 séances de 5 modérés avant les premiers top sets. Couplage inter-séances : si le Zercher du jour 2 se dégrade, couper d'abord le back-off DL (2×5 → 1×5), jamais le top set."
         },
         {
           "role": "unilateral_genou",
           "category": "bas_force",
           "exercice_pref": "bulgarian_split_squat",
           "obligatoire": true,
-          "note": "G en premier, fixe la charge du D. 3-4×8/côté — objectif reps/symétrie, jamais de top set."
+          "note": "G en premier, fixe la charge du D. 3-4×8/côté, plafonné à RPE 8 après le top set DL — le contrôle du valgus prime sur la charge.",
+          "rpe_fixe": "7-8"
         },
         {
           "role": "ischio_jambiers",
@@ -3454,7 +3477,7 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "aerobie_seuil"
       ],
-      "objectif": "Intervalles 8-12 min à SV2 (~166 bpm). Développe le seuil, pas la base.",
+      "objectif": "Intervalles 8-12 min à SV2 (~166 bpm). Développe le seuil, pas la base. Zones ancrées sur le test FTP 20 min home-trainer (S2 de chaque grande fenêtre maison) : FTP = 95 % de la puissance moyenne, FC SV2 = FC moyenne des 15 dernières minutes.",
       "slots": [
         {
           "role": "aerobie_seuil",
@@ -3622,7 +3645,7 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "aerobie_base"
       ],
-      "objectif": "Base aérobie, zéro impact, respiration nasale = capteur de zone.",
+      "objectif": "Base aérobie, zéro impact, respiration nasale = capteur de zone. Zone cible : 130-150 bpm (SV1 labo 153, bascule nasale mesurée 145-149 le 05/07). 2 bras uniquement. En Guyane (KB 16/20/28) : format en cours de calibration — voir Journal Z2 (essais : 20 kg continu → blocs mixtes 20/28 → step-ups lents). Nasale = capteur, bouche assumée au-dessus de ~145.",
       "slots": [
         {
           "role": "aerobie_base_courte",
@@ -4241,8 +4264,10 @@ const SEANCES = {
     }
   },
 };
-// Semaine réelle : Lun H1, Mar B1, Mer H3, Jeu B2, Ven H2 (+AGT en finisher, pas un jour dédié), Sam Conditioning.
-const SEANCE_PAR_JOUR = {1:'Haut 1',2:'Bas 1',3:'Haut 3',4:'Bas 2',5:'Haut 2',6:'Conditioning',0:null};
+// Semaine réelle (Bas espacés de 72 h, Haut lourds espacés aussi) : Lun H1, Mar B1, Mer Z2 (+H3 seulement
+// si énergie déborde, version allégée — jamais de volume push/tirage la veille d'un Haut lourd),
+// Jeu H2 (+AGT), Ven B2, Sam Conditioning.
+const SEANCE_PAR_JOUR = {1:'Haut 1',2:'Bas 1',3:'Z2',4:'Haut 2',5:'Bas 2',6:'Conditioning',0:null};
 
 // ── GTG DATA ──────────────────────────────────────────────────────────────
 
@@ -4405,7 +4430,9 @@ const M_PUISSANCE_METHOD = {
   pendlay_row:'legeard', chin_ups:'legeard', gorilla_row:'legeard'
 };
 const M_METHOD_FORMATS = {
-  top_set: {leger:'Montée → Top set ×3 (RIR 2) → back-off 2×5 à −10 %', modere:'Montée → Top set ×3 (RIR 1) → back-off 2×5 à −10 %', pic:'Montée → Top set ×3 (RIR 1) → back-off 1-2×3 à −8 %',
+  top_set: {leger:'Approches non fatigantes (barre×5 · ~50 %×3 · ~70 %×3 · ~85 %×2) → Top set ×3 @RIR 2 (triple lourd du jour, PAS un 3RM — le vrai 3RM = jour de test) → back-off 2×5 à −10 %',
+    modere:'Approches non fatigantes (barre×5 · ~50 %×3 · ~70 %×3 · ~85 %×2) → Top set ×3 @RIR 1 (PAS un 3RM) → back-off 2×5 à −10 %',
+    pic:'Approches non fatigantes → Top set ×3 @RIR 1 (PAS un 3RM) → back-off 1-2×3 à −8 %',
     rpe:{leger:'8',modere:'9',pic:'9'}, nom:'Top Set + Back-off'},
   cluster: {leger:'Cluster 2+2+2 (léger)', modere:'Cluster 2+2+2 (modéré)', pic:'Cluster 2+2+2 (pic)',
     rpe:{leger:'7',modere:'8',pic:'9'}, nom:'Cluster 2+2+2'},
@@ -5471,7 +5498,17 @@ function moteurGetBodyweight(){
   const v = load('user_bodyweight_kg');
   return (v!=null && v!=='') ? Number(v) : 75;
 }
-function moteurSetBodyweight(v){ save('user_bodyweight_kg', v); render(); }
+function moteurSetBodyweight(v){
+  save('user_bodyweight_kg', v);
+  // Historique de pesées : une entrée datée par mise à jour (remplacée si même jour).
+  const log = load('user_bodyweight_log') || [];
+  const today = new Date().toISOString().slice(0,10);
+  const i = log.findIndex(e => e.date === today);
+  if(i >= 0) log[i].kg = v; else log.push({date: today, kg: v});
+  save('user_bodyweight_log', log);
+  render();
+}
+function moteurBodyweightLog(){ return load('user_bodyweight_log') || []; }
 // Tractions strictes max (reps) — saisie dédiée pour le RSA : le champ charge de chin_ups
 // contient un LEST en kg (ex. +10), jamais des répétitions.
 function moteurGetPullupsMax(){
@@ -5558,6 +5595,14 @@ function renderStats(){
         onchange:(e)=>moteurSetBodyweight(e.target.value===''?75:Number(e.target.value))})
     );
     stdCard.appendChild(bwRow);
+    (function(){
+      const wl = moteurBodyweightLog();
+      if(wl.length){
+        const last = wl.slice(-3).map(e => e.kg + ' kg (' + e.date.slice(5) + ')').join(' · ');
+        stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginBottom:'8px'}},
+          'Pesées : ' + last + (wl.length>3 ? ' — ' + wl.length + ' au total' : '') + '. Hebdomadaire à la maison — alimente standards ×PDC et RSA.'));
+      }
+    })();
     const puMax = moteurGetPullupsMax();
     const puRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}},
       $('span',{style:{fontSize:'11px',color:'#94a3b8'}},'Pull-ups stricts max (reps) :'),
@@ -6683,6 +6728,19 @@ function renderBilan(){
       ));
     });
     el.appendChild(emCard);
+
+    // Poids (pesée maison — optionnel, historisé avec date)
+    const bwCard = $('div',{class:'card'});
+    bwCard.appendChild($('div',{class:'card-title'},'⚖️ Poids (si pesée — maison)'));
+    bwCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'8px'}},
+      $('input',{class:'input-mod',type:'number',step:'0.1',min:'40',max:'120',
+        value:(m.poids_kg!=null?String(m.poids_kg):''),
+        onchange:(e)=>{ const v=e.target.value===''?null:Number(e.target.value);
+          m.poids_kg=v; log.matin=m; saveLog(log);
+          if(v!=null && isFinite(v) && v>0) moteurSetBodyweight(v);
+          render(); }}),
+      $('span',{style:{fontSize:'11px',color:'#94a3b8'}},'kg — met à jour standards ×PDC et RSA. Hebdomadaire suffit.')));
+    el.appendChild(bwCard);
 
     // Douleurs
     const painCard = $('div',{class:'card'});
