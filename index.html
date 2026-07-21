@@ -243,7 +243,8 @@ input,select,textarea{box-sizing:border-box}
       {
         "id": "butterfly",
         "label": "Butterfly (pec deck)"
-      }
+      },
+      "corde_sauter"
     ],
     "windows": [
       {
@@ -488,7 +489,7 @@ input,select,textarea{box-sizing:border-box}
         "delestage_next_step": "iso_militaire_overcoming"
       },
       "test_baseline_field": "militaire_1RM_est",
-      "notes": "Priorité n°1 du programme. Bilatéral.",
+      "notes": "Qualité fondamentale entretenue — hors standard MTI, suivie en % du bench. N'est plus la priorité n°1 du programme (revenue au squat puis au hinge, juillet 2026) : garde sa place de premier mouvement de Haut 1 (geste le plus technique, SNC frais) et son GTG quotidien, mais cède l'arbitrage des semaines courtes. Bilatéral.",
       "pattern": "push_vertical",
       "progression_type": "barre",
       "protocole_cycle_eligible": true
@@ -2414,6 +2415,29 @@ input,select,textarea{box-sizing:border-box}
       "protocole_cycle_eligible": false
     },
     {
+      "id": "rotation_thoracique",
+      "name": "Rotation thoracique (mobilité)",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite"
+      ],
+      "equipment_required": [],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {},
+      "pattern": "mobilite",
+      "progression_type": "aucun",
+      "protocole_cycle_eligible": false,
+      "notes": "Mobilité du rachis thoracique — distincte des CARs épaule (articulation différente). Une épaule libre a besoin d'un thorax mobile : sans extension/rotation thoracique, l'amplitude au-dessus de la tête se paie sur la coiffe. Quadrupédie ou side-lying open book, lent, sans forcer la lombaire."
+    },
+    {
       "id": "cars_hanche",
       "name": "CARs Hanche",
       "category": "cars_mobilite",
@@ -3024,6 +3048,35 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "duree",
       "protocole_cycle_eligible": false,
       "notes": "S2 de chaque grande fenêtre maison, jour frais, conditions standardisées (même heure, ventilateur, hydraté). Protocole : 15 min échauffement progressif + 3×1 min cadence haute · 5 min à fond (vidange) · 10 min facile · 20 min au maximum soutenable régulier (Assioma + H10). Résultats : FTP = 95 % de la puissance moyenne des 20 min · FC SV2 vélo = FC moyenne des 15 dernières minutes · Z2 = 56-75 % FTP (contre-vérifiée au nasal) · seuil 91-105 % · VO2max 106-120 %. Zones VÉLO uniquement — distinctes des zones course (ancres tapis 2023/2025/2026), qui seront ré-ancrées au retour course."
+    },
+    {
+      "id": "echauffement_corde",
+      "name": "Échauffement général — corde à sauter",
+      "category": "cars_mobilite",
+      "qualities": [
+        "aerobie_base"
+      ],
+      "equipment_required": [
+        "corde_sauter"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "genou_G_itband"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "guyane",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {
+        "genou_G_itband": "velo_z2_seuil"
+      },
+      "pattern": "locomotion",
+      "progression_type": "duree",
+      "protocole_cycle_eligible": false,
+      "notes": "3-5 min, allure facile — élever la température et la FC avant les CARs. Actif dès que la température ambiante baisse (fenêtre 2 et au-delà), inutile en climat chaud. ATTENTION : la corde est un exercice d'IMPACT, plus dense que la course en chocs par minute — uniquement si l'IT band est silencieux. Sinon : vélo, rameur, ou 3-5 min de montées d'escaliers."
     }
   ]
 }
@@ -3051,14 +3104,41 @@ input,select,textarea{box-sizing:border-box}
       "objectif": "Push vertical lourd (priorité n°1 du programme) + tirage horizontal + primer alactique.",
       "slots": [
         {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "format_fixe": "3-5 min, allure facile",
+          "rpe_fixe": "3-4",
+          "note": "Dès que la température baisse — inutile en climat chaud. Impact : corde uniquement si IT band silencieux. Sinon vélo (maison) ou 3-5 min d'escaliers (partout)."
+        },
+        {
           "role": "cars_echauffement",
           "category": "cars_mobilite",
           "qualities": [
             "mobilite"
           ],
           "obligatoire": true,
-          "note": "CARs épaule + rotation thoracique avant tout.",
+          "note": "Capteur quotidien d'amplitude autant qu'échauffement (chapitre 6). Lent, contrôlé, sans compensation.",
           "exercice_pref": "cars_epaule"
+        },
+        {
+          "role": "mobilite_thoracique",
+          "category": "cars_mobilite",
+          "exercice_pref": "rotation_thoracique",
+          "obligatoire": true,
+          "format_fixe": "×8/côté, quadrupédie, lent",
+          "rpe_fixe": "2-3",
+          "note": "Distincte des CARs épaule — prépare le thorax pour le travail au-dessus de la tête."
+        },
+        {
+          "role": "activation_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": true,
+          "format_fixe": "1-2×15 très léger (élastique le plus souple)",
+          "rpe_fixe": "3-4",
+          "note": "Activation/priming du tendon AVANT la charge — jamais fatigant. Effet antalgique et de préparation documenté sur tendinopathie. Ne remplace pas les séries prophylactiques de fin de séance, qui restent obligatoires."
         },
         {
           "role": "primer_alactique",
@@ -3069,6 +3149,15 @@ input,select,textarea{box-sizing:border-box}
           "obligatoire": false,
           "actif_si": "bloc_qualite ou energie suffisante",
           "exercice_pref": "kb_swing_alactique_28"
+        },
+        {
+          "role": "priming_iso_militaire",
+          "category": "haut_force",
+          "exercice_pref": "iso_militaire_overcoming",
+          "obligatoire": true,
+          "format_fixe": "1×5 s à 100 %, angle 90° — juste avant la 1re série de militaire",
+          "rpe_fixe": "—",
+          "note": "Priming spécifique du militaire : UNE seule activation, pas une série de travail. Elle se place avant la 1re série de la rampe, pas avant le top set. Ne pas confondre avec le primer alactique KB (2-3×8 s), qui est un autre outil. Haut 1 uniquement. 1er étage coupé en délestage épaule G."
         },
         {
           "role": "push_vertical_principal",
@@ -3102,7 +3191,9 @@ input,select,textarea{box-sizing:border-box}
           ],
           "exercice_pref": "chin_ups",
           "obligatoire": true,
-          "note": "Chin-ups (supination) par défaut. Si pas de Haut 3 cette semaine : en pull-ups (pronation) pour garder l'exposition hebdo au geste testé."
+          "note": "Jour VOLUME du tirage vertical : l'objectif est le total de reps, pas la charge. Progression : monter en reps 6→10 sur toutes les séries à RIR ≥2, PUIS ajouter une 4e série et redescendre à 6. Le lest reste à Haut 2 (4×5) — ici on n'ajoute jamais de poids. Total à suivre : 18 reps → 24 → 30 → 40. PDC ou lest très léger si 10 reps passent trop facilement. Note : placées après le Pendlay Row, ces séries sont pré-fatiguées (mêmes dorsaux, même grip) — 6 reps ici coûtent autant que 5 lestées à froid en Haut 2. Normal, ce n'est pas une régression.",
+          "format_fixe": "3-4×6-10, RIR 2-3, tempo 2-0-X-0 — progresser en REPS",
+          "rpe_fixe": "6-7"
         },
         {
           "role": "prophylaxie_epaule",
@@ -3148,10 +3239,38 @@ input,select,textarea{box-sizing:border-box}
       "objectif": "Bench prioritaire + traction lestée + épaule, puis finisher alactique complet (AGT).",
       "slots": [
         {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "format_fixe": "3-5 min, allure facile",
+          "rpe_fixe": "3-4",
+          "note": "Dès que la température baisse — inutile en climat chaud. Impact : corde uniquement si IT band silencieux. Sinon vélo (maison) ou 3-5 min d'escaliers (partout)."
+        },
+        {
           "role": "cars_echauffement",
           "category": "cars_mobilite",
           "obligatoire": true,
-          "exercice_pref": "cars_epaule"
+          "exercice_pref": "cars_epaule",
+          "note": "Capteur quotidien d'amplitude autant qu'échauffement (chapitre 6). Lent, contrôlé, sans compensation."
+        },
+        {
+          "role": "mobilite_thoracique",
+          "category": "cars_mobilite",
+          "exercice_pref": "rotation_thoracique",
+          "obligatoire": true,
+          "format_fixe": "×8/côté, quadrupédie, lent",
+          "rpe_fixe": "2-3",
+          "note": "Distincte des CARs épaule — prépare le thorax pour le travail au-dessus de la tête."
+        },
+        {
+          "role": "activation_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": true,
+          "format_fixe": "1-2×15 très léger (élastique le plus souple)",
+          "rpe_fixe": "3-4",
+          "note": "Activation/priming du tendon AVANT la charge — jamais fatigant. Effet antalgique et de préparation documenté sur tendinopathie. Ne remplace pas les séries prophylactiques de fin de séance, qui restent obligatoires."
         },
         {
           "role": "push_horizontal_principal",
@@ -3173,7 +3292,10 @@ input,select,textarea{box-sizing:border-box}
           "role": "tirage_lesté",
           "category": "haut_force",
           "exercice_pref": "chin_ups",
-          "obligatoire": true
+          "obligatoire": true,
+          "format_fixe": "4×5 lesté (5 reps MAX — au-delà, augmenter le lest)",
+          "rpe_fixe": "7-8",
+          "note": "Jour LOURD du tirage vertical : travail en force, toujours lesté et toujours en supination (épaule G, recrutement). Si 5 reps passent à RIR ≥3 : +1-2 kg de lest, on ne monte jamais au-delà de 5 reps ici. Sangle poignet G."
         },
         {
           "role": "tirage_unilateral",
@@ -3244,6 +3366,15 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [],
       "objectif": "ISO + volume, respiration nerveuse. Aucune barre lourde. Optionnel — sauter si épaule G sensible.",
       "slots": [
+        {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "format_fixe": "3-5 min, allure facile",
+          "rpe_fixe": "3-4",
+          "note": "Dès que la température baisse — inutile en climat chaud. Impact : corde uniquement si IT band silencieux. Sinon vélo (maison) ou 3-5 min d'escaliers (partout)."
+        },
         {
           "role": "cars_echauffement",
           "category": "cars_mobilite",
@@ -3319,6 +3450,15 @@ input,select,textarea{box-sizing:border-box}
       "objectif": "Hinge lourd (top set), unilatéral genou-dominant, ischio-jambiers, gainage anti-rotation, carry.",
       "slots": [
         {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "format_fixe": "3-5 min, allure facile",
+          "rpe_fixe": "3-4",
+          "note": "Dès que la température baisse — inutile en climat chaud. Impact : corde uniquement si IT band silencieux. Sinon vélo (maison) ou 3-5 min d'escaliers (partout)."
+        },
+        {
           "role": "cars_echauffement",
           "category": "cars_mobilite",
           "exercice_pref": "cars_hanche",
@@ -3326,11 +3466,29 @@ input,select,textarea{box-sizing:border-box}
           "note": "CARs hanche + activation clamshell/Petersen."
         },
         {
+          "role": "activation_fessier",
+          "category": "cars_mobilite",
+          "exercice_pref": "clamshell_g_first",
+          "obligatoire": true,
+          "format_fixe": "G ×15, élastique — activation, pas renforcement",
+          "rpe_fixe": "2-3",
+          "note": "Réveil du fessier moyen G AVANT la charge : c'est la cause racine du valgus et de l'IT band. Charger un hinge lourd sans l'avoir activé laisse la chaîne défaillante en place sous la barre."
+        },
+        {
+          "role": "activation_petersen",
+          "category": "cars_mobilite",
+          "exercice_pref": "petersen_step_up",
+          "obligatoire": true,
+          "format_fixe": "G ×10, sur marche",
+          "rpe_fixe": "2-3",
+          "note": "Activation VMO / contrôle du genou G. Complète le clamshell — obligatoire tant que la patte d'oie parle."
+        },
+        {
           "role": "hinge_principal",
           "category": "bas_force",
           "exercice_pref": "deadlift_conventionnel",
           "obligatoire": true,
-          "note": "Jour LOURD du hinge — soulevé de terre en top set (focus Force, 5×3), back-off ensuite. Rampe : 2-3 séances de 5 modérés avant les premiers top sets. Couplage inter-séances : si le Zercher du jour 2 se dégrade, couper d'abord le back-off DL (2×5 → 1×5), jamais le top set."
+          "note": "Jour LOURD du hinge — top set en focus Force, back-off ensuite. Couplage inter-séances : si le Zercher du jour 2 se dégrade, couper d'abord le back-off DL (2×5 → 1×5), jamais le top set."
         },
         {
           "role": "unilateral_genou",
@@ -3373,12 +3531,6 @@ input,select,textarea{box-sizing:border-box}
           "obligatoire": false
         },
         {
-          "role": "back_extension",
-          "category": "bas_force",
-          "exercice_pref": "back_extension",
-          "obligatoire": false
-        },
-        {
           "role": "cou_optionnel",
           "category": "haut_iso_volume",
           "exercice_pref": "nuque_iso_elastique",
@@ -3399,17 +3551,44 @@ input,select,textarea{box-sizing:border-box}
       "objectif": "Squat bilatéral lourd (top set), hinge volume, gainage. Optionnels : 1-2 max par séance — jamais tous.",
       "slots": [
         {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "format_fixe": "3-5 min, allure facile",
+          "rpe_fixe": "3-4",
+          "note": "Dès que la température baisse — inutile en climat chaud. Impact : corde uniquement si IT band silencieux. Sinon vélo (maison) ou 3-5 min d'escaliers (partout)."
+        },
+        {
           "role": "cars_echauffement",
           "category": "cars_mobilite",
           "exercice_pref": "cars_hanche",
           "obligatoire": true
         },
         {
+          "role": "activation_fessier",
+          "category": "cars_mobilite",
+          "exercice_pref": "clamshell_g_first",
+          "obligatoire": true,
+          "format_fixe": "G ×15, élastique — activation, pas renforcement",
+          "rpe_fixe": "2-3",
+          "note": "Réveil du fessier moyen G AVANT la charge : c'est la cause racine du valgus et de l'IT band. Charger un hinge lourd sans l'avoir activé laisse la chaîne défaillante en place sous la barre."
+        },
+        {
+          "role": "activation_petersen",
+          "category": "cars_mobilite",
+          "exercice_pref": "petersen_step_up",
+          "obligatoire": true,
+          "format_fixe": "G ×10, sur marche",
+          "rpe_fixe": "2-3",
+          "note": "Activation VMO / contrôle du genou G. Complète le clamshell — obligatoire tant que la patte d'oie parle."
+        },
+        {
           "role": "squat_bilateral",
           "category": "bas_force",
           "exercice_pref": "zercher_squat",
           "obligatoire": true,
-          "note": "Jour LOURD du squat — top set en focus Force, uniquement genou silencieux (sinon presse et le top set attend). Phase de reprise genou : tempo 3-1-X-1 sur les séries — le top set reste alors sous-maximal ; genou silencieux durablement : top set sans tempo, descente simplement contrôlée."
+          "note": "Jour LOURD du squat — top set en focus Force, uniquement genou silencieux (sinon presse et le top set attend). Phase de reprise genou : tempo 3-1-X-1 (top set alors sous-maximal) ; genou silencieux durablement : sans tempo, descente contrôlée."
         },
         {
           "role": "hinge_volume",
@@ -3438,6 +3617,13 @@ input,select,textarea{box-sizing:border-box}
           "category": "gainage",
           "exercice_pref": "dragon_flag",
           "obligatoire": false
+        },
+        {
+          "role": "back_extension",
+          "category": "bas_force",
+          "exercice_pref": "back_extension",
+          "obligatoire": false,
+          "note": "Déplacée de Bas 1 : après un soulevé de terre lourd, elle rechargeait un érecteur déjà à saturation. Ici le Zercher sollicite moins l'érecteur en tension maximale."
         },
         {
           "role": "carry",
@@ -4384,6 +4570,73 @@ function moteurEquipment(){
   const always = ['poids_du_corps', 'aucun'];
   const base = MS.mode === 'maison' ? M_MAISON_EQUIPMENT : MS.equipDeplacement;
   return Array.from(new Set([...base, ...always]));
+}
+// ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────
+// Dates cibles, ajustables. Affichés dans la frise Réglages avec compte à rebours.
+const M_JALONS = [
+  {date:'2026-08-10', label:'Retour course — étape 1 (4 marche / 1 course ×5-6)', type:'protocole',
+   detail:'Conditionnel : IT band silencieux 21 j. Tapis d\'abord, Z2 basse 130-140. 2×/sem.'},
+  {date:'2026-08-17', label:'Fenêtre maison — S1 reprise (−30 % volume)', type:'fenetre',
+   detail:'Revalidation technique, ré-acclimatation thermique. Bloc qualité Force ouvert (≥28 j).'},
+  {date:'2026-08-24', label:'Test FTP 20 min (zones vélo)', type:'test',
+   detail:'Jour frais. 20 min max soutenable. FTP = 95 % puissance moy · FC SV2 = FC moy des 15 dernières min.'},
+  {date:'2026-08-24', label:'Retour course — étape 2 (3 marche / 2 course ×5)', type:'protocole',
+   detail:'Si étape 1 propre sur 2 séances.'},
+  {date:'2026-08-31', label:'Retour course — étape 3 (continu 15 min, +10 %/sem)', type:'protocole',
+   detail:'Objectif 20 min continues mi-septembre.'},
+  {date:'2026-09-07', label:'Répétition générale phase 2 (chronométrée, en tenue)', type:'test',
+   detail:'Jour frais, sommeil ≥6 h. Remplace le work capacity de la semaine. Mesures : temps total, temps mannequin, points de friction.'},
+  {date:'2026-09-14', label:'Déload + mini-test (batterie 3RM)', type:'deload',
+   detail:'Bench · Soulevé de terre · Zercher · Militaire (tous en 3RM) + pull-ups stricts max + broad jump + wall sit G/D. Fixe les charges de la fenêtre suivante.'},
+  {date:'2026-09-23', label:'Changement de fenêtre — poste barre (34 j)', type:'fenetre',
+   detail:'Bloc qualité maintenu. Priorité d\'arbitrage : préparation tests (T1/T2 hebdo dès le 01/10).'},
+  {date:'2026-10-27', label:'Changement de fenêtre — matériel complet (20 j)', type:'fenetre',
+   detail:'<28 j : semaine classique, pas de nouveau bloc. Revalidation courte 2-3 séances.'},
+  {date:'2026-11-16', label:'Changement de fenêtre — kit personnel (26 j)', type:'fenetre',
+   detail:'Maintien. T1/T2 hebdo obligatoire. AGT inchangée.'},
+  {date:'2026-12-12', label:'Changement de fenêtre — matériel complet (16 j)', type:'fenetre',
+   detail:'Reprise réelle : 2-3 séances à −20/30 %, retour au niveau en semaine 2.'}
+];
+function moteurJalons(){
+  const now = new Date(); now.setHours(0,0,0,0);
+  return M_JALONS.map(j=>{
+    const d = new Date(j.date+'T00:00:00');
+    const days = Math.round((d - now)/86400000);
+    return Object.assign({}, j, {days});
+  }).sort((a,b)=>a.days-b.days);
+}
+// ── Rampe d'approche du top set : séries montantes calculées en kg réels ──────────────────
+// Approches NON fatigantes (reps basses, RIR élevé) : elles préparent le top set, elles ne
+// le préparent pas au prix de la fraîcheur. Arrondi au palier de 2,5 kg (disques).
+function moteurRampeTopSet(target){
+  if(!(target > 0)) return null;
+  const r = v => Math.round(v/2.5)*2.5;
+  const BAR = 20;
+  const steps = [{lbl:'Barre à vide', kg:BAR, reps:'×5'}];
+  [[0.50,'×3'],[0.70,'×3'],[0.85,'×2']].forEach(([pct,reps])=>{
+    const kg = r(target*pct);
+    if(kg > BAR && kg < target) steps.push({lbl:Math.round(pct*100)+' %', kg, reps});
+  });
+  steps.push({lbl:'TOP SET', kg:r(target), reps:'×3', top:true});
+  steps.push({lbl:'Back-off ×2', kg:r(target*0.90), reps:'×5'});
+  return steps;
+}
+// ── Nombre de séries à cocher, déduit du format ──────────────────────────────────────────
+// parseInt('3-4×8') renvoyait 3 : une fourchette affichait toujours sa borne BASSE.
+// Ici on prend la borne HAUTE (c'est le plafond prévu ; cocher moins reste possible).
+// Cas top set : top set + back-off = séries de travail (les approches ne se cochent pas).
+function moteurNbSeries(format){
+  if(!format) return 3;
+  if(/top set/i.test(format)){
+    const bo = format.match(/back-?off\s*(\d+)\s*[-\u2013]?\s*(\d+)?\s*[\u00D7x]/i);
+    return 1 + (bo ? Number(bo[2] || bo[1]) : 2);
+  }
+  const m = format.match(/(\d+)\s*[-\u2013]\s*(\d+)\s*[\u00D7x]/);
+  if(m) return Number(m[2]);
+  const s = format.match(/(\d+)\s*[\u00D7x]/);
+  if(s) return Number(s[1]);
+  const n = parseInt(format);
+  return isFinite(n) && n > 0 ? n : 3;
 }
 function moteurWindowElapsedDays(){
   const start = new Date(MS.windowStart);
@@ -6047,13 +6300,35 @@ function renderSessionCards(el, session){
 
   // Priming minimaliste — même présentation qu'avant (une ligne compacte), pas de carte complète.
   const primingList = moteurFindGuyanePriming(session);
-  if(primingList && primingList.length){
-    el.appendChild($('div',{class:'card',style:{paddingTop:'8px',paddingBottom:'8px',fontSize:'11.5px',color:'#94a3b8'}},
-      $('span',{style:{color:'#f5a623',fontWeight:700}},'Priming : '),
-      primingList.join(' · ')
-    ));
-  }
-  const MINIMAL_ROLES = new Set(['cars_echauffement','primer_alactique']);
+  // ── Encadré PRIMING : mobilité, activation et primers, construits depuis les créneaux du
+  // moteur (source de vérité) et non plus depuis la seule liste Guyane — qui omettait les CARs
+  // hors bloc 1, d'où leur disparition de l'écran. Ces éléments préparent, ils ne se loguent pas :
+  // les garder hors des cartes d'exercice laisse la place au travail réel.
+  const MINIMAL_ROLES = new Set(['cars_echauffement','mobilite_thoracique','activation_epaule',
+    'priming_iso_militaire','primer_alactique','activation_fessier','activation_petersen','echauffement_general']);
+  const primingCard = $('div',{class:'card',style:{paddingTop:'9px',paddingBottom:'9px'}});
+  primingCard.appendChild($('div',{style:{color:'#f5a623',fontWeight:700,fontSize:'10px',
+    textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}},'⚡ Priming — ne pas fatiguer'));
+  let primingCount = 0;
+  res.results.forEach(r=>{
+    if(!MINIMAL_ROLES.has(r.slot.role) || !r.exId) return;
+    const pex = M_EX_BY_ID[r.exId];
+    const row = $('div',{style:{display:'flex',gap:'6px',alignItems:'baseline',padding:'3px 0'}});
+    row.appendChild($('span',{style:{fontSize:'11.5px',color:'#e2e8f0',fontWeight:'600'}}, pex.name));
+    if(r.slot.format_fixe) row.appendChild($('span',{style:{fontSize:'10.5px',color:'#94a3b8',flex:'1'}}, r.slot.format_fixe));
+    if(!r.slot.obligatoire) row.appendChild($('span',{style:{fontSize:'9px',color:'#475569'}},'optionnel'));
+    const pn = (r.slot.note||'') + (r.slot.note && pex.notes ? ' — ' : '') + (pex.notes||'');
+    if(pn.trim()) row.appendChild($('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e, pn); }},'?'));
+    primingCard.appendChild(row); primingCount++;
+  });
+  // Éléments hérités de la structure Guyane non couverts par un créneau du moteur
+  (primingList||[]).forEach(p=>{
+    const plain = String(p).replace(/[⚡·]/g,'').toLowerCase();
+    if(/cars|thoracique|iso militaire|alactique|rotation ext/.test(plain)) return; // déjà listés ci-dessus
+    primingCard.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8',padding:'3px 0'}}, p));
+    primingCount++;
+  });
+  if(primingCount) el.appendChild(primingCard);
 
   res.results.forEach(r=>{
     const slot = r.slot;
@@ -6070,7 +6345,10 @@ function renderSessionCards(el, session){
     const guyaneRef = moteurFindGuyaneRef(ex.id);
     const exKey = moteurExKey(ex.id);
     const exLog = getLog()[exKey] || {sets:{}};
-    const tooltipNote = (guyaneRef && guyaneRef.note) || ex.note || '';
+    const baseNote = (guyaneRef && guyaneRef.note) || ex.notes || ex.note || '';
+    // La note de créneau passe dans l'infobulle "?" (comme les autres exercices) au lieu d'occuper
+    // un pavé sous le titre : l'écran reste lisible, l'information reste accessible.
+    const tooltipNote = [slot.note, baseNote].filter(Boolean).join('\n\n');
 
     const card = $('div',{class:'ex-card'});
     const hdr = $('div',{class:'ex-header'});
@@ -6083,7 +6361,7 @@ function renderSessionCards(el, session){
     card.appendChild($('div',{style:{fontSize:'9.5px',textTransform:'uppercase',color:'#475569',letterSpacing:'.4px',marginTop:'-4px',marginBottom:'6px'}},
       slot.role.replace(/_/g,' ')+(slot.obligatoire?'':' (optionnel)')));
     if(r.substituted && r.from) card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginBottom:'4px'}},'Remplace : '+(M_EX_BY_ID_NAME[r.from]||r.from)));
-    if(slot.note) card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginBottom:'6px'}},slot.note));
+
 
     // Grid infos (format / repos / tempo / RPE cible) — priorité: protocole de cycle > format standard Guyane
     // format_fixe / rpe_fixe : verrou au niveau du slot — prime sur tout protocole de cycle
@@ -6120,6 +6398,28 @@ function renderSessionCards(el, session){
       $('div',{class:'ex-cell-val gold'}, rpeCible)
     ));
     card.appendChild(grid);
+
+    // ── Rampe d'approche calculée (top set à la barre uniquement) ──
+    if(ex.progression_type === 'barre' && /top set/i.test(format || '')){
+      const cible = (exLog.charge != null ? exLog.charge : moteurGetCharge(ex.id));
+      const rampe = moteurRampeTopSet(cible);
+      if(rampe){
+        const box = $('div',{style:{background:'#0d1525',borderRadius:'7px',padding:'8px',marginBottom:'8px'}});
+        box.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginBottom:'6px'}},
+          'Montée en charge — approches non fatigantes (ne pas chercher la fatigue avant le top set) :'));
+        const line = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'5px'}});
+        rampe.forEach(s=>{
+          line.appendChild($('div',{style:{padding:'4px 7px',borderRadius:'5px',fontSize:'10.5px',
+            background: s.top ? '#8b5cf6' : '#1e293b', color: s.top ? '#fff' : '#cbd5e1',
+            fontWeight: s.top ? '700' : '500'}},
+            s.kg + ' ' + s.reps));
+        });
+        box.appendChild(line);
+        box.appendChild($('div',{style:{fontSize:'9.5px',color:'#475569',marginTop:'5px'}},
+          'Top set ×3 @RIR 1 = triple lourd du jour, PAS un 3RM (le vrai 3RM est réservé aux jours de test). Repos 2-3 min avant le top set.'));
+        card.appendChild(box);
+      }
+    }
 
     if(ex.progression_type !== 'aucun'){
       // Repère "dernière fois" si l'exercice n'a pas été refait depuis un moment
@@ -6166,8 +6466,8 @@ function renderSessionCards(el, session){
     // Sets à cocher
     card.appendChild($('div',{style:{fontSize:'10px',color:'#475569',marginBottom:'5px',fontWeight:'600',textTransform:'uppercase',letterSpacing:'.4px'}},'Séries effectuées:'));
     const setsRow = $('div',{class:'sets-row'});
-    const fmtDigits = format ? parseInt(format) : null;
-    const maxSets = Math.max(2, Math.min(6, fmtDigits || 3));
+    const extraSets = (exLog.sets_extra || 0);
+    const maxSets = Math.max(2, Math.min(9, moteurNbSeries(format) + extraSets));
     for(let s=1; s<=maxSets; s++){
       const isDone = exLog.sets && exLog.sets[s];
       setsRow.appendChild($('div',{
@@ -6183,6 +6483,18 @@ function renderSessionCards(el, session){
           }
         }
       }, isDone?'✓':' ', 'Set '+s));
+    }
+    setsRow.appendChild($('div',{class:'set-chip',style:{opacity:'0.55',fontWeight:'700'},
+      onclick:()=>{ const l=getLog(); const e2=l[exKey]||{sets:{}};
+        e2.sets_extra=(e2.sets_extra||0)+1; l[exKey]=e2; saveLog(l); render(); }
+    },'+','Série'));
+    if(extraSets > 0){
+      setsRow.appendChild($('div',{class:'set-chip',style:{opacity:'0.4'},
+        onclick:()=>{ const l=getLog(); const e2=l[exKey]||{sets:{}};
+          e2.sets_extra=Math.max(0,(e2.sets_extra||0)-1);
+          if(e2.sets) delete e2.sets[maxSets];
+          l[exKey]=e2; saveLog(l); render(); }
+      },'\u2212','Série'));
     }
     card.appendChild(setsRow);
 
@@ -6328,7 +6640,7 @@ function renderSeanceGuyane(){
     const exKey = `ex_${curKey}_b${S.bloc}_${idx}`;
     const exLog = log[exKey] || {sets:{}};
     const numSets = parseInt(ex.fmt)||4;
-    const setsCount = ex.fmt.includes('rounds')||ex.fmt.includes('R') ? 5 : (parseInt(ex.fmt)||4);
+    const setsCount = ex.fmt.includes('rounds')||ex.fmt.includes('R') ? 5 : (moteurNbSeries(ex.fmt) + (exLog.sets_extra||0));
 
     const card = $('div',{class:'ex-card'+(ex.priorite?' prio':'')});
 
@@ -6626,8 +6938,45 @@ function renderBilan(){
       const phaseLbl = {leger:'Semaine 1 — Léger', modere:'Semaine 2 — Modéré', pic:'Semaine 3 — Pic',
         deload:'Semaine 4 — Déload (-50%)', focus_manuel:'Focus manuel actif'}[cyc.phase] || cyc.phase;
       cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#8b5cf6',marginTop:'4px',fontWeight:600}},'🔁 '+cyc.typeLabel+' — '+phaseLbl));
+      // ── Frise du cycle 3:1 : où j'en suis dans le bloc ──
+      const wk = moteurCycleWeek();
+      const etapes = [{k:1,l:'S1',s:'Léger'},{k:2,l:'S2',s:'Modéré'},{k:3,l:'S3',s:'Pic'},{k:4,l:'S4',s:'Déload'}];
+      const frise = $('div',{style:{display:'flex',gap:'4px',marginTop:'8px'}});
+      etapes.forEach(e=>{
+        const cur = (e.k === wk) && !cyc.manuel;
+        frise.appendChild($('div',{style:{flex:'1',textAlign:'center',padding:'6px 2px',borderRadius:'6px',
+          background: cur ? '#8b5cf6' : '#1e293b', color: cur ? '#fff' : '#64748b',
+          fontWeight: cur ? '700' : '500', fontSize:'10px', lineHeight:'1.3',
+          border: e.k===4 ? '1px dashed #475569' : 'none'}},
+          $('div',{},e.l), $('div',{style:{fontSize:'9px',opacity:'0.85'}},e.s)));
+      });
+      cardMode.appendChild(frise);
+      if(cyc.manuel) cardMode.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'4px'}},
+        'Focus manuel actif — le cycle automatique est en pause.'));
     }
     el.appendChild(cardMode);
+
+    // ── Jalons : tests, déloads, changements de fenêtre ──────────────────────
+    const cardJal = $('div',{class:'card'});
+    cardJal.appendChild($('div',{class:'card-title'},'📍 JALONS'));
+    const jalons = moteurJalons();
+    const aVenir = jalons.filter(j=>j.days >= -3).slice(0,5);
+    if(!aVenir.length){
+      cardJal.appendChild($('div',{style:{fontSize:'11px',color:'#64748b'}},'Aucun jalon à venir — à mettre à jour dès que le calendrier suivant est connu.'));
+    } else {
+      const ICON = {test:'🎯', deload:'🌙', fenetre:'📦', protocole:'🏃'};
+      aVenir.forEach(j=>{
+        const imminent = j.days <= 7;
+        const cd = j.days < 0 ? 'en cours' : (j.days === 0 ? "aujourd'hui" : (j.days === 1 ? 'demain' : 'dans '+j.days+' j'));
+        const row = $('div',{style:{padding:'7px 0',borderBottom:'1px solid #1e293b'}});
+        row.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',gap:'8px',alignItems:'baseline'}},
+          $('span',{style:{fontSize:'11.5px',fontWeight:'600',color: imminent?'#f5a623':'#e2e8f0',flex:'1'}}, (ICON[j.type]||'•')+' '+j.label),
+          $('span',{style:{fontSize:'10px',color: imminent?'#f5a623':'#64748b',whiteSpace:'nowrap'}}, cd)));
+        row.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'2px'}}, j.detail));
+        cardJal.appendChild(row);
+      });
+    }
+    el.appendChild(cardJal);
 
     const cardFocus = $('div',{class:'card'});
     cardFocus.appendChild($('div',{class:'card-title'},'FOCUS ACTUEL'));
