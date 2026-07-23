@@ -290,20 +290,6 @@ input,select,textarea{box-sizing:border-box}
         ]
       },
       {
-        "id": "guyane",
-        "label": "Guyane (déployé) — matériel réduit",
-        "equipment_available": [
-          "kb",
-          "barre_disques",
-          "banc",
-          "barre_traction",
-          "banc_lombaire",
-          "trx",
-          "elastiques",
-          "poids_du_corps"
-        ]
-      },
-      {
         "id": "paris",
         "label": "Paris (déploiement 3x8h) — matériel ~Guyane",
         "equipment_available": [
@@ -490,7 +476,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": 4,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -522,7 +507,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": 4,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -549,7 +533,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": 2,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -576,7 +559,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -606,7 +588,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -633,7 +614,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": 2,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -661,7 +641,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -689,7 +668,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -717,7 +695,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -725,6 +702,33 @@ input,select,textarea{box-sizing:border-box}
         "poignet_G": "poulie_haute"
       },
       "notes": "Sangle poignet G obligatoire sur tous les tirages verticaux/RDL/Gorilla. Chin-ups (prise supination, paumes vers soi) preferes aux Pull-ups (pronation) : meilleur recrutement biceps/dorsaux et moins de contrainte sur l'epaule G en tendinopathie.",
+      "test_baseline_field": "pullups_max",
+      "pattern": "pull_vertical",
+      "progression_type": "halteres_kb",
+      "protocole_cycle_eligible": false
+    },
+    {
+      "id": "pull_ups_pronation",
+      "name": "Pull-ups (prise pronation)",
+      "category": "haut_force",
+      "qualities": [
+        "force_max",
+        "grip_prehension"
+      ],
+      "equipment_required": [
+        "barre_traction"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "paris"
+      ],
+      "substitutes": {},
+      "notes": "Prise pronation — LE geste testé au stage. Volume en Haut 3. Plus exigeant que le chin-up (moins de biceps), c'est voulu : c'est la prise du test. Sangle poignet G si besoin.",
       "test_baseline_field": "pullups_max",
       "pattern": "pull_vertical",
       "progression_type": "halteres_kb",
@@ -747,7 +751,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -779,16 +782,17 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": 3,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
       "substitutes": {
+        "epaule_G": "landmine_press",
         "maison": "landmine_press"
       },
       "pattern": "push_vertical",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "notes": "Développé vertical haltère unilatéral — stabilité scapulaire et gainage anti-inclinaison. À la MAISON, remplacé par le landmine press (arc diagonal, épargne l'épaule G) tant qu'il est jugé aussi efficace pour l'objectif. En DÉPLACEMENT, repris au DB ou au KB selon le matériel disponible. Choix, pas suppression."
     },
     {
       "id": "face_pull",
@@ -805,7 +809,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -830,7 +833,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -859,7 +861,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -883,7 +884,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -907,7 +907,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -929,7 +928,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -953,7 +951,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": 2,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -976,7 +973,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {},
@@ -997,7 +993,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {},
@@ -1018,7 +1013,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {},
@@ -1043,7 +1037,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1107,7 +1100,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -1141,13 +1133,12 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
+        "maison_landmine": "landmine_rdl",
         "nomade": "kb_rdl",
-        "genou_G_itband": "leg_curl_machine",
-        "nomade_sansbarre": "good_morning"
+        "nomade_sansbarre": "good_morning_elastique"
       },
       "test_baseline_field": "rdl_1RM_est",
       "pattern": "hinge",
@@ -1155,7 +1146,35 @@ input,select,textarea{box-sizing:border-box}
       "protocole_cycle_eligible": false,
       "severity_overrides": {
         "genou_G_itband": 2
-      }
+      },
+      "notes": "Volume hinge de Bas 2 : 3-4×6, bilatéral à la barre partout où il y en a une. Sans barre, il est REMPLACÉ par une variante unilatérale — landmine RDL à la maison, KB RDL en nomade — jamais complété par elle."
+    },
+    {
+      "id": "rdl_une_jambe_barre",
+      "name": "RDL une jambe (barre ou haltère)",
+      "category": "bas_force",
+      "qualities": [
+        "force_max"
+      ],
+      "equipment_required": [
+        "barre_disques"
+      ],
+      "side_rule": "unilateral",
+      "contraindications": [
+        "genou_G_itband"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "paris"
+      ],
+      "substitutes": {
+        "nomade": "kb_rdl"
+      },
+      "pattern": "hinge",
+      "progression_type": "charge",
+      "protocole_cycle_eligible": false,
+      "notes": "Hinge unilatéral hors maison : même rôle que le landmine RDL (anti-asymétrie de chaîne postérieure), sans le landmine. G en premier. Équilibre plus exigeant que la version landmine, charge plus modeste. Remplaçant du RDL barre quand celui-ci n'est pas réalisable, pas un exercice supplémentaire."
     },
     {
       "id": "kb_rdl",
@@ -1173,15 +1192,13 @@ input,select,textarea{box-sizing:border-box}
       ],
       "delestage_tier": null,
       "windows_ok": [
-        "maison",
-        "guyane",
-        "paris",
         "nomade"
       ],
       "substitutes": {},
       "pattern": "hinge",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "notes": "Repli hinge du kit personnel : uniquement en nomade, quand il n'y a ni barre ni landmine. Dès qu'une barre est disponible, le hinge se fait au RDL barre ou au DL. Remplaçant du RDL barre quand celui-ci n'est pas réalisable, pas un exercice supplémentaire."
     },
     {
       "id": "copenhagen_adductor",
@@ -1198,7 +1215,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -1223,7 +1239,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1250,7 +1265,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1276,7 +1290,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1304,7 +1317,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1399,7 +1411,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1426,7 +1437,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -1455,7 +1465,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1480,8 +1489,7 @@ input,select,textarea{box-sizing:border-box}
       ],
       "delestage_tier": null,
       "windows_ok": [
-        "maison",
-        "guyane"
+        "maison"
       ],
       "substitutes": {
         "paris": "trx_leg_curl",
@@ -1510,7 +1518,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1534,7 +1541,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -1559,7 +1565,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1582,8 +1587,7 @@ input,select,textarea{box-sizing:border-box}
       "contraindications": [],
       "delestage_tier": null,
       "windows_ok": [
-        "maison",
-        "guyane"
+        "maison"
       ],
       "substitutes": {},
       "pattern": "hinge",
@@ -1608,7 +1612,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1634,7 +1637,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1660,7 +1662,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1686,7 +1687,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1713,7 +1713,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1740,7 +1739,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1769,7 +1767,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -1794,7 +1791,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2079,17 +2075,17 @@ input,select,textarea{box-sizing:border-box}
         "puissance"
       ],
       "equipment_required": [
-        "barre_disques"
+        "landmine"
       ],
       "side_rule": "unilateral",
       "contraindications": [],
       "delestage_tier": null,
       "windows_ok": [
-        "maison",
-        "paris",
-        "guyane"
+        "maison"
       ],
-      "substitutes": {},
+      "substitutes": {
+        "hors_maison": "db_press_vertical"
+      },
       "pattern": "push_vertical",
       "progression_type": "charge",
       "protocole_cycle_eligible": false,
@@ -2103,7 +2099,7 @@ input,select,textarea{box-sizing:border-box}
         "force_max"
       ],
       "equipment_required": [
-        "barre_disques"
+        "landmine"
       ],
       "side_rule": "unilateral",
       "contraindications": [
@@ -2111,17 +2107,17 @@ input,select,textarea{box-sizing:border-box}
       ],
       "delestage_tier": null,
       "windows_ok": [
-        "maison",
-        "guyane",
-        "paris"
+        "maison"
       ],
       "substitutes": {
+        "hors_maison": "rdl_une_jambe_barre",
+        "nomade": "kb_rdl",
         "genou_G_itband": "leg_curl_machine"
       },
       "pattern": "hinge",
       "progression_type": "charge",
       "protocole_cycle_eligible": false,
-      "notes": "Hinge unilatéral guidé par l'arc de la barre : moins d'équilibre à gérer qu'un RDL KB une jambe, bon travail de chaîne postérieure asymétrique. Prise neutre (poignet G)."
+      "notes": "Hinge unilatéral guidé par l'arc de la barre : moins d'équilibre à gérer qu'un RDL KB une jambe, bon travail de chaîne postérieure asymétrique. Prise neutre (poignet G). Remplaçant du RDL barre quand celui-ci n'est pas réalisable, pas un exercice supplémentaire."
     },
     {
       "id": "landmine_twist",
@@ -2132,7 +2128,7 @@ input,select,textarea{box-sizing:border-box}
         "gainage"
       ],
       "equipment_required": [
-        "barre_disques"
+        "landmine"
       ],
       "side_rule": "bilateral",
       "contraindications": [
@@ -2140,11 +2136,10 @@ input,select,textarea{box-sizing:border-box}
       ],
       "delestage_tier": null,
       "windows_ok": [
-        "maison",
-        "guyane",
-        "paris"
+        "maison"
       ],
       "substitutes": {
+        "hors_maison": "pallof_press",
         "cervicales": "pallof_press"
       },
       "pattern": "rotation",
@@ -2160,15 +2155,13 @@ input,select,textarea{box-sizing:border-box}
         "force_max"
       ],
       "equipment_required": [
-        "barre_disques"
+        "landmine"
       ],
       "side_rule": "unilateral",
       "contraindications": [],
       "delestage_tier": null,
       "windows_ok": [
-        "maison",
-        "guyane",
-        "paris"
+        "maison"
       ],
       "substitutes": {},
       "pattern": "tirage_horizontal",
@@ -2187,15 +2180,13 @@ input,select,textarea{box-sizing:border-box}
         "work_capacity"
       ],
       "equipment_required": [
-        "barre_disques"
+        "landmine"
       ],
       "side_rule": "bilateral",
       "contraindications": [],
       "delestage_tier": null,
       "windows_ok": [
-        "maison",
-        "guyane",
-        "paris"
+        "maison"
       ],
       "substitutes": {},
       "pattern": "push_vertical",
@@ -2264,7 +2255,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2310,7 +2300,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2335,7 +2324,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2360,7 +2348,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2385,7 +2372,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2409,7 +2395,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2433,7 +2418,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2457,7 +2441,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2481,7 +2464,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2508,7 +2490,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2532,7 +2513,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2559,7 +2539,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2582,7 +2561,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2608,7 +2586,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": 1,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -2634,7 +2611,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2661,7 +2637,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {
@@ -2689,7 +2664,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2714,7 +2688,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2739,7 +2712,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2765,7 +2737,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2793,7 +2764,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2819,7 +2789,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2847,7 +2816,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2872,7 +2840,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2896,7 +2863,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2920,7 +2886,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2944,7 +2909,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2969,7 +2933,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -2994,7 +2957,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -3022,7 +2984,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {},
@@ -3046,7 +3007,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -3120,11 +3080,10 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "paris",
-        "guyane"
+        "paris"
       ],
       "substitutes": {
-        "nomade": "kb_rdl"
+        "nomade": "good_morning_elastique"
       },
       "pattern": "extension_hanche",
       "progression_type": "charge",
@@ -3255,7 +3214,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {},
@@ -3282,14 +3240,14 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": 4,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris"
       ],
       "substitutes": {},
       "pattern": "push_vertical",
       "progression_type": "barre",
       "protocole_cycle_eligible": false,
-      "notes": "Standard MTI documenté (1,1×PDC). Meilleur transfert opérationnel que le strict press (jambes + épaule + gainage), mais plus explosif/plus de charge en réception — priorité future une fois l'épaule G stabilisée, pas immédiate."
+      "notes": "Mouvement de PUISSANCE (les jambes lancent la charge) — à réintroduire en bloc puissance/explosivité ou en supplément du militaire, pas dans une séance de volume. Attention épaule G : permet plus lourd au-dessus de la tête, et la réception excentrique est la phase la plus traumatisante — charge modérée, descente contrôlée ou repose au rack, retrait les jours d'épaule sensible.",
+      "reserve": true
     },
     {
       "id": "squat_clean",
@@ -3334,7 +3292,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -3359,7 +3316,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -3408,7 +3364,6 @@ input,select,textarea{box-sizing:border-box}
       "delestage_tier": null,
       "windows_ok": [
         "maison",
-        "guyane",
         "paris",
         "nomade"
       ],
@@ -3524,7 +3479,9 @@ input,select,textarea{box-sizing:border-box}
           "role": "push_horizontal_secondaire",
           "category": "haut_force",
           "exercice_pref": "db_bench_incline",
-          "obligatoire": false
+          "obligatoire": true,
+          "format_fixe": "3-4×8-10, RIR 2-3 — volume",
+          "note": "Volume de poussée horizontale de la semaine. Incliné MODÉRÉ (15-30°) : on garde le bénéfice haut de pectoral sans charger le deltoïde antérieur comme un incliné à 45° — l'épaule G reçoit déjà le militaire et le DB press vertical."
         },
         {
           "role": "tirage_vertical",
@@ -3649,8 +3606,9 @@ input,select,textarea{box-sizing:border-box}
           "role": "push_vertical_secondaire",
           "category": "haut_force",
           "exercice_pref": "db_press_vertical",
-          "obligatoire": false,
-          "contrainte": "epaule_G tier 3"
+          "obligatoire": true,
+          "contrainte": "epaule_G tier 3",
+          "note": "2e et dernière poussée verticale de la semaine, avec le militaire de Haut 1. Unilatéral : stabilité scapulaire et gainage anti-inclinaison. À la maison, remplacé par le landmine press pour épargner l'épaule ; au DB ou au KB en déplacement."
         },
         {
           "role": "tirage_lesté",
@@ -3671,8 +3629,9 @@ input,select,textarea{box-sizing:border-box}
         {
           "role": "tirage_unilateral",
           "category": "haut_force",
-          "exercice_pref": "gorilla_row",
-          "obligatoire": false
+          "exercice_pref": "row_bucheron",
+          "obligatoire": false,
+          "note": "Bûcheron (préféré au Gorilla row, qui reste en réserve). G en premier, prise neutre — doux pour le poignet G."
         },
         {
           "role": "prophylaxie_epaule",
@@ -3768,36 +3727,47 @@ input,select,textarea{box-sizing:border-box}
           "note": ""
         },
         {
-          "role": "push_press_puissance",
-          "category": "haut_force",
-          "exercice_pref": "push_press",
-          "obligatoire": false,
-          "note": "En TÊTE de séance, à froid (puissance = SNC frais). Mouvement balistique : les jambes lancent la charge, moins de contrainte stricte épaule G que le militaire lourd. Remplace le militaire en Haut 3. Jamais de top set ici — Haut 3 = volume et accessoires."
-        },
-        {
           "role": "iso_volume_push",
           "category": "haut_iso_volume",
           "exercice_pref": "bench_plat_barre",
           "obligatoire": true,
-          "note": "Volume de poussée horizontale (Haut 3 = séance volume/accessoire). Charge modérée, pas de recherche de max. Le lourd vit en Haut 2.",
-          "format_fixe": "3-4×8-12, RIR 2-3 — VOLUME, jamais de top set",
-          "rpe_fixe": "7"
+          "note": "Principal n°1 de Haut 3 : volume de développé couché à plat, barre, charge modérée (~60-70 % du lourd de Haut 2). Complète le DB incliné de Haut 1 (volume) et la barre lourde de Haut 2.",
+          "format_fixe": "3-4×8-12, RIR 2-3 — volume",
+          "rpe_fixe": "7",
+          "repos": "90-120 s"
         },
         {
           "role": "tirage_volume",
           "category": "haut_force",
-          "exercice_pref": "chin_ups",
+          "exercice_pref": "pull_ups_pronation",
           "obligatoire": true,
-          "note": "En pull-ups (pronation) — volume léger, jamais douloureux (épaule G). Exposition hebdomadaire au geste du test max reps.",
-          "format_fixe": "3-4×8-12, pull-ups pronation — VOLUME, exposition au geste testé",
-          "rpe_fixe": "7"
+          "note": "Principal n°2 de Haut 3 : volume en PRONATION, le geste testé. Semaine complète : chin-ups volume (H1) · chin-ups lestés force (H2) · pull-ups pronation volume (H3).",
+          "format_fixe": "3-4×8-12 — volume",
+          "rpe_fixe": "7",
+          "repos": "90-120 s"
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "face_pull",
+          "obligatoire": true,
+          "format_fixe": "3×15, léger",
+          "note": "3e exposition hebdomadaire, volontairement légère : la prophylaxie de coiffe se nourrit de fréquence, pas de charge."
+        },
+        {
+          "role": "prophylaxie_rotation_ext",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": true,
+          "format_fixe": "2×15, très léger"
         },
         {
           "role": "accessoire_shrug",
           "category": "haut_force",
           "exercice_pref": "shrug",
-          "obligatoire": false,
-          "note": "Trapèze supérieur — port de charge lourde (sac, gilet, camarade) et santé cervicale sous casque. 2-3×12-15."
+          "obligatoire": true,
+          "note": "Trapèze supérieur — port de charge lourde (sac, gilet, camarade) et santé cervicale sous casque. 2-3×12-15.",
+          "format_fixe": "3×12-15 — volume"
         },
         {
           "role": "accessoire_biceps",
@@ -3812,6 +3782,14 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "extension_triceps_bfr",
           "obligatoire": false,
           "note": "Triceps — soutient la poussée. Version BFR : charge légère, épargne le coude. Optionnel."
+        },
+        {
+          "role": "prophylaxie_nuque",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": true,
+          "format_fixe": "4 directions, 2×10 s",
+          "note": "3e exposition hebdomadaire. La nuque se construit par la fréquence, à charge légère — rachis cervical fragile."
         },
         {
           "role": "gainage_finisher",
@@ -3981,7 +3959,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_iso_volume",
           "exercice_pref": "nuque_iso_elastique",
           "obligatoire": false,
-          "note": "Cou — si pas déjà couvert en Haut cette semaine."
+          "note": "Optionnelle en Bas : sans lien avec le travail du jour. Les trois séances Haut portent la dose hebdomadaire."
         }
       ]
     },
@@ -4046,13 +4024,6 @@ input,select,textarea{box-sizing:border-box}
           "note": "Jour VOLUME du hinge — jamais de top set ici, le lourd vit en Bas 1."
         },
         {
-          "role": "hinge_unilateral",
-          "category": "bas_force",
-          "exercice_pref": "landmine_rdl",
-          "obligatoire": false,
-          "note": "Hinge unilatéral (maison) : complète la trap bar bilatérale — anti-asymétrie de chaîne postérieure (côté G) et équilibre. Pendant hinge du Bulgarian. Sans landmine : RDL KB une jambe."
-        },
-        {
           "role": "extension_hanche",
           "category": "bas_force",
           "exercice_pref": "hip_thrust",
@@ -4112,7 +4083,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_iso_volume",
           "exercice_pref": "nuque_iso_elastique",
           "obligatoire": false,
-          "note": "Cou — si pas déjà couvert en Haut cette semaine."
+          "note": "Optionnelle en Bas : sans lien avec le travail du jour. Les trois séances Haut portent la dose hebdomadaire."
         }
       ]
     },
@@ -6057,12 +6028,12 @@ function render(){
   content.appendChild((views[S.tab]||renderRoutine)());
   app.appendChild(content);
 
+  if(S.tab==='seanceG'){ S.tab='seance'; }
   // BOTTOM NAV
   const nav = $('div',{class:'bottom-nav'});
   [
     {id:'routine',icon:'☀️',lbl:'Routine'},
     {id:'seance',icon:'🏋️',lbl:'Séance'},
-    {id:'seanceG',icon:'🌴',lbl:'Séance G'},
     {id:'gtg',icon:'🔁',lbl:'GTG'},
     {id:'bilan',icon:'📊',lbl:'Bilan'}].forEach(item=>{
     const tab = $('button',{
@@ -6104,6 +6075,29 @@ document.addEventListener('click', e=>{ if(S.tooltipTarget && !S.tooltipTarget.c
 let _statsEx = null;
 let _statsFmt = null;
 
+// ── Libellé de format normalisé pour les statistiques ────────────────────────────────────
+// Les stats séparent les charges par schéma de séries (un 3 reps et un 8-12 ne se comparent pas),
+// mais le TEXTE des formats a changé au fil des versions : le même top set apparaissait alors sous
+// trois libellés différents. On ramène chaque format à son schéma de répétitions.
+function moteurCanonFmt(fmt){
+  if(!fmt) return '';
+  const f = String(fmt);
+  if(/top set/i.test(f) && !/jamais|pas de|sans/i.test(f)) return 'Top set ×3';
+  if(/3RM|1RM|test/i.test(f)) return 'Test RM';
+  let m = f.match(/[×x]\s*(\d+)\s*[-\u2013]\s*(\d+)\s*s\b/i);  // 3×30-40 s -> tenue
+  if(m) return m[1]+'-'+m[2]+' s';
+  m = f.match(/[×x]\s*(\d+)\s*s\b/i);                          // 3×45 s -> tenue
+  if(m) return m[1]+' s';
+  m = f.match(/[×x]\s*(\d+)\s*[-\u2013]\s*(\d+)/);      // 3-4×8-12 -> 8-12
+  if(m) return m[1]+'-'+m[2]+' reps';
+  m = f.match(/[×x]\s*(\d+)/);                                  // 4×5 -> 5
+  if(m) return m[1]+' reps';
+  m = f.match(/(\d+)\s*[-\u2013]\s*(\d+)\s*(?:reps?|r\b)/i);
+  if(m) return m[1]+'-'+m[2]+' reps';
+  m = f.match(/(\d+)\s*[-\u2013]\s*(\d+)\s*s\b/i);           // 30-40 s -> tenue
+  if(m) return m[1]+'-'+m[2]+' s';
+  return f.length>18 ? f.slice(0,18)+'…' : f;
+}
 function getAllExerciseData(){
   // Scan all localStorage logs, collect {exName: [{date, charge, rpe}]}
   const data = {};
@@ -6122,10 +6116,13 @@ function getAllExerciseData(){
       let baseName, blocId, fmtVal, sessionLabel;
       const mMoteur = key.match(/^ex_moteur_(.+)$/);
       if(mMoteur){
-        // Nouveau moteur (post-Guyane) : clé = ex_moteur_<exerciceId du catalogue>
-        const exObj = (typeof M_EX_BY_ID_NAME!=='undefined') ? M_EX_BY_ID_NAME[mMoteur[1]] : null;
-        baseName = exObj || mMoteur[1];
-        blocId = 0; fmtVal = entry.fmt||'';
+        // Clé = ex_moteur_<exerciceId>[@<séance>]. Le suffixe de séance isole les séries cochées
+        // d'une séance à l'autre, mais NE DOIT PAS scinder les statistiques : un même mouvement
+        // garde un seul historique de performance quelle que soit la séance où il a été fait.
+        const rawId = mMoteur[1].split('@')[0];
+        const exObj = (typeof M_EX_BY_ID_NAME!=='undefined') ? M_EX_BY_ID_NAME[rawId] : null;
+        baseName = exObj || rawId;
+        blocId = 0; fmtVal = moteurCanonFmt(entry.fmt||'');
         const doneSessions = (log.moteur_sessions||[]).map(sid=>{
           const st = (typeof MTPL!=='undefined') ? MTPL.session_types.find(s=>s.id===sid) : null;
           return st ? st.nom : sid;
@@ -6142,8 +6139,13 @@ function getAllExerciseData(){
         const ex=exList[exIdx];
         if(!ex) return;
         baseName=ex.name.replace(/[\u2605\u26a1\u26a0]/g,'').replace(/\s+/g,' ').trim().split('\u00b7')[0].trim();
-        blocId = blocNum; fmtVal = ex.fmt||'';
+        blocId = blocNum; fmtVal = moteurCanonFmt(ex.fmt||'');
         sessionLabel = seanceName;
+      }
+      // Un id brut qui aurait échappé au catalogue (underscores, pas d'espace) est normalisé
+      // avant canonicalisation, sinon il crée un bucket parasite à côté du vrai exercice.
+      if(baseName && baseName.indexOf('_')>=0 && baseName.indexOf(' ')<0){
+        baseName = baseName.replace(/_/g,' ').replace(/\b\w/g, ch=>ch.toUpperCase());
       }
       // Canonicalisation : fusionner les variantes du même exercice (noms changés entre blocs, et entre
       // l'ancien système Guyane et le nouveau moteur — mêmes mouvements, même bucket de stats)
@@ -6761,74 +6763,74 @@ function renderSessionCards(el, session){
 
   el.appendChild($('div',{class:'section-hdr'},'🏋️ '+session.nom));
 
-  // ── Module Z2 configurable : modalité → durée → fractionné (→ bras si swing) ──────────────
+  // ── Module Z2 configurable : modalité → durée → format (→ bras si swing) ──────────────
   if(session.id === 'z2' || session.id === 'z2_long'){
-    const K = 'z2cfg_' + session.id;
-    const cfg = Object.assign({modalite:'velo', duree:20, fractionne:'continu', bras:2}, load(K)||{});
-    const setCfg = (patch)=>{ Object.assign(cfg, patch); save(K, cfg); render(); };
-    const card = $('div',{class:'card'});
-    card.appendChild($('div',{class:'card-title'},'⚙️ Configurer la séance Z2'));
+    try {
+      const K = 'z2cfg_' + session.id;
+      let cfg;
+      try { cfg = Object.assign({modalite:'velo',duree:20,fractionne:'continu',bras:2}, load(K)||{}); }
+      catch(_) { cfg = {modalite:'velo',duree:20,fractionne:'continu',bras:2}; }
+      const setCfg = (patch)=>{ Object.assign(cfg, patch); try{ save(K, cfg); }catch(_){} render(); };
+      const chip = (label, on, onclick, dim)=> $('button', {
+        style:{padding:'7px 11px',borderRadius:'7px',fontSize:'12px',cursor:'pointer',margin:'0',
+          border:'1px solid '+(on?'#8b5cf6':'#334155'), background:on?'#8b5cf6':'#0d1525',
+          color:on?'#ffffff':(dim?'#475569':'#cbd5e1'), fontWeight:on?'700':'500'},
+        onclick:onclick }, label);
+      const rowStyle = {display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'};
 
-    // 1. Modalité
-    const MODS = [['velo','🚴 Vélo'],['course','🏃 Course'],['corde','🪢 Corde'],['swing','🔔 Swing']];
-    card.appendChild($('div',{class:'lbl'},'Modalité'));
-    const rowM = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
-    MODS.forEach(([v,lbl])=>{
-      const on = cfg.modalite===v;
-      rowM.appendChild($('button',{style:{padding:'7px 11px',borderRadius:'7px',fontSize:'12px',cursor:'pointer',
-        border:'1px solid '+(on?'#8b5cf6':'#334155'),background:on?'#8b5cf6':'#0d1525',color:on?'#fff':'#cbd5e1',fontWeight:on?'700':'500'},
-        onclick:()=>setCfg({modalite:v})}, lbl));
-    });
-    card.appendChild(rowM);
+      const card = $('div',{class:'card'});
+      card.appendChild($('div',{class:'card-title'},'⚙️ Configurer la Z2'));
 
-    // 2. Durée
-    card.appendChild($('div',{class:'lbl'},'Durée (min)'));
-    const rowD = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
-    (session.id==='z2_long'?[45,60,75,90]:[15,20,25,30,45]).forEach(d=>{
-      const on = cfg.duree===d;
-      rowD.appendChild($('button',{style:{padding:'7px 12px',borderRadius:'7px',fontSize:'12px',cursor:'pointer',
-        border:'1px solid '+(on?'#8b5cf6':'#334155'),background:on?'#8b5cf6':'#0d1525',color:on?'#fff':'#cbd5e1',fontWeight:on?'700':'500'},
-        onclick:()=>setCfg({duree:d})}, d));
-    });
-    card.appendChild(rowD);
+      card.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8',marginBottom:'4px'}},'Modalité'));
+      const rM = $('div',{style:rowStyle});
+      [['velo','🚴 Vélo'],['course','🏃 Course'],['corde','🪢 Corde'],['swing','🔔 Swing']]
+        .forEach(o => rM.appendChild(chip(o[1], cfg.modalite===o[0], ()=>setCfg({modalite:o[0]}))));
+      card.appendChild(rM);
 
-    // 3. Fractionné (commun à toutes les modalités)
-    card.appendChild($('div',{class:'lbl'},'Format'));
-    const FRACS = [['continu','Continu'],['30/30','30/30'],['40/20','40/20'],['marche_course_4_1','4 marche / 1 course'],['marche_course_3_2','3 marche / 2 course']];
-    const rowF = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
-    FRACS.forEach(([v,lbl])=>{
-      const on = cfg.fractionne===v;
-      const courseOnly = v.startsWith('marche_course');
-      rowF.appendChild($('button',{style:{padding:'7px 11px',borderRadius:'7px',fontSize:'11.5px',cursor:'pointer',
-        border:'1px solid '+(on?'#8b5cf6':'#334155'),background:on?'#8b5cf6':'#0d1525',
-        color:on?'#fff':(courseOnly&&cfg.modalite!=='course'?'#475569':'#cbd5e1'),fontWeight:on?'700':'500'},
-        onclick:()=>setCfg({fractionne:v})}, lbl));
-    });
-    card.appendChild(rowF);
-    if(cfg.fractionne.startsWith('marche_course') && cfg.modalite!=='course')
-      card.appendChild($('div',{style:{fontSize:'10px',color:'#f5a623',marginBottom:'6px'}},'Le format marche/course ne vaut que pour la reprise course.'));
+      card.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8',marginBottom:'4px'}},'Durée (min)'));
+      const rD = $('div',{style:rowStyle});
+      (session.id==='z2_long'?[45,60,75,90]:[15,20,25,30,45])
+        .forEach(d => rD.appendChild(chip(String(d), cfg.duree===d, ()=>setCfg({duree:d}))));
+      card.appendChild(rD);
 
-    // 4. Bras (swing uniquement)
-    if(cfg.modalite==='swing'){
-      card.appendChild($('div',{class:'lbl'},'Bras'));
-      const rowB = $('div',{style:{display:'flex',gap:'6px',marginBottom:'6px'}});
-      [[2,'2 bras'],[1,'1 bras alterné']].forEach(([v,lbl])=>{
-        const on = cfg.bras===v;
-        rowB.appendChild($('button',{style:{padding:'7px 12px',borderRadius:'7px',fontSize:'12px',cursor:'pointer',
-          border:'1px solid '+(on?'#8b5cf6':'#334155'),background:on?'#8b5cf6':'#0d1525',color:on?'#fff':'#cbd5e1',fontWeight:on?'700':'500'},
-          onclick:()=>setCfg({bras:v})}, lbl));
-      });
-      card.appendChild(rowB);
-      if(cfg.bras===1) card.appendChild($('div',{style:{fontSize:'10px',color:'#f5a623'}},
-        '⚠️ 1 bras : épaule G — 16 kg maximum, arrêt au moindre signal (pendant ou dans les 48 h), état d\'épaule noté après séance.'));
+      card.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8',marginBottom:'4px'}},'Format'));
+      const rF = $('div',{style:rowStyle});
+      [['continu','Continu'],['30/30','30/30'],['40/20','40/20'],['4_1','4 marche/1 course'],['3_2','3 marche/2 course']]
+        .forEach(o => {
+          const courseOnly = (o[0]==='4_1'||o[0]==='3_2');
+          rF.appendChild(chip(o[1], cfg.fractionne===o[0], ()=>setCfg({fractionne:o[0]}), courseOnly && cfg.modalite!=='course'));
+        });
+      card.appendChild(rF);
+
+      if(cfg.modalite==='swing'){
+        card.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8',marginBottom:'4px'}},'Bras'));
+        const rB = $('div',{style:rowStyle});
+        [[2,'2 bras'],[1,'1 bras alterné']].forEach(o => rB.appendChild(chip(o[1], cfg.bras===o[0], ()=>setCfg({bras:o[0]}))));
+        card.appendChild(rB);
+        if(cfg.bras===1) card.appendChild($('div',{style:{fontSize:'10px',color:'#f5a623',marginBottom:'4px'}},
+          '⚠️ 1 bras : épaule G — 16 kg max, arrêt au moindre signal (pendant ou 48 h), état d\'épaule noté après.'));
+      }
+
+      const modLbl = {velo:'Vélo',course:'Course',corde:'Corde',swing:'Swing '+(cfg.bras===1?'1 bras':'2 bras')}[cfg.modalite]||cfg.modalite;
+      const fracLbl = {continu:'continu','30/30':'30/30','40/20':'40/20','4_1':'4 marche/1 course','3_2':'3 marche/2 course'}[cfg.fractionne]||cfg.fractionne;
+      card.appendChild($('div',{style:{marginTop:'6px',padding:'8px',background:'#0d2b1f',borderRadius:'7px',fontSize:'12px',color:'#6ee7b7',fontWeight:'600'}},
+        '▶ '+modLbl+' · '+cfg.duree+' min · '+fracLbl+' — zone 130-150 bpm'));
+      el.appendChild(card);
+
+      el.appendChild($('div',{class:'card',style:{fontSize:'11.5px',color:'#94a3b8'}},
+        session.objectif || 'Zone 2 — base aérobie, 130-150 bpm. Progression par la durée.'));
+
+      let done=false; try{ done = moteurIsSessionDoneToday(session.id); }catch(_){}
+      el.appendChild($('div',{class:'card',style:{cursor:'pointer',background:done?'#0d2b1f':undefined,borderColor:done?'#10b981':undefined},
+        onclick:()=>{ try{ moteurToggleSessionDoneToday(session.id); }catch(_){ render(); } }},
+        $('div',{class:'check-item',style:{cursor:'pointer'}},
+          $('div',{class:'check-box'+(done?' done':'')}, done?'✓':''),
+          $('div',{style:{fontWeight:700,fontSize:'13px'}},'Séance effectuée aujourd\'hui'))));
+    } catch(err){
+      el.appendChild($('div',{class:'card',style:{fontSize:'12px',color:'#f5a623'}},
+        'Z2 : base aérobie, zone 130-150 bpm. (Module de configuration indisponible — '+ (err && err.message ? err.message : 'erreur') +')'));
     }
-
-    // Récap
-    const modLbl = {velo:'Vélo',course:'Course',corde:'Corde à sauter',swing:'Swing'+(cfg.bras===1?' 1 bras':' 2 bras')}[cfg.modalite];
-    const fracLbl = {continu:'continu','30/30':'30/30','40/20':'40/20',marche_course_4_1:'4 marche/1 course',marche_course_3_2:'3 marche/2 course'}[cfg.fractionne];
-    card.appendChild($('div',{style:{marginTop:'8px',padding:'8px',background:'#0d2b1f',borderRadius:'7px',fontSize:'12px',color:'#6ee7b7',fontWeight:'600'}},
-      '▶ '+modLbl+' · '+cfg.duree+' min · '+fracLbl+'  —  zone 130-150 bpm'));
-    el.appendChild(card);
+    return;
   }
 
   // Focus / cycle actif
@@ -6911,7 +6913,7 @@ function renderSessionCards(el, session){
     const ex = M_EX_BY_ID[r.exId];
     const proto = moteurProtocolFor(ex);
     const guyaneRef = moteurFindGuyaneRef(ex.id);
-    const exKey = moteurExKey(ex.id);
+    const exKey = moteurExKey(ex.id) + (session && session.id ? '@'+session.id : '');
     const exLog = getLog()[exKey] || {sets:{}};
     const baseNote = (guyaneRef && guyaneRef.note) || ex.notes || ex.note || '';
     // La note de créneau passe dans l'infobulle "?" (comme les autres exercices) au lieu d'occuper
@@ -6944,7 +6946,10 @@ function renderSessionCards(el, session){
       $('div',{class:'ex-cell-val purple'}, format || '—')
     ));
     const NO_REPOS_CATEGORIES = new Set(['cars_mobilite','respiration','test']);
-    const rTimers = (guyaneRef && guyaneRef.repos) ? parseReposAll(guyaneRef.repos) : [{sec:90,lbl:'90s'},{sec:120,lbl:'2 min'}];
+    // Le repos défini sur le CRÉNEAU prime sur l'ancienne référence héritée : sinon le bench de
+    // Haut 3 (volume) héritait des 5 min du bench lourd de Haut 2.
+    const reposSrc = slot.repos ? slot.repos : ((guyaneRef && guyaneRef.repos) ? guyaneRef.repos : null);
+    const rTimers = reposSrc ? parseReposAll(reposSrc) : [{sec:90,lbl:'90s'},{sec:120,lbl:'2 min'}];
     if(!NO_REPOS_CATEGORIES.has(ex.category)){
       const reposCell = $('div',{class:'ex-cell'});
       reposCell.appendChild($('div',{class:'ex-cell-lbl'},'Repos'));
@@ -6953,7 +6958,7 @@ function renderSessionCards(el, session){
         rTimers.forEach(t=>btnWrap.appendChild($('button',{class:'timer-btn',onclick:(e)=>{ e.stopPropagation(); startTimer(t.sec, ex.name); }},'⏱ '+t.lbl)));
         reposCell.appendChild(btnWrap);
       } else {
-        reposCell.appendChild($('div',{class:'ex-cell-val red'},guyaneRef.repos));
+        reposCell.appendChild($('div',{class:'ex-cell-val red'}, reposSrc || '90-120 s'));
       }
       grid.appendChild(reposCell);
     }
@@ -6968,7 +6973,7 @@ function renderSessionCards(el, session){
     card.appendChild(grid);
 
     // ── Rampe d'approche calculée (top set à la barre uniquement) ──
-    if(ex.progression_type === 'barre' && /top set/i.test(format || '')){
+    if(ex.progression_type === 'barre' && M_FORCE_TOPSET.has(ex.id) && /top set/i.test(format||'') && !/jamais|pas de|sans/i.test(format||'')){
       const cible = (exLog.charge != null ? exLog.charge : moteurGetCharge(ex.id));
       const rampe = moteurRampeTopSet(cible);
       if(rampe){
