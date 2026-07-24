@@ -2139,7 +2139,7 @@ input,select,textarea{box-sizing:border-box}
         "maison"
       ],
       "substitutes": {
-        "hors_maison": "pallof_press",
+        "hors_maison": "chop_lift_elastique",
         "cervicales": "pallof_press"
       },
       "pattern": "rotation",
@@ -5130,9 +5130,9 @@ const M_PUISSANCE_METHOD = {
   pendlay_row:'legeard', chin_ups:'legeard', gorilla_row:'legeard'
 };
 const M_METHOD_FORMATS = {
-  top_set: {leger:'Approches non fatigantes (barre×5 · ~50 %×3 · ~70 %×3 · ~85 %×2) → Top set ×3 @RIR 2 (triple lourd du jour, PAS un 3RM — le vrai 3RM = jour de test) → back-off 2×5 à −10 %',
-    modere:'Approches non fatigantes (barre×5 · ~50 %×3 · ~70 %×3 · ~85 %×2) → Top set ×3 @RIR 1 (PAS un 3RM) → back-off 2×5 à −10 %',
-    pic:'Approches non fatigantes → Top set ×3 @RIR 1 (PAS un 3RM) → back-off 1-2×3 à −8 %',
+  top_set: {leger:'Top set ×3 @RIR 2 (triple lourd du jour, PAS un 3RM — le vrai 3RM = jour de test) → back-off 2×5 à −10 %',
+    modere:'Top set ×3 @RIR 1 (PAS un 3RM) → back-off 2×5 à −10 %',
+    pic:'Top set ×3 @RIR 1 (PAS un 3RM) → back-off 1-2×3 à −8 %',
     rpe:{leger:'8',modere:'9',pic:'9'}, nom:'Top Set + Back-off'},
   cluster: {leger:'Cluster 2+2+2 (léger)', modere:'Cluster 2+2+2 (modéré)', pic:'Cluster 2+2+2 (pic)',
     rpe:{leger:'7',modere:'8',pic:'9'}, nom:'Cluster 2+2+2'},
@@ -5298,9 +5298,9 @@ function moteurLastPastLog(exId){
   return null;
 }
 function moteurDaysAgo(dateStr){ return Math.floor((today - new Date(dateStr)) / 86400000); }
-function moteurSetTodayField(exId, field, val){
+function moteurSetTodayField(exId, field, val, sessionId){
   const log = getLog();
-  const key = moteurExKey(exId);
+  const key = moteurExKey(exId) + (sessionId ? '@'+sessionId : '');
   const entry = log[key] || {sets:{}};
   entry[field] = val;
   log[key] = entry;
@@ -5341,7 +5341,7 @@ function moteurProgressionSuggestion(exId){
   }
   return null;
 }
-function moteurApplyProgression(exId){
+function moteurApplyProgression(exId, sessionId){
   const ex = M_EX_BY_ID[exId];
   const sugg = moteurProgressionSuggestion(exId);
   if(!sugg || ex.progression_type !== 'barre') return;
@@ -5351,7 +5351,8 @@ function moteurApplyProgression(exId){
   if(sugg.action === 'augmenter') next = cur + step;
   else if(sugg.action === 'maintenir_ou_leger') next = cur + step/2;
   else if(sugg.action === 'reduire') next = Math.max(0, cur - step/2);
-  moteurSetTodayField(exId, 'charge', Math.round(next*2)/2);
+  moteurSetTodayField(exId, 'charge', Math.round(next*2)/2, sessionId);
+  render();
 }
 
 // ── Sévérité des contre-indications : dérivée du Bilan du jour (source unique) ──
@@ -6267,7 +6268,28 @@ function moteurGetTestRM(){
 function moteurSetTestRM(field, v){
   const t = moteurGetTestRM();
   if(v==null || v==='') delete t[field]; else t[field] = v;
-  save('user_test_rm', t); render();
+  save('user_test_rm', t);
+  render();
+}
+// Historique : ajout manuel uniquement, sur action explicite de l'utilisateur (bouton dédié) —
+// pas à chaque modification du champ "valeur courante".
+function moteurAddTestRMHistory(field, value, date){
+  if(value==null || value==='') return;
+  const log = load('user_test_rm_log') || [];
+  const d = date || new Date().toISOString().slice(0,10);
+  const i = log.findIndex(e => e.date===d && e.field===field);
+  if(i>=0) log[i].value = value; else log.push({date:d, field, value});
+  save('user_test_rm_log', log);
+  render();
+}
+function moteurDeleteTestRMHistory(field, date){
+  const log = load('user_test_rm_log') || [];
+  const i = log.findIndex(e => e.date===date && e.field===field);
+  if(i>=0){ log.splice(i,1); save('user_test_rm_log', log); render(); }
+}
+function moteurTestRMHistory(field){
+  const log = load('user_test_rm_log') || [];
+  return log.filter(e=>e.field===field).sort((a,b)=>a.date<b.date?1:-1);
 }
 function moteurStandardsFor(exId){
   const r = M_STANDARDS_RATIOS[exId];
@@ -6358,7 +6380,9 @@ function renderStats(){
     const rmField = (lbl, field) => $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}},
       $('span',{style:{fontSize:'11px',color:'#94a3b8',flex:'1'}},lbl),
       $('input',{class:'input-mod',type:'number',step:'0.5',min:'0',value:trm[field]!=null?String(trm[field]):'',
-        onchange:(e)=>moteurSetTestRM(field, e.target.value===''?null:Number(e.target.value))}));
+        onchange:(e)=>moteurSetTestRM(field, e.target.value===''?null:Number(e.target.value))}),
+      $('button',{title:'Ajouter cette valeur à l\'historique',style:{background:'#1e293b',border:'none',borderRadius:'5px',color:'#f5a623',fontSize:'11px',padding:'5px 8px',cursor:'pointer'},
+        onclick:()=>moteurAddTestRMHistory(field, trm[field], trm.date)},'📌'));
     stdCard.appendChild(rmField('Bench 3RM (kg) :','bench_3rm'));
     stdCard.appendChild(rmField('Hinge — Soulevé de terre / RDL 3RM (kg) :','rdl_3rm'));
     stdCard.appendChild(rmField('Squat avant / Zercher 3RM (kg) :','front_squat_3rm'));
@@ -6374,6 +6398,27 @@ function renderStats(){
         if(isFinite(age) && age>=0) note = 'Batterie du '+trm.date+' ('+age+' j'+(age>70?' — retest conseillé, >8 semaines':'')+'). '+note;
       }
       stdCard.appendChild($('div',{style:{fontSize:'10px',color:(trm.date && (Date.now()-new Date(trm.date).getTime())/86400000>70)?'#f5a623':'#64748b',marginBottom:'8px'}}, note));
+    })();
+    // ── Historique des tests 3RM — conserve les anciennes valeurs même après un retest ──
+    (function(){
+      const fields = [['bench_3rm','Bench'],['rdl_3rm','RDL/Hinge'],['front_squat_3rm','Zercher/FS'],['militaire_3rm','Militaire']];
+      const rows = [];
+      fields.forEach(([f,lbl])=>moteurTestRMHistory(f).forEach(e=>rows.push({...e,lbl})));
+      if(!rows.length) return;
+      rows.sort((a,b)=>a.date<b.date?1:-1);
+      const histBtn = $('button',{style:{width:'100%',textAlign:'left',background:'none',border:'none',color:'#64748b',fontSize:'10.5px',cursor:'pointer',padding:'0',marginBottom:'6px'},
+        onclick:()=>{ S.testRmHistOpen=!S.testRmHistOpen; render(); }
+      }, '🕓 Historique des tests ('+rows.length+')  '+(S.testRmHistOpen?'▲':'▼'));
+      stdCard.appendChild(histBtn);
+      if(S.testRmHistOpen){
+        rows.slice(0,20).forEach(e=>{
+          stdCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'6px',fontSize:'10.5px',color:'#94a3b8',padding:'2px 0'}},
+            $('span',{style:{flex:'1'}}, e.date+' — '+e.lbl+' : '+e.value+' kg'),
+            $('button',{title:'Supprimer cette entrée',style:{background:'none',border:'none',color:'#64748b',fontSize:'11px',cursor:'pointer',padding:'0 4px'},
+              onclick:()=>moteurDeleteTestRMHistory(e.field, e.date)},'✕')
+          ));
+        });
+      }
     })();
     const tbl = $('div',{style:{marginTop:'2px',fontSize:'11px'}});
     tbl.appendChild($('div',{style:{display:'flex',fontWeight:'700',color:'#64748b',borderBottom:'1px solid #1e2d42',paddingBottom:'4px',marginBottom:'4px'}},
@@ -7013,13 +7058,15 @@ function renderSessionCards(el, session){
         chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'Charge ('+unit+'):'));
         chargeRow.appendChild($('input',{class:'input-mod',type:'number',step:'0.5',
           value: exLog.charge!=null?exLog.charge:'', placeholder: seedOrLast!=null?String(seedOrLast):'—',
-          onchange:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value)); moteurSetTodayField(ex.id,'fmt', format||''); render(); }
+          oninput:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value), session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); },
+          onchange:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value), session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); render(); }
         }));
       }
       chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'RPE réel:'));
       chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'10',
         value: exLog.rpe||'', placeholder:'—',
-        onchange:(e)=>{ moteurSetTodayField(ex.id,'rpe', e.target.value); moteurSetTodayField(ex.id,'fmt', format||''); render(); }
+        oninput:(e)=>{ moteurSetTodayField(ex.id,'rpe', e.target.value, session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); },
+        onchange:(e)=>{ moteurSetTodayField(ex.id,'rpe', e.target.value, session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); render(); }
       }));
       card.appendChild(chargeRow);
 
@@ -7030,7 +7077,7 @@ function renderSessionCards(el, session){
         );
         if(ex.progression_type === 'barre'){
           suggRow.appendChild($('button',{class:'btn btn-ghost btn-sm',style:{fontSize:'9.5px',padding:'3px 8px'},
-            onclick:()=>moteurApplyProgression(ex.id)},'Appliquer'));
+            onclick:()=>moteurApplyProgression(ex.id, session&&session.id)},'Appliquer'));
         }
         card.appendChild(suggRow);
       }
@@ -7074,7 +7121,7 @@ function renderSessionCards(el, session){
     // Notes perso
     const notesEl = $('textarea',{class:'textarea-field',rows:'2',placeholder:'Notes perso (optionnel)…',style:{fontSize:'11px'}});
     notesEl.value = exLog.notes||'';
-    notesEl.oninput = (e)=>moteurSetTodayField(ex.id,'notes', e.target.value);
+    notesEl.oninput = (e)=>moteurSetTodayField(ex.id,'notes', e.target.value, session&&session.id);
     card.appendChild(notesEl);
 
     el.appendChild(card);
