@@ -3630,7 +3630,7 @@ input,select,textarea{box-sizing:border-box}
           "role": "tirage_unilateral",
           "category": "haut_force",
           "exercice_pref": "row_bucheron",
-          "obligatoire": false,
+          "obligatoire": true,
           "note": "Bûcheron (préféré au Gorilla row, qui reste en réserve). G en premier, prise neutre — doux pour le poignet G."
         },
         {
@@ -3958,7 +3958,7 @@ input,select,textarea{box-sizing:border-box}
           "role": "cou_optionnel",
           "category": "haut_iso_volume",
           "exercice_pref": "nuque_iso_elastique",
-          "obligatoire": false,
+          "obligatoire": true,
           "note": "Optionnelle en Bas : sans lien avec le travail du jour. Les trois séances Haut portent la dose hebdomadaire."
         }
       ]
@@ -4082,7 +4082,7 @@ input,select,textarea{box-sizing:border-box}
           "role": "cou_optionnel",
           "category": "haut_iso_volume",
           "exercice_pref": "nuque_iso_elastique",
-          "obligatoire": false,
+          "obligatoire": true,
           "note": "Optionnelle en Bas : sans lien avec le travail du jour. Les trois séances Haut portent la dose hebdomadaire."
         }
       ]
@@ -5458,11 +5458,27 @@ function moteurResolveSlot(slot, usedIds){
 }
 const M_PRIMING_ROLES = new Set(['echauffement_general','cars_echauffement','mobilite_thoracique',
   'activation_epaule','priming_iso_militaire','primer_alactique','activation_fessier','activation_petersen']);
+const HINGE_SWAP_ROLES = new Set(['hinge_principal','test_hinge_dl','hinge_volume','hinge_lourd']);
+const SQUAT_SWAP_ROLES = new Set(['squat_bilateral','test_rsa_front_squat','squat_principal']);
 function moteurResolveSession(session){
   const usedIds = new Set();
   const results = [];
   session.slots.forEach(slot=>{
-    const r = Object.assign({slot}, moteurResolveSlot(slot, usedIds));
+    // Swap hinge manuel : si l'utilisateur a choisi une variante (DL/RDL) pour ce créneau, on l'honore.
+    let effSlot = slot;
+    if(HINGE_SWAP_ROLES.has(slot.role)){
+      const l = getLog(); const swaps = l._swaps || {};
+      const swapKey = 'hinge_swap@'+(session&&session.id?session.id:'')+'@'+slot.role;
+      const chosen = swaps[swapKey];
+      if(chosen && M_EX_BY_ID[chosen]) effSlot = Object.assign({}, slot, {exercice_pref: chosen});
+    }
+    if(SQUAT_SWAP_ROLES.has(slot.role)){
+      const l = getLog(); const swaps = l._swaps || {};
+      const swapKeyS = 'squat_swap@'+(session&&session.id?session.id:'')+'@'+slot.role;
+      const chosenS = swaps[swapKeyS];
+      if(chosenS && M_EX_BY_ID[chosenS]) effSlot = Object.assign({}, effSlot, {exercice_pref: chosenS});
+    }
+    const r = Object.assign({slot: effSlot}, moteurResolveSlot(effSlot, usedIds));
     // Le priming ne « consomme » pas son exercice : la rotation externe sert en activation ET en
     // prophylaxie, les CARs peuvent revenir, etc. Seuls les créneaux de travail réservent leur exercice.
     if(r.exId && !M_PRIMING_ROLES.has(slot.role)) usedIds.add(r.exId);
@@ -6263,7 +6279,7 @@ function moteurSetPullupsMax(v){ save('user_pullups_max', v); render(); }
 // champ vide = repli automatique sur l'e1RM estimé des dernières séances (Epley reps+RIR).
 function moteurGetTestRM(){
   // Batterie du 13/07/2026 pré-remplie (RDL 3RM 100 kg, Zercher 3RM 52 kg) tant que rien n'est saisi.
-  return load('user_test_rm') || {rdl_3rm:100, front_squat_3rm:52, date:'2026-07-13'};
+  return load('user_test_rm') || {bench_3rm:84, rdl_3rm:120, front_squat_3rm:70, date:'2026-07-27'};
 }
 function moteurSetTestRM(field, v){
   const t = moteurGetTestRM();
@@ -6385,7 +6401,7 @@ function renderStats(){
         onclick:()=>moteurAddTestRMHistory(field, trm[field], trm.date)},'📌'));
     stdCard.appendChild(rmField('Bench 3RM (kg) :','bench_3rm'));
     stdCard.appendChild(rmField('Hinge — Soulevé de terre / RDL 3RM (kg) :','rdl_3rm'));
-    stdCard.appendChild(rmField('Squat avant / Zercher 3RM (kg) :','front_squat_3rm'));
+    stdCard.appendChild(rmField('Squat (Front prise croisée ou Zercher) 3RM (kg) :','front_squat_3rm'));
     stdCard.appendChild(rmField('Militaire 3RM (kg) :','militaire_3rm'));
     stdCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}},
       $('span',{style:{fontSize:'11px',color:'#94a3b8',flex:'1'}},'Date de la batterie :'),
@@ -6491,6 +6507,10 @@ function renderStats(){
   // ── Filtre par format : un 5×3 (top set) et un 3×8 (volume) ne sont pas comparables sur le
   // même graphique — la charge attendue diffère structurellement, pas seulement par progrès. ──
   const allPts = data[_statsEx];
+  // Ceinture-et-bretelles : on recanonise le fmt à la lecture. Les entrées écrites avant la mise en
+  // place de la canonisation (ou avec un ancien libellé long) sont ainsi regroupées avec les récentes,
+  // au lieu de créer plusieurs buckets « Top set ×3 » distincts selon le libellé source.
+  allPts.forEach(d=>{ if(d.fmt) d.fmt = moteurCanonFmt(d.fmt); });
   const distinctFmts = [...new Set(allPts.map(d=>d.fmt).filter(f=>f))];
   if(!_statsFmt || (distinctFmts.length && !distinctFmts.includes(_statsFmt) && _statsFmt!=='__all__')){
     _statsFmt = distinctFmts.length ? distinctFmts[distinctFmts.length-1] : '__all__';
@@ -6969,6 +6989,32 @@ function renderSessionCards(el, session){
     const hdr = $('div',{class:'ex-header'});
     hdr.appendChild($('span',{class:'ex-num'},'●'));
     hdr.appendChild($('span',{class:'ex-name'}, ex.name));
+    // Sélecteur de variante hinge (DL conventionnel / trap bar / RDL) sur les créneaux hinge :
+    // permet de choisir librement le mouvement pendant la phase d'apprentissage du deadlift.
+    const SWAP_GROUPS = {
+      hinge: { roles:new Set(['hinge_principal','test_hinge_dl','hinge_volume','hinge_lourd']),
+               choices:[['deadlift_conventionnel','DL conventionnel'],['trap_bar_deadlift','DL trap bar'],['rdl','RDL']] },
+      // Zercher ET Front squat sont légitimes : Zercher pour le gainage antérieur, les longs tibias
+      // (1m84) et le transfert MMA/terrain ; Front squat pour le standard RSA officiel. Choix libre.
+      squat: { roles:new Set(['squat_bilateral','test_rsa_front_squat']),
+               choices:[['zercher_squat','Zercher'],['front_squat','Front squat']] }
+    };
+    for(const gk in SWAP_GROUPS){
+      const grp = SWAP_GROUPS[gk];
+      if(!grp.roles.has(slot.role)) continue;
+      const choices = grp.choices.filter(c => M_EX_BY_ID[c[0]]);
+      if(choices.length < 2) continue;
+      const swapKey = gk+'_swap@'+(session&&session.id?session.id:'')+'@'+slot.role;
+      const sel = $('select',{class:'input-mod',style:{fontSize:'10px',padding:'2px 4px',marginLeft:'6px'},
+        onchange:(e)=>{ const l=getLog(); l._swaps=l._swaps||{}; l._swaps[swapKey]=e.target.value; saveLog(l); render(); }
+      });
+      choices.forEach(c=>{
+        const opt=$('option',{value:c[0]}, c[1]);
+        if(c[0]===ex.id) opt.selected=true;
+        sel.appendChild(opt);
+      });
+      hdr.appendChild(sel);
+    }
     if(r.substituted) hdr.appendChild($('span',{class:'tag tag-purple',style:{fontSize:'9px'}},
       r.viaContraindication?'substitué · contre-indication':(r.viaPattern?'même pattern':'substitué')));
     if(tooltipNote) hdr.appendChild($('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e, tooltipNote); }},'?'));
@@ -7062,6 +7108,14 @@ function renderSessionCards(el, session){
           onchange:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value), session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); render(); }
         }));
       }
+      // Champ Reps éditable — utile pour les mouvements en apprentissage (DL, front squat) où
+      // le nombre de reps par série varie volontairement pendant l'acquisition technique.
+      chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'Reps/série:'));
+      chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'30',step:'1',
+        value: exLog.reps!=null?exLog.reps:'', placeholder:'—', style:{width:'52px'},
+        oninput:(e)=>{ moteurSetTodayField(ex.id,'reps', e.target.value===''?null:Number(e.target.value), session&&session.id); },
+        onchange:(e)=>{ moteurSetTodayField(ex.id,'reps', e.target.value===''?null:Number(e.target.value), session&&session.id); render(); }
+      }));
       chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'RPE réel:'));
       chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'10',
         value: exLog.rpe||'', placeholder:'—',
