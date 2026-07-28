@@ -2148,6 +2148,33 @@ input,select,textarea{box-sizing:border-box}
       "notes": "Puissance rotationnelle du tronc — transfert direct frappe et projection (combat). Contrôlé, jamais en balistique sur cervicales fragiles : amplitude modérée, gainage qui freine la rotation. Substitut du med ball rotationnel avec charge réglable."
     },
     {
+      "id": "russian_twist",
+      "name": "Russian twist",
+      "category": "gainage",
+      "qualities": [
+        "gainage",
+        "rotation"
+      ],
+      "equipment_required": [],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "cervicales"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "nomade",
+        "hors_maison"
+      ],
+      "substitutes": {
+        "cervicales": "pallof_press"
+      },
+      "pattern": "rotation",
+      "progression_type": "reps",
+      "protocole_cycle_eligible": false,
+      "notes": "Rotation contrôlée du tronc assis, pieds au sol ou levés. Poids ou PDC. Tempo contrôlé, amplitude modérée (cervicales) — jamais en balistique rapide. Option rotation sans matériel, disponible partout."
+    },
+    {
       "id": "landmine_row_meadows",
       "name": "Landmine row (Meadows / bûcheron)",
       "category": "haut_force",
@@ -3390,7 +3417,7 @@ input,select,textarea{box-sizing:border-box}
   "session_types": [
     {
       "id": "haut_1",
-      "nom": "Haut 1",
+      "nom": "H1",
       "frequence_cible": "1x/semaine, début de semaine (SNC frais)",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -3549,7 +3576,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "haut_2",
-      "nom": "Haut 2",
+      "nom": "H2",
       "frequence_cible": "1x/semaine, fin de semaine",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -3703,7 +3730,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "haut_3",
-      "nom": "Haut 3",
+      "nom": "H3",
       "frequence_cible": "au besoin selon énergie — jamais si HRV/sommeil dégradés",
       "semaine_classique": true,
       "eligible_bloc_qualite": false,
@@ -3823,7 +3850,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "bas_1",
-      "nom": "Bas 1",
+      "nom": "B1",
       "frequence_cible": "1x/semaine",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -3965,7 +3992,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "bas_2",
-      "nom": "Bas 2",
+      "nom": "B2",
       "frequence_cible": "1x/semaine",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
@@ -4154,51 +4181,6 @@ input,select,textarea{box-sizing:border-box}
       ]
     },
     {
-      "id": "conditioning_glycolytique",
-      "nom": "Conditioning",
-      "frequence_cible": "1x/semaine, samedi type",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "glycolytique"
-      ],
-      "objectif": "Rounds 3min/1min combat/cyclique — survivre à l'acidose, pas la base aérobie.",
-      "slots": [
-        {
-          "role": "round_1",
-          "category": "conditionnement",
-          "exercice_pref": "swings_rapides_3030",
-          "obligatoire": true
-        },
-        {
-          "role": "round_2",
-          "category": "conditionnement",
-          "exercice_pref": "sprawls_shadow",
-          "obligatoire": true
-        },
-        {
-          "role": "round_3",
-          "category": "conditionnement",
-          "exercice_pref": "kb_clean",
-          "obligatoire": true
-        },
-        {
-          "role": "round_4",
-          "category": "conditionnement",
-          "exercice_pref": "mountain_climbers",
-          "obligatoire": false,
-          "contrainte": "poignet_G — remplacer par kb_swing si sensible"
-        },
-        {
-          "role": "finisher_sled",
-          "category": "conditioning",
-          "exercice_pref": "sled_push",
-          "obligatoire": false,
-          "note": "Maison : finisher puissance-jambes à coût articulaire nul. Push lourd (force) ou drag arrière si le genou est sensible. Absent en déplacement."
-        }
-      ]
-    },
-    {
       "id": "t1_t2",
       "nom": "T1/T2 — Prépa test",
       "frequence_cible": "1×/semaine dès que la fenêtre d'annonce du test est active",
@@ -4231,15 +4213,16 @@ input,select,textarea{box-sizing:border-box}
       ]
     },
     {
-      "id": "work_capacity",
-      "nom": "Work capacity",
-      "frequence_cible": "1x/semaine — fenêtre maison seulement (matériel dédié)",
+      "id": "wc_glyco",
+      "nom": "WC glyco",
+      "frequence_cible": "1x/semaine — filière glycolytique (« ça brûle »)",
       "semaine_classique": false,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
+        "glycolytique",
         "work_capacity"
       ],
-      "objectif": "Charge instable, transport, transitions — transfert direct au test de stage. N'existe qu'en fenêtre maison.",
+      "objectif": "Filière glycolytique : intervalles ~1:1 à 1:1,5, fatigue recherchée. Maison = spécifique (sandbag/sled/pneu) ; Guyane/nomade = générique KB (ex-conditioning). Une filière par séance.",
       "slots": [
         {
           "role": "sandbag_ou_pneu",
@@ -4258,9 +4241,45 @@ input,select,textarea{box-sizing:border-box}
           "category": "bas_force",
           "exercice_pref": "farmer_carry",
           "obligatoire": false
+        },
+        {
+          "role": "glyco_generique",
+          "category": "conditionnement",
+          "exercice_pref": "swings_rapides_3030",
+          "obligatoire": false,
+          "note": "Guyane/nomade (pas de sandbag) : swings rapides 30/30, KB clean&press, complexe KB. ⚠ IT band : swing = moteur sans impact, bannir sprints/sauts/pivots."
         }
       ],
       "note": "En nomade/Paris, cette séance n'a pas d'équivalent réel — elle reste verrouillée jusqu'au retour maison plutôt que de forcer un substitut dégradé."
+    },
+    {
+      "id": "wc_seuil",
+      "nom": "WC seuil",
+      "frequence_cible": "1x/semaine — filière seuil / aérobie-puissance",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "seuil",
+        "work_capacity"
+      ],
+      "objectif": "Filière aérobie-puissance/seuil : efforts soutenus longs (12-20 min), capacité de récupération. Fait office de seuil du bloc. Moins traumatisant que le glyco.",
+      "slots": [
+        {
+          "role": "seuil_principal",
+          "category": "work_capacity_opérateur",
+          "exercice_pref": "sled_push",
+          "obligatoire": true,
+          "note": "Maison : sled continu 15-20 min (idéal IT band, zéro impact) ou portage soutenu. Guyane : circuit KB continu (10 swings→5 goblet→10 swings→5 push press, boucle 15-20 min) ou EMOM long."
+        },
+        {
+          "role": "seuil_carry",
+          "category": "bas_force",
+          "exercice_pref": "farmer_carry",
+          "obligatoire": false,
+          "note": "Circuit carry continu 15 min (farmer + suitcase + rack). Meilleure séance sûre IT band, spécifique opérateur."
+        }
+      ],
+      "note": "WC seuil fait office de seuil — ne pas doubler avec une séance seuil séparée la même semaine."
     },
     {
       "id": "z2",
@@ -5458,25 +5477,26 @@ function moteurResolveSlot(slot, usedIds){
 }
 const M_PRIMING_ROLES = new Set(['echauffement_general','cars_echauffement','mobilite_thoracique',
   'activation_epaule','priming_iso_militaire','primer_alactique','activation_fessier','activation_petersen']);
-const HINGE_SWAP_ROLES = new Set(['hinge_principal','test_hinge_dl','hinge_volume','hinge_lourd']);
-const SQUAT_SWAP_ROLES = new Set(['squat_bilateral','test_rsa_front_squat','squat_principal']);
 function moteurResolveSession(session){
   const usedIds = new Set();
   const results = [];
+  // Table unique role → groupe de swap (doit rester alignée avec SWAP_GROUPS de l'UI).
+  const M_SWAP_ROLE_GROUP = {
+    hinge_principal:'hinge', test_hinge_dl:'hinge', hinge_volume:'hinge', hinge_lourd:'hinge',
+    squat_bilateral:'squat', test_rsa_front_squat:'squat',
+    gainage_finisher:'gainage_ae', anti_extension_finisher:'gainage_ae',
+    anti_rotation:'anti_rotation', rotation_puissance:'rotation',
+    agt_rotation:'agt_rot'
+  };
   session.slots.forEach(slot=>{
-    // Swap hinge manuel : si l'utilisateur a choisi une variante (DL/RDL) pour ce créneau, on l'honore.
+    // Swap manuel : si l'utilisateur a choisi une variante pour ce créneau, on l'honore.
     let effSlot = slot;
-    if(HINGE_SWAP_ROLES.has(slot.role)){
+    const grp = M_SWAP_ROLE_GROUP[slot.role];
+    if(grp){
       const l = getLog(); const swaps = l._swaps || {};
-      const swapKey = 'hinge_swap@'+(session&&session.id?session.id:'')+'@'+slot.role;
+      const swapKey = grp+'_swap@'+(session&&session.id?session.id:'')+'@'+slot.role;
       const chosen = swaps[swapKey];
       if(chosen && M_EX_BY_ID[chosen]) effSlot = Object.assign({}, slot, {exercice_pref: chosen});
-    }
-    if(SQUAT_SWAP_ROLES.has(slot.role)){
-      const l = getLog(); const swaps = l._swaps || {};
-      const swapKeyS = 'squat_swap@'+(session&&session.id?session.id:'')+'@'+slot.role;
-      const chosenS = swaps[swapKeyS];
-      if(chosenS && M_EX_BY_ID[chosenS]) effSlot = Object.assign({}, effSlot, {exercice_pref: chosenS});
     }
     const r = Object.assign({slot: effSlot}, moteurResolveSlot(effSlot, usedIds));
     // Le priming ne « consomme » pas son exercice : la rotation externe sert en activation ET en
@@ -6115,6 +6135,20 @@ function moteurCanonFmt(fmt){
   if(m) return m[1]+'-'+m[2]+' s';
   return f.length>18 ? f.slice(0,18)+'…' : f;
 }
+// Catégorie de stats basée sur les REPS RÉELLES quand elles sont saisies.
+// Sinon on garde la catégorie prévue (moteurCanonFmt du format).
+// Exceptions gardant la catégorie prévue même avec reps réelles : top set (le ×3 est nominal, la
+// perf réelle est la charge du triple), tests RM, et tenues en secondes (pas des reps).
+function moteurCanonFmtReps(fmtVal, reps){
+  const prevu = moteurCanonFmt(fmtVal||'');
+  if(reps==null || reps==='' || isNaN(Number(reps))) return prevu;
+  // Cas spéciaux : on NE recatégorise PAS sur les reps réelles.
+  if(/top set|test rm/i.test(prevu)) return prevu;   // top set / test : catégorie nominale conservée
+  if(/\bs\b|\bs$| s$/.test(prevu)) return prevu;         // tenues en secondes : pas des reps
+  // Sinon : la catégorie DEVIENT le nombre de reps réellement effectuées.
+  return Number(reps)+' reps';
+}
+
 function getAllExerciseData(){
   // Scan all localStorage logs, collect {exName: [{date, charge, rpe}]}
   const data = {};
@@ -6206,7 +6240,9 @@ function getAllExerciseData(){
         return m1?parseFloat(m1[1]):null;
       })();
       if(chargeNum===null||isNaN(chargeNum)) return; // skip if no charge entered
-      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw: entry.charge!=null?String(entry.charge):'', rpe:Number(entry.rpe)||null, reps:(entry.reps!=null&&entry.reps!==''?Number(entry.reps):null), fmt:fmtVal, bloc:blocId, session:sessionLabel});
+      const repsReel = (entry.reps!=null&&entry.reps!=='')?Number(entry.reps):null;
+      const fmtCat = moteurCanonFmtReps(fmtVal, repsReel);
+      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw: entry.charge!=null?String(entry.charge):'', rpe:Number(entry.rpe)||null, reps:repsReel, fmt:fmtCat, fmtPrevu:fmtVal, bloc:blocId, session:sessionLabel});
     });
   }
   // Sort each by date
@@ -6616,8 +6652,11 @@ function renderStats(){
       const row=$('div',{style:{display:'flex',gap:'8px',alignItems:'center',padding:'5px 8px',background:'#0d1525',borderRadius:'6px',marginBottom:'4px',fontSize:'11px'}});
       row.appendChild($('span',{style:{color:'#475569',minWidth:'42px'}},p.date.substring(5).replace('-','/')));
       row.appendChild($('span',{style:{color:'#f0f4ff',fontWeight:'700',minWidth:'52px'}},p.chargeRaw||p.charge+' kg'));
-      const fmtTxt = (p.fmt||'—') + (p.reps!=null ? '  ·  '+p.reps+' reps réelles' : '');
-      row.appendChild($('span',{style:{color:'#8b5cf6',flex:'1'}},fmtTxt));
+      // p.fmt = catégorie basée sur les reps réelles. Si le prévu diffère, on le rappelle en gris.
+      const prevuDiff = (p.fmtPrevu && moteurCanonFmt(p.fmtPrevu)!==p.fmt) ? moteurCanonFmt(p.fmtPrevu) : null;
+      const fmtCell = $('span',{style:{color:'#8b5cf6',flex:'1'}}, p.fmt||'—');
+      if(prevuDiff) fmtCell.appendChild($('span',{style:{color:'#475569',fontSize:'9.5px'}},'  (prévu '+prevuDiff+')'));
+      row.appendChild(fmtCell);
       row.appendChild($('span',{style:{color:'#475569',fontSize:'10px'}},p.session||('B'+p.bloc)));
       if(p.rpe)row.appendChild($('span',{style:{color:p.rpe>=9?'#e63946':p.rpe>=7?'#f5a623':'#10b981',fontWeight:'700'}},'RPE '+p.rpe));
       tbl.appendChild(row);
@@ -6998,7 +7037,23 @@ function renderSessionCards(el, session){
       // Zercher ET Front squat sont légitimes : Zercher pour le gainage antérieur, les longs tibias
       // (1m84) et le transfert MMA/terrain ; Front squat pour le standard RSA officiel. Choix libre.
       squat: { roles:new Set(['squat_bilateral','test_rsa_front_squat']),
-               choices:[['zercher_squat','Zercher'],['front_squat','Front squat']] }
+               choices:[['zercher_squat','Zercher'],['front_squat','Front squat']] },
+      // Gainage anti-extension : hardstyle plank (iso, plafonne) ↔ dragon flag (dynamique, plus dur —
+      // ⚠ tension coude G : à réserver aux jours coude silencieux).
+      gainage_ae: { roles:new Set(['gainage_finisher','anti_extension_finisher']),
+               choices:[['hardstyle_plank','Hardstyle plank'],['dragon_flag','Dragon flag'],['hollow_hold','Hollow hold']] },
+      // Anti-rotation (résister à la rotation — Pallof). NE PAS y mettre de twist : le twist est de la
+      // rotation, qualité INVERSE. Créneau obligatoire, on garde l'anti-rotation.
+      // Anti-rotation pur (Pallof). Pas d'autre vraie anti-rotation au catalogue → un seul choix, donc
+      // pas de sélecteur affiché (le sélecteur n'apparaît qu'à partir de 2 options). Le créneau reste Pallof.
+      anti_rotation: { roles:new Set(['anti_rotation']),
+               choices:[['pallof_press','Pallof press']] },
+      // Rotation (produire de la rotation, contrôlé). Créneau optionnel, distinct de l'anti-rotation.
+      rotation: { roles:new Set(['rotation_puissance']),
+               choices:[['landmine_twist','Landmine twist'],['russian_twist','Russian twist'],['chop_lift_elastique','Chop/lift contrôlé']] },
+      // AGT rotation : versions explosives seulement (créneau alactique, frais).
+      agt_rot: { roles:new Set(['agt_rotation']),
+               choices:[['chop_lift_elastique','Chop/lift explosif'],['med_ball_rotationnel','Med ball rotationnel']] }
     };
     for(const gk in SWAP_GROUPS){
       const grp = SWAP_GROUPS[gk];
