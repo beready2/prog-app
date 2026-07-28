@@ -4223,34 +4223,8 @@ input,select,textarea{box-sizing:border-box}
         "work_capacity"
       ],
       "objectif": "Filière glycolytique : intervalles ~1:1 à 1:1,5, fatigue recherchée. Maison = spécifique (sandbag/sled/pneu) ; Guyane/nomade = générique KB (ex-conditioning). Une filière par séance.",
-      "slots": [
-        {
-          "role": "sandbag_ou_pneu",
-          "category": "work_capacity_opérateur",
-          "exercice_pref": "sandbag_work_capacity",
-          "obligatoire": true
-        },
-        {
-          "role": "mannequin_ou_sac",
-          "category": "work_capacity_opérateur",
-          "exercice_pref": "mannequin_jjb",
-          "obligatoire": false
-        },
-        {
-          "role": "carry_lourd",
-          "category": "bas_force",
-          "exercice_pref": "farmer_carry",
-          "obligatoire": false
-        },
-        {
-          "role": "glyco_generique",
-          "category": "conditionnement",
-          "exercice_pref": "swings_rapides_3030",
-          "obligatoire": false,
-          "note": "Guyane/nomade (pas de sandbag) : swings rapides 30/30, KB clean&press, complexe KB. ⚠ IT band : swing = moteur sans impact, bannir sprints/sauts/pivots."
-        }
-      ],
-      "note": "En nomade/Paris, cette séance n'a pas d'équivalent réel — elle reste verrouillée jusqu'au retour maison plutôt que de forcer un substitut dégradé."
+      "slots": [],
+      "note": "Choix de la modalité via le sélecteur ci-dessus (banque G1-G5). Détails/charges du jour dans la note de séance. Doctrine : manuel « Banque WC par filière »."
     },
     {
       "id": "wc_seuil",
@@ -4263,23 +4237,8 @@ input,select,textarea{box-sizing:border-box}
         "work_capacity"
       ],
       "objectif": "Filière aérobie-puissance/seuil : efforts soutenus longs (12-20 min), capacité de récupération. Fait office de seuil du bloc. Moins traumatisant que le glyco.",
-      "slots": [
-        {
-          "role": "seuil_principal",
-          "category": "work_capacity_opérateur",
-          "exercice_pref": "sled_push",
-          "obligatoire": true,
-          "note": "Maison : sled continu 15-20 min (idéal IT band, zéro impact) ou portage soutenu. Guyane : circuit KB continu (10 swings→5 goblet→10 swings→5 push press, boucle 15-20 min) ou EMOM long."
-        },
-        {
-          "role": "seuil_carry",
-          "category": "bas_force",
-          "exercice_pref": "farmer_carry",
-          "obligatoire": false,
-          "note": "Circuit carry continu 15 min (farmer + suitcase + rack). Meilleure séance sûre IT band, spécifique opérateur."
-        }
-      ],
-      "note": "WC seuil fait office de seuil — ne pas doubler avec une séance seuil séparée la même semaine."
+      "slots": [],
+      "note": "Choix de la modalité via le sélecteur ci-dessus (banque S1-S5). Détails/charges du jour dans la note de séance. Doctrine : manuel « Banque WC par filière »."
     },
     {
       "id": "z2",
@@ -6867,6 +6826,77 @@ function renderSeance(){
 function renderSessionCards(el, session){
 
   el.appendChild($('div',{class:'section-hdr'},'🏋️ '+session.nom));
+
+  // ── Module WC : sélecteur de modalité (banque G1-G5 glyco / S1-S5 seuil) ───────────────
+  if(session.id === 'wc_glyco' || session.id === 'wc_seuil'){
+    try {
+      const BANQUE = {
+        wc_glyco: {
+          titre:'Modalité glycolytique (banque G)',
+          items:[
+            ['G1','G1 sandbag','to-shoulder 40/40 ×4 + sled push A/R 40/40 ×4 + bear-hug carry 40/40 ×3'],
+            ['G2','G2 barre/DB','thrusters 40/40 ×4 + row explosif 40/40 ×4 + push press 40/40 ×4'],
+            ['G3','G3 KB/haut','swing lourd 30/30 ×4 + clean&press alterné 30/30 ×4 + snatch léger 30/30 ×4'],
+            ['G4','G4 complexe KB','6 swings + 4 cleans + 2 press sans poser, 40s, D puis G ×5-6'],
+            ['G5','G5 pneu/corde','pneu flip 30/60 ×5-6 + battle ropes 30/30 ×4 + frappe pneu masse (poignet G)'],
+            ['G6','G6 conditioning','rounds 3min/1min combat : swings rapides 30/30 + shadow/sprawl + KB clean D + tronc au sol (⚠ IT band : pas de sprint/saut/pivot)']
+          ]
+        },
+        wc_seuil: {
+          titre:'Modalité seuil (banque S)',
+          items:[
+            ['S1','S1 sled continu','push/drag continu 15-20 min A/R — idéal IT band, zéro impact'],
+            ['S2','S2 portage+mannequin','circuit 15 min : sandbag carry 40m + traînage mannequin + farmer carry'],
+            ['S3','S3 circuit KB','boucle 15-20 min : 10 swings → 5 goblet → 10 swings → 5 push press'],
+            ['S4','S4 EMOM long','18-20 min : 10 swings + 5 pull-ups/TRX row / minute, reste en récup'],
+            ['S5','S5 escaliers/gilet','15-20 min allure seuil sous gilet — ⚠ recoupe T1, ne pas doubler la semaine']
+          ]
+        }
+      };
+      const conf = BANQUE[session.id];
+      const K = 'wcmod_'+session.id;
+      let choix; try{ choix = load(K) || conf.items[0][0]; }catch(_){ choix = conf.items[0][0]; }
+      const setChoix=(v)=>{ try{ save(K,v); }catch(_){} render(); };
+      const card=$('div',{class:'card'});
+      card.appendChild($('div',{class:'card-title'},'⚙️ '+conf.titre));
+      const row=$('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'8px'}});
+      conf.items.forEach(it=>{
+        const on = (choix===it[0]);
+        row.appendChild($('button',{
+          style:{padding:'7px 11px',borderRadius:'7px',fontSize:'12px',cursor:'pointer',
+            border:'1px solid '+(on?'#8b5cf6':'#334155'),background:on?'#8b5cf6':'#0d1525',
+            color:on?'#fff':'#cbd5e1',fontWeight:on?'700':'500'},
+          onclick:()=>setChoix(it[0])}, it[1]));
+      });
+      card.appendChild(row);
+      const sel = conf.items.find(it=>it[0]===choix) || conf.items[0];
+      card.appendChild($('div',{style:{marginTop:'2px',padding:'8px',background:'#0d2b1f',borderRadius:'7px',fontSize:'12px',color:'#6ee7b7',fontWeight:'600'}},
+        '▶ '+sel[1]+' : '+sel[2]));
+      // Encadré note éditable du jour (modif de format, charges, ressenti). Persistant par jour + séance.
+      const noteKey = 'wcnote_'+session.id;
+      let noteVal=''; try{ const lg=getLog(); noteVal=(lg[noteKey]!=null?lg[noteKey]:''); }catch(_){}
+      const noteWrap=$('div',{style:{marginTop:'8px'}});
+      noteWrap.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8',marginBottom:'4px'}},'📝 Détails du jour (charges, modif de format, ressenti)'));
+      const ta=$('textarea',{class:'textarea-field',rows:'3',placeholder:'ex : G3 — swing 28kg 30/30 ×4, clean&press 20kg, épaule OK…',
+        value: noteVal});
+      ta.oninput=(e)=>{ try{ const lg=getLog(); lg[noteKey]=e.target.value; saveLog(lg); }catch(_){} };
+      noteWrap.appendChild(ta);
+      card.appendChild(noteWrap);
+      el.appendChild(card);
+      el.appendChild($('div',{class:'card',style:{fontSize:'11.5px',color:'#94a3b8'}}, session.objectif||''));
+
+      let done=false; try{ done = moteurIsSessionDoneToday(session.id); }catch(_){}
+      el.appendChild($('div',{class:'card',style:{cursor:'pointer',background:done?'#0d2b1f':undefined,borderColor:done?'#10b981':undefined},
+        onclick:()=>{ try{ moteurToggleSessionDoneToday(session.id); }catch(_){ render(); } }},
+        $('div',{class:'check-item',style:{cursor:'pointer'}},
+          $('div',{class:'check-box'+(done?' done':'')}, done?'✓':''),
+          $('div',{style:{fontWeight:700,fontSize:'13px'}},'Séance effectuée aujourd\'hui'))));
+    } catch(err){
+      el.appendChild($('div',{class:'card',style:{fontSize:'12px',color:'#f5a623'}},
+        'WC : choix de modalité indisponible — '+(err&&err.message?err.message:'erreur')));
+    }
+    return;
+  }
 
   // ── Module Z2 configurable : modalité → durée → format (→ bras si swing) ──────────────
   if(session.id === 'z2' || session.id === 'z2_long'){
