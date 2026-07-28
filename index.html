@@ -6206,7 +6206,7 @@ function getAllExerciseData(){
         return m1?parseFloat(m1[1]):null;
       })();
       if(chargeNum===null||isNaN(chargeNum)) return; // skip if no charge entered
-      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw: entry.charge!=null?String(entry.charge):'', rpe:Number(entry.rpe)||null, fmt:fmtVal, bloc:blocId, session:sessionLabel});
+      data[baseName].push({date:dateStr, charge:chargeNum, chargeRaw: entry.charge!=null?String(entry.charge):'', rpe:Number(entry.rpe)||null, reps:(entry.reps!=null&&entry.reps!==''?Number(entry.reps):null), fmt:fmtVal, bloc:blocId, session:sessionLabel});
     });
   }
   // Sort each by date
@@ -6616,7 +6616,8 @@ function renderStats(){
       const row=$('div',{style:{display:'flex',gap:'8px',alignItems:'center',padding:'5px 8px',background:'#0d1525',borderRadius:'6px',marginBottom:'4px',fontSize:'11px'}});
       row.appendChild($('span',{style:{color:'#475569',minWidth:'42px'}},p.date.substring(5).replace('-','/')));
       row.appendChild($('span',{style:{color:'#f0f4ff',fontWeight:'700',minWidth:'52px'}},p.chargeRaw||p.charge+' kg'));
-      row.appendChild($('span',{style:{color:'#8b5cf6',flex:'1'}},p.fmt||'—'));
+      const fmtTxt = (p.fmt||'—') + (p.reps!=null ? '  ·  '+p.reps+' reps réelles' : '');
+      row.appendChild($('span',{style:{color:'#8b5cf6',flex:'1'}},fmtTxt));
       row.appendChild($('span',{style:{color:'#475569',fontSize:'10px'}},p.session||('B'+p.bloc)));
       if(p.rpe)row.appendChild($('span',{style:{color:p.rpe>=9?'#e63946':p.rpe>=7?'#f5a623':'#10b981',fontWeight:'700'}},'RPE '+p.rpe));
       tbl.appendChild(row);
