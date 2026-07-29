@@ -3401,6 +3401,28 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "duree",
       "protocole_cycle_eligible": false,
       "notes": "3-5 min, allure facile — élever la température et la FC avant les CARs. Actif dès que la température ambiante baisse (fenêtre 2 et au-delà), inutile en climat chaud. ATTENTION : la corde est un exercice d'IMPACT, plus dense que la course en chocs par minute — uniquement si l'IT band est silencieux. Sinon : vélo, rameur, ou 3-5 min de montées d'escaliers."
+    },
+    {
+      "id": "deplacements_jjb_sol",
+      "name": "Déplacements JJB au sol (shrimp + butt scoot)",
+      "category": "cars_mobilite",
+      "qualities": [
+        "mobilite",
+        "motricite"
+      ],
+      "equipment_required": [
+        "tapis"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "mobilite",
+      "progression_type": "duree",
+      "protocole_cycle_eligible": false,
+      "notes": "Shrimp (hip escape) + butt scoot : déplacements de sol JJB. Échauffement maison (tatami), 5 min. Réchauffe hanches/tronc, entretient la motricité de sol. Sans impact ni pivot chargé. ⚠ surveiller genou G en flexion sur le shrimp."
     }
   ]
 }
@@ -3425,7 +3447,7 @@ input,select,textarea{box-sizing:border-box}
         "force_max",
         "alactique"
       ],
-      "objectif": "Push vertical lourd (priorité n°1 du programme) + tirage horizontal + primer alactique.",
+      "objectif": "Force max — Haut 1 (jour lourd tirage).\nTractions lestées en ouverture (séries au même poids).\nMilitaire top set.\nRow bûcheron volume.\nDéveloppé incliné DB volume.\nPuis prophylaxie épaule, nuque, twist, gainage.",
       "slots": [
         {
           "role": "echauffement_general",
@@ -3460,67 +3482,47 @@ input,select,textarea{box-sizing:border-box}
           "category": "prophylaxie_epaule",
           "exercice_pref": "rotation_ext_epaule",
           "obligatoire": false,
-          "format_fixe": "1-2×15 très léger (élastique le plus souple)",
+          "format_fixe": "1-2×15 très léger",
           "rpe_fixe": "3-4",
           "note": "Activation/priming du tendon AVANT la charge — jamais fatigant. Effet antalgique et de préparation documenté sur tendinopathie. Ne remplace pas les séries prophylactiques de fin de séance, qui restent obligatoires."
         },
         {
-          "role": "primer_alactique",
-          "category": "alactique_finisher",
-          "qualities": [
-            "alactique"
-          ],
-          "obligatoire": false,
-          "actif_si": "bloc_qualite ou energie suffisante",
-          "exercice_pref": "kb_swing_alactique_28",
-          "note": "Échauffement général alternatif à la corde : KB swing lourd 2-3×8 s — température, FC et chaîne complète. Un seul échauffement général suffit."
-        },
-        {
-          "role": "priming_iso_militaire",
+          "role": "tirage_vertical_leste",
           "category": "haut_force",
-          "exercice_pref": "iso_militaire_overcoming",
-          "obligatoire": false,
-          "format_fixe": "1×5 s à 100 %, angle 90° — juste avant la 1re série de militaire",
-          "rpe_fixe": "—",
-          "note": "Optionnel — la rampe d'approche produit déjà l'essentiel de la potentiation. Seule valeur propre : tension maximale à l'angle 90°, ton point de blocage. Reste l'étage T2 de délestage."
+          "exercice_pref": "chin_ups",
+          "obligatoire": true,
+          "note": "TRACTIONS LESTÉES en ouverture, frais. Séries au MÊME poids (approche cluster) plutôt qu'un top set + back-off : le grip et la technique tiennent mieux, plus de volume de qualité. Garder 1-2 reps en réserve chaque série. Progression : +lest quand les 4 séries passent propres.",
+          "format_fixe": "4×3-4 à charge constante, RIR 1-2"
         },
         {
           "role": "push_vertical_principal",
           "category": "haut_force",
-          "qualities": [
-            "force_max"
-          ],
           "exercice_pref": "militaire_barre",
-          "obligatoire": true
+          "obligatoire": true,
+          "note": "Militaire — top set. Après les tractions, encore frais."
         },
         {
           "role": "tirage_horizontal",
           "category": "haut_force",
-          "qualities": [
-            "force_max"
-          ],
-          "exercice_pref": "pendlay_row",
-          "obligatoire": true
+          "exercice_pref": "row_bucheron",
+          "obligatoire": true,
+          "note": "Row bûcheron VOLUME (unilatéral)."
         },
         {
           "role": "push_horizontal_secondaire",
           "category": "haut_force",
           "exercice_pref": "db_bench_incline",
           "obligatoire": true,
-          "format_fixe": "3-4×8-10, RIR 2-3 — volume",
-          "note": "Volume de poussée horizontale de la semaine. Incliné MODÉRÉ (15-30°) : on garde le bénéfice haut de pectoral sans charger le deltoïde antérieur comme un incliné à 45° — l'épaule G reçoit déjà le militaire et le DB press vertical."
+          "note": "Développé incliné DB VOLUME."
         },
         {
-          "role": "tirage_vertical",
-          "category": "haut_force",
-          "qualities": [
-            "grip_prehension"
-          ],
-          "exercice_pref": "chin_ups",
-          "obligatoire": true,
-          "note": "Jour VOLUME du tirage vertical : l'objectif est le total de reps, pas la charge. Progression : monter en reps 6→10 sur toutes les séries à RIR ≥2, PUIS ajouter une 4e série et redescendre à 6. Le lest reste à Haut 2 (4×5) — ici on n'ajoute jamais de poids. Total à suivre : 18 reps → 24 → 30 → 40. PDC ou lest très léger si 10 reps passent trop facilement. Note : placées après le Pendlay Row, ces séries sont pré-fatiguées (mêmes dorsaux, même grip) — 6 reps ici coûtent autant que 5 lestées à froid en Haut 2. Normal, ce n'est pas une régression.",
-          "format_fixe": "3-4×6-10, RIR 2-3, tempo 2-0-X-0 — progresser en REPS",
-          "rpe_fixe": "6-7"
+          "role": "activation_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": false,
+          "format_fixe": "1-2×15 très léger",
+          "rpe_fixe": "3-4",
+          "note": "Activation/priming du tendon AVANT la charge — jamais fatigant. Effet antalgique et de préparation documenté sur tendinopathie. Ne remplace pas les séries prophylactiques de fin de séance, qui restent obligatoires."
         },
         {
           "role": "prophylaxie_epaule",
@@ -3548,6 +3550,13 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_iso_volume",
           "exercice_pref": "nuque_iso_elastique",
           "obligatoire": true
+        },
+        {
+          "role": "rotation_puissance",
+          "category": "gainage",
+          "exercice_pref": "landmine_twist",
+          "obligatoire": false,
+          "note": "Twist (rotation contrôlée). Sélecteur : landmine twist / russian twist / chop-lift."
         },
         {
           "role": "gainage_finisher",
@@ -3584,7 +3593,7 @@ input,select,textarea{box-sizing:border-box}
         "force_max",
         "alactique"
       ],
-      "objectif": "Bench prioritaire + traction lestée + épaule, puis finisher alactique complet (AGT).",
+      "objectif": "Force max — Haut 2 (jour lourd poussée).\nBench top set en ouverture.\nRowing séries de 6.\nDB press vertical volume.\nPull-ups volume (garantis chaque semaine, H2 ne saute pas).\nPuis prophylaxie, nuque, twist, gainage.",
       "slots": [
         {
           "role": "echauffement_general",
@@ -3616,35 +3625,46 @@ input,select,textarea{box-sizing:border-box}
           "category": "prophylaxie_epaule",
           "exercice_pref": "rotation_ext_epaule",
           "obligatoire": false,
-          "format_fixe": "1-2×15 très léger (élastique le plus souple)",
+          "format_fixe": "1-2×15 très léger",
           "rpe_fixe": "3-4",
           "note": "Activation/priming du tendon AVANT la charge — jamais fatigant. Effet antalgique et de préparation documenté sur tendinopathie. Ne remplace pas les séries prophylactiques de fin de séance, qui restent obligatoires."
         },
         {
           "role": "push_horizontal_principal",
           "category": "haut_force",
-          "qualities": [
-            "force_max"
-          ],
           "exercice_pref": "bench_plat_barre",
-          "obligatoire": true
+          "obligatoire": true,
+          "note": "BENCH — top set en ouverture, frais."
+        },
+        {
+          "role": "tirage_horizontal",
+          "category": "haut_force",
+          "exercice_pref": "pendlay_row",
+          "obligatoire": true,
+          "note": "Rowing séries de 6 (lourd modéré)."
         },
         {
           "role": "push_vertical_secondaire",
           "category": "haut_force",
           "exercice_pref": "db_press_vertical",
           "obligatoire": true,
-          "contrainte": "epaule_G tier 3",
-          "note": "2e et dernière poussée verticale de la semaine, avec le militaire de Haut 1. Unilatéral : stabilité scapulaire et gainage anti-inclinaison. À la maison, remplacé par le landmine press pour épargner l'épaule ; au DB ou au KB en déplacement."
+          "note": "DB press vertical VOLUME."
         },
         {
-          "role": "tirage_lesté",
+          "role": "tirage_vertical_volume",
           "category": "haut_force",
-          "exercice_pref": "chin_ups",
+          "exercice_pref": "pull_ups_pronation",
           "obligatoire": true,
-          "format_fixe": "4×5 lesté (5 reps MAX — au-delà, augmenter le lest)",
-          "rpe_fixe": "7-8",
-          "note": "Jour LOURD du tirage vertical : travail en force, toujours lesté et toujours en supination (épaule G, recrutement). Si 5 reps passent à RIR ≥3 : +1-2 kg de lest, on ne monte jamais au-delà de 5 reps ici. Sangle poignet G."
+          "note": "Pull-ups VOLUME (pronation). H2 ne saute pas → garantit des pull-ups chaque semaine."
+        },
+        {
+          "role": "activation_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": false,
+          "format_fixe": "1-2×15 très léger",
+          "rpe_fixe": "3-4",
+          "note": "Activation/priming du tendon AVANT la charge — jamais fatigant. Effet antalgique et de préparation documenté sur tendinopathie. Ne remplace pas les séries prophylactiques de fin de séance, qui restent obligatoires."
         },
         {
           "role": "accessoire_shrug",
@@ -3652,13 +3672,6 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "shrug",
           "obligatoire": true,
           "note": "Trapèze supérieur — port de charge lourde (sac, gilet, camarade) et santé cervicale sous casque. 2-3×12-15."
-        },
-        {
-          "role": "tirage_unilateral",
-          "category": "haut_force",
-          "exercice_pref": "row_bucheron",
-          "obligatoire": true,
-          "note": "Bûcheron (préféré au Gorilla row, qui reste en réserve). G en premier, prise neutre — doux pour le poignet G."
         },
         {
           "role": "prophylaxie_epaule",
@@ -3678,6 +3691,13 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_iso_volume",
           "exercice_pref": "nuque_iso_elastique",
           "obligatoire": true
+        },
+        {
+          "role": "rotation_puissance",
+          "category": "gainage",
+          "exercice_pref": "landmine_twist",
+          "obligatoire": false,
+          "note": "Twist (rotation contrôlée). Sélecteur : landmine twist / russian twist / chop-lift."
         },
         {
           "role": "gainage_finisher",
@@ -3702,40 +3722,13 @@ input,select,textarea{box-sizing:border-box}
       ]
     },
     {
-      "id": "agt",
-      "nom": "AGT",
-      "frequence_cible": "1x/semaine (après Haut 2)",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "alactique",
-        "repetition_puissance"
-      ],
-      "objectif": "Finisher alactique complet — puissance pure, récupération complète entre efforts.",
-      "slots": [
-        {
-          "role": "agt_principal",
-          "category": "alactique_finisher",
-          "exercice_pref": "kb_swing_alactique_28",
-          "obligatoire": true,
-          "note": "8-12 efforts max par séance, récup complète entre chaque. Passage 28→32 kg : drop-off <5 % à 28 sur deux mesures consécutives → 32 kg sur les 3-4 premiers efforts (les plus frais), puis étendre. Mesure de drop-off de référence : sur AGT autonome, à frais."
-        },
-        {
-          "role": "agt_rotation",
-          "category": "alactique_finisher",
-          "exercice_pref": "chop_lift_elastique",
-          "obligatoire": false
-        }
-      ]
-    },
-    {
       "id": "haut_3",
       "nom": "H3",
       "frequence_cible": "au besoin selon énergie — jamais si HRV/sommeil dégradés",
       "semaine_classique": true,
       "eligible_bloc_qualite": false,
       "qualites_prioritaires": [],
-      "objectif": "ISO + volume, respiration nerveuse. Aucune barre lourde. Optionnel — sauter si épaule G sensible.",
+      "objectif": "Volume haut du corps — séance d'appoint.\nPremière séance à sauter si temps/énergie manquent.\nChin-ups volume (pull-ups sont couverts par H2).\nDéveloppé + tirages en volume.\nOptionnel si épaule G sensible.",
       "slots": [
         {
           "role": "echauffement_general",
@@ -3766,9 +3759,9 @@ input,select,textarea{box-sizing:border-box}
         {
           "role": "tirage_volume",
           "category": "haut_force",
-          "exercice_pref": "pull_ups_pronation",
+          "exercice_pref": "chin_ups",
           "obligatoire": true,
-          "note": "Principal n°2 de Haut 3 : volume en PRONATION, le geste testé. Semaine complète : chin-ups volume (H1) · chin-ups lestés force (H2) · pull-ups pronation volume (H3).",
+          "note": "Chin-ups VOLUME (supination). H3 = 1ère séance sautée → les pull-ups sont garantis par H2.",
           "format_fixe": "3-4×8-12 — volume",
           "rpe_fixe": "7",
           "repos": "90-120 s"
@@ -3858,7 +3851,7 @@ input,select,textarea{box-sizing:border-box}
         "force_unilat_antiasym",
         "force_max"
       ],
-      "objectif": "Hinge lourd (top set), unilatéral genou-dominant, ischio-jambiers, gainage anti-rotation, carry.",
+      "objectif": "Force bas — jour 1.\nSquat volume + hinge volume.\nUnilatéral genou-dominant.\nGainage anti-rotation (Pallof).\nÉchauffement JJB sol possible (maison).",
       "slots": [
         {
           "role": "echauffement_general",
@@ -3868,6 +3861,13 @@ input,select,textarea{box-sizing:border-box}
           "format_fixe": "3-5 min, allure facile",
           "rpe_fixe": "3-4",
           "note": "3-5 min, allure facile. Alternative : KB swing lourd (primer alactique). Corde = impact, seulement si IT band silencieux ; sinon vélo ou escaliers."
+        },
+        {
+          "role": "priming_jjb_sol",
+          "category": "cars_mobilite",
+          "exercice_pref": "deplacements_jjb_sol",
+          "obligatoire": false,
+          "note": "Déplacements JJB au sol (shrimp + butt scoot) — mention échauffement maison/tatami, sans charge ni compte. Réchauffe hanches/tronc + motricité de sol, sans impact. ⚠ genou G au shrimp."
         },
         {
           "role": "cars_echauffement",
@@ -3955,13 +3955,6 @@ input,select,textarea{box-sizing:border-box}
           "obligatoire": true
         },
         {
-          "role": "rotation_puissance",
-          "category": "gainage",
-          "exercice_pref": "landmine_twist",
-          "obligatoire": false,
-          "note": "Option puissance rotationnelle, aux côtés du Pallof."
-        },
-        {
           "role": "anti_extension_finisher",
           "category": "gainage",
           "exercice_pref": "dragon_flag",
@@ -3999,7 +3992,7 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "force_max"
       ],
-      "objectif": "Squat bilatéral lourd (top set), hinge volume, gainage. Optionnels : 1-2 max par séance — jamais tous.",
+      "objectif": "Force bas — jour 2.\nSquat lourd (top set) + hinge lourd.\nGainage anti-rotation (Pallof).\nÉchauffement JJB sol possible (maison).",
       "slots": [
         {
           "role": "echauffement_general",
@@ -4009,6 +4002,13 @@ input,select,textarea{box-sizing:border-box}
           "format_fixe": "3-5 min, allure facile",
           "rpe_fixe": "3-4",
           "note": "3-5 min, allure facile. Alternative : KB swing lourd (primer alactique). Corde = impact, seulement si IT band silencieux ; sinon vélo ou escaliers."
+        },
+        {
+          "role": "priming_jjb_sol",
+          "category": "cars_mobilite",
+          "exercice_pref": "deplacements_jjb_sol",
+          "obligatoire": false,
+          "note": "Déplacements JJB au sol (shrimp + butt scoot) — mention échauffement maison/tatami, sans charge ni compte. Réchauffe hanches/tronc + motricité de sol, sans impact. ⚠ genou G au shrimp."
         },
         {
           "role": "cars_echauffement",
@@ -4065,13 +4065,6 @@ input,select,textarea{box-sizing:border-box}
           "note": "Prophylaxie patte d'oie/adducteurs — dans les DEUX séances Bas, ne se coupe pas. Sans banc : clamshell renforcé."
         },
         {
-          "role": "rotation_puissance",
-          "category": "gainage",
-          "exercice_pref": "landmine_twist",
-          "obligatoire": false,
-          "note": "Puissance rotationnelle du tronc (transfert frappe/projection). Contrôlé, amplitude modérée (cervicales). Option, aux côtés du Pallof."
-        },
-        {
           "role": "anti_rotation",
           "category": "gainage",
           "exercice_pref": "pallof_press",
@@ -4111,6 +4104,176 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "nuque_iso_elastique",
           "obligatoire": true,
           "note": "Optionnelle en Bas : sans lien avec le travail du jour. Les trois séances Haut portent la dose hebdomadaire."
+        }
+      ]
+    },
+    {
+      "id": "fb_1",
+      "nom": "FB1",
+      "frequence_cible": "2x/semaine en bloc Force (jour lourd)",
+      "semaine_classique": false,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "force_max"
+      ],
+      "objectif": "Full-body force — jour 1.\nBench lourd + tractions lestées.\nHinge volume + squat volume.\nOndulation lourd/volume croisée avec FB2.\nÉchauffement JJB sol possible (maison).",
+      "slots": [
+        {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "format_fixe": "3-5 min, allure facile",
+          "rpe_fixe": "3-4",
+          "note": "3-5 min allure facile (corde si IT band silencieux, sinon vélo/escaliers/KB swing)."
+        },
+        {
+          "role": "priming_jjb_sol",
+          "category": "cars_mobilite",
+          "exercice_pref": "deplacements_jjb_sol",
+          "obligatoire": false,
+          "note": "Déplacements JJB au sol (shrimp + butt scoot) — mention échauffement maison/tatami, sans charge ni compte. Réchauffe hanches/tronc + motricité de sol, sans impact. ⚠ genou G au shrimp."
+        },
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "exercice_pref": "cars_epaule",
+          "obligatoire": false,
+          "note": "CARs épaule + hanche, activation clamshell/Petersen G first."
+        },
+        {
+          "role": "push_horizontal_lourd",
+          "category": "haut_force",
+          "exercice_pref": "bench_plat_barre",
+          "obligatoire": true,
+          "note": "Bench LOURD — top set force. Le presse-pièce du haut."
+        },
+        {
+          "role": "tirage_vertical_leste",
+          "category": "haut_force",
+          "exercice_pref": "chin_ups",
+          "obligatoire": true,
+          "note": "Tractions LESTÉES — top set. Ceinture de lest."
+        },
+        {
+          "role": "hinge_volume",
+          "category": "bas_force",
+          "exercice_pref": "rdl",
+          "obligatoire": true,
+          "note": "Hinge VOLUME (RDL ou DL selon apprentissage — sélecteur). Charge modérée, technique."
+        },
+        {
+          "role": "squat_bilateral",
+          "category": "bas_force",
+          "exercice_pref": "zercher_squat",
+          "obligatoire": true,
+          "note": "Squat VOLUME (Zercher ou Front — sélecteur). Amplitude confort si genou parle."
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": true,
+          "note": "Rotation externe — ne se coupe jamais."
+        },
+        {
+          "role": "anti_rotation",
+          "category": "gainage",
+          "exercice_pref": "pallof_press",
+          "obligatoire": true,
+          "note": "Anti-rotation (Pallof). Alterner avec un twist (rotation) une séance sur deux — voir sélecteur rotation."
+        },
+        {
+          "role": "cou_optionnel",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false,
+          "note": "Cou iso — cervicales."
+        }
+      ]
+    },
+    {
+      "id": "fb_2",
+      "nom": "FB2",
+      "frequence_cible": "2x/semaine en bloc Force (jour lourd)",
+      "semaine_classique": false,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "force_max"
+      ],
+      "objectif": "Full-body force — jour 2.\nTop sets lourds d'abord : hinge lourd + squat lourd.\nPuis volume : bench incliné + tractions.\nOndulation inverse de FB1.\nÉchauffement JJB sol possible (maison).",
+      "slots": [
+        {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "format_fixe": "3-5 min, allure facile",
+          "rpe_fixe": "3-4",
+          "note": "3-5 min allure facile (corde si IT band silencieux, sinon vélo/escaliers/KB swing)."
+        },
+        {
+          "role": "priming_jjb_sol",
+          "category": "cars_mobilite",
+          "exercice_pref": "deplacements_jjb_sol",
+          "obligatoire": false,
+          "note": "Déplacements JJB au sol (shrimp + butt scoot) — mention échauffement maison/tatami, sans charge ni compte. Réchauffe hanches/tronc + motricité de sol, sans impact. ⚠ genou G au shrimp."
+        },
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "exercice_pref": "cars_epaule",
+          "obligatoire": false,
+          "note": "CARs épaule + hanche, activation clamshell/Petersen G first."
+        },
+        {
+          "role": "hinge_lourd",
+          "category": "bas_force",
+          "exercice_pref": "trap_bar_deadlift",
+          "obligatoire": true,
+          "note": "Hinge LOURD — top set (trap bar / DL / RDL selon sélecteur)."
+        },
+        {
+          "role": "squat_bilateral",
+          "category": "bas_force",
+          "exercice_pref": "zercher_squat",
+          "obligatoire": true,
+          "note": "Squat LOURD — top set (Zercher ou Front — sélecteur). Amplitude confort si genou parle."
+        },
+        {
+          "role": "push_incline_volume",
+          "category": "haut_force",
+          "exercice_pref": "db_bench_incline",
+          "obligatoire": true,
+          "note": "Bench incliné VOLUME (DB). Séries plus longues."
+        },
+        {
+          "role": "tirage_vertical_volume",
+          "category": "haut_force",
+          "exercice_pref": "chin_ups",
+          "obligatoire": true,
+          "note": "Tractions VOLUME (au poids ou léger lest). Plus de reps."
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "face_pull",
+          "obligatoire": true,
+          "note": "Face pull — prophylaxie épaule."
+        },
+        {
+          "role": "anti_extension_finisher",
+          "category": "gainage",
+          "exercice_pref": "dragon_flag",
+          "obligatoire": true,
+          "note": "Dragon flag (anti-extension, plus dur que la planche — ⚠ coude G : jours coude silencieux)."
+        },
+        {
+          "role": "cou_optionnel",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false,
+          "note": "Cou iso — cervicales."
         }
       ]
     },
@@ -4181,66 +4344,6 @@ input,select,textarea{box-sizing:border-box}
       ]
     },
     {
-      "id": "t1_t2",
-      "nom": "T1/T2 — Prépa test",
-      "frequence_cible": "1×/semaine dès que la fenêtre d'annonce du test est active",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "work_capacity",
-        "aerobie_seuil"
-      ],
-      "objectif": "Simulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
-      "slots": [
-        {
-          "role": "t1_denivele",
-          "category": "aerobie",
-          "exercice_pref": "t1_escaliers",
-          "obligatoire": true,
-          "format_fixe": "10-15 min de montées (escaliers / côte), allure soutenue",
-          "rpe_fixe": "7-8",
-          "note": "T1 — le dénivelé est le piège n°1 du test. Sac léger optionnel."
-        },
-        {
-          "role": "t2_enchaine",
-          "category": "work_capacity",
-          "exercice_pref": "t2_enchaine",
-          "obligatoire": true,
-          "format_fixe": "Enchaîné SANS repos : 20 pompes + 50 s gainage + 4 tractions strictes",
-          "rpe_fixe": "—",
-          "note": "Tractions propres en étant essoufflé = le critère. Barre requise (parc en déplacement) ; à défaut TRX row lesté strict, proxy dégradé."
-        }
-      ]
-    },
-    {
-      "id": "wc_glyco",
-      "nom": "WC glyco",
-      "frequence_cible": "1x/semaine — filière glycolytique (« ça brûle »)",
-      "semaine_classique": false,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "glycolytique",
-        "work_capacity"
-      ],
-      "objectif": "Filière glycolytique : intervalles ~1:1 à 1:1,5, fatigue recherchée. Maison = spécifique (sandbag/sled/pneu) ; Guyane/nomade = générique KB (ex-conditioning). Une filière par séance.",
-      "slots": [],
-      "note": "Choix de la modalité via le sélecteur ci-dessus (banque G1-G5). Détails/charges du jour dans la note de séance. Doctrine : manuel « Banque WC par filière »."
-    },
-    {
-      "id": "wc_seuil",
-      "nom": "WC seuil",
-      "frequence_cible": "1x/semaine — filière seuil / aérobie-puissance",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "seuil",
-        "work_capacity"
-      ],
-      "objectif": "Filière aérobie-puissance/seuil : efforts soutenus longs (12-20 min), capacité de récupération. Fait office de seuil du bloc. Moins traumatisant que le glyco.",
-      "slots": [],
-      "note": "Choix de la modalité via le sélecteur ci-dessus (banque S1-S5). Détails/charges du jour dans la note de séance. Doctrine : manuel « Banque WC par filière »."
-    },
-    {
       "id": "z2",
       "nom": "Z2",
       "frequence_cible": "2-4x/semaine, quotidien idéalement en base",
@@ -4290,6 +4393,93 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "velo_z2_seuil_vo2max",
           "obligatoire": true,
           "note": "Rando lestée, natation crawl (si piscine, prudence épaule G), ou marche lestée inclinée en substitut selon fenêtre."
+        }
+      ]
+    },
+    {
+      "id": "wc_glyco",
+      "nom": "WC glyco",
+      "frequence_cible": "1x/semaine — filière glycolytique (« ça brûle »)",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "glycolytique",
+        "work_capacity"
+      ],
+      "objectif": "Work capacity — filière glycolytique (ça brûle).\nIntervalles ~1:1, la fatigue est recherchée.\nChoisir la modalité G1 à G7 ci-dessus.\nMaison = spécifique (sandbag/sled) ; nomade = KB.\nUne seule filière par séance.",
+      "slots": [],
+      "note": "Choix de la modalité via le sélecteur ci-dessus (banque G1-G5). Détails/charges du jour dans la note de séance. Doctrine : manuel « Banque WC par filière »."
+    },
+    {
+      "id": "wc_seuil",
+      "nom": "WC seuil",
+      "frequence_cible": "1x/semaine — filière seuil / aérobie-puissance",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "seuil",
+        "work_capacity"
+      ],
+      "objectif": "Work capacity — filière seuil / aérobie-puissance.\nEfforts soutenus longs (12-20 min).\nChoisir la modalité S1 à S6 ci-dessus.\nFait office de seuil du bloc.\nMoins traumatisant que le glyco.",
+      "slots": [],
+      "note": "Choix de la modalité via le sélecteur ci-dessus (banque S1-S5). Détails/charges du jour dans la note de séance. Doctrine : manuel « Banque WC par filière »."
+    },
+    {
+      "id": "t1_t2",
+      "nom": "T1/T2",
+      "frequence_cible": "1×/semaine dès que la fenêtre d'annonce du test est active",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "work_capacity",
+        "aerobie_seuil"
+      ],
+      "objectif": "Simulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
+      "slots": [
+        {
+          "role": "t1_denivele",
+          "category": "aerobie",
+          "exercice_pref": "t1_escaliers",
+          "obligatoire": true,
+          "format_fixe": "10-15 min de montées, allure soutenue",
+          "rpe_fixe": "7-8",
+          "note": "T1 — le dénivelé est le piège n°1 du test. Sac léger optionnel."
+        },
+        {
+          "role": "t2_enchaine",
+          "category": "work_capacity",
+          "exercice_pref": "t2_enchaine",
+          "obligatoire": true,
+          "format_fixe": "Enchaîné SANS repos : 20 pompes + 50 s gainage + 4 tractions strictes",
+          "rpe_fixe": "—",
+          "note": "Tractions propres en étant essoufflé = le critère. Barre requise (parc en déplacement) ; à défaut TRX row lesté strict, proxy dégradé."
+        }
+      ]
+    },
+    {
+      "id": "agt",
+      "nom": "AGT",
+      "frequence_cible": "1x/semaine (après Haut 2)",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "alactique",
+        "repetition_puissance"
+      ],
+      "objectif": "Finisher alactique complet — puissance pure, récupération complète entre efforts.",
+      "slots": [
+        {
+          "role": "agt_principal",
+          "category": "alactique_finisher",
+          "exercice_pref": "kb_swing_alactique_28",
+          "obligatoire": true,
+          "note": "8-12 efforts max par séance, récup complète entre chaque. Passage 28→32 kg : drop-off <5 % à 28 sur deux mesures consécutives → 32 kg sur les 3-4 premiers efforts (les plus frais), puis étendre. Mesure de drop-off de référence : sur AGT autonome, à frais."
+        },
+        {
+          "role": "agt_rotation",
+          "category": "alactique_finisher",
+          "exercice_pref": "chop_lift_elastique",
+          "obligatoire": false
         }
       ]
     }
@@ -4878,7 +5068,7 @@ const SEANCES = {
 // Semaine réelle (Bas espacés de 72 h, Haut lourds espacés aussi) : Lun H1, Mar B1, Mer Z2 (+H3 seulement
 // si énergie déborde, version allégée — jamais de volume push/tirage la veille d'un Haut lourd),
 // Jeu H2 (+AGT), Ven B2, Sam Conditioning.
-const SEANCE_PAR_JOUR = {1:'Haut 1',2:'Bas 1',3:'Z2',4:'Haut 2',5:'Bas 2',6:'Conditioning',0:'Z2'};
+const SEANCE_PAR_JOUR = {1:'H1',2:'B1',3:'Z2',4:'H2',5:'B2',6:'WC glyco',0:'Z2'};
 
 // ── GTG DATA ──────────────────────────────────────────────────────────────
 
@@ -4910,6 +5100,7 @@ const ROUTINE_MATIN = [
   {id:'tib_raise',cat:'Renfo optionnel',icon:'🦵',name:'Tib raises (jambier ant\u00e9rieur)',detail:'2-3×15-20',priority:'',note:'\u00c9quilibre le mollet (souvent l\'avant est faible). Talon au sol, lever la POINTE du pied contre r\u00e9sistance (adoss\u00e9 au mur, ou \u00e9lastique). Pr\u00e9vient p\u00e9riostites + absorbe \u00e0 la marche. Utile longues marches.'},
   {id:'ankle_evinv',cat:'Renfo optionnel',icon:'🦶',name:'\u00c9version/inversion cheville',detail:'2-3×15-20/sens',priority:'',note:'2 options compl\u00e9mentaires. (1) \u00c9LASTIQUE assis/allong\u00e9, jambe tendue, pied dans l\'\u00e9lastique fix\u00e9 : le pied se d\u00e9place activement contre la r\u00e9sistance \u2014 \u00e9version (pied vers l\'EXT\u00c9RIEUR, p\u00e9roniers, anti-entorse) puis inversion (vers l\'INT\u00c9RIEUR, tibial post\u00e9rieur, soutien vo\u00fbte). (2) DEBOUT, transfert de poids contr\u00f4l\u00e9 sur le bord EXTERNE puis INTERNE du pied (pas rouler brutalement) \u2014 renfo + proprioception en charge, utile pieds plats (apprend \u00e0 ne pas s\'effondrer).'},
   {id:'poignet_g',cat:'Renfo optionnel',icon:'🪤',name:'Renfo poignet G',detail:'3×12 · flex/ext excentrique · @0,5–2 kg',priority:'',note:'Tendinite + kyste G. Doux. Deux directions : flexion et extension.'},
+  {id:'wrist_roller',cat:'Renfo optionnel',icon:'🎽',name:'Wrist roller (rouleau de poignet)',detail:'2-3 montées/descentes · charge légère',priority:'',note:'Validé kiné. Barre courte + corde + charge suspendue : enrouler/dérouler par rotation des poignets. Renforce poignet G + avant-bras en endurance. Charge légère progressive, mouvement lent contrôlé. ARRÊT si douleur poignet — jamais forcer en bout d\'amplitude.'},
   {id:'lat_walk',cat:'Renfo optionnel',icon:'🩺',name:'Lateral band walk',detail:'3×12 pas/sens · élastique chevilles',priority:'',note:'Fessier moyen chaîne fermée. Genoux légèrement fléchis.'},
   {id:'hip_9090',cat:'Renfo optionnel',icon:'🦴',name:'Hip 90/90 PAILs/RAILs',detail:'2×90s/côté · fin de séance uniquement',priority:'',note:'Jamais à froid. Après Bas 1 ou Haut 2. Mobilité active hanche.'},
   {id:'shoulder_pailrail',cat:'Renfo optionnel',icon:'🦴',name:'Épaule G PAILs/RAILs',detail:'2×90s/côté · fin de séance',priority:'',note:'Jamais à froid (après une séance haut). Gagne amplitude ACTIVE + solidité articulaire de l\'épaule G fragile. Position d\'étirement passif 90s, puis contraction PAILs (pousser dans l\'étirement) 10-20s, puis RAILs (tirer hors de l\'étirement, contracter l\'agoniste) 10-20s. Cible flexion + rotation externe (les amplitudes limitées de l\'épaule G).'},
@@ -6051,7 +6242,15 @@ function render(){
 
 function showTooltip(e, text){
   closeTooltip();
-  const tt = $('div',{class:'tooltip'}, text, $('span',{class:'tooltip-close',onclick:closeTooltip},'✕ fermer'));
+  // Support multi-lignes : découpe sur les retours à la ligne, une idée par ligne.
+  const lines = String(text).split(/\n+/).filter(x=>x.trim());
+  const body = $('div',{});
+  if(lines.length>1){
+    lines.forEach(ln=>body.appendChild($('div',{style:{padding:'2px 0'}}, ln.trim())));
+  } else {
+    body.appendChild($('span',{}, text));
+  }
+  const tt = $('div',{class:'tooltip'}, body, $('span',{class:'tooltip-close',onclick:closeTooltip},'✕ fermer'));
   const rect = e.target.getBoundingClientRect();
   document.body.appendChild(tt);
   const ttH = tt.offsetHeight;
@@ -6974,11 +7173,8 @@ function renderSessionCards(el, session){
   const cyc = moteurCycleInfo();
   if(cyc){
     el.appendChild($('div',{class:'card',style:{paddingTop:'10px',paddingBottom:'10px'}},
-      $('span',{class:'tag tag-purple'},'🔁 '+cyc.typeLabel),
-      $('span',{style:{marginLeft:'8px',fontSize:'11px',color:'#64748b'}},session.objectif||'')
+      $('span',{class:'tag tag-purple'},'🔁 '+cyc.typeLabel)
     ));
-  } else {
-    el.appendChild($('div',{class:'card',style:{paddingTop:'10px',paddingBottom:'10px',fontSize:'11.5px',color:'#64748b'}},session.objectif||''));
   }
 
   const res = moteurResolveSession(session);
@@ -7012,7 +7208,8 @@ function renderSessionCards(el, session){
   // hors bloc 1, d'où leur disparition de l'écran. Ces éléments préparent, ils ne se loguent pas :
   // les garder hors des cartes d'exercice laisse la place au travail réel.
   const MINIMAL_ROLES = new Set(['cars_echauffement','mobilite_thoracique','activation_epaule',
-    'priming_iso_militaire','primer_alactique','activation_fessier','activation_petersen','echauffement_general']);
+    'priming_iso_militaire','primer_alactique','activation_fessier','activation_petersen','echauffement_general',
+    'priming_jjb_sol']);
   const primingCard = $('div',{class:'card',style:{paddingTop:'9px',paddingBottom:'9px'}});
   primingCard.appendChild($('div',{style:{color:'#f5a623',fontWeight:700,fontSize:'10px',
     textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}},'⚡ Priming — ne pas fatiguer'));
@@ -8069,7 +8266,7 @@ function renderBilan(){
     const yr = viewDate.getFullYear(); const mo = viewDate.getMonth();
     const moNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
     // Couleurs par séance
-    const seanceColors = {'Haut 1':'#1E3A5F','Bas 1':'#06b6d4','AGT':'#10b981','Haut 2':'#7C3AED','Bas 2':'#e63946','Conditioning':'#f5a623','Z2 Swings':'#3b82f6','Haut 3':'#a78bfa',
+    const seanceColors = {'Haut 1':'#1E3A5F','Bas 1':'#06b6d4','AGT':'#10b981','Haut 2':'#7C3AED','Bas 2':'#e63946','Z2 Swings':'#3b82f6','Haut 3':'#a78bfa',
       'Seuil':'#f97316','VO2max':'#eab308','VMA':'#facc15','Work capacity':'#8b5cf6','Z2':'#0ea5e9','Z2 long':'#0284c7'};
     // Construire map date -> séances faites (via clés ex_ pour Guyane, log.moteur_sessions pour le Moteur)
     const dayMap = {};
@@ -8114,8 +8311,8 @@ function renderBilan(){
       const cell = $('div',{style:{aspectRatio:'1',border:isToday?'2px solid #f5a623':'1px solid #1e2d42',borderRadius:'6px',padding:'2px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-start',cursor:dayData?'pointer':'default',boxSizing:'border-box',minWidth:'0',overflow:'hidden'}});
       cell.appendChild($('div',{style:{fontSize:'10px',color:dayData?'#e0e1dd':'#475569',fontWeight:isToday?'700':'400'}},String(d)));
       if(dayData){
-        const abbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Conditioning':'Cond','Z2 Swings':'Z2','Haut 3':'H3',
-          'Seuil':'Seuil','VO2max':'VO2','VMA':'VMA','Work capacity':'WC','Z2':'Z2','Z2 long':'Z2L'};
+        const abbr={'H1':'H1','B1':'B1','AGT':'AGT','H2':'H2','B2':'B2','FB1':'FB1','FB2':'FB2','Z2 Swings':'Z2','H3':'H3',
+          'Seuil':'Seuil','VO2max':'VO2','VMA':'VMA','WC glyco':'WCg','WC seuil':'WCs','T1/T2':'T1','Z2':'Z2','Z2 long':'Z2L'};
         const labels=$('div',{style:{display:'flex',flexDirection:'column',gap:'1px',width:'100%',marginTop:'1px',alignItems:'stretch'}});
         dayData.sess.forEach(s=>labels.appendChild($('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:seanceColors[s]||'#64748b',borderRadius:'3px',padding:'1px 2px',textAlign:'center',lineHeight:'1.2',overflow:'hidden',whiteSpace:'nowrap'}},abbr[s]||s)));
         if(dayData.routine && dayData.sess.length===0) labels.appendChild($('div',{style:{fontSize:'8px',color:'#94a3b8',textAlign:'center'}},'routine'));
@@ -8127,7 +8324,7 @@ function renderBilan(){
     el.appendChild(grid);
     // Légende
     const leg=$('div',{style:{marginTop:'14px',display:'flex',flexWrap:'wrap',gap:'8px'}});
-    const legAbbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Conditioning':'Cond','Z2 Swings':'Z2','Haut 3':'H3'};
+    const legAbbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Z2 Swings':'Z2','Haut 3':'H3'};
     Object.entries(seanceColors).forEach(([nm,col])=>{
       leg.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'4px',fontSize:'11px',color:'#94a3b8'}},
         $('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:col,borderRadius:'3px',padding:'1px 4px'}},legAbbr[nm]||nm), nm));
