@@ -1002,7 +1002,8 @@ input,select,textarea{box-sizing:border-box}
       "substitutes": {},
       "pattern": "none",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "format_defaut": "30-15-15-15, repos 30s, occlusion"
     },
     {
       "id": "extension_triceps_bfr",
@@ -1022,7 +1023,8 @@ input,select,textarea{box-sizing:border-box}
       "substitutes": {},
       "pattern": "none",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "format_defaut": "30-15-15-15, repos 30s, occlusion"
     },
     {
       "id": "bulgarian_split_squat",
@@ -1117,7 +1119,7 @@ input,select,textarea{box-sizing:border-box}
       "severity_overrides": {
         "genou_G_itband": 2
       },
-      "notes": "Hinge lourd de Bas 1 partout où il y a une barre droite (hors maison, où la trap bar prend le relais). Entretient le geste « barre au sol » du test MTI Hinge Lift toute l'année. Départ genoux fléchis, dos incliné — tes longs segments le rendent moins confortable que la trap bar : si le dos ou le genou parlent, basculer ce créneau en RDL lourd (la disponibilité prime). Sangle poignet G. En kit personnel / sans barre : RDL KB."
+      "notes": "Retiré des priorités (§0, 24/07) — moins fidèle au Hinge Lift MTI (hanches hautes) que le RDL, défavorable à la morphologie longs segments. Conservé au catalogue en repli seulement si ni RDL ni trap bar ne sont réalisables. Le geste de test/référence est désormais le RDL, pas le DL."
     },
     {
       "id": "rdl",
@@ -1530,7 +1532,8 @@ input,select,textarea{box-sizing:border-box}
       },
       "pattern": "hinge",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "format_defaut": "30-15-15-15, repos 30s, occlusion"
     },
     {
       "id": "good_morning",
@@ -2603,7 +2606,8 @@ input,select,textarea{box-sizing:border-box}
       "substitutes": {},
       "pattern": "squat",
       "progression_type": "halteres_kb",
-      "protocole_cycle_eligible": false
+      "protocole_cycle_eligible": false,
+      "format_defaut": "30-15-15-15, repos 30s, occlusion"
     },
     {
       "id": "gtg_militaire",
@@ -3145,7 +3149,8 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "halteres_kb",
       "protocole_cycle_eligible": false,
       "severity_overrides": {},
-      "notes": "Isolation quadriceps, charge ajustable finement — utile en renforcement progressif du genou G tant que la douleur n'est pas forte."
+      "notes": "Isolation quadriceps, charge ajustable finement — utile en renforcement progressif du genou G tant que la douleur n'est pas forte.",
+      "format_defaut": "30-15-15-15, repos 30s, occlusion"
     },
     {
       "id": "leg_curl_machine",
@@ -3167,7 +3172,8 @@ input,select,textarea{box-sizing:border-box}
       "pattern": "hinge",
       "progression_type": "halteres_kb",
       "protocole_cycle_eligible": false,
-      "notes": "Isolation ischio-jambiers, alternative guidée au Nordic Curl — moins exigeant en contrôle excentrique."
+      "notes": "Isolation ischio-jambiers, alternative guidée au Nordic Curl — moins exigeant en contrôle excentrique.",
+      "format_defaut": "30-15-15-15, repos 30s, occlusion"
     },
     {
       "id": "poulie_haute",
@@ -3435,6 +3441,54 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "duree",
       "protocole_cycle_eligible": false,
       "notes": "Shrimp (hip escape) + butt scoot : déplacements de sol JJB. Échauffement maison (tatami), 5 min. Réchauffe hanches/tronc, entretient la motricité de sol. Sans impact ni pivot chargé. ⚠ surveiller genou G en flexion sur le shrimp."
+    },
+    {
+      "id": "pompe_explosive",
+      "name": "Pompe explosive / clap push-up",
+      "category": "haut_force",
+      "qualities": [
+        "puissance",
+        "explosivite"
+      ],
+      "equipment_required": [],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "windows_ok": [
+        "maison",
+        "paris",
+        "nomade",
+        "hors_maison"
+      ],
+      "substitutes": {},
+      "pattern": "push_horizontal",
+      "progression_type": "reps",
+      "protocole_cycle_eligible": false,
+      "notes": "Pompe explosive (mains décollent / clap). Terme explosif du PAP bench (poussée horizontale). Vitesse max, récup complète."
+    },
+    {
+      "id": "med_ball_horizontal",
+      "name": "Lancer horizontal med ball (chest pass / single-arm)",
+      "category": "haut_force",
+      "qualities": [
+        "puissance",
+        "explosivite"
+      ],
+      "equipment_required": [
+        "med_ball"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "windows_ok": [
+        "maison",
+        "paris",
+        "nomade",
+        "hors_maison"
+      ],
+      "substitutes": {},
+      "pattern": "push_horizontal",
+      "progression_type": "reps",
+      "protocole_cycle_eligible": false,
+      "notes": "Lancer horizontal : chest pass (2 bras) ou single-arm put (« punch balle », 1 bras, transfert MMA). Terme explosif du PAP bench. ⚠ épaule G : chest pass d'abord, single-arm en progression."
     }
   ]
 }
@@ -3704,126 +3758,6 @@ input,select,textarea{box-sizing:border-box}
       ]
     },
     {
-      "id": "haut_3",
-      "nom": "H3",
-      "frequence_cible": "au besoin selon énergie — jamais si HRV/sommeil dégradés",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": false,
-      "qualites_prioritaires": [],
-      "objectif": "Volume haut du corps — séance d'appoint.\nPremière séance à sauter si temps/énergie manquent.\nChin-ups volume (pull-ups sont couverts par H2).\nDéveloppé + tirages en volume.\nOptionnel si épaule G sensible.",
-      "slots": [
-        {
-          "role": "echauffement_general",
-          "category": "cars_mobilite",
-          "exercice_pref": "echauffement_corde",
-          "obligatoire": false,
-          "format_fixe": "3-5 min, allure facile",
-          "rpe_fixe": "3-4",
-          "note": "3-5 min, allure facile. Alternative : KB swing lourd (primer alactique). Corde = impact, seulement si IT band silencieux ; sinon vélo ou escaliers."
-        },
-        {
-          "role": "cars_echauffement",
-          "category": "cars_mobilite",
-          "obligatoire": false,
-          "exercice_pref": "cars_epaule",
-          "note": ""
-        },
-        {
-          "role": "iso_volume_push",
-          "category": "haut_iso_volume",
-          "exercice_pref": "bench_plat_barre",
-          "obligatoire": true,
-          "note": "Principal n°1 de Haut 3 : volume de développé couché à plat, barre, charge modérée (~60-70 % du lourd de Haut 2). Complète le DB incliné de Haut 1 (volume) et la barre lourde de Haut 2.",
-          "format_fixe": "3-4×8-12, RIR 2-3 — volume",
-          "rpe_fixe": "7",
-          "repos": "90-120 s"
-        },
-        {
-          "role": "tirage_volume",
-          "category": "haut_force",
-          "exercice_pref": "chin_ups",
-          "obligatoire": true,
-          "note": "Chin-ups VOLUME (supination). H3 = 1ère séance sautée → les pull-ups sont garantis par H2.",
-          "format_fixe": "3-4×8-12 — volume",
-          "rpe_fixe": "7",
-          "repos": "90-120 s"
-        },
-        {
-          "role": "prophylaxie_epaule",
-          "category": "prophylaxie_epaule",
-          "exercice_pref": "face_pull",
-          "obligatoire": true,
-          "format_fixe": "3×15, léger",
-          "note": "3e exposition hebdomadaire, volontairement légère : la prophylaxie de coiffe se nourrit de fréquence, pas de charge."
-        },
-        {
-          "role": "prophylaxie_rotation_ext",
-          "category": "prophylaxie_epaule",
-          "exercice_pref": "rotation_ext_epaule",
-          "obligatoire": true,
-          "format_fixe": "2×15, très léger"
-        },
-        {
-          "role": "accessoire_shrug",
-          "category": "haut_force",
-          "exercice_pref": "shrug",
-          "obligatoire": true,
-          "note": "Trapèze supérieur — port de charge lourde (sac, gilet, camarade) et santé cervicale sous casque. 2-3×12-15.",
-          "format_fixe": "3×12-15 — volume"
-        },
-        {
-          "role": "accessoire_biceps",
-          "category": "haut_force",
-          "exercice_pref": "curl_biceps_bfr",
-          "obligatoire": false,
-          "note": "Biceps — soutient les tractions. Version BFR : charge légère, épargne le coude (épicondyle). Optionnel."
-        },
-        {
-          "role": "accessoire_triceps",
-          "category": "haut_force",
-          "exercice_pref": "extension_triceps_bfr",
-          "obligatoire": false,
-          "note": "Triceps — soutient la poussée. Version BFR : charge légère, épargne le coude. Optionnel."
-        },
-        {
-          "role": "prophylaxie_nuque",
-          "category": "prophylaxie_epaule",
-          "exercice_pref": "nuque_iso_elastique",
-          "obligatoire": true,
-          "format_fixe": "4 directions, 2×10 s",
-          "note": "3e exposition hebdomadaire. La nuque se construit par la fréquence, à charge légère — rachis cervical fragile."
-        },
-        {
-          "role": "gainage_finisher",
-          "category": "gainage",
-          "exercice_pref": "hollow_hold",
-          "obligatoire": true,
-          "note": ""
-        },
-        {
-          "role": "volume_poulie_haute",
-          "category": "haut_force",
-          "exercice_pref": "poulie_haute",
-          "obligatoire": false,
-          "note": "Volume tirage vertical supplémentaire à la maison."
-        },
-        {
-          "role": "volume_poulie_basse",
-          "category": "haut_force",
-          "exercice_pref": "poulie_basse",
-          "obligatoire": false,
-          "note": "Volume tirage horizontal supplémentaire à la maison."
-        },
-        {
-          "role": "volume_butterfly",
-          "category": "haut_iso_volume",
-          "exercice_pref": "butterfly",
-          "obligatoire": false,
-          "note": "Volume poussée horizontale supplémentaire à la maison, isolation pectoraux sans charge sur l'épaule G en fin d'amplitude."
-        }
-      ]
-    },
-    {
       "id": "bas_1",
       "nom": "B1",
       "frequence_cible": "1x/semaine",
@@ -3883,22 +3817,40 @@ input,select,textarea{box-sizing:border-box}
           "rpe_fixe": "7-8"
         },
         {
-          "role": "ischio_jambiers",
+          "role": "carry",
           "category": "bas_force",
-          "exercice_pref": "trx_leg_curl",
+          "exercice_pref": "farmer_carry",
           "obligatoire": true,
-          "note": "Ischios BFR (TRX + occlusion) — le leg curl gagne beaucoup en BFR. Protège le genou. À défaut, leg curl machine BFR (substitut).",
-          "exercice_alt": [
-            "leg_curl_machine",
-            "nordic_curl_elastique"
-          ]
+          "note": "Structurel, non optionnel : transfert opérationnel maximal (grip, gainage sous charge réelle, port). Farmer lourd ou suitcase unilatéral (anti-inclinaison, asymétrie G/D). Après la back extension — le carry a besoin d'érecteurs frais, donc back extension d'abord si les deux sont faits."
         },
         {
           "role": "adducteur_prophylaxie",
           "category": "bas_force",
           "exercice_pref": "copenhagen_adductor",
           "obligatoire": true,
-          "note": "Prophylaxie patte d'oie/adducteurs — ne compte pas comme mouvement principal, ne se coupe pas."
+          "note": "Copenhagen — DESSERRER le brassard avant (pas sous occlusion). Prophylaxie adducteurs (aine, genou, MMA)."
+        },
+        {
+          "role": "ischio_jambiers",
+          "category": "bas_force",
+          "exercice_pref": "trx_leg_curl",
+          "obligatoire": true,
+          "note": "Ischios BFR (TRX). 1er de la séquence BFR jambe. Brassard serré, on enchaîne l'air squat sans desserrer.",
+          "exercice_alt": [
+            "leg_curl_machine",
+            "nordic_curl_elastique"
+          ],
+          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+        },
+        {
+          "role": "volume_quadriceps",
+          "category": "bas_force",
+          "exercice_pref": "air_squat_bfr",
+          "obligatoire": false,
+          "note": "Quads BFR. 2e sous la même occlusion (enchaîné au leg curl, sans desserrer). Total occlusion < 15 min. Option leg extension au sélecteur.",
+          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
         },
         {
           "role": "anti_rotation",
@@ -3911,20 +3863,6 @@ input,select,textarea{box-sizing:border-box}
           "category": "gainage",
           "exercice_pref": "dragon_flag",
           "obligatoire": false
-        },
-        {
-          "role": "volume_quadriceps",
-          "category": "bas_force",
-          "exercice_pref": "air_squat_bfr",
-          "obligatoire": false,
-          "note": "Quads BFR (stress métabolique, zéro charge articulaire). Option leg extension BFR au sélecteur."
-        },
-        {
-          "role": "carry",
-          "category": "bas_force",
-          "exercice_pref": "farmer_carry",
-          "obligatoire": true,
-          "note": "Structurel, non optionnel : transfert opérationnel maximal (grip, gainage sous charge réelle, port). Farmer lourd ou suitcase unilatéral (anti-inclinaison, asymétrie G/D). Après la back extension — le carry a besoin d'érecteurs frais, donc back extension d'abord si les deux sont faits."
         },
         {
           "role": "cou_optionnel",
@@ -3994,11 +3932,44 @@ input,select,textarea{box-sizing:border-box}
           "note": "Jour VOLUME du hinge — jamais de top set ici, le lourd vit en Bas 1."
         },
         {
+          "role": "hinge_unilateral",
+          "category": "bas_force",
+          "exercice_pref": "rdl_une_jambe_barre",
+          "obligatoire": false,
+          "note": "RDL 1 jambe — accessoire correctif unilatéral, pendant hanche du Bulgarian. Anti-asymétrie G/D, proprioception genou/hanche, appui unipodal. Séries légères, focus contrôle et équilibre (pas la charge)."
+        },
+        {
+          "role": "carry",
+          "category": "bas_force",
+          "exercice_pref": "suitcase_carry",
+          "obligatoire": true,
+          "note": "Structurel dans les deux Bas. En Bas 2, privilégier le suitcase (anti-inclinaison, asymétrie G/D)."
+        },
+        {
           "role": "adducteur_prophylaxie",
           "category": "bas_force",
           "exercice_pref": "copenhagen_adductor",
           "obligatoire": true,
-          "note": "Prophylaxie patte d'oie/adducteurs — dans les DEUX séances Bas, ne se coupe pas. Sans banc : clamshell renforcé."
+          "note": "Copenhagen — DESSERRER le brassard avant (pas sous occlusion). Prophylaxie adducteurs (aine, genou, MMA)."
+        },
+        {
+          "role": "ischio_jambiers",
+          "category": "bas_force",
+          "exercice_pref": "trx_leg_curl",
+          "obligatoire": false,
+          "note": "Ischios BFR (TRX). 1er de la séquence BFR jambe. Brassard serré, on enchaîne l'air squat sans desserrer.",
+          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+        },
+        {
+          "role": "volume_quadriceps",
+          "category": "bas_force",
+          "exercice_pref": "air_squat_bfr",
+          "obligatoire": false,
+          "note": "Quads BFR. 2e sous la même occlusion (enchaîné au leg curl, sans desserrer). Total occlusion < 15 min. Option leg extension au sélecteur.",
+          "exercice_alt": [],
+          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
         },
         {
           "role": "anti_rotation",
@@ -4011,35 +3982,6 @@ input,select,textarea{box-sizing:border-box}
           "category": "gainage",
           "exercice_pref": "dragon_flag",
           "obligatoire": false
-        },
-        {
-          "role": "hinge_unilateral",
-          "category": "bas_force",
-          "exercice_pref": "rdl_une_jambe_barre",
-          "obligatoire": false,
-          "note": "RDL 1 jambe — accessoire correctif unilatéral, pendant hanche du Bulgarian. Anti-asymétrie G/D, proprioception genou/hanche, appui unipodal. Séries légères, focus contrôle et équilibre (pas la charge)."
-        },
-        {
-          "role": "ischio_jambiers",
-          "category": "bas_force",
-          "exercice_pref": "trx_leg_curl",
-          "obligatoire": false,
-          "note": "Ischios BFR (TRX + occlusion) — le leg curl gagne beaucoup en BFR. Protège le genou. À défaut, leg curl machine BFR (substitut)."
-        },
-        {
-          "role": "carry",
-          "category": "bas_force",
-          "exercice_pref": "suitcase_carry",
-          "obligatoire": true,
-          "note": "Structurel dans les deux Bas. En Bas 2, privilégier le suitcase (anti-inclinaison, asymétrie G/D)."
-        },
-        {
-          "role": "volume_quadriceps",
-          "category": "bas_force",
-          "exercice_pref": "air_squat_bfr",
-          "obligatoire": false,
-          "note": "Quads BFR (stress métabolique, zéro charge articulaire). Option leg extension BFR au sélecteur.",
-          "exercice_alt": []
         },
         {
           "role": "cou_optionnel",
@@ -4092,53 +4034,58 @@ input,select,textarea{box-sizing:border-box}
           "note": "CARs hanche."
         },
         {
+          "role": "rappel_puissance",
+          "category": "puissance_priming",
+          "exercice_pref": "kb_swing_alactique_28",
+          "obligatoire": false,
+          "format_fixe": "2-3×3-5 explosif",
+          "rpe_fixe": "vitesse max · récup complète",
+          "note": "RAPPEL PUISSANCE (priming) — KB swing explosif, hinge/chaîne postérieure. Bref (2-3 séries), réveille le SN et potentialise le Zercher. Alterné avec FB2 (med ball) pour couvrir plusieurs facettes."
+        },
+        {
           "role": "squat_bilateral",
           "category": "bas_force",
           "exercice_pref": "zercher_squat",
           "obligatoire": true,
-          "note": "Zercher LOURD en ouverture — genou/valgus = priorité sécurité, exécuté totalement frais. Squat de test au sélecteur (Front)."
+          "note": "Zercher TOP SET ×3 — lourd, en ouverture (genou frais = priorité sécurité).",
+          "format_fixe": "Top set ×3",
+          "rpe_fixe": "RPE 8 · RIR 1-2"
         },
         {
           "role": "tirage_vertical_leste",
           "category": "haut_force",
           "exercice_pref": "chin_ups",
           "obligatoire": true,
-          "note": "Chin-ups LESTÉES — top set. Ceinture de lest."
+          "note": "Chin-ups LESTÉES — séries au MÊME poids (cluster), pas un top set. Grip et technique tiennent mieux. Garder 1-2 reps en réserve. +lest quand les 4 séries passent propres.",
+          "format_fixe": "4×3-4 à charge constante",
+          "rpe_fixe": "RIR 1-2"
         },
         {
           "role": "push_incline_volume",
           "category": "haut_force",
           "exercice_pref": "db_bench_incline",
           "obligatoire": true,
-          "note": "DB incliné VOLUME (haltères = trajectoire libre, ménage l'épaule G en séries longues)."
+          "note": "DB incliné VOLUME (ménage l'épaule G).",
+          "format_fixe": "3-4×8-12",
+          "rpe_fixe": "RPE 7-8 · RIR 2-3"
         },
         {
           "role": "hinge_volume",
           "category": "bas_force",
           "exercice_pref": "rdl",
           "obligatoire": true,
-          "note": "Hinge VOLUME (RDL par défaut ; DL / trap bar au sélecteur)."
+          "note": "RDL VOLUME (barre au sol, hanches hautes).",
+          "format_fixe": "3-4×8-12",
+          "rpe_fixe": "RPE 7-8 · RIR 2-3"
         },
         {
-          "role": "prophylaxie_epaule",
-          "category": "prophylaxie_epaule",
-          "exercice_pref": "rotation_ext_epaule",
-          "obligatoire": true,
-          "note": "Rotation externe — ne se coupe jamais."
-        },
-        {
-          "role": "anti_rotation",
-          "category": "gainage",
-          "exercice_pref": "pallof_press",
-          "obligatoire": true,
-          "note": "Anti-rotation (Pallof). Alterner avec un twist (rotation) une séance sur deux — voir sélecteur rotation."
-        },
-        {
-          "role": "anti_extension_finisher",
-          "category": "gainage",
-          "exercice_pref": "dragon_flag",
+          "role": "tirage_horizontal",
+          "category": "haut_force",
+          "exercice_pref": "row_bucheron",
           "obligatoire": false,
-          "note": "Dragon flag (anti-extension). À défaut hardstyle plank (sélecteur). ⚠ coude G."
+          "format_fixe": "3×8-12, RIR 2",
+          "note": "Row (volume contrôlé, charge modérée — PAS plus lourd). Prophylaxie épaule G = équilibre poussée/tirage + contrôle scapulaire. Le volume prime sur la charge ici. Régularité > pic. 1×/sem.",
+          "rpe_fixe": "RIR 2"
         },
         {
           "role": "adducteur_prophylaxie",
@@ -4150,9 +4097,50 @@ input,select,textarea{box-sizing:border-box}
         {
           "role": "prophylaxie_epaule",
           "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": true,
+          "note": "Rotation externe — ne se coupe jamais. [SUPERSET avec face pull]"
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
           "exercice_pref": "face_pull",
           "obligatoire": false,
-          "note": "Face pull — prophylaxie épaule."
+          "note": "Face pull — prophylaxie épaule. [SUPERSET avec rotation externe]"
+        },
+        {
+          "role": "finisher_bfr_jambes",
+          "category": "bas_force",
+          "exercice_pref": "trx_leg_curl",
+          "obligatoire": false,
+          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "note": "FINISHER BFR JAMBES — SEULEMENT si bonne récup (sommeil/HRV OK). Optionnel, pas une taxe. Enchaîner air squat BFR sous la même occlusion. Format 2-FB : c'est ici que vit le BFR jambe (pas de séance Bas séparée).",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+        },
+        {
+          "role": "finisher_bfr_jambes_2",
+          "category": "bas_force",
+          "exercice_pref": "air_squat_bfr",
+          "obligatoire": false,
+          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "note": "2e du finisher jambe, enchaîné sans desserrer. Desserrer après.",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+        },
+        {
+          "role": "anti_rotation",
+          "category": "gainage",
+          "exercice_pref": "pallof_press",
+          "obligatoire": false,
+          "note": "Anti-rotation (Pallof). Alterner avec un twist (rotation) une séance sur deux — voir sélecteur rotation.",
+          "rpe_fixe": "contrôle"
+        },
+        {
+          "role": "anti_extension_finisher",
+          "category": "gainage",
+          "exercice_pref": "dragon_flag",
+          "obligatoire": false,
+          "note": "Dragon flag (anti-extension). À défaut hardstyle plank (sélecteur). ⚠ coude G.",
+          "rpe_fixe": "contrôle"
         },
         {
           "role": "cou_optionnel",
@@ -4205,53 +4193,58 @@ input,select,textarea{box-sizing:border-box}
           "note": "CARs hanche."
         },
         {
+          "role": "rappel_puissance",
+          "category": "puissance_priming",
+          "exercice_pref": "med_ball_horizontal",
+          "obligatoire": false,
+          "format_fixe": "2-3×3-5 explosif",
+          "rpe_fixe": "vitesse max · récup complète",
+          "note": "RAPPEL PUISSANCE (priming) — lancer med ball horizontal (poussée explosive) OU rotationnel au choix. Bref (2-3 séries). Alterné avec FB1 (swing) : couvre poussée/rotation là où FB1 couvre le hinge explosif."
+        },
+        {
           "role": "hinge_lourd",
           "category": "bas_force",
           "exercice_pref": "trap_bar_deadlift",
           "obligatoire": true,
-          "note": "SDT LOURD en ouverture — geste en apprentissage, la dégradation sous fatigue coûte cher en lombaire. Trap bar / DL / RDL au sélecteur."
+          "note": "SDT LOURD top set ×3 — apprentissage, frais. Trap bar / DL / RDL au sélecteur.",
+          "format_fixe": "Top set ×3",
+          "rpe_fixe": "RPE 8 · RIR 1-2"
         },
         {
           "role": "push_horizontal_principal",
           "category": "haut_force",
           "exercice_pref": "bench_plat_barre",
           "obligatoire": true,
-          "note": "Bench plat LOURD — 2e. Le SDT n'entame ni le grip poussé ni la poussée ; enchaînement propre."
+          "note": "Bench plat LOURD top set ×3.",
+          "format_fixe": "Top set ×3",
+          "rpe_fixe": "RPE 8 · RIR 1-2"
         },
         {
           "role": "unilateral_genou",
           "category": "bas_force",
           "exercice_pref": "bulgarian_split_squat",
           "obligatoire": true,
-          "note": "Bulgarian — traite l'asymétrie G/D (−23%). G avant D. Presse une jambe au sélecteur. (Zercher volume évité ici : ferait doublon avec FB1)."
+          "note": "Bulgarian — asymétrie G/D. G avant D. Presse une jambe au sélecteur.",
+          "format_fixe": "3×8-10/jambe",
+          "rpe_fixe": "RPE 7-8 · RIR 2-3"
         },
         {
           "role": "tirage_vertical_volume",
           "category": "haut_force",
-          "exercice_pref": "chin_ups",
+          "exercice_pref": "pull_ups_pronation",
           "obligatoire": true,
-          "note": "Chin-ups VOLUME."
+          "note": "Pull-ups VOLUME (pronation).",
+          "format_fixe": "3-4×volume",
+          "rpe_fixe": "RPE 7-8 · RIR 2-3"
         },
         {
-          "role": "prophylaxie_epaule",
-          "category": "prophylaxie_epaule",
-          "exercice_pref": "face_pull",
-          "obligatoire": true,
-          "note": "Face pull — prophylaxie épaule."
-        },
-        {
-          "role": "anti_extension_finisher",
-          "category": "gainage",
-          "exercice_pref": "dragon_flag",
-          "obligatoire": true,
-          "note": "Dragon flag (anti-extension, plus dur que la planche — ⚠ coude G : jours coude silencieux)."
-        },
-        {
-          "role": "rotation_puissance",
-          "category": "gainage",
-          "exercice_pref": "russian_twist",
+          "role": "push_vertical_principal",
+          "category": "haut_force",
+          "exercice_pref": "militaire_barre",
           "obligatoire": false,
-          "note": "Twist (rotation). Défaut russian. Sélecteur : russian / landmine / chop-lift."
+          "format_fixe": "2×6-8, RIR 2-3",
+          "note": "Militaire (compromis force/volume). Pattern opérateur (pousser en hauteur) + stabilité overhead. ⚠ poignet/épaule G : charge modérée, DB ou plus léger si ça tire. 1×/sem, maintien.",
+          "rpe_fixe": "RIR 2-3"
         },
         {
           "role": "adducteur_prophylaxie",
@@ -4265,7 +4258,48 @@ input,select,textarea{box-sizing:border-box}
           "category": "prophylaxie_epaule",
           "exercice_pref": "rotation_ext_epaule",
           "obligatoire": false,
-          "note": "Rotation externe — prophylaxie épaule G, ne se coupe jamais."
+          "note": "Rotation externe — prophylaxie épaule G, ne se coupe jamais. [SUPERSET avec face pull]"
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "face_pull",
+          "obligatoire": true,
+          "note": "Face pull — prophylaxie épaule. [SUPERSET avec rotation externe]"
+        },
+        {
+          "role": "finisher_bfr_bras",
+          "category": "haut_iso_volume",
+          "exercice_pref": "extension_triceps_bfr",
+          "obligatoire": false,
+          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "note": "FINISHER BFR BRAS — SEULEMENT si bonne récup. Triceps d'abord (le bench les a déjà réveillés). Optionnel. Format 2-FB : seul endroit du BFR bras.",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+        },
+        {
+          "role": "finisher_bfr_bras_2",
+          "category": "haut_iso_volume",
+          "exercice_pref": "curl_biceps_bfr",
+          "obligatoire": false,
+          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "note": "Biceps ensuite (après tractions volume = ordre correct). ⚠ coude G : léger, réduire amplitude si ça tire.",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+        },
+        {
+          "role": "anti_extension_finisher",
+          "category": "gainage",
+          "exercice_pref": "dragon_flag",
+          "obligatoire": false,
+          "note": "Dragon flag (anti-extension, plus dur que la planche — ⚠ coude G : jours coude silencieux).",
+          "rpe_fixe": "contrôle"
+        },
+        {
+          "role": "rotation_puissance",
+          "category": "gainage",
+          "exercice_pref": "russian_twist",
+          "obligatoire": false,
+          "note": "Twist (rotation). Défaut russian. Sélecteur : russian / landmine / chop-lift.",
+          "rpe_fixe": "contrôle"
         },
         {
           "role": "cou_optionnel",
@@ -4301,7 +4335,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "vo2max",
-      "nom": "VO2max",
+      "nom": "VO2",
       "frequence_cible": "1x/semaine en phase développement aérobie, jamais 2 séances hautes intensité aérobie le même jour que seuil",
       "semaine_classique": false,
       "eligible_bloc_qualite": true,
@@ -4479,6 +4513,264 @@ input,select,textarea{box-sizing:border-box}
           "category": "alactique_finisher",
           "exercice_pref": "chop_lift_elastique",
           "obligatoire": false
+        }
+      ]
+    },
+    {
+      "id": "puissance_1",
+      "nom": "P1",
+      "frequence_cible": "bloc Fusion / post-gate",
+      "semaine_classique": false,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "puissance",
+        "force_max"
+      ],
+      "objectif": "FB à dominante PUISSANCE — jour 1.\nPuissance pure fraîche d'abord (rotation).\nPAP RDL→swing explosif.\nPuis force de qualité + volume.\nFatigue évitée : stop dès que la vitesse chute.",
+      "slots": [
+        {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "note": "Corde 3-5 min + RAMPE EXPLOSIVE : quelques lancers/swings légers MONTANTS avant le vrai travail puissance (ne pas attaquer l'explosif à froid)."
+        },
+        {
+          "role": "priming_jjb_sol",
+          "category": "cars_mobilite",
+          "exercice_pref": "deplacements_jjb_sol",
+          "obligatoire": false,
+          "note": "Déplacements JJB au sol (maison/tatami)."
+        },
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "exercice_pref": "cars_epaule",
+          "obligatoire": false,
+          "note": "CARs épaule."
+        },
+        {
+          "role": "cars_echauffement_hanche",
+          "category": "cars_mobilite",
+          "exercice_pref": "cars_hanche",
+          "obligatoire": false,
+          "note": "CARs hanche."
+        },
+        {
+          "role": "rotation_puissance",
+          "category": "gainage",
+          "exercice_pref": "chop_lift_elastique",
+          "obligatoire": false,
+          "format_fixe": "4-6×5",
+          "rpe_fixe": "explosif · récup complète",
+          "note": "PUISSANCE PURE en tête (frais) : chop/lift explosif ou rotation landmine (sélecteur). Transfert MMA."
+        },
+        {
+          "role": "hinge_lourd",
+          "category": "bas_force",
+          "exercice_pref": "rdl",
+          "obligatoire": true,
+          "format_fixe": "PAP : lourd 2-3 → swing explosif",
+          "rpe_fixe": "RPE 8 · récup 3-4 min",
+          "note": "RDL LOURD (PAP) → couplé au KB SWING EXPLOSIF. Le lourd potentialise le swing. Hinge = pattern d'extension hanche."
+        },
+        {
+          "role": "tirage_vertical_leste",
+          "category": "haut_force",
+          "exercice_pref": "chin_ups",
+          "obligatoire": true,
+          "format_fixe": "4×3-4 charge constante",
+          "rpe_fixe": "RIR 1-2",
+          "note": "Chin-ups LESTÉES (séries au même poids, pas cluster ni PAP). Tirage lourd de qualité."
+        },
+        {
+          "role": "push_incline_volume",
+          "category": "haut_force",
+          "exercice_pref": "db_bench_incline",
+          "obligatoire": true,
+          "format_fixe": "3-4×8-12",
+          "rpe_fixe": "RPE 7-8",
+          "note": "DB incliné VOLUME."
+        },
+        {
+          "role": "unilateral_genou",
+          "category": "bas_force",
+          "exercice_pref": "bulgarian_split_squat",
+          "obligatoire": true,
+          "format_fixe": "3×8-10/jambe",
+          "rpe_fixe": "RPE 7-8",
+          "note": "Bulgarian — asymétrie G/D."
+        },
+        {
+          "role": "adducteur_prophylaxie",
+          "category": "prophylaxie_genou_pied",
+          "exercice_pref": "copenhagen_adductor",
+          "obligatoire": false,
+          "note": "Copenhagen."
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "face_pull",
+          "obligatoire": false,
+          "note": "Face pull [SUPERSET avec rotation externe]."
+        },
+        {
+          "role": "prophylaxie_rotation_ext",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": false,
+          "note": "Rotation externe [SUPERSET avec face pull]."
+        },
+        {
+          "role": "anti_extension_finisher",
+          "category": "gainage",
+          "exercice_pref": "dragon_flag",
+          "obligatoire": false,
+          "note": "Dragon flag — le tronc transmet la puissance. ⚠ coude G."
+        },
+        {
+          "role": "anti_rotation",
+          "category": "gainage",
+          "exercice_pref": "pallof_press",
+          "obligatoire": false,
+          "note": "Pallof anti-rotation."
+        },
+        {
+          "role": "cou_optionnel",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false,
+          "note": "Nuque ISO."
+        }
+      ]
+    },
+    {
+      "id": "puissance_2",
+      "nom": "P2",
+      "frequence_cible": "bloc Fusion / post-gate",
+      "semaine_classique": false,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "puissance",
+        "force_max"
+      ],
+      "objectif": "FB à dominante PUISSANCE — jour 2.\nPuissance pure fraîche d'abord (lancer rotationnel).\nPAP Bench→pompe explosive.\nZercher en cluster (pas de saut tant que jambes sous objectif).\nFatigue évitée.",
+      "slots": [
+        {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "echauffement_corde",
+          "obligatoire": false,
+          "note": "Corde 3-5 min + RAMPE EXPLOSIVE : quelques lancers/swings légers MONTANTS avant le vrai travail puissance (ne pas attaquer l'explosif à froid)."
+        },
+        {
+          "role": "priming_jjb_sol",
+          "category": "cars_mobilite",
+          "exercice_pref": "deplacements_jjb_sol",
+          "obligatoire": false,
+          "note": "Déplacements JJB au sol (maison/tatami)."
+        },
+        {
+          "role": "cars_echauffement",
+          "category": "cars_mobilite",
+          "exercice_pref": "cars_epaule",
+          "obligatoire": false,
+          "note": "CARs épaule."
+        },
+        {
+          "role": "cars_echauffement_hanche",
+          "category": "cars_mobilite",
+          "exercice_pref": "cars_hanche",
+          "obligatoire": false,
+          "note": "CARs hanche."
+        },
+        {
+          "role": "rotation_puissance",
+          "category": "gainage",
+          "exercice_pref": "med_ball_rotationnel",
+          "obligatoire": false,
+          "format_fixe": "4-6×5/côté",
+          "rpe_fixe": "explosif · récup complète",
+          "note": "PUISSANCE PURE en tête (frais) : lancer rotationnel med ball. Cœur transfert MMA (frappe tournante)."
+        },
+        {
+          "role": "push_horizontal_principal",
+          "category": "haut_force",
+          "exercice_pref": "bench_plat_barre",
+          "obligatoire": true,
+          "format_fixe": "PAP : bench lourd 2-3 → lancer horizontal",
+          "rpe_fixe": "RPE 8 · récup 3-4 min",
+          "note": "Bench LOURD (PAP) → couplé au LANCER HORIZONTAL med ball (chest pass / single-arm). Le bench potentialise le lancer (même pattern poussée horizontale). Cœur de la puissance de frappe directe."
+        },
+        {
+          "role": "squat_bilateral",
+          "category": "bas_force",
+          "exercice_pref": "zercher_squat",
+          "obligatoire": true,
+          "format_fixe": "Cluster 2+2+2 ×3-4",
+          "rpe_fixe": "charge élevée · vitesse maintenue",
+          "note": "Zercher CLUSTER — pas de PAP (pas de saut tant que jambes sous objectif). Le cluster garde la vitesse sous charge sans fatigue."
+        },
+        {
+          "role": "hinge_volume",
+          "category": "bas_force",
+          "exercice_pref": "rdl",
+          "obligatoire": false,
+          "format_fixe": "3-4×8-12",
+          "rpe_fixe": "RPE 7-8",
+          "note": "RDL VOLUME — OPTIONNEL (hinge proche objectif, 2e stimulus optionnel si énergie)."
+        },
+        {
+          "role": "tirage_vertical_volume",
+          "category": "haut_force",
+          "exercice_pref": "pull_ups_pronation",
+          "obligatoire": false,
+          "format_fixe": "3-4×volume",
+          "rpe_fixe": "RPE 7-8",
+          "note": "Pull-ups VOLUME — OPTIONNEL (tractions déjà à l'objectif, 2e stimulus optionnel)."
+        },
+        {
+          "role": "adducteur_prophylaxie",
+          "category": "prophylaxie_genou_pied",
+          "exercice_pref": "copenhagen_adductor",
+          "obligatoire": false,
+          "note": "Copenhagen."
+        },
+        {
+          "role": "prophylaxie_epaule",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "face_pull",
+          "obligatoire": false,
+          "note": "Face pull [SUPERSET avec rotation externe]."
+        },
+        {
+          "role": "prophylaxie_rotation_ext",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": false,
+          "note": "Rotation externe [SUPERSET avec face pull]."
+        },
+        {
+          "role": "anti_extension_finisher",
+          "category": "gainage",
+          "exercice_pref": "dragon_flag",
+          "obligatoire": false,
+          "note": "Dragon flag. ⚠ coude G."
+        },
+        {
+          "role": "rotation_puissance_gainage",
+          "category": "gainage",
+          "exercice_pref": "russian_twist",
+          "obligatoire": false,
+          "note": "Russian twist — OPTIONNEL."
+        },
+        {
+          "role": "cou_optionnel",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false,
+          "note": "Nuque ISO."
         }
       ]
     }
@@ -5258,8 +5550,9 @@ function moteurWindowElapsedDays(){
   return Math.floor((today - start) / 86400000);
 }
 function moteurBlocQualiteActive(){
-  if(MS.dureePrevueJours != null) return MS.dureePrevueJours >= 28;
-  return moteurWindowElapsedDays() >= 28;
+  // Arbre D : le type de semaine suit le MATÉRIEL, plus la durée. Gate 28j neutralisé.
+  // WC / VO2 / FB / P1 / P2 ne sont plus verrouillées par la durée de fenêtre.
+  return true;
 }
 function moteurCycleWeek(){
   if(!moteurBlocQualiteActive()) return null;
@@ -5398,7 +5691,7 @@ function moteurFindGuyaneRef(exId){
 }
 // Priming réel de Guyane (bloc 2), affiché en une ligne compacte au-dessus des cartes d'exercice —
 // remplace les slots CARs/primer par leur présentation minimaliste d'origine.
-const M_GUYANE_SESSION_KEY = {haut_1:'Haut 1', haut_2:'Haut 2', haut_3:'Haut 3', bas_1:'Bas 1', bas_2:'Bas 2', agt:'AGT'};
+const M_GUYANE_SESSION_KEY = {haut_1:'Haut 1', haut_2:'Haut 2', bas_1:'Bas 1', bas_2:'Bas 2', agt:'AGT'};
 function moteurFindGuyanePriming(session){
   const seanceKey = M_GUYANE_SESSION_KEY[session.id];
   if(!seanceKey || !SEANCES[seanceKey]) return null;
@@ -5666,11 +5959,11 @@ function moteurResolveSession(session){
   return {results, status, oblFails, optFails};
 }
 function moteurSessionLockedByPhase(session){
-  // Une séance de semaine classique n'est JAMAIS verrouillée. Les séances réservées au bloc qualité
-  // (VO2max, VMA, Work capacity) le sont tant que la fenêtre n'a pas 28 jours. « eligible_bloc_qualite »
-  // ne verrouille rien — c'est « semaine_classique=false » qui marque une séance réservée au bloc.
+  // Arbre D : plus de gate durée (moteurBlocQualiteActive() = true).
+  // La VMA garde un verrou PROPRE : protocole retour course progressif (IT band), indépendant de la durée.
+  if(session.id === 'vma') return false;  // déverrouillée (24/07) — IT band à surveiller à l'usage ; accessible ne veut pas dire à faire si genou pas prêt
   if(session.semaine_classique) return false;
-  return !moteurBlocQualiteActive();
+  return !moteurBlocQualiteActive();  // désormais toujours false → WC/VO2/FB/P1/P2 déverrouillées
 }
 
 // ── STATE ─────────────────────────────────────────────────────────────────
@@ -6418,7 +6711,7 @@ function getAllExerciseData(){
 // suivi à la place en % du Bench (repère auto-calibré, pas de prétention de standard externe).
 const M_STANDARDS_RATIOS = {
   bench_plat_barre: {label:'Bench Press', min:1.0, obj:1.25, exc:1.5, source:'MTI (RSA)'},
-  rdl: {label:'Hinge — Soulevé de terre (RDL volume)', min:1.5, obj:1.75, exc:2.0, source:'MTI Hinge Lift (RSA)'},
+  rdl: {label:'Hinge — RDL hanches-hautes (test MTI Hinge Lift)', min:1.5, obj:1.75, exc:2.0, source:'MTI Hinge Lift (RSA)'},
   front_squat: {label:'Front Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI (RSA)'},
   push_press: {label:'Push Press', min:null, obj:null, exc:1.1, source:'MTI (hors RSA — seule Excellence publiée)'},
   squat_clean: {label:'Squat Clean', min:null, obj:null, exc:1.25, source:'MTI (hors RSA — seule Excellence publiée)'},
@@ -7052,7 +7345,8 @@ function renderSessionCards(el, session){
             ['S3','S3 circuit KB','boucle 15-20 min : 10 swings → 5 goblet → 10 swings → 5 push press'],
             ['S4','S4 EMOM long','18-20 min : 10 swings + 5 pull-ups/TRX row / minute, reste en récup'],
             ['S5','S5 escaliers/gilet','15-20 min allure seuil sous gilet — ⚠ recoupe T1, ne pas doubler la semaine'],
-            ['S6','S6 carry+swing','4 tours : 90s carry lourd + 90s swing 2 bras + 90s récup — zéro impact IT band']
+            ['S6','S6 squat thrust (burpee allégé)','30s effort / 30s récup × 12-15 min. Burpee SANS pompe NI saut (down-up, recul de jambes) = zéro impact genou, poignet/épaule G ménagés. Rythme CONTRÔLÉ et régulier = seuil (153-166) ; si trop fort → bascule en glyco. Monte vraiment la FC (grande masse, pas de limite grip).'],
+            ['S7','S7 portage/tenue (ex-carry+swing)','4 tours 90/90/90 carry 16/16 + swing — ⚠ N\'ATTEINT PAS le seuil (limité par le grip/avant-bras, FC reste sous SV1). WC de TENUE DE CHARGE/portage, pas seuil cardio. Zéro impact.']
           ]
         }
       };
@@ -7256,7 +7550,7 @@ function renderSessionCards(el, session){
     // permet de choisir librement le mouvement pendant la phase d'apprentissage du deadlift.
     const SWAP_GROUPS = {
       hinge: { roles:new Set(['hinge_principal','test_hinge_dl','hinge_volume','hinge_lourd']),
-               choices:[['deadlift_conventionnel','DL conventionnel'],['trap_bar_deadlift','DL trap bar'],['rdl','RDL']] },
+               choices:[['rdl','RDL'],['trap_bar_deadlift','DL trap bar']] },
       // Zercher ET Front squat sont légitimes : Zercher pour le gainage antérieur, les longs tibias
       // (1m84) et le transfert MMA/terrain ; Front squat pour le standard RSA officiel. Choix libre.
       squat: { roles:new Set(['squat_bilateral','test_rsa_front_squat']),
