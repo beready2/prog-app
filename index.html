@@ -3484,11 +3484,38 @@ input,select,textarea{box-sizing:border-box}
         "nomade",
         "hors_maison"
       ],
-      "substitutes": {},
+      "substitutes": {
+        "nomade": "pseudo_lancer_rot_elastique"
+      },
       "pattern": "push_horizontal",
       "progression_type": "reps",
       "protocole_cycle_eligible": false,
       "notes": "Lancer horizontal : chest pass (2 bras) ou single-arm put (« punch balle », 1 bras, transfert MMA). Terme explosif du PAP bench. ⚠ épaule G : chest pass d'abord, single-arm en progression."
+    },
+    {
+      "id": "pseudo_lancer_rot_elastique",
+      "name": "Pseudo lancer rotationnel élastique",
+      "category": "gainage",
+      "qualities": [
+        "puissance",
+        "explosivite"
+      ],
+      "equipment_required": [
+        "elastique"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "windows_ok": [
+        "nomade",
+        "hors_maison",
+        "maison",
+        "paris"
+      ],
+      "substitutes": {},
+      "pattern": "rotation",
+      "progression_type": "reps",
+      "protocole_cycle_eligible": false,
+      "notes": "Substitut NOMADE du lancer med ball. Élastique ancré sur le côté (porte/poteau), rotation explosive du tronc sans lâcher. Résistance croissante = pas de décélération brutale (doux épaule G). Pattern rotation (frappe tournante). Portable, pas besoin de mur/espace."
     }
   ]
 }
@@ -3558,7 +3585,7 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "chin_ups",
           "obligatoire": true,
           "note": "TRACTIONS LESTÉES en ouverture, frais. Séries au MÊME poids (approche cluster) plutôt qu'un top set + back-off : le grip et la technique tiennent mieux, plus de volume de qualité. Garder 1-2 reps en réserve chaque série. Progression : +lest quand les 4 séries passent propres.",
-          "format_fixe": "4×3-4 à charge constante, RIR 1-2 (séries au même poids, PAS un top set unique)"
+          "format_fixe": "4×3-4"
         },
         {
           "role": "push_vertical_principal",
@@ -3623,14 +3650,16 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_force",
           "exercice_pref": "curl_biceps_bfr",
           "obligatoire": false,
-          "note": "Biceps — soutient les tractions. Version BFR : charge légère, épargne le coude (épicondyle). Optionnel."
+          "note": "Biceps — soutient les tractions. Version BFR : charge légère, épargne le coude (épicondyle). Optionnel.",
+          "repos": "30s"
         },
         {
           "role": "accessoire_triceps",
           "category": "haut_force",
           "exercice_pref": "extension_triceps_bfr",
           "obligatoire": false,
-          "note": "Triceps — soutient la poussée. Version BFR : charge légère, épargne le coude. Optionnel."
+          "note": "Triceps — soutient la poussée. Version BFR : charge légère, épargne le coude. Optionnel.",
+          "repos": "30s"
         }
       ]
     },
@@ -3685,7 +3714,9 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_force",
           "exercice_pref": "bench_plat_barre",
           "obligatoire": true,
-          "note": "BENCH — top set en ouverture, frais."
+          "note": "BENCH — top set en ouverture, frais.",
+          "format_fixe": "Top set ×3",
+          "rpe_fixe": "RPE 8 · RIR 1-2"
         },
         {
           "role": "tirage_horizontal",
@@ -3719,7 +3750,15 @@ input,select,textarea{box-sizing:border-box}
           "role": "prophylaxie_epaule",
           "category": "prophylaxie_epaule",
           "obligatoire": true,
-          "exercice_pref": "face_pull"
+          "exercice_pref": "face_pull",
+          "note": "Face pull — prophylaxie épaule [SUPERSET avec rotation externe]."
+        },
+        {
+          "role": "prophylaxie_rotation_ext",
+          "category": "prophylaxie_epaule",
+          "exercice_pref": "rotation_ext_epaule",
+          "obligatoire": false,
+          "note": "Rotation externe — prophylaxie épaule G [SUPERSET avec face pull]. Ne se coupe jamais."
         },
         {
           "role": "prophylaxie_nuque",
@@ -3746,14 +3785,16 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_force",
           "exercice_pref": "curl_biceps_bfr",
           "obligatoire": false,
-          "note": "Biceps — soutient les tractions. Version BFR : charge légère, épargne le coude (épicondyle). Optionnel."
+          "note": "Biceps — soutient les tractions. Version BFR : charge légère, épargne le coude (épicondyle). Optionnel.",
+          "repos": "30s"
         },
         {
           "role": "accessoire_triceps",
           "category": "haut_force",
           "exercice_pref": "extension_triceps_bfr",
           "obligatoire": false,
-          "note": "Triceps — soutient la poussée. Version BFR : charge légère, épargne le coude. Optionnel."
+          "note": "Triceps — soutient la poussée. Version BFR : charge légère, épargne le coude. Optionnel.",
+          "repos": "30s"
         }
       ]
     },
@@ -3840,8 +3881,9 @@ input,select,textarea{box-sizing:border-box}
             "leg_curl_machine",
             "nordic_curl_elastique"
           ],
-          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+          "format_fixe": "BFR 30-15-15-15",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
+          "repos": "30s"
         },
         {
           "role": "volume_quadriceps",
@@ -3849,8 +3891,9 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "air_squat_bfr",
           "obligatoire": false,
           "note": "Quads BFR. 2e sous la même occlusion (enchaîné au leg curl, sans desserrer). Total occlusion < 15 min. Option leg extension au sélecteur.",
-          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+          "format_fixe": "BFR 30-15-15-15",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
+          "repos": "30s"
         },
         {
           "role": "anti_rotation",
@@ -3958,8 +4001,9 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "trx_leg_curl",
           "obligatoire": false,
           "note": "Ischios BFR (TRX). 1er de la séquence BFR jambe. Brassard serré, on enchaîne l'air squat sans desserrer.",
-          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+          "format_fixe": "BFR 30-15-15-15",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
+          "repos": "30s"
         },
         {
           "role": "volume_quadriceps",
@@ -3968,8 +4012,9 @@ input,select,textarea{box-sizing:border-box}
           "obligatoire": false,
           "note": "Quads BFR. 2e sous la même occlusion (enchaîné au leg curl, sans desserrer). Total occlusion < 15 min. Option leg extension au sélecteur.",
           "exercice_alt": [],
-          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+          "format_fixe": "BFR 30-15-15-15",
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
+          "repos": "30s"
         },
         {
           "role": "anti_rotation",
@@ -4038,7 +4083,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "puissance_priming",
           "exercice_pref": "kb_swing_alactique_28",
           "obligatoire": false,
-          "format_fixe": "2-3×3-5 explosif",
+          "format_fixe": "2-3×3-5",
           "rpe_fixe": "vitesse max · récup complète",
           "note": "RAPPEL PUISSANCE (priming) — KB swing explosif, hinge/chaîne postérieure. Bref (2-3 séries), réveille le SN et potentialise le Zercher. Alterné avec FB2 (med ball) pour couvrir plusieurs facettes."
         },
@@ -4057,7 +4102,7 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "chin_ups",
           "obligatoire": true,
           "note": "Chin-ups LESTÉES — séries au MÊME poids (cluster), pas un top set. Grip et technique tiennent mieux. Garder 1-2 reps en réserve. +lest quand les 4 séries passent propres.",
-          "format_fixe": "4×3-4 à charge constante",
+          "format_fixe": "4×3-4",
           "rpe_fixe": "RIR 1-2"
         },
         {
@@ -4113,18 +4158,20 @@ input,select,textarea{box-sizing:border-box}
           "category": "bas_force",
           "exercice_pref": "trx_leg_curl",
           "obligatoire": false,
-          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "format_fixe": "BFR 30-15-15-15",
           "note": "FINISHER BFR JAMBES — SEULEMENT si bonne récup (sommeil/HRV OK). Optionnel, pas une taxe. Enchaîner air squat BFR sous la même occlusion. Format 2-FB : c'est ici que vit le BFR jambe (pas de séance Bas séparée).",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
+          "repos": "30s"
         },
         {
           "role": "finisher_bfr_jambes_2",
           "category": "bas_force",
           "exercice_pref": "air_squat_bfr",
           "obligatoire": false,
-          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "format_fixe": "BFR 30-15-15-15",
           "note": "2e du finisher jambe, enchaîné sans desserrer. Desserrer après.",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
+          "repos": "30s"
         },
         {
           "role": "anti_rotation",
@@ -4197,9 +4244,9 @@ input,select,textarea{box-sizing:border-box}
           "category": "puissance_priming",
           "exercice_pref": "med_ball_horizontal",
           "obligatoire": false,
-          "format_fixe": "2-3×3-5 explosif",
+          "format_fixe": "2-3×3-5",
           "rpe_fixe": "vitesse max · récup complète",
-          "note": "RAPPEL PUISSANCE (priming) — lancer med ball horizontal (poussée explosive) OU rotationnel au choix. Bref (2-3 séries). Alterné avec FB1 (swing) : couvre poussée/rotation là où FB1 couvre le hinge explosif."
+          "note": "RAPPEL PUISSANCE (priming) — lancer med ball horizontal (poussée explosive) en maison. EN DÉPLACEMENT : pseudo lancer rotationnel élastique (bascule sur le pattern rotation, portable). Bref 2-3 séries. Alterné avec FB1 (swing/hinge)."
         },
         {
           "role": "hinge_lourd",
@@ -4225,7 +4272,7 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "bulgarian_split_squat",
           "obligatoire": true,
           "note": "Bulgarian — asymétrie G/D. G avant D. Presse une jambe au sélecteur.",
-          "format_fixe": "3×8-10/jambe",
+          "format_fixe": "3×8-10/j",
           "rpe_fixe": "RPE 7-8 · RIR 2-3"
         },
         {
@@ -4272,18 +4319,20 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_iso_volume",
           "exercice_pref": "extension_triceps_bfr",
           "obligatoire": false,
-          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "format_fixe": "BFR 30-15-15-15",
           "note": "FINISHER BFR BRAS — SEULEMENT si bonne récup. Triceps d'abord (le bench les a déjà réveillés). Optionnel. Format 2-FB : seul endroit du BFR bras.",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
+          "repos": "30s"
         },
         {
           "role": "finisher_bfr_bras_2",
           "category": "haut_iso_volume",
           "exercice_pref": "curl_biceps_bfr",
           "obligatoire": false,
-          "format_fixe": "4 séries : 30-15-15-15, repos 30s",
+          "format_fixe": "BFR 30-15-15-15",
           "note": "Biceps ensuite (après tractions volume = ordre correct). ⚠ coude G : léger, réduire amplitude si ça tire.",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières"
+          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
+          "repos": "30s"
         },
         {
           "role": "anti_extension_finisher",
@@ -4570,7 +4619,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "bas_force",
           "exercice_pref": "rdl",
           "obligatoire": true,
-          "format_fixe": "PAP : lourd 2-3 → swing explosif",
+          "format_fixe": "PAP → swing",
           "rpe_fixe": "RPE 8 · récup 3-4 min",
           "note": "RDL LOURD (PAP) → couplé au KB SWING EXPLOSIF. Le lourd potentialise le swing. Hinge = pattern d'extension hanche."
         },
@@ -4579,7 +4628,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_force",
           "exercice_pref": "chin_ups",
           "obligatoire": true,
-          "format_fixe": "4×3-4 charge constante",
+          "format_fixe": "4×3-4",
           "rpe_fixe": "RIR 1-2",
           "note": "Chin-ups LESTÉES (séries au même poids, pas cluster ni PAP). Tirage lourd de qualité."
         },
@@ -4597,7 +4646,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "bas_force",
           "exercice_pref": "bulgarian_split_squat",
           "obligatoire": true,
-          "format_fixe": "3×8-10/jambe",
+          "format_fixe": "3×8-10/j",
           "rpe_fixe": "RPE 7-8",
           "note": "Bulgarian — asymétrie G/D."
         },
@@ -4699,7 +4748,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "haut_force",
           "exercice_pref": "bench_plat_barre",
           "obligatoire": true,
-          "format_fixe": "PAP : bench lourd 2-3 → lancer horizontal",
+          "format_fixe": "PAP → lancer",
           "rpe_fixe": "RPE 8 · récup 3-4 min",
           "note": "Bench LOURD (PAP) → couplé au LANCER HORIZONTAL med ball (chest pass / single-arm). Le bench potentialise le lancer (même pattern poussée horizontale). Cœur de la puissance de frappe directe."
         },
@@ -4708,7 +4757,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "bas_force",
           "exercice_pref": "zercher_squat",
           "obligatoire": true,
-          "format_fixe": "Cluster 2+2+2 ×3-4",
+          "format_fixe": "Cluster 2+2+2",
           "rpe_fixe": "charge élevée · vitesse maintenue",
           "note": "Zercher CLUSTER — pas de PAP (pas de saut tant que jambes sous objectif). Le cluster garde la vitesse sous charge sans fatigue."
         },
@@ -6423,10 +6472,10 @@ function render(){
       .ex-num{font-size:10px;font-weight:700;color:#475569;min-width:18px;margin-top:2px}
       .ex-name{font-size:13px;font-weight:700;color:var(--text);flex:1;line-height:1.3}
       .ex-name.prio{color:var(--acc)}
-      .ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
-      .ex-cell{background:#1a2640;border-radius:7px;padding:6px 8px}
-      .ex-cell-lbl{font-size:9px;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-      .ex-cell-val{font-size:12px;font-weight:700;color:var(--text)}
+      .ex-grid{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}.ex-grid>.ex-cell{flex:1 1 auto;min-width:0}
+      .ex-cell{background:#1a2640;border-radius:6px;padding:4px 7px}
+      .ex-cell-lbl{font-size:8px;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+      .ex-cell-val{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap}
       .ex-cell-val.blue{color:#3b82f6}
       .ex-cell-val.gold{color:#f5a623}
       .ex-cell-val.red{color:#e63946}
@@ -7629,7 +7678,7 @@ function renderSessionCards(el, session){
     // Le repos défini sur le CRÉNEAU prime sur l'ancienne référence héritée : sinon le bench de
     // Haut 3 (volume) héritait des 5 min du bench lourd de Haut 2.
     const reposSrc = slot.repos ? slot.repos : ((guyaneRef && guyaneRef.repos) ? guyaneRef.repos : null);
-    const rTimers = reposSrc ? parseReposAll(reposSrc) : [{sec:90,lbl:'90s'},{sec:120,lbl:'2 min'}];
+    const rTimers = reposSrc ? parseReposAll(reposSrc) : [{sec:120,lbl:'2 min'}];
     if(!NO_REPOS_CATEGORIES.has(ex.category)){
       const reposCell = $('div',{class:'ex-cell'});
       reposCell.appendChild($('div',{class:'ex-cell-lbl'},'Repos'));
@@ -7638,7 +7687,7 @@ function renderSessionCards(el, session){
         rTimers.forEach(t=>btnWrap.appendChild($('button',{class:'timer-btn',onclick:(e)=>{ e.stopPropagation(); startTimer(t.sec, ex.name); }},'⏱ '+t.lbl)));
         reposCell.appendChild(btnWrap);
       } else {
-        reposCell.appendChild($('div',{class:'ex-cell-val red'}, reposSrc || '90-120 s'));
+        reposCell.appendChild($('div',{class:'ex-cell-val red'}, reposSrc || '2 min'));
       }
       grid.appendChild(reposCell);
     }
@@ -7688,10 +7737,10 @@ function renderSessionCards(el, session){
       // Charge + RPE réel (mêmes champs que le reste de l'app — pas de doublon RIR)
       const unit = moteurGetChargeUnit(ex.id);
       const seedOrLast = moteurGetCharge(ex.id);
-      const chargeRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px',background:'#0d1525',borderRadius:'7px',padding:'7px 8px',flexWrap:'wrap'}});
+      const chargeRow = $('div',{style:{display:'flex',alignItems:'center',gap:'5px',marginBottom:'8px',background:'#0d1525',borderRadius:'7px',padding:'6px 7px',flexWrap:'nowrap'}});
       if(ex.progression_type !== 'isometrie'){
-        chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'Charge ('+unit+'):'));
-        chargeRow.appendChild($('input',{class:'input-mod',type:'number',step:'0.5',
+        chargeRow.appendChild($('span',{style:{fontSize:'10px',color:'#475569'}}, unit));
+        chargeRow.appendChild($('input',{class:'input-mod',type:'number',step:'0.5',style:{width:'56px'},
           value: exLog.charge!=null?exLog.charge:'', placeholder: seedOrLast!=null?String(seedOrLast):'—',
           oninput:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value), session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); },
           onchange:(e)=>{ moteurSetTodayField(ex.id,'charge', e.target.value===''?null:Number(e.target.value), session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); render(); }
@@ -7699,14 +7748,14 @@ function renderSessionCards(el, session){
       }
       // Champ Reps éditable — utile pour les mouvements en apprentissage (DL, front squat) où
       // le nombre de reps par série varie volontairement pendant l'acquisition technique.
-      chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'Reps/série:'));
+      chargeRow.appendChild($('span',{style:{fontSize:'10px',color:'#475569'}},'reps'));
       chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'30',step:'1',
         value: exLog.reps!=null?exLog.reps:'', placeholder:'—', style:{width:'52px'},
         oninput:(e)=>{ moteurSetTodayField(ex.id,'reps', e.target.value===''?null:Number(e.target.value), session&&session.id); },
         onchange:(e)=>{ moteurSetTodayField(ex.id,'reps', e.target.value===''?null:Number(e.target.value), session&&session.id); render(); }
       }));
-      chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'RPE réel:'));
-      chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'10',
+      chargeRow.appendChild($('span',{style:{fontSize:'10px',color:'#475569'}},'RPE'));
+      chargeRow.appendChild($('input',{class:'input-mod',type:'number',min:'1',max:'10',style:{width:'46px'},
         value: exLog.rpe||'', placeholder:'—',
         oninput:(e)=>{ moteurSetTodayField(ex.id,'rpe', e.target.value, session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); },
         onchange:(e)=>{ moteurSetTodayField(ex.id,'rpe', e.target.value, session&&session.id); moteurSetTodayField(ex.id,'fmt', format||'', session&&session.id); render(); }
@@ -7990,7 +8039,7 @@ function renderSeanceGuyane(){
       oninput:(e)=>{ exLog.charge=e.target.value; exLog.fmt=ex.fmt||''; log[exKey]=exLog; saveLog(log); }
     });
     chargeRow.appendChild(chargeInput);
-    chargeRow.appendChild($('span',{style:{fontSize:'11px',color:'#475569'}},'RPE réel:'));
+    chargeRow.appendChild($('span',{style:{fontSize:'10px',color:'#475569'}},'RPE'));
     const rpeInput = $('input',{
       class:'input-mod',type:'number',min:'1',max:'10',
       placeholder:'—',
