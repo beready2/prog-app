@@ -6665,6 +6665,7 @@ function render(){
       .ex-num{font-size:10px;font-weight:700;color:#475569;min-width:18px;margin-top:2px}
       .ex-name{font-size:13px;font-weight:700;color:var(--text);flex:1;line-height:1.3}
       .ex-name.prio{color:var(--acc)}
+      .help-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#1e293b;color:#64748b;font-size:9px;font-weight:800;cursor:pointer;flex:0 0 auto}
       .ex-grid{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}.ex-grid>.ex-cell{flex:1 1 auto;min-width:0}
       .ex-cell{background:#1a2640;border-radius:6px;padding:4px 7px}
       .ex-cell-lbl{font-size:8px;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
@@ -6748,6 +6749,7 @@ function render(){
     seanceG: renderSeanceGuyane,
     gtg: renderGTG,
     bilan: renderBilan,
+    tests: renderTests,
   };
   content.appendChild((views[S.tab]||renderRoutine)());
   app.appendChild(content);
@@ -6759,7 +6761,8 @@ function render(){
     {id:'routine',icon:'☀️',lbl:'Routine'},
     {id:'seance',icon:'🏋️',lbl:'Séance'},
     {id:'gtg',icon:'🔁',lbl:'GTG'},
-    {id:'bilan',icon:'📊',lbl:'Bilan'}].forEach(item=>{
+    {id:'bilan',icon:'📊',lbl:'Bilan'},
+    {id:'tests',icon:'🎯',lbl:'Tests'}].forEach(item=>{
     const tab = $('button',{
       class:'nav-tab'+(S.tab===item.id?' active':''),
       onclick:()=>{ S.tab=item.id; render(); }
@@ -6773,6 +6776,290 @@ function render(){
 
   root.appendChild(app);
   if(_st>0) requestAnimationFrame(()=>{ const _ns=document.querySelector('.scroll'); if(_ns) _ns.scrollTop=_st; });
+}
+
+
+// ══ ÉCRAN TESTS — batterie BE READY + radar ═══════════════════════════════
+// Barèmes : MTI 45+ / RSA / GBRS (publiés) · reste proposé. Score normalisé 0-4.
+const T_EPREUVES = [
+  // ── FORCE MAXIMALE : les 3RM bruts ──
+  {id:'pdc',        axe:null,                    cat:'force', unit:'kg',    lbl:'Poids de corps',
+   help:'Nécessaire au calcul du RSA et des ratios. À repeser à chaque batterie.', score:null},
+  {id:'fs3',        axe:'Force maximale',        cat:'force', unit:'kg 3RM',lbl:'Front squat 3RM',
+   help:'Prise croisée. Entre dans le RSA (converti en 1RM × 1,10) et dans le ratio Good 1,25 × PDC.',
+   ratio:1.25},
+  {id:'bench3',     axe:'Force maximale',        cat:'force', unit:'kg 3RM',lbl:'Bench 3RM',
+   help:'Entre dans le RSA. Ratio Good = 1,25 × PDC.', ratio:1.25},
+  {id:'hinge3',     axe:'Force maximale',        cat:'force', unit:'kg 3RM',lbl:'Hinge Lift 3RM',
+   help:'RDL hanches hautes. Entre dans le RSA et dans le score MTI 45+. Ratio Good = 1,75 × PDC.',
+   ratio:1.75},
+  // ── FORCE RELATIVE : déplacer son propre poids ──
+  {id:'tractions',  axe:'Force relative',        cat:'force', unit:'reps',  lbl:'Tractions strictes max',
+   help:'Pronation, max de reps (plafonnées à 20 dans le RSA). GBRS : 10 / 15 / 20.',
+   score:v=> v<10?0 : v<15?2 : v<20?3 : 4},
+  // ── ENDURANCE DE FORCE ──
+  {id:'pompes',     axe:'Endurance de force',    cat:'force', unit:'reps',  lbl:'Pompes 2 min',
+   help:'Hand-release. MTI 45+ : <15=0 · 16-25=1 · 26-37=2 · 38-50=3 · >50=4',
+   score:v=> v<16?0 : v<26?1 : v<38?2 : v<51?3 : 4},
+  {id:'bench_pdc',  axe:'Endurance de force',    cat:'force', unit:'reps',  lbl:'Bench @ PDC max reps',
+   help:'Barre chargée au poids de corps. GBRS : 10 / 15 / 20.',
+   score:v=> v<10?0 : v<15?2 : v<20?3 : 4},
+  // ── PUISSANCE ──
+  {id:'cmj',        axe:'Puiss. membres inf',    cat:'puiss', unit:'cm',    lbl:'CMJ',
+   help:'3 essais, mains aux hanches. Sans barème publié — suivi longitudinal.', score:null},
+  {id:'broad',      axe:'Puiss. membres inf',    cat:'puiss', unit:'cm',    lbl:'Broad jump',
+   help:'Pieds joints, mesure talon. GBRS : Standard = taille (184) · Elite +30 · Pro +60.',
+   score:v=> v<184?0 : v<214?2 : v<244?3 : 4},
+  {id:'lancer_rot', axe:'Rotation',              cat:'puiss', unit:'m',     lbl:'Lancer rotationnel',
+   help:'De côté, ligne fixe, sans élan. Noter le côté faible. Sans barème — suivi.', score:null},
+  {id:'lancer_hor', axe:'Puiss. haut du corps',  cat:'puiss', unit:'m',     lbl:'Lancer horizontal',
+   help:'Chest pass ou single-arm. Sans barème — suivi.', score:null},
+  // ── FILIÈRES ──
+  {id:'anaero30',   axe:'Capacité alactique',    cat:'filiere',unit:'W peak',lbl:'Anaérobie 30 s',
+   help:'Vélo, départ lancé. Noter Peak W. Fatigue Index <45 % = bonne résistance.', score:null},
+  {id:'effort_rep', axe:'Work capacity',         cat:'filiere',unit:'% chute',lbl:'Effort répété',
+   help:'6 × 15 s all-out / 45 s récup. Chute 1er→dernier. <15 % = bonne résistance.',
+   score:v=> v>30?0 : v>25?1 : v>20?2 : v>15?3 : 4},
+  {id:'longue',     axe:'Base aérobie',          cat:'filiere',unit:'min',  lbl:'Épreuve longue',
+   help:'Vélo 14,5 km : >45=0 · 45-41=1 · 41-37=2 · 37-34=3 · <34=4. Course 4,8 km : >34:30=0 · <21:37=4.',
+   score:v=> v>45?0 : v>41?1 : v>37?2 : v>34?3 : 4},
+  {id:'seuil',      axe:'Seuil',                 cat:'filiere',unit:'W FTP',lbl:'FTP',
+   help:'20 min max × 0,95. ANCRE les zones vélo. Sans barème — suivi.', score:null},
+  {id:'vo2',        axe:'VO2max / PMA',          cat:'filiere',unit:'km/h', lbl:'VMA ou PMA',
+   help:'ANCRE les zones d\'intervalles et le SV2. Sans barème — suivi.', score:null},
+  // ── OPÉRATIONNEL ──
+  {id:'navettes',   axe:'Vitesse & agilité',     cat:'oper',  unit:'reps',  lbl:'Navettes prone-sprint',
+   help:'25 m, gilet 11 kg, 3×3 min (récup 1 min). ~50 reps ≈ good (MTI).',
+   score:v=> v<30?0 : v<45?1 : v<55?2 : v<65?3 : 4},
+  {id:'keglift',    axe:'Portage & préhension',  cat:'oper',  unit:'reps',  lbl:'Sandbag keg lift 27 kg',
+   help:'90 s, rebord 122 cm, sans poignées. MTI 45+ : <10=0 · 11-20=1 · 21-30=2 · 31-40=3 · >40=4',
+   score:v=> v<11?0 : v<21?1 : v<31?2 : v<41?3 : 4},
+  {id:'carry',      axe:'Portage & préhension',  cat:'oper',  unit:'m',     lbl:'Farmer carry @ PDC',
+   help:'40 kg/main. GBRS : 50 m = Standard · 70 = Elite · 75 = Pro.',
+   score:v=> v<50?0 : v<70?2 : v<75?3 : 4},
+  {id:'grip',       axe:'Portage & préhension',  cat:'oper',  unit:'s',     lbl:'Grip d\'agrippement',
+   help:'Suspension prise gi ou serviette. Sans barème — suivi.', score:null},
+  // ── STRUCTURE ──
+  {id:'planche',    axe:'Gainage 3 axes',        cat:'struct',unit:'s',     lbl:'Planche',
+   help:'GBRS : 2:00 = 120 s Standard · 2:30 = 150 Elite · 3:00 = 180 Pro.',
+   score:v=> v<120?0 : v<150?2 : v<180?3 : 4},
+  {id:'pallof',     axe:'Gainage 3 axes',        cat:'struct',unit:'s',     lbl:'Pallof iso (anti-rotation)',
+   help:'Tenue bras tendus, élastique latéral. Noter le côté faible. Sans barème — suivi.', score:null},
+  {id:'asym',       axe:'Prophylaxie',           cat:'struct',unit:'% écart',lbl:'Asymétrie max D/G',
+   help:'Plus grand écart du dépistage (Copenhagen, side plank, Bulgarian, Pallof). <10 % cible · >20 % 🚩',
+   score:v=> v>20?0 : v>15?1 : v>10?2 : v>5?3 : 4},
+  {id:'mobilite',   axe:'Mobilité',              cat:'struct',unit:'/4',    lbl:'Mobilité (auto-éval)',
+   help:'Épaule, cheville, hanche. 0 = très limité · 4 = amplitude complète et symétrique.',
+   score:v=> Math.max(0,Math.min(4,v))},
+  {id:'fc_recup',   axe:'Récupération',          cat:'struct',unit:'bpm',   lbl:'FC récupération 60 s',
+   help:'Delta entre l\'arrêt de l\'épreuve longue et 60 s. >12 normal · >20 bonne condition.',
+   score:v=> v<8?0 : v<12?1 : v<16?2 : v<20?3 : 4},
+];
+const T_CAT_COLOR = {force:'#1e3a8a', puiss:'#7c3aed', filiere:'#059669', oper:'#d97706', struct:'#334155'};
+
+function tLoad(){ return load('tests_results') || {}; }
+function tSave(d){ save('tests_results', d); }
+
+// ── SCORES COMPOSITES ─────────────────────────────────────────────────────
+function tPDC(){ const r=tLoad().pdc; const v=r?parseFloat(r.val):NaN; return isNaN(v)?null:v; }
+
+function tRSA(){
+  const d=tLoad(), pdc=tPDC();
+  const g=k=>{ const r=d[k]; const v=r?parseFloat(r.val):NaN; return isNaN(v)?null:v; };
+  const fs=g('fs3'), bp=g('bench3'), hg=g('hinge3'), tr=g('tractions');
+  if(pdc==null||fs==null||bp==null||hg==null||tr==null) return null;
+  const e1=x=>x*1.10;                       // 3RM → 1RM estimé (Epley)
+  const pts=Math.min(tr,20)*0.10*pdc;       // tractions plafonnées à 20
+  return (e1(fs)+e1(bp)+e1(hg)+pts)/pdc;
+}
+function tRSALabel(v){ return v==null?'—' : v<5.75?'Poor' : v<6.5?'Good' : 'Excellent'; }
+
+function tMTI45(){
+  const d=tLoad(), pdc=tPDC();
+  const g=k=>{ const r=d[k]; const v=r?parseFloat(r.val):NaN; return isNaN(v)?null:v; };
+  let total=0, n=0, detail=[];
+  const hg=g('hinge3');
+  if(hg!=null && pdc){ const r=hg/pdc;
+    const p = r<1.36?0 : r<1.46?1 : r<1.56?2 : r<=1.65?3 : 4;
+    total+=p; n++; detail.push(['Hinge '+r.toFixed(2)+'× PDC', p]); }
+  [['pompes','Pompes HR'],['keglift','Keg lift'],['longue','Épreuve longue']].forEach(([k,lbl])=>{
+    const ep=T_EPREUVES.find(e=>e.id===k), v=g(k);
+    if(v!=null && ep.score){ const p=ep.score(v); total+=p; n++; detail.push([lbl,p]); }
+  });
+  return {total, n, detail};
+}
+function tMTILabel(t){ return t<8?'Poor' : t<12?'Good' : 'Excellent'; }
+
+function tScoreOf(ep, res){
+  if(!res || res.val===''||res.val==null) return null;
+  const v = parseFloat(res.val);
+  if(isNaN(v)) return null;
+  return ep.score ? ep.score(v) : null;
+}
+
+// axes du radar = qualités uniques, score = meilleur score disponible sur l'axe
+function tAxes(){
+  const res = tLoad();
+  const map = {};
+  const pdc = tPDC();
+  T_EPREUVES.forEach(ep=>{
+    if(!ep.axe) return;                     // PDC : donnée, pas une qualité
+    if(!map[ep.axe]) map[ep.axe] = {axe:ep.axe, cat:ep.cat, scores:[], tested:false};
+    const r = res[ep.id];
+    if(r && r.val!=='') map[ep.axe].tested = true;
+    let sc = null;
+    if(ep.ratio && r && r.val!=='' && pdc){  // 3RM : score = ratio atteint / ratio Good
+      const ratio = parseFloat(r.val)/pdc;
+      const g = ep.ratio;
+      sc = ratio < g*0.8 ? 0 : ratio < g*0.92 ? 1 : ratio < g ? 2 : ratio < g*1.15 ? 3 : 4;
+    } else { sc = tScoreOf(ep, r); }
+    if(sc!=null) map[ep.axe].scores.push(sc);
+  });
+  // Force relative : ajouter le score RSA à l'axe
+  const rsa = tRSA();
+  if(rsa!=null && map['Force relative']){
+    map['Force relative'].tested = true;
+    map['Force relative'].scores.push(rsa<5.0?0 : rsa<5.75?1 : rsa<6.0?2 : rsa<6.5?3 : 4);
+  }
+  return Object.values(map).map(a=>({
+    ...a, score: a.scores.length ? a.scores.reduce((x,y)=>x+y,0)/a.scores.length : null
+  }));
+}
+
+function tRadarSVG(){
+  const axes = tAxes();
+  const n = axes.length, cx=170, cy=170, R=118;
+  const NS='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(NS,'svg');
+  svg.setAttribute('viewBox','0 0 340 340');
+  svg.setAttribute('width','100%');
+  const mk=(t,at)=>{ const e=document.createElementNS(NS,t); Object.entries(at).forEach(([k,v])=>e.setAttribute(k,v)); return e; };
+  // cercles
+  [1,2,3,4].forEach(lv=>{
+    svg.appendChild(mk('circle',{cx,cy,r:R*lv/4,fill:'none',stroke:'#1e293b','stroke-width':1,'stroke-dasharray':'3 3'}));
+  });
+  const pt=(i,r)=>{ const a=-Math.PI/2 + i*2*Math.PI/n; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  // rayons + labels
+  axes.forEach((a,i)=>{
+    const [x,y]=pt(i,R);
+    svg.appendChild(mk('line',{x1:cx,y1:cy,x2:x,y2:y,stroke:'#1e293b','stroke-width':1}));
+    const [lx,ly]=pt(i,R+14);
+    const t=mk('text',{x:lx,y:ly,'font-size':6.2,'font-weight':700,
+      fill: a.tested? '#e2e8f0':'#475569',
+      'text-anchor': lx>cx+6?'start':(lx<cx-6?'end':'middle')});
+    t.textContent = a.axe;
+    svg.appendChild(t);
+  });
+  // polygone des scores
+  const pts = axes.map((a,i)=> pt(i, a.score!=null ? R*a.score/4 : 0));
+  if(axes.some(a=>a.score!=null)){
+    svg.appendChild(mk('polygon',{points:pts.map(p=>p.join(',')).join(' '),
+      fill:'#f5a623','fill-opacity':0.18,stroke:'#f5a623','stroke-width':2}));
+  }
+  axes.forEach((a,i)=>{
+    const [x,y]=pt(i, a.score!=null ? R*a.score/4 : 0);
+    if(a.score!=null){
+      svg.appendChild(mk('circle',{cx:x,cy:y,r:3.5,fill:T_CAT_COLOR[a.cat]||'#f5a623',stroke:'#0d1525','stroke-width':1.5}));
+    } else {
+      const [ox,oy]=pt(i,R);
+      svg.appendChild(mk('circle',{cx:ox,cy:oy,r:3,fill:'none',stroke:'#475569','stroke-width':1.5,'stroke-dasharray':'2 2'}));
+    }
+  });
+  return svg;
+}
+
+function renderTests(){
+  const wrap=$('div',{});
+  const res=tLoad();
+  const axes=tAxes();
+  const done=axes.filter(a=>a.tested).length;
+  const moy=axes.filter(a=>a.score!=null);
+  const scoreGlobal = moy.length ? (moy.reduce((s,a)=>s+a.score,0)/moy.length) : null;
+
+  wrap.appendChild($('div',{class:'section-hdr'},'🎯 Batterie BE READY'));
+  wrap.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'8px'}},
+    done+' / '+axes.length+' qualités mesurées'+(scoreGlobal!=null? ' · moyenne '+scoreGlobal.toFixed(2)+'/4':'')));
+
+  // plancher éliminatoire
+  const asym = res.asym ? parseFloat(res.asym.val) : null;
+  const lg = res.longue ? tScoreOf(T_EPREUVES.find(e=>e.id==='longue'), res.longue) : null;
+  const rsaFloor = tRSA();
+  const alerts=[];
+  if(asym!=null && asym>20) alerts.push('Asymétrie '+asym+' % > 20 % — score plafonné');
+  if(lg===0) alerts.push('Épreuve longue à 0 pt — score plafonné');
+  if(rsaFloor!=null && rsaFloor<5.0) alerts.push('RSA '+rsaFloor.toFixed(2)+' < 5,0 — score plafonné');
+  if(alerts.length){
+    const box=$('div',{style:{background:'#3f1d1d',border:'1px solid #7f1d1d',borderRadius:'8px',padding:'8px 10px',marginBottom:'8px'}});
+    box.appendChild($('div',{style:{fontSize:'10px',fontWeight:'800',color:'#fca5a5',marginBottom:'3px'}},'⚠ PLANCHER ÉLIMINATOIRE'));
+    alerts.forEach(a=>box.appendChild($('div',{style:{fontSize:'10px',color:'#fecaca'}},'· '+a)));
+    wrap.appendChild(box);
+  }
+
+  // radar
+  const rbox=$('div',{style:{background:'#0d1525',borderRadius:'10px',padding:'6px',marginBottom:'10px'}});
+  rbox.appendChild(tRadarSVG());
+  rbox.appendChild($('div',{style:{fontSize:'8px',color:'#475569',textAlign:'center',paddingBottom:'4px'}},
+    'Anneaux = 1 à 4 points · axe en pointillé = non mesuré'));
+  wrap.appendChild(rbox);
+
+  // saisies
+  T_EPREUVES.forEach(ep=>{
+    const r = res[ep.id] || {val:'',date:''};
+    const sc = tScoreOf(ep,r);
+    const row=$('div',{style:{background:'#111d2e',borderRadius:'8px',padding:'7px 9px',marginBottom:'6px'}});
+    const top=$('div',{style:{display:'flex',alignItems:'center',gap:'6px',marginBottom:'5px'}});
+    top.appendChild($('span',{style:{fontSize:'11px',fontWeight:'700',flex:'1'}}, ep.lbl));
+    if(sc!=null) top.appendChild($('span',{style:{fontSize:'10px',fontWeight:'800',
+      color: sc>=3?'#10b981': sc>=2?'#f59e0b':'#ef4444'}}, sc+'/4'));
+    top.appendChild($('span',{class:'help-icon',onclick:(e)=>showTooltip(e,ep.help)},'?'));
+    row.appendChild(top);
+    const line=$('div',{style:{display:'flex',gap:'5px',alignItems:'center'}});
+    const iv=$('input',{class:'input-mod',type:'number',step:'0.01',style:{width:'72px'},
+      value:r.val, placeholder:'—',
+      onchange:(e)=>{ const d=tLoad(); d[ep.id]={val:e.target.value, date:(d[ep.id]&&d[ep.id].date)||todayStr}; tSave(d); render(); }});
+    line.appendChild(iv);
+    line.appendChild($('span',{style:{fontSize:'9px',color:'#475569',minWidth:'46px'}}, ep.unit));
+    const dv=$('input',{type:'date',class:'input-mod',style:{width:'128px',fontSize:'10px'},
+      value:r.date||'',
+      onchange:(e)=>{ const d=tLoad(); d[ep.id]={val:(d[ep.id]&&d[ep.id].val)||'', date:e.target.value}; tSave(d); render(); }});
+    line.appendChild(dv);
+    if(r.val!==''){
+      line.appendChild($('span',{style:{marginLeft:'auto',fontSize:'14px',cursor:'pointer',color:'#475569'},
+        onclick:()=>{ const d=tLoad(); delete d[ep.id]; tSave(d); render(); }},'🗑'));
+    }
+    row.appendChild(line);
+    wrap.appendChild(row);
+  });
+
+  // ── SCORES COMPOSITES (info) ──
+  const rsa = tRSA(), mti = tMTI45();
+  const box=$('div',{style:{background:'#0d1525',border:'1px solid #1e2d42',borderRadius:'10px',padding:'10px 12px',marginTop:'10px'}});
+  box.appendChild($('div',{style:{fontSize:'10px',fontWeight:'800',color:'#f5a623',marginBottom:'6px'}},'SCORES COMPOSITES'));
+
+  const l1=$('div',{style:{display:'flex',alignItems:'baseline',gap:'7px',marginBottom:'3px'}});
+  l1.appendChild($('span',{style:{fontSize:'11px',fontWeight:'700',flex:'1'}},'RSA (MTI)'));
+  l1.appendChild($('span',{style:{fontSize:'14px',fontWeight:'800',
+    color: rsa==null?'#475569' : rsa>=6.5?'#10b981' : rsa>=5.75?'#f59e0b':'#ef4444'}},
+    rsa==null?'—':rsa.toFixed(2)));
+  l1.appendChild($('span',{style:{fontSize:'10px',color:'#64748b'}}, rsa==null?'':tRSALabel(rsa)));
+  box.appendChild(l1);
+  box.appendChild($('div',{style:{fontSize:'8.5px',color:'#475569',marginBottom:'7px'}},
+    rsa==null ? 'Renseigner PDC + les 3 lifts 3RM + tractions'
+              : 'Good ≥ 5,75 · Excellent ≥ 6,5 — calculé sur les 3RM convertis (×1,10)'));
+
+  const l2=$('div',{style:{display:'flex',alignItems:'baseline',gap:'7px',marginBottom:'3px'}});
+  l2.appendChild($('span',{style:{fontSize:'11px',fontWeight:'700',flex:'1'}},'MTI 45+'));
+  l2.appendChild($('span',{style:{fontSize:'14px',fontWeight:'800',
+    color: mti.total>=12?'#10b981' : mti.total>=8?'#f59e0b':'#ef4444'}}, mti.total+'/16'));
+  l2.appendChild($('span',{style:{fontSize:'10px',color:'#64748b'}}, mti.n?tMTILabel(mti.total):''));
+  box.appendChild(l2);
+  box.appendChild($('div',{style:{fontSize:'8.5px',color:'#475569'}},
+    mti.n ? mti.detail.map(d=>d[0]+' '+d[1]+'pt').join(' · ')+(mti.n<4?' — '+(4-mti.n)+' épreuve(s) manquante(s)':'')
+          : 'Hinge 3RM + pompes + keg lift + épreuve longue'));
+  box.appendChild($('div',{style:{fontSize:'8.5px',color:'#475569',marginTop:'2px'}},'Good 8-11 · Excellent ≥ 12'));
+  wrap.appendChild(box);
+
+  return wrap;
 }
 
 // ── TOOLTIP ──────────────────────────────────────────────────────────────
@@ -7657,7 +7944,8 @@ function renderSessionCards(el, session){
 
       card.appendChild($('div',{style:{fontSize:'11px',color:'#94a3b8',marginBottom:'4px'}},'Modalité'));
       const rM = $('div',{style:rowStyle});
-      [['velo','🚴 Vélo'],['course','🏃 Course'],['corde','🪢 Corde'],['swing','🔔 Swing']]
+      [['velo','🚴 Vélo',
+            ['S8','S8 tirage de pneu (corde)','12-15 min de tirage CONTINU à la corde. ✅ SEULE MODALITÉ SEUIL VALIDÉE PAR LA MESURE (08/08 : franchit SV1, max 158 = 86% FCmax, montait encore à l\'arrêt). Engage une grande masse musculaire en continu → le cardio devient limitant, PAS le grip. Zéro impact. Si le pneu est lourd : allonger la corde et tirer plus lentement mais SANS PAUSE (la continuité prime sur la charge).']],['course','🏃 Course'],['corde','🪢 Corde'],['swing','🔔 Swing']]
         .forEach(o => rM.appendChild(chip(o[1], cfg.modalite===o[0], ()=>setCfg({modalite:o[0]}))));
       card.appendChild(rM);
 
@@ -7815,7 +8103,7 @@ function renderSessionCards(el, session){
                choices:[['bulgarian_split_squat','Bulgarian'],['presse_une_jambe','Presse une jambe']] },
       // Rappel puissance (priming FB) : lancer/swing explosif au choix.
       rappel_puiss: { roles:new Set(['rappel_puissance']),
-               choices:[['med_ball_horizontal','Lancer horizontal'],['med_ball_rotationnel','Lancer rotationnel'],['pseudo_lancer_rot_elastique','Pseudo lancer élastique'],['kb_swing_alactique_28','KB swing explosif']] },
+               choices:[['med_ball_horizontal','Lancer horizontal'],['med_ball_rotationnel','Lancer rotationnel'],['pseudo_lancer_rot_elastique','Pseudo lancer élastique'],['kb_swing_alactique_28','KB swing explosif'],['pompe_explosive','Pompe explosive']] },
       // Volume quadriceps BFR : air squat (défaut, global) ou leg extension (isolé).
       quad_bfr: { roles:new Set(['volume_quadriceps']),
                choices:[['air_squat_bfr','Air squat BFR'],['leg_extension_machine','Leg extension BFR']] },
