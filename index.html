@@ -3684,528 +3684,107 @@ input,select,textarea{box-sizing:border-box}
   },
   "session_types": [
     {
-      "id": "haut_1",
-      "nom": "H1",
-      "frequence_cible": "1x/semaine, début de semaine (SNC frais)",
-      "semaine_classique": true,
+      "id": "vo2max",
+      "nom": "VO2",
+      "frequence_cible": "1x/semaine en phase développement aérobie, jamais 2 séances hautes intensité aérobie le même jour que seuil",
+      "semaine_classique": false,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
-        "force_max",
-        "alactique"
+        "aerobie_seuil"
       ],
-      "objectif": "Force max — Haut 1 (jour lourd tirage).\nTractions lestées en ouverture (séries au même poids).\nMilitaire top set.\nRow bûcheron volume.\nDéveloppé incliné DB volume.\nPuis prophylaxie épaule, nuque, twist, gainage.",
+      "objectif": "Intervalles courts 4x4 min à >170 bpm. Réservé aux phases où la base aérobie est déjà réamorcée.",
       "slots": [
         {
-          "role": "echauffement_general",
-          "category": "cars_mobilite",
-          "exercice_pref": "echauffement_corde",
-          "obligatoire": false,
-          "format_fixe": "3-5 min, allure facile",
-          "rpe_fixe": "3-4",
-          "note": "3-5 min, allure facile. Alternative : KB swing lourd (primer alactique). Corde = impact, seulement si IT band silencieux ; sinon vélo ou escaliers."
-        },
-        {
-          "role": "cars_echauffement",
-          "category": "cars_mobilite",
+          "role": "aerobie_vo2max",
+          "category": "aerobie",
           "qualities": [
-            "mobilite"
+            "aerobie_seuil"
           ],
-          "obligatoire": false,
-          "note": "Capteur quotidien d'amplitude autant qu'échauffement (chapitre 6). Lent, contrôlé, sans compensation.",
-          "exercice_pref": "cars_epaule"
-        },
-        {
-          "role": "mobilite_thoracique",
-          "category": "cars_mobilite",
-          "exercice_pref": "rotation_thoracique",
-          "obligatoire": false,
-          "format_fixe": "×8/côté, quadrupédie, lent",
-          "rpe_fixe": "2-3",
-          "note": "Distincte des CARs épaule — prépare le thorax pour le travail au-dessus de la tête."
-        },
-        {
-          "role": "activation_epaule",
-          "category": "prophylaxie_epaule",
-          "exercice_pref": "rotation_ext_epaule",
-          "obligatoire": false,
-          "format_fixe": "1-2×15 très léger (élastique le plus souple)",
-          "rpe_fixe": "3-4",
-          "note": "Activation/priming du tendon AVANT la charge — jamais fatigant. Effet antalgique et de préparation documenté sur tendinopathie. Ne remplace pas les séries prophylactiques de fin de séance, qui restent obligatoires.",
-          "repos": "1 min"
-        },
-        {
-          "role": "tirage_vertical_leste",
-          "category": "haut_force",
-          "exercice_pref": "chin_ups",
+          "exercice_pref": "velo_z2_seuil_vo2max",
           "obligatoire": true,
-          "note": "TRACTIONS LESTÉES en ouverture, frais. Séries au MÊME poids (approche cluster) plutôt qu'un top set + back-off : le grip et la technique tiennent mieux, plus de volume de qualité. Garder 1-2 reps en réserve chaque série. Progression : +lest quand les 4 séries passent propres.",
-          "format_fixe": "4×3-4"
-        },
+          "note": "Nécessite mesure de puissance/FC fiable — vélo Assioma en priorité. Non reproductible fidèlement en nomade."
+        }
+      ]
+    },
+    {
+      "id": "vma",
+      "nom": "VMA",
+      "frequence_cible": "ponctuel — test de contrôle ou bloc développement course",
+      "semaine_classique": false,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_seuil"
+      ],
+      "objectif": "Mesure ou développement de la vitesse maximale aérobie. Conditionné au protocole retour course (IT band silencieux 3 sem).",
+      "slots": [
         {
-          "role": "push_vertical_principal",
-          "category": "haut_force",
-          "exercice_pref": "militaire_barre",
+          "role": "vma_effort",
+          "category": "aerobie",
+          "exercice_pref": "course_retour_conditionnel",
           "obligatoire": true,
-          "note": "Militaire — top set. Après les tractions, encore frais."
-        },
+          "contrainte": "genou_G_itband — bloqué si flag actif"
+        }
+      ]
+    },
+    {
+      "id": "z2",
+      "nom": "Z2",
+      "frequence_cible": "2-4x/semaine, quotidien idéalement en base",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_base"
+      ],
+      "objectif": "Base aérobie, zéro impact, respiration nasale = capteur de zone. Zone cible : 130-150 bpm (SV1 labo 153, bascule nasale mesurée 145-149 le 05/07). 2 bras uniquement. En Guyane (KB 16/20/28) : format en cours de calibration — voir Journal Z2 (essais : 20 kg continu → blocs mixtes 20/28 → step-ups lents). Nasale = capteur, bouche assumée au-dessus de ~145.",
+      "slots": [
         {
-          "role": "tirage_horizontal",
-          "category": "haut_force",
-          "exercice_pref": "row_bucheron",
-          "obligatoire": true,
-          "note": "Row bûcheron VOLUME (unilatéral)."
-        },
-        {
-          "role": "push_horizontal_secondaire",
-          "category": "haut_force",
-          "exercice_pref": "db_bench_incline",
-          "obligatoire": true,
-          "note": "Développé incliné DB VOLUME."
-        },
-        {
-          "role": "prophylaxie_epaule",
-          "category": "prophylaxie_epaule",
-          "obligatoire": true,
-          "note": "Face pull + rotation ext — ne se coupe jamais, même en délestage.",
-          "exercice_pref": "face_pull",
-          "repos": "1 min"
-        },
-        {
-          "role": "accessoire_shrug",
-          "category": "haut_force",
-          "exercice_pref": "shrug",
-          "obligatoire": true,
-          "note": "Trapèze supérieur — port de charge lourde (sac, gilet, camarade) et santé cervicale sous casque. 2-3×12-15."
-        },
-        {
-          "role": "prophylaxie_nuque",
-          "category": "haut_iso_volume",
-          "exercice_pref": "nuque_iso_elastique",
-          "obligatoire": true
-        },
-        {
-          "role": "rotation_puissance",
-          "category": "gainage",
-          "exercice_pref": "russian_twist",
-          "obligatoire": false,
-          "note": "Twist (rotation contrôlée). Défaut russian twist (sans matériel). Sélecteur : russian / landmine / chop-lift. [SUPERSET gainage — enchaîner sans repos, hors nuque]",
-          "repos": "enchaîné"
-        },
-        {
-          "role": "gainage_finisher",
-          "category": "gainage",
+          "role": "aerobie_base_courte",
+          "category": "aerobie",
           "qualities": [
-            "anti_extension"
+            "aerobie_base"
           ],
-          "exercice_pref": "dragon_flag",
+          "exercice_pref": "velo_z2_seuil_vo2max",
           "obligatoire": true,
-          "note": "Dragon flag (anti-extension). À défaut, hardstyle plank (sélecteur). ⚠ coude G au dragon flag. [SUPERSET gainage — enchaîner sans repos, hors nuque]",
-          "repos": "enchaîné"
+          "note": "Substitut universel toutes fenêtres : kb_swing_z2 ou marche nasale."
         },
         {
-          "role": "accessoire_biceps",
-          "category": "haut_force",
-          "exercice_pref": "curl_biceps_bfr",
+          "role": "z2_alt_stepups",
+          "category": "aerobie",
+          "exercice_pref": "step_ups_lents",
           "obligatoire": false,
-          "note": "Biceps — soutient les tractions. Version BFR : charge légère, épargne le coude (épicondyle). Optionnel.",
-          "repos": "30s"
-        },
-        {
-          "role": "accessoire_triceps",
-          "category": "haut_force",
-          "exercice_pref": "extension_triceps_bfr",
-          "obligatoire": false,
-          "note": "Triceps — soutient la poussée. Version BFR : charge légère, épargne le coude. Optionnel.",
-          "repos": "30s"
+          "note": "Alternative Z2 sans impact (plan B des swings) : zéro épaule, zéro grip, zéro impact. Allure continue, viser la zone 130-150."
         }
       ]
     },
     {
-      "id": "haut_2",
-      "nom": "H2",
-      "frequence_cible": "1x/semaine, fin de semaine",
+      "id": "t1_t2",
+      "nom": "T1/T2",
+      "frequence_cible": "1×/semaine dès que la fenêtre d'annonce du test est active",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
-        "force_max",
-        "alactique"
+        "work_capacity",
+        "aerobie_seuil"
       ],
-      "objectif": "Force max — Haut 2 (jour lourd poussée).\nBench top set en ouverture.\nRowing séries de 6.\nDB press vertical volume.\nPull-ups volume (garantis chaque semaine, H2 ne saute pas).\nPuis prophylaxie, nuque, twist, gainage.",
+      "objectif": "Simulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
       "slots": [
         {
-          "role": "echauffement_general",
-          "category": "cars_mobilite",
-          "exercice_pref": "echauffement_corde",
-          "obligatoire": false,
-          "format_fixe": "3-5 min, allure facile",
-          "rpe_fixe": "3-4",
-          "note": "3-5 min, allure facile. Alternative : KB swing lourd (primer alactique). Corde = impact, seulement si IT band silencieux ; sinon vélo ou escaliers."
-        },
-        {
-          "role": "cars_echauffement",
-          "category": "cars_mobilite",
-          "obligatoire": false,
-          "exercice_pref": "cars_epaule",
-          "note": "Capteur quotidien d'amplitude autant qu'échauffement (chapitre 6). Lent, contrôlé, sans compensation."
-        },
-        {
-          "role": "mobilite_thoracique",
-          "category": "cars_mobilite",
-          "exercice_pref": "rotation_thoracique",
-          "obligatoire": false,
-          "format_fixe": "×8/côté, quadrupédie, lent",
-          "rpe_fixe": "2-3",
-          "note": "Distincte des CARs épaule — prépare le thorax pour le travail au-dessus de la tête."
-        },
-        {
-          "role": "activation_epaule",
-          "category": "prophylaxie_epaule",
-          "exercice_pref": "rotation_ext_epaule",
-          "obligatoire": false,
-          "format_fixe": "1-2×15 très léger (élastique le plus souple)",
-          "rpe_fixe": "3-4",
-          "note": "Activation/priming du tendon AVANT la charge — jamais fatigant. Effet antalgique et de préparation documenté sur tendinopathie. Ne remplace pas les séries prophylactiques de fin de séance, qui restent obligatoires.",
-          "repos": "1 min"
-        },
-        {
-          "role": "push_horizontal_principal",
-          "category": "haut_force",
-          "exercice_pref": "bench_plat_barre",
+          "role": "t1_denivele",
+          "category": "aerobie",
+          "exercice_pref": "t1_escaliers",
           "obligatoire": true,
-          "note": "BENCH — top set en ouverture, frais. RAMPE avant le top set : ~5×barre à vide → 5×~50% → 3×~70% → 2×~85% → top set ×3. Montée progressive, séries d'approche non comptées comme volume.",
-          "format_fixe": "Top set ×3",
-          "rpe_fixe": "RPE 8 · RIR 1-2"
-        },
-        {
-          "role": "tirage_horizontal",
-          "category": "haut_force",
-          "exercice_pref": "pendlay_row",
-          "obligatoire": true,
-          "note": "Rowing séries de 6 (lourd modéré)."
-        },
-        {
-          "role": "push_vertical_secondaire",
-          "category": "haut_force",
-          "exercice_pref": "db_press_vertical",
-          "obligatoire": true,
-          "note": "DB press vertical VOLUME."
-        },
-        {
-          "role": "tirage_vertical_volume",
-          "category": "haut_force",
-          "exercice_pref": "pull_ups_pronation",
-          "obligatoire": true,
-          "note": "Pull-ups VOLUME (pronation). H2 ne saute pas → garantit des pull-ups chaque semaine."
-        },
-        {
-          "role": "accessoire_shrug",
-          "category": "haut_force",
-          "exercice_pref": "shrug",
-          "obligatoire": true,
-          "note": "Trapèze supérieur — port de charge lourde (sac, gilet, camarade) et santé cervicale sous casque. 2-3×12-15."
-        },
-        {
-          "role": "prophylaxie_epaule",
-          "category": "prophylaxie_epaule",
-          "obligatoire": true,
-          "exercice_pref": "face_pull",
-          "note": "Face pull — prophylaxie épaule [SUPERSET avec rotation externe].",
-          "repos": "1 min"
-        },
-        {
-          "role": "prophylaxie_rotation_ext",
-          "category": "prophylaxie_epaule",
-          "exercice_pref": "rotation_ext_epaule",
-          "obligatoire": false,
-          "note": "Rotation externe — prophylaxie épaule G [SUPERSET avec face pull]. Ne se coupe jamais.",
-          "repos": "1 min"
-        },
-        {
-          "role": "prophylaxie_nuque",
-          "category": "haut_iso_volume",
-          "exercice_pref": "nuque_iso_elastique",
-          "obligatoire": true
-        },
-        {
-          "role": "rotation_puissance",
-          "category": "gainage",
-          "exercice_pref": "russian_twist",
-          "obligatoire": false,
-          "note": "Twist (rotation contrôlée). Défaut russian twist (sans matériel). Sélecteur : russian / landmine / chop-lift. [SUPERSET gainage — enchaîner sans repos, hors nuque]",
-          "repos": "enchaîné"
-        },
-        {
-          "role": "gainage_finisher",
-          "category": "gainage",
-          "exercice_pref": "dragon_flag",
-          "obligatoire": true,
-          "note": "Dragon flag (anti-extension). À défaut, hardstyle plank (sélecteur). ⚠ coude G au dragon flag. [SUPERSET gainage — enchaîner sans repos, hors nuque]",
-          "repos": "enchaîné"
-        },
-        {
-          "role": "accessoire_biceps",
-          "category": "haut_force",
-          "exercice_pref": "curl_biceps_bfr",
-          "obligatoire": false,
-          "note": "Biceps — soutient les tractions. Version BFR : charge légère, épargne le coude (épicondyle). Optionnel.",
-          "repos": "30s"
-        },
-        {
-          "role": "accessoire_triceps",
-          "category": "haut_force",
-          "exercice_pref": "extension_triceps_bfr",
-          "obligatoire": false,
-          "note": "Triceps — soutient la poussée. Version BFR : charge légère, épargne le coude. Optionnel.",
-          "repos": "30s"
-        }
-      ]
-    },
-    {
-      "id": "bas_1",
-      "nom": "B1",
-      "frequence_cible": "1x/semaine",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "force_unilat_antiasym",
-        "force_max"
-      ],
-      "objectif": "Force bas — jour 1.\nSquat volume + hinge volume.\nUnilatéral genou-dominant.\nGainage anti-rotation (Pallof).\nÉchauffement JJB sol possible (maison).",
-      "slots": [
-        {
-          "role": "echauffement_general",
-          "category": "cars_mobilite",
-          "exercice_pref": "echauffement_corde",
-          "obligatoire": false,
-          "format_fixe": "3-5 min, allure facile",
-          "rpe_fixe": "3-4",
-          "note": "3-5 min, allure facile. Alternative : KB swing lourd (primer alactique). Corde = impact, seulement si IT band silencieux ; sinon vélo ou escaliers."
-        },
-        {
-          "role": "priming_jjb_sol",
-          "category": "cars_mobilite",
-          "exercice_pref": "deplacements_jjb_sol",
-          "obligatoire": false,
-          "note": "Déplacements JJB au sol (shrimp + butt scoot) — mention échauffement maison/tatami, sans charge ni compte. Réchauffe hanches/tronc + motricité de sol, sans impact. ⚠ genou G au shrimp."
-        },
-        {
-          "role": "cars_echauffement",
-          "category": "cars_mobilite",
-          "exercice_pref": "cars_hanche",
-          "obligatoire": false,
-          "note": "CARs hanche + activation clamshell/Petersen."
-        },
-        {
-          "role": "activation_fessier",
-          "category": "cars_mobilite",
-          "exercice_pref": "clamshell_g_first",
-          "obligatoire": false,
-          "format_fixe": "G ×15, élastique — activation, pas renforcement",
-          "rpe_fixe": "2-3",
-          "note": "Réveil du fessier moyen G AVANT la charge : c'est la cause racine du valgus et de l'IT band. Charger un hinge lourd sans l'avoir activé laisse la chaîne défaillante en place sous la barre."
-        },
-        {
-          "role": "hinge_principal",
-          "category": "bas_force",
-          "exercice_pref": "trap_bar_deadlift",
-          "obligatoire": true,
-          "note": "Jour LOURD du hinge — top set en focus Force, back-off 2×5 à −10 %. Trap bar : prise neutre (poignet G protégé), position adaptée aux longs segments. Couplage inter-séances : si le squat du jour 2 se dégrade, couper d'abord le back-off (2×5 → 1×5), jamais le top set."
-        },
-        {
-          "role": "unilateral_genou",
-          "category": "bas_force",
-          "exercice_pref": "bulgarian_split_squat",
-          "obligatoire": true,
-          "note": "G en premier, fixe la charge du D, plafonné RPE 8. Rôle CONSERVÉ pour le contrôle du valgus en appui instable (cause racine genou/IT band) — à la maison il cède le volume principal à la presse une jambe et devient un travail de contrôle plus léger (3×8/côté). En déplacement, il reste le volume genou-dominant principal.",
-          "rpe_fixe": "7-8"
-        },
-        {
-          "role": "carry",
-          "category": "bas_force",
-          "exercice_pref": "farmer_carry",
-          "obligatoire": true,
-          "note": "Structurel, non optionnel : transfert opérationnel maximal (grip, gainage sous charge réelle, port). Farmer lourd ou suitcase unilatéral (anti-inclinaison, asymétrie G/D). Après la back extension — le carry a besoin d'érecteurs frais, donc back extension d'abord si les deux sont faits."
-        },
-        {
-          "role": "adducteur_prophylaxie",
-          "category": "bas_force",
-          "exercice_pref": "copenhagen_adductor",
-          "obligatoire": true,
-          "note": "Copenhagen — DESSERRER le brassard avant (pas sous occlusion). Prophylaxie adducteurs (aine, genou, MMA).",
-          "repos": "1 min"
-        },
-        {
-          "role": "ischio_jambiers",
-          "category": "bas_force",
-          "exercice_pref": "trx_leg_curl",
-          "obligatoire": true,
-          "note": "Ischios BFR (TRX). 1er de la séquence BFR jambe. Brassard serré, on enchaîne l'air squat sans desserrer.",
-          "exercice_alt": [
-            "leg_curl_machine",
-            "nordic_curl_elastique"
-          ],
-          "format_fixe": "BFR 30-15-15-15",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
-          "repos": "30s"
-        },
-        {
-          "role": "volume_quadriceps",
-          "category": "bas_force",
-          "exercice_pref": "air_squat_bfr",
-          "obligatoire": false,
-          "note": "Quads BFR. 2e sous la même occlusion (enchaîné au leg curl, sans desserrer). Total occlusion < 15 min. Option leg extension au sélecteur.",
-          "format_fixe": "BFR 30-15-15-15",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
-          "repos": "30s"
-        },
-        {
-          "role": "anti_rotation",
-          "category": "gainage",
-          "exercice_pref": "pallof_press",
-          "obligatoire": true,
-          "repos": "enchaîné",
-          "note": "[SUPERSET gainage — enchaîner sans repos, hors nuque]"
-        },
-        {
-          "role": "anti_extension_finisher",
-          "category": "gainage",
-          "exercice_pref": "dragon_flag",
-          "obligatoire": false,
-          "repos": "enchaîné",
-          "note": "[SUPERSET gainage — enchaîner sans repos, hors nuque]"
-        },
-        {
-          "role": "cou_optionnel",
-          "category": "haut_iso_volume",
-          "exercice_pref": "nuque_iso_elastique",
-          "obligatoire": true,
-          "note": "Optionnelle en Bas : sans lien avec le travail du jour. Les trois séances Haut portent la dose hebdomadaire."
-        }
-      ]
-    },
-    {
-      "id": "bas_2",
-      "nom": "B2",
-      "frequence_cible": "1x/semaine",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "force_max"
-      ],
-      "objectif": "Force bas — jour 2.\nSquat lourd (top set) + hinge lourd.\nGainage anti-rotation (Pallof).\nÉchauffement JJB sol possible (maison).",
-      "slots": [
-        {
-          "role": "echauffement_general",
-          "category": "cars_mobilite",
-          "exercice_pref": "echauffement_corde",
-          "obligatoire": false,
-          "format_fixe": "3-5 min, allure facile",
-          "rpe_fixe": "3-4",
-          "note": "3-5 min, allure facile. Alternative : KB swing lourd (primer alactique). Corde = impact, seulement si IT band silencieux ; sinon vélo ou escaliers."
-        },
-        {
-          "role": "priming_jjb_sol",
-          "category": "cars_mobilite",
-          "exercice_pref": "deplacements_jjb_sol",
-          "obligatoire": false,
-          "note": "Déplacements JJB au sol (shrimp + butt scoot) — mention échauffement maison/tatami, sans charge ni compte. Réchauffe hanches/tronc + motricité de sol, sans impact. ⚠ genou G au shrimp."
-        },
-        {
-          "role": "cars_echauffement",
-          "category": "cars_mobilite",
-          "exercice_pref": "cars_hanche",
-          "obligatoire": false
-        },
-        {
-          "role": "activation_fessier",
-          "category": "cars_mobilite",
-          "exercice_pref": "clamshell_g_first",
-          "obligatoire": false,
-          "format_fixe": "G ×15, élastique — activation, pas renforcement",
-          "rpe_fixe": "2-3",
-          "note": "Réveil du fessier moyen G AVANT la charge : c'est la cause racine du valgus et de l'IT band. Charger un hinge lourd sans l'avoir activé laisse la chaîne défaillante en place sous la barre."
-        },
-        {
-          "role": "squat_bilateral",
-          "category": "bas_force",
-          "exercice_pref": "zercher_squat",
-          "obligatoire": true,
-          "note": "Jour LOURD du squat — top set en focus Force, uniquement genou silencieux (sinon presse et le top set attend). Phase de reprise genou : tempo 3-1-X-1 (top set alors sous-maximal) ; genou silencieux durablement : sans tempo, descente contrôlée."
-        },
-        {
-          "role": "hinge_volume",
-          "category": "bas_force",
-          "exercice_pref": "rdl",
-          "obligatoire": true,
-          "format_fixe": "3-4×6, RIR 2",
+          "format_fixe": "10-15 min de montées (escaliers / côte), allure soutenue",
           "rpe_fixe": "7-8",
-          "note": "Jour VOLUME du hinge — jamais de top set ici, le lourd vit en Bas 1."
+          "note": "T1 — le dénivelé est le piège n°1 du test. Sac léger optionnel."
         },
         {
-          "role": "hinge_unilateral",
-          "category": "bas_force",
-          "exercice_pref": "rdl_une_jambe_barre",
-          "obligatoire": false,
-          "note": "RDL 1 jambe — accessoire correctif unilatéral, pendant hanche du Bulgarian. Anti-asymétrie G/D, proprioception genou/hanche, appui unipodal. Séries légères, focus contrôle et équilibre (pas la charge)."
-        },
-        {
-          "role": "carry",
-          "category": "bas_force",
-          "exercice_pref": "suitcase_carry",
+          "role": "t2_enchaine",
+          "category": "work_capacity",
+          "exercice_pref": "t2_enchaine",
           "obligatoire": true,
-          "note": "Structurel dans les deux Bas. En Bas 2, privilégier le suitcase (anti-inclinaison, asymétrie G/D)."
-        },
-        {
-          "role": "adducteur_prophylaxie",
-          "category": "bas_force",
-          "exercice_pref": "copenhagen_adductor",
-          "obligatoire": true,
-          "note": "Copenhagen — DESSERRER le brassard avant (pas sous occlusion). Prophylaxie adducteurs (aine, genou, MMA).",
-          "repos": "1 min"
-        },
-        {
-          "role": "ischio_jambiers",
-          "category": "bas_force",
-          "exercice_pref": "trx_leg_curl",
-          "obligatoire": false,
-          "note": "Ischios BFR (TRX). 1er de la séquence BFR jambe. Brassard serré, on enchaîne l'air squat sans desserrer.",
-          "format_fixe": "BFR 30-15-15-15",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
-          "repos": "30s"
-        },
-        {
-          "role": "volume_quadriceps",
-          "category": "bas_force",
-          "exercice_pref": "air_squat_bfr",
-          "obligatoire": false,
-          "note": "Quads BFR. 2e sous la même occlusion (enchaîné au leg curl, sans desserrer). Total occlusion < 15 min. Option leg extension au sélecteur.",
-          "exercice_alt": [],
-          "format_fixe": "BFR 30-15-15-15",
-          "rpe_fixe": "charge légère 20-30% · échec sur les dernières",
-          "repos": "30s"
-        },
-        {
-          "role": "anti_rotation",
-          "category": "gainage",
-          "exercice_pref": "pallof_press",
-          "obligatoire": true,
-          "repos": "enchaîné",
-          "note": "[SUPERSET gainage — enchaîner sans repos, hors nuque]"
-        },
-        {
-          "role": "anti_extension_finisher",
-          "category": "gainage",
-          "exercice_pref": "dragon_flag",
-          "obligatoire": false,
-          "repos": "enchaîné",
-          "note": "[SUPERSET gainage — enchaîner sans repos, hors nuque]"
-        },
-        {
-          "role": "cou_optionnel",
-          "category": "haut_iso_volume",
-          "exercice_pref": "nuque_iso_elastique",
-          "obligatoire": true,
-          "note": "Optionnelle en Bas : sans lien avec le travail du jour. Les trois séances Haut portent la dose hebdomadaire."
+          "format_fixe": "Enchaîné SANS repos : 20 pompes + 50 s gainage + 4 tractions strictes",
+          "rpe_fixe": "—",
+          "note": "Tractions propres en étant essoufflé = le critère. Barre requise (parc en déplacement) ; à défaut TRX row lesté strict, proxy dégradé. Tractions EN PRONATION (geste du test)."
         }
       ]
     },
@@ -4376,6 +3955,135 @@ input,select,textarea{box-sizing:border-box}
       ]
     },
     {
+      "id": "z2_long",
+      "nom": "Z2 long",
+      "frequence_cible": "1x/semaine, dimanche type",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_base"
+      ],
+      "objectif": "Durée plutôt qu'intensité — 45-60+ min. Peut intégrer dénivelé si test de stage approche.",
+      "slots": [
+        {
+          "role": "aerobie_base_longue",
+          "category": "aerobie",
+          "qualities": [
+            "aerobie_base"
+          ],
+          "exercice_pref": "velo_z2_seuil_vo2max",
+          "obligatoire": true,
+          "note": "Rando lestée, natation crawl (si piscine, prudence épaule G), ou marche lestée inclinée en substitut selon fenêtre."
+        }
+      ]
+    },
+    {
+      "id": "portage",
+      "nom": "Portage",
+      "frequence_cible": "1x/semaine (jour de Z2 longue)",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "portage",
+        "grip",
+        "gainage"
+      ],
+      "objectif": "PORTAGE — qualité AUTONOME, pas une composante de la Z2 longue.\nProgrammée le même jour (J4) mais SANS obligation d'enchaînement : peut se faire le matin, la Z2 le soir.\nTravaille le grip, le gainage sous charge et la tolérance au portage — trois qualités qu'aucune autre séance ne couvre depuis le passage au format 2-FB.\n⚠ Le RUCKING (portage sur distance) prendra ce créneau une fois l'étape 3 du genou validée.",
+      "slots": [
+        {
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "cars_epaule",
+          "obligatoire": false,
+          "note": "CARs épaule + poignet avant de charger le grip."
+        },
+        {
+          "role": "carry",
+          "category": "bas_force",
+          "exercice_pref": "farmer_carry",
+          "obligatoire": true,
+          "format_fixe": "3-4 × 40-60 m",
+          "rpe_fixe": "charge lourde, posture tenue",
+          "note": "Farmer carry bilatéral — grip et gainage global. Lâcher AVANT que la posture se dégrade. Noter quelle main lâche en premier (asymétrie)."
+        },
+        {
+          "role": "carry_unilateral",
+          "category": "bas_force",
+          "exercice_pref": "suitcase_carry",
+          "obligatoire": true,
+          "format_fixe": "3 × 30-40 m/côté",
+          "rpe_fixe": "contrôle, pas d'inclinaison",
+          "note": "Suitcase — ANTI-FLEXION LATÉRALE. G en premier. Le tronc reste droit : c'est le critère, pas la distance."
+        },
+        {
+          "role": "portage_sandbag",
+          "category": "bas_force",
+          "exercice_pref": "sandbag_work_capacity",
+          "obligatoire": false,
+          "format_fixe": "3-4 × 40 m",
+          "rpe_fixe": "encombrant, prise ingrate",
+          "note": "Bear hug ou over-shoulder — soulever-porter réel. Le sandbag apprend ce que la barre n'apprend pas : charge instable et sans prise."
+        },
+        {
+          "role": "cou_optionnel",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false,
+          "note": "Nuque ISO."
+        }
+      ]
+    },
+    {
+      "id": "agt",
+      "nom": "AGT",
+      "frequence_cible": "1x/semaine (après Haut 2)",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "alactique",
+        "repetition_puissance"
+      ],
+      "objectif": "Finisher alactique complet — puissance pure, récupération complète entre efforts.",
+      "slots": [
+        {
+          "role": "agt_principal",
+          "category": "alactique_finisher",
+          "exercice_pref": "kb_swing_alactique_28",
+          "obligatoire": true,
+          "note": "8-12 efforts max par séance, récup complète entre chaque. Passage 28→32 kg : drop-off <5 % à 28 sur deux mesures consécutives → 32 kg sur les 3-4 premiers efforts (les plus frais), puis étendre. Mesure de drop-off de référence : sur AGT autonome, à frais."
+        },
+        {
+          "role": "agt_rotation",
+          "category": "alactique_finisher",
+          "exercice_pref": "chop_lift_elastique",
+          "obligatoire": false
+        }
+      ]
+    },
+    {
+      "id": "seuil",
+      "nom": "Seuil",
+      "frequence_cible": "1x/semaine dès que la base Z2 tient (fenêtre maison surtout)",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "aerobie_seuil"
+      ],
+      "objectif": "Intervalles 8-12 min à SV2 (~166 bpm). Développe le seuil, pas la base. Zones ancrées sur le test FTP 20 min home-trainer (S2 de chaque grande fenêtre maison) : FTP = 95 % de la puissance moyenne, FC SV2 = FC moyenne des 15 dernières minutes.",
+      "slots": [
+        {
+          "role": "aerobie_seuil",
+          "category": "aerobie",
+          "qualities": [
+            "aerobie_seuil"
+          ],
+          "exercice_pref": "velo_z2_seuil_vo2max",
+          "obligatoire": true,
+          "note": "Substitut sans vélo (déplacement) : marche/course rapide si IT band OK, sinon KB swings cadence haute en dernier recours (imprécis pour le seuil)."
+        }
+      ]
+    },
+    {
       "id": "fb_2",
       "nom": "FB2",
       "frequence_cible": "1x/semaine (format 2-FB : FB1 + FB2 = 2 séances/sem)",
@@ -4542,125 +4250,6 @@ input,select,textarea{box-sizing:border-box}
       ]
     },
     {
-      "id": "seuil",
-      "nom": "Seuil",
-      "frequence_cible": "1x/semaine dès que la base Z2 tient (fenêtre maison surtout)",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "aerobie_seuil"
-      ],
-      "objectif": "Intervalles 8-12 min à SV2 (~166 bpm). Développe le seuil, pas la base. Zones ancrées sur le test FTP 20 min home-trainer (S2 de chaque grande fenêtre maison) : FTP = 95 % de la puissance moyenne, FC SV2 = FC moyenne des 15 dernières minutes.",
-      "slots": [
-        {
-          "role": "aerobie_seuil",
-          "category": "aerobie",
-          "qualities": [
-            "aerobie_seuil"
-          ],
-          "exercice_pref": "velo_z2_seuil_vo2max",
-          "obligatoire": true,
-          "note": "Substitut sans vélo (déplacement) : marche/course rapide si IT band OK, sinon KB swings cadence haute en dernier recours (imprécis pour le seuil)."
-        }
-      ]
-    },
-    {
-      "id": "vo2max",
-      "nom": "VO2",
-      "frequence_cible": "1x/semaine en phase développement aérobie, jamais 2 séances hautes intensité aérobie le même jour que seuil",
-      "semaine_classique": false,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "aerobie_seuil"
-      ],
-      "objectif": "Intervalles courts 4x4 min à >170 bpm. Réservé aux phases où la base aérobie est déjà réamorcée.",
-      "slots": [
-        {
-          "role": "aerobie_vo2max",
-          "category": "aerobie",
-          "qualities": [
-            "aerobie_seuil"
-          ],
-          "exercice_pref": "velo_z2_seuil_vo2max",
-          "obligatoire": true,
-          "note": "Nécessite mesure de puissance/FC fiable — vélo Assioma en priorité. Non reproductible fidèlement en nomade."
-        }
-      ]
-    },
-    {
-      "id": "vma",
-      "nom": "VMA",
-      "frequence_cible": "ponctuel — test de contrôle ou bloc développement course",
-      "semaine_classique": false,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "aerobie_seuil"
-      ],
-      "objectif": "Mesure ou développement de la vitesse maximale aérobie. Conditionné au protocole retour course (IT band silencieux 3 sem).",
-      "slots": [
-        {
-          "role": "vma_effort",
-          "category": "aerobie",
-          "exercice_pref": "course_retour_conditionnel",
-          "obligatoire": true,
-          "contrainte": "genou_G_itband — bloqué si flag actif"
-        }
-      ]
-    },
-    {
-      "id": "z2",
-      "nom": "Z2",
-      "frequence_cible": "2-4x/semaine, quotidien idéalement en base",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "aerobie_base"
-      ],
-      "objectif": "Base aérobie, zéro impact, respiration nasale = capteur de zone. Zone cible : 130-150 bpm (SV1 labo 153, bascule nasale mesurée 145-149 le 05/07). 2 bras uniquement. En Guyane (KB 16/20/28) : format en cours de calibration — voir Journal Z2 (essais : 20 kg continu → blocs mixtes 20/28 → step-ups lents). Nasale = capteur, bouche assumée au-dessus de ~145.",
-      "slots": [
-        {
-          "role": "aerobie_base_courte",
-          "category": "aerobie",
-          "qualities": [
-            "aerobie_base"
-          ],
-          "exercice_pref": "velo_z2_seuil_vo2max",
-          "obligatoire": true,
-          "note": "Substitut universel toutes fenêtres : kb_swing_z2 ou marche nasale."
-        },
-        {
-          "role": "z2_alt_stepups",
-          "category": "aerobie",
-          "exercice_pref": "step_ups_lents",
-          "obligatoire": false,
-          "note": "Alternative Z2 sans impact (plan B des swings) : zéro épaule, zéro grip, zéro impact. Allure continue, viser la zone 130-150."
-        }
-      ]
-    },
-    {
-      "id": "z2_long",
-      "nom": "Z2 long",
-      "frequence_cible": "1x/semaine, dimanche type",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "aerobie_base"
-      ],
-      "objectif": "Durée plutôt qu'intensité — 45-60+ min. Peut intégrer dénivelé si test de stage approche.",
-      "slots": [
-        {
-          "role": "aerobie_base_longue",
-          "category": "aerobie",
-          "qualities": [
-            "aerobie_base"
-          ],
-          "exercice_pref": "velo_z2_seuil_vo2max",
-          "obligatoire": true,
-          "note": "Rando lestée, natation crawl (si piscine, prudence épaule G), ou marche lestée inclinée en substitut selon fenêtre."
-        }
-      ]
-    },
-    {
       "id": "wc_glyco",
       "nom": "WC glyco",
       "frequence_cible": "1x/semaine — filière glycolytique (« ça brûle »)",
@@ -4687,65 +4276,6 @@ input,select,textarea{box-sizing:border-box}
       "objectif": "Work capacity — filière seuil / aérobie-puissance.\nEfforts soutenus longs (12-20 min).\nChoisir la modalité S1 à S6 ci-dessus.\nFait office de seuil du bloc.\nMoins traumatisant que le glyco.",
       "slots": [],
       "note": "Choix de la modalité via le sélecteur ci-dessus (banque S1-S5). Détails/charges du jour dans la note de séance. Doctrine : manuel « Banque WC par filière »."
-    },
-    {
-      "id": "t1_t2",
-      "nom": "T1/T2",
-      "frequence_cible": "1×/semaine dès que la fenêtre d'annonce du test est active",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "work_capacity",
-        "aerobie_seuil"
-      ],
-      "objectif": "Simulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
-      "slots": [
-        {
-          "role": "t1_denivele",
-          "category": "aerobie",
-          "exercice_pref": "t1_escaliers",
-          "obligatoire": true,
-          "format_fixe": "10-15 min de montées (escaliers / côte), allure soutenue",
-          "rpe_fixe": "7-8",
-          "note": "T1 — le dénivelé est le piège n°1 du test. Sac léger optionnel."
-        },
-        {
-          "role": "t2_enchaine",
-          "category": "work_capacity",
-          "exercice_pref": "t2_enchaine",
-          "obligatoire": true,
-          "format_fixe": "Enchaîné SANS repos : 20 pompes + 50 s gainage + 4 tractions strictes",
-          "rpe_fixe": "—",
-          "note": "Tractions propres en étant essoufflé = le critère. Barre requise (parc en déplacement) ; à défaut TRX row lesté strict, proxy dégradé. Tractions EN PRONATION (geste du test)."
-        }
-      ]
-    },
-    {
-      "id": "agt",
-      "nom": "AGT",
-      "frequence_cible": "1x/semaine (après Haut 2)",
-      "semaine_classique": true,
-      "eligible_bloc_qualite": true,
-      "qualites_prioritaires": [
-        "alactique",
-        "repetition_puissance"
-      ],
-      "objectif": "Finisher alactique complet — puissance pure, récupération complète entre efforts.",
-      "slots": [
-        {
-          "role": "agt_principal",
-          "category": "alactique_finisher",
-          "exercice_pref": "kb_swing_alactique_28",
-          "obligatoire": true,
-          "note": "8-12 efforts max par séance, récup complète entre chaque. Passage 28→32 kg : drop-off <5 % à 28 sur deux mesures consécutives → 32 kg sur les 3-4 premiers efforts (les plus frais), puis étendre. Mesure de drop-off de référence : sur AGT autonome, à frais."
-        },
-        {
-          "role": "agt_rotation",
-          "category": "alactique_finisher",
-          "exercice_pref": "chop_lift_elastique",
-          "obligatoire": false
-        }
-      ]
     },
     {
       "id": "puissance_1",
@@ -5614,30 +5144,52 @@ const GTG_EXERCICES = [
 // ── CARS / RENFO MATIN ────────────────────────────────────────────────────
 
 const ROUTINE_MATIN = [
-  {id:'cars_epaule',cat:'CARs',icon:'⭕',name:'CARs Épaule',detail:'3×/sens · 30s/rotation · ultra lent',priority:'★★★',note:'Avant chaque séance force. Chercher les zones raides. Résistance légère bras.'},
-  {id:'cars_hanche',cat:'CARs',icon:'⭕',name:'CARs Hanche',detail:'5×/sens · 45s/rotation',priority:'★★★',note:'Lié à l\'IT band. Mobilité critique grappling. Bassin immobile pendant le cercle.'},
-  {id:'cars_poignet',cat:'CARs',icon:'⭕',name:'CARs Poignet G',detail:'5×/dir · 30s · DOUX',priority:'★★★',note:'Poignet G sensible = QUOTIDIEN OBLIGATOIRE. Jamais douloureux. Flexion/ext/prono/supination.'},
-  {id:'cars_cheville',cat:'CARs',icon:'⭕',name:'CARs Cheville',detail:'5×/sens · 30s',priority:'★★',note:'Stance et footwork MMA. Dorsiflexion active = tronc vertical au squat = quads.'},
-  {id:'cars_cervicales',cat:'CARs',icon:'⭕',name:'CARs Cervicales',detail:'3×/dir · 20s · PRUDENCE',priority:'★',note:'Jamais cercle complet. Rotation lente + flexion latérale. Stop si douleur.'},
   {id:'clamshell',cat:'Renfo obligatoire',icon:'🦵',name:'Clamshell G FIRST',detail:'3 × 15/côté · élastique léger',priority:'★★★',note:'Fessier moyen G = cause racine IT band. Quotidien SANS EXCEPTION. G d\'abord.'},
+  
   {id:'petersen',cat:'Renfo obligatoire',icon:'🦵',name:'Petersen Step-up G FIRST',detail:'2 × 10/jambe · BW',priority:'★★★',note:'Orteils sur bord marche 10-15cm. Genou monte vers la pointe. VMO. IT band rehab. Quotidien jusqu\'à disparition douleur.'},
+  
   {id:'balance',cat:'Renfo obligatoire',icon:'🦶',name:'Balance unipodale · brosse-dents',detail:'30s G · 30s D · puis yeux fermés',priority:'★',note:'Pendant le brossage. G EN PREMIER. Yeux fermés = objectif progressif. Aucun équipement. Zéro coût de temps.'},
-  {id:'bolt',cat:'Respiration',icon:'🌬️',name:'Test BOLT',detail:'1 test · matin avant box breathing',priority:'★★',note:'Expire normalement → pince nez → chrono premier désir. Score >25s fin Bloc 2. Départ ~15s normal.'},
-  {id:'box_breathing',cat:'Respiration',icon:'🌬️',name:'Box Breathing',detail:'4s/4s/4s/4s × 5 min · → 5s en S3',priority:'★★★',note:'Inhale nasal 4s → hold 4s → exhale bouche 4s → hold 4s. ↑ CO₂ tolérance. Matin à jeun.'},
-  {id:'coherence',cat:'Respiration',icon:'💓',name:'Cohérence Cardiaque',detail:'5 min couché · soir',priority:'★★★',note:'5s inhale nasal + 5s exhale bouche. 5 min couché le soir. ↑ HRV.'},
-  {id:'humming',cat:'Respiration',icon:'🎵',name:'Humming expiratoire',detail:'3–5 min · post-séance ou soir',priority:'★★',note:'Fredonner pendant l\'expiration (mmm). ↑ NO nasal. ↑ tolérance CO₂. Après séance ou avant sommeil.'},
+  
   {id:'calf_raise',cat:'Renfo obligatoire',icon:'🦵',name:'Calf raise G FIRST · sur bord marche',detail:'3 × 15/jambe · BW',priority:'★★★',note:'G EN PREMIER. Talon descend sous le niveau du pied. Descente 3s. Mollet + proprioception cheville. \u26a0 PIEDS PLATS : garder le poids sur le BORD EXTERNE du pied (ne pas s\'effondrer vers l\'int\u00e9rieur) pour solliciter le TIBIAL POST\u00c9RIEUR, le muscle qui soutient la vo\u00fbte.'},
-  {id:'short_foot',cat:'Renfo optionnel',icon:'🦶',name:'Short foot (pieds plats)',detail:'2-3×10 tenues 5-10s',priority:'',note:'FONDAMENTAL pieds plats. Pied \u00e0 plat, rapprocher la base du gros orteil vers le talon pour CR\u00c9ER une vo\u00fbte, SANS recroqueviller les orteils. R\u00e9active tibial post\u00e9rieur + intrins\u00e8ques. Lien direct avec genou G (pied plat \u2192 valgus genou \u2192 IT band).'},
-  {id:'tripod',cat:'Renfo optionnel',icon:'🦶',name:'Ancrage tripod',detail:'debout / squat / fente',priority:'',note:'R\u00e9partir le poids sur 3 points : base gros orteil + base petit orteil + talon. Maintenir la vo\u00fbte active en charge. \u00c0 pratiquer debout, en squat, en fente \u2014 r\u00e9entra\u00eene le pied \u00e0 ne pas s\'effondrer.'},
-  {id:'foot_intrinsics',cat:'Renfo optionnel',icon:'🦶',name:'Intrins\u00e8ques pied',detail:'towel curls + orteils',priority:'',note:'Towel curls (agripper serviette avec orteils), \u00e9carter les orteils, relev\u00e9 gros orteil seul puis les 4 autres. R\u00e9veille la musculature profonde du pied. Travail pieds nus progressif sur surfaces vari\u00e9es.'},
-  {id:'tib_raise',cat:'Renfo optionnel',icon:'🦵',name:'Tib raises (jambier ant\u00e9rieur)',detail:'2-3×15-20',priority:'',note:'\u00c9quilibre le mollet (souvent l\'avant est faible). Talon au sol, lever la POINTE du pied contre r\u00e9sistance (adoss\u00e9 au mur, ou \u00e9lastique). Pr\u00e9vient p\u00e9riostites + absorbe \u00e0 la marche. Utile longues marches.'},
-  {id:'ankle_evinv',cat:'Renfo optionnel',icon:'🦶',name:'\u00c9version/inversion cheville',detail:'2-3×15-20/sens',priority:'',note:'2 options compl\u00e9mentaires. (1) \u00c9LASTIQUE assis/allong\u00e9, jambe tendue, pied dans l\'\u00e9lastique fix\u00e9 : le pied se d\u00e9place activement contre la r\u00e9sistance \u2014 \u00e9version (pied vers l\'EXT\u00c9RIEUR, p\u00e9roniers, anti-entorse) puis inversion (vers l\'INT\u00c9RIEUR, tibial post\u00e9rieur, soutien vo\u00fbte). (2) DEBOUT, transfert de poids contr\u00f4l\u00e9 sur le bord EXTERNE puis INTERNE du pied (pas rouler brutalement) \u2014 renfo + proprioception en charge, utile pieds plats (apprend \u00e0 ne pas s\'effondrer).'},
+  
+  {id:'bolt',cat:'Respiration',icon:'🌬️',name:'Test BOLT',detail:'1 test · matin avant box breathing',priority:'★★',note:'Expire normalement → pince nez → chrono premier désir. Score >25s fin Bloc 2. Départ ~15s normal.'},
+  
+  {id:'box_breathing',cat:'Respiration',icon:'🌬️',name:'Box Breathing',detail:'4s/4s/4s/4s × 5 min · → 5s en S3',priority:'★★★',note:'Inhale nasal 4s → hold 4s → exhale bouche 4s → hold 4s. ↑ CO₂ tolérance. Matin à jeun.'},
+  
+  {id:'coherence',cat:'Respiration',icon:'💓',name:'Cohérence Cardiaque',detail:'5 min couché · soir',priority:'★★★',note:'5s inhale nasal + 5s exhale bouche. 5 min couché le soir. ↑ HRV.'},
+  
+  {id:'humming',cat:'Respiration',icon:'🎵',name:'Humming expiratoire',detail:'3–5 min · post-séance ou soir',priority:'★★',note:'Fredonner pendant l\'expiration (mmm). ↑ NO nasal. ↑ tolérance CO₂. Après séance ou avant sommeil.'},
+  
   {id:'poignet_g',cat:'Renfo optionnel',icon:'🪤',name:'Renfo poignet G',detail:'3×12 · flex/ext excentrique · @0,5–2 kg',priority:'',note:'Tendinite + kyste G. Doux. Deux directions : flexion et extension.'},
+  
   {id:'wrist_roller',cat:'Renfo optionnel',icon:'🎽',name:'Wrist roller (rouleau de poignet)',detail:'2-3 montées/descentes · charge légère',priority:'',note:'Validé kiné. Barre courte + corde + charge suspendue : enrouler/dérouler par rotation des poignets. Renforce poignet G + avant-bras en endurance. Charge légère progressive, mouvement lent contrôlé. ARRÊT si douleur poignet — jamais forcer en bout d\'amplitude.'},
-  {id:'lat_walk',cat:'Renfo optionnel',icon:'🩺',name:'Lateral band walk',detail:'3×12 pas/sens · élastique chevilles',priority:'',note:'Fessier moyen chaîne fermée. Genoux légèrement fléchis.'},
-  {id:'hip_9090',cat:'Renfo optionnel',icon:'🦴',name:'Hip 90/90 PAILs/RAILs',detail:'2×90s/côté · fin de séance uniquement',priority:'',note:'Jamais à froid. Après Bas 1 ou Haut 2. Mobilité active hanche.'},
+  
   {id:'shoulder_pailrail',cat:'Renfo optionnel',icon:'🦴',name:'Épaule G PAILs/RAILs',detail:'2×90s/côté · fin de séance',priority:'',note:'Jamais à froid (après une séance haut). Gagne amplitude ACTIVE + solidité articulaire de l\'épaule G fragile. Position d\'étirement passif 90s, puis contraction PAILs (pousser dans l\'étirement) 10-20s, puis RAILs (tirer hors de l\'étirement, contracter l\'agoniste) 10-20s. Cible flexion + rotation externe (les amplitudes limitées de l\'épaule G).'},
-  {id:'bfr_squat',cat:'Renfo optionnel',icon:'🦵',name:'Air squat BFR · sangles cuisses',detail:'4 séries : 30+15+15+15 · 30s repos',priority:'',note:'Sangles réglables autour des cuisses (~7/10, restriction veineuse). N’importe quel jour, idéalement en activation AVANT une séance jambes (Bas 1 ou Bas 2). Réveille quadriceps + VMO (soutien genou) SANS charge articulaire — utile genou G. Bilatéral (2 jambes ensemble). Surveiller amplitude si IT band/genou G parle.'}
+  
+  {id:'hip_9090',cat:'Renfo optionnel',icon:'🦴',name:'Hip 90/90 PAILs/RAILs',detail:'2×90s/côté · fin de séance uniquement',priority:'',note:'Jamais à froid. Après Bas 1 ou Haut 2. Mobilité active hanche.'},
+  
+  {id:'tib_raise',cat:'Renfo optionnel',icon:'🦵',name:'Tib raises (jambier ant\u00e9rieur)',detail:'2-3×15-20',priority:'',note:'\u00c9quilibre le mollet (souvent l\'avant est faible). Talon au sol, lever la POINTE du pied contre r\u00e9sistance (adoss\u00e9 au mur, ou \u00e9lastique). Pr\u00e9vient p\u00e9riostites + absorbe \u00e0 la marche. Utile longues marches.'},
+  
+  {id:'ankle_evinv',cat:'Renfo optionnel',icon:'🦶',name:'\u00c9version/inversion cheville',detail:'2-3×15-20/sens',priority:'',note:'2 options compl\u00e9mentaires. (1) \u00c9LASTIQUE assis/allong\u00e9, jambe tendue, pied dans l\'\u00e9lastique fix\u00e9 : le pied se d\u00e9place activement contre la r\u00e9sistance \u2014 \u00e9version (pied vers l\'EXT\u00c9RIEUR, p\u00e9roniers, anti-entorse) puis inversion (vers l\'INT\u00c9RIEUR, tibial post\u00e9rieur, soutien vo\u00fbte). (2) DEBOUT, transfert de poids contr\u00f4l\u00e9 sur le bord EXTERNE puis INTERNE du pied (pas rouler brutalement) \u2014 renfo + proprioception en charge, utile pieds plats (apprend \u00e0 ne pas s\'effondrer).'},
+  
+  {id:'short_foot',cat:'Renfo optionnel',icon:'🦶',name:'Short foot (pieds plats)',detail:'2-3×10 tenues 5-10s',priority:'',note:'FONDAMENTAL pieds plats. Pied \u00e0 plat, rapprocher la base du gros orteil vers le talon pour CR\u00c9ER une vo\u00fbte, SANS recroqueviller les orteils. R\u00e9active tibial post\u00e9rieur + intrins\u00e8ques. Lien direct avec genou G (pied plat \u2192 valgus genou \u2192 IT band).'},
+  
+  {id:'tripod',cat:'Renfo optionnel',icon:'🦶',name:'Ancrage tripod',detail:'debout / squat / fente',priority:'',note:'R\u00e9partir le poids sur 3 points : base gros orteil + base petit orteil + talon. Maintenir la vo\u00fbte active en charge. \u00c0 pratiquer debout, en squat, en fente \u2014 r\u00e9entra\u00eene le pied \u00e0 ne pas s\'effondrer.'},
+  
+  {id:'foot_intrinsics',cat:'Renfo optionnel',icon:'🦶',name:'Intrins\u00e8ques pied',detail:'towel curls + orteils',priority:'',note:'Towel curls (agripper serviette avec orteils), \u00e9carter les orteils, relev\u00e9 gros orteil seul puis les 4 autres. R\u00e9veille la musculature profonde du pied. Travail pieds nus progressif sur surfaces vari\u00e9es.'},
+  
+  {id:'lat_walk',cat:'Renfo optionnel',icon:'🩺',name:'Lateral band walk',detail:'3×12 pas/sens · élastique chevilles',priority:'',note:'Fessier moyen chaîne fermée. Genoux légèrement fléchis.'},
+  
+  {id:'bfr_squat',cat:'Renfo optionnel',icon:'🦵',name:'Air squat BFR · sangles cuisses',detail:'4 séries : 30+15+15+15 · 30s repos',priority:'',note:'Sangles réglables autour des cuisses (~7/10, restriction veineuse). N’importe quel jour, idéalement en activation AVANT une séance jambes (Bas 1 ou Bas 2). Réveille quadriceps + VMO (soutien genou) SANS charge articulaire — utile genou G. Bilatéral (2 jambes ensemble). Surveiller amplitude si IT band/genou G parle.'},
+  {id:'cars_epaule',cat:'CARs',icon:'⭕',name:'CARs Épaule',detail:'3×/sens · 30s/rotation · ultra lent',priority:'★★★',note:'Avant chaque séance force. Chercher les zones raides. Résistance légère bras.'},
+  
+  {id:'cars_hanche',cat:'CARs',icon:'⭕',name:'CARs Hanche',detail:'5×/sens · 45s/rotation',priority:'★★★',note:'Lié à l\'IT band. Mobilité critique grappling. Bassin immobile pendant le cercle.'},
+  
+  {id:'cars_poignet',cat:'CARs',icon:'⭕',name:'CARs Poignet G',detail:'5×/dir · 30s · DOUX',priority:'★★★',note:'Poignet G sensible = QUOTIDIEN OBLIGATOIRE. Jamais douloureux. Flexion/ext/prono/supination.'},
+  
+  {id:'cars_cheville',cat:'CARs',icon:'⭕',name:'CARs Cheville',detail:'5×/sens · 30s',priority:'★★',note:'Stance et footwork MMA. Dorsiflexion active = tronc vertical au squat = quads.'},
+  
+  {id:'cars_cervicales',cat:'CARs',icon:'⭕',name:'CARs Cervicales',detail:'3×/dir · 20s · PRUDENCE',priority:'★',note:'Jamais cercle complet. Rotation lente + flexion latérale. Stop si douleur.'}
 ];
 
 // ── MOTEUR DE SÉANCE — catalogue, templates, périodisation ─────────────────
@@ -6820,13 +6372,24 @@ const T_EPREUVES = [
   {id:'effort_rep', axe:'Work capacity',         cat:'filiere',unit:'% chute',lbl:'Effort répété',
    help:'6 × 15 s all-out / 45 s récup. Chute 1er→dernier. <15 % = bonne résistance.',
    score:v=> v>30?0 : v>25?1 : v>20?2 : v>15?3 : 4},
-  {id:'longue',     axe:'Base aérobie',          cat:'filiere',unit:'min',  lbl:'Épreuve longue',
-   help:'Vélo 14,5 km : >45=0 · 45-41=1 · 41-37=2 · 37-34=3 · <34=4. Course 4,8 km : >34:30=0 · <21:37=4.',
+  {id:'longue',     axe:'Seuil',                 cat:'filiere',unit:'min',  lbl:'Épreuve longue (seuil)',
+   help:'Un effort MAXIMAL de 25-40 min se court AU SEUIL. Vélo 14,5 km : >45=0 · 45-41=1 · 41-37=2 · 37-34=3 · <34=4. Course 4,8 km : >34:30=0 · 28:51=1 · 24:41=2 · 21:37=3 · <21:37=4. GARDER LA MÊME MODALITÉ.',
    score:v=> v>45?0 : v>41?1 : v>37?2 : v>34?3 : 4},
-  {id:'seuil',      axe:'Seuil',                 cat:'filiere',unit:'W FTP',lbl:'FTP',
-   help:'20 min max × 0,95. ANCRE les zones vélo. Sans barème — suivi.', score:null},
-  {id:'vo2',        axe:'VO2max / PMA',          cat:'filiere',unit:'km/h', lbl:'VMA ou PMA',
-   help:'ANCRE les zones d\'intervalles et le SV2. Sans barème — suivi.', score:null},
+  {id:'derive',     axe:'Base aérobie',          cat:'filiere',unit:'% dérive',lbl:'Dérive cardiaque (Z2 longue)',
+   help:'Sur une Z2 longue à intensité constante : (FC 2e moitié − FC 1re moitié) / FC 1re moitié. <5 % = base solide · >10 % = base insuffisante. Se calcule depuis le .fit, aucun test dédié.',
+   score:v=> v>10?0 : v>8?1 : v>5?2 : v>3?3 : 4},
+  {id:'vo2max',     axe:'VO2max / PMA',          cat:'filiere',unit:'ml/kg/min',lbl:'VO2max',
+   help:'Labo, OU estimé par le test 3 min all-out (champ ci-dessous), OU extrapolé du 4,8 km. Repères : 44 = MMA régional faible · 47,7 = moyenne entraînement fonctionnel · 55 = amateur MMA / UFC moyen · 56 = élite CrossFit H · >60 = élite MMA · >65 = top 2,5 % UFC.',
+   score:v=> v<45?0 : v<50?1 : v<55?2 : v<60?3 : 4},
+  {id:'test3min',   axe:null,                    cat:'filiere',unit:'m/s',   lbl:'Test 3 min — vitesse critique',
+   help:'Course 3 min ALL-OUT. Vitesse critique = vitesse moyenne des 30 DERNIÈRES secondes, en m/s. Calcule le VO2max : 8,449 × VC + 4,387 + 14,683 (homme). Erreur type 3,34. Validé sur athlètes d\'entraînement fonctionnel. ⚠ COURSE uniquement.',
+   score:null},
+  {id:'ftp',        axe:null,                    cat:'filiere',unit:'W FTP',lbl:'FTP (ancrage)',
+   help:'20 min max × 0,95. ANCRE les zones vélo — ce n\'est PAS une note mais un calibrage. Repère W/kg (échelle cycliste, non tactique) : 1,5 reprise · 2,5 régulier · 3,5 bon niveau.', score:null},
+  {id:'vma',        axe:null,                    cat:'filiere',unit:'km/h', lbl:'VMA (course)',
+   help:'ANCRE les zones de course et le SV2. Extrapolable du 4,8 km : VMA ≈ vitesse / 0,86. Sans barème — suivi.', score:null},
+  {id:'pma',        axe:null,                    cat:'filiere',unit:'W',    lbl:'PMA (vélo)',
+   help:'ANCRE les zones d\'intervalles vélo. Test rampe par paliers. Sans barème — suivi.', score:null},
   // ── OPÉRATIONNEL ──
   {id:'navettes',   axe:'Vitesse & agilité',     cat:'oper',  unit:'reps',  lbl:'Navettes prone-sprint',
    help:'25 m, gilet 11 kg, 3×3 min (récup 1 min). ~50 reps ≈ good (MTI).',
@@ -6846,7 +6409,7 @@ const T_EPREUVES = [
   {id:'pallof',     axe:'Gainage 3 axes',        cat:'struct',unit:'s',     lbl:'Pallof iso (anti-rotation)',
    help:'Tenue bras tendus, élastique latéral. Noter le côté faible. Sans barème — suivi.', score:null},
   {id:'asym',       axe:'Prophylaxie',           cat:'struct',unit:'% écart',lbl:'Asymétrie max D/G',
-   help:'Plus grand écart du dépistage (Copenhagen, side plank, Bulgarian, Pallof). <10 % cible · >20 % 🚩',
+   help:'UNE SEULE valeur à saisir : le PLUS GRAND écart D/G trouvé sur l\'ensemble du dépistage.\nExemple : Copenhagen 8 %, side plank 12 %, Bulgarian 15 % → saisir 15.\nNordic curl et nuque ne se notent PAS ici : ils servent à repérer un déficit, pas à produire un écart (Nordic = bilatéral, nuque = 4 directions). Les noter à part en commentaire.\nBarème : <5 %=4 · 5-10=3 · 10-15=2 · 15-20=1 · >20=0 🚩 plancher éliminatoire.',
    score:v=> v>20?0 : v>15?1 : v>10?2 : v>5?3 : 4},
   {id:'mobilite',   axe:'Mobilité',              cat:'struct',unit:'/4',    lbl:'Mobilité (auto-éval)',
    help:'Épaule, cheville, hanche. 0 = très limité · 4 = amplitude complète et symétrique.',
@@ -6890,6 +6453,20 @@ function tMTI45(){
 }
 function tMTILabel(t){ return t<8?'Poor' : t<12?'Good' : 'Excellent'; }
 
+// VO2max estimé depuis le test 3 min all-out (course) — équation validée athlètes fonctionnels
+function tVO2fromCS(){
+  const r=tLoad().test3min; const cs=r?parseFloat(r.val):NaN;
+  if(isNaN(cs)||cs<=0) return null;
+  return 8.449*cs + 4.387 + 14.683;   // homme
+}
+// VO2max retenu : saisie directe prioritaire, sinon estimation 3 min
+function tVO2(){
+  const d=tLoad().vo2max; const v=d?parseFloat(d.val):NaN;
+  if(!isNaN(v)&&v>0) return {val:v, src:'mesuré'};
+  const e=tVO2fromCS();
+  return e!=null ? {val:e, src:'estimé 3 min'} : null;
+}
+
 function tScoreOf(ep, res){
   if(!res || res.val===''||res.val==null) return null;
   const v = parseFloat(res.val);
@@ -6915,6 +6492,13 @@ function tAxes(){
     } else { sc = tScoreOf(ep, r); }
     if(sc!=null) map[ep.axe].scores.push(sc);
   });
+  // VO2max : compléter par l'estimation issue du test 3 min si pas de mesure directe
+  const vo2 = tVO2();
+  if(vo2 && map['VO2max / PMA'] && !map['VO2max / PMA'].scores.length){
+    map['VO2max / PMA'].tested = true;
+    const v=vo2.val;
+    map['VO2max / PMA'].scores.push(v<45?0 : v<50?1 : v<55?2 : v<60?3 : 4);
+  }
   // Force relative : ajouter le score RSA à l'axe
   const rsa = tRSA();
   if(rsa!=null && map['Force relative']){
@@ -6928,10 +6512,10 @@ function tAxes(){
 
 function tRadarSVG(){
   const axes = tAxes();
-  const n = axes.length, cx=170, cy=170, R=118;
+  const n = axes.length, cx=190, cy=175, R=112;
   const NS='http://www.w3.org/2000/svg';
   const svg=document.createElementNS(NS,'svg');
-  svg.setAttribute('viewBox','0 0 340 340');
+  svg.setAttribute('viewBox','0 0 380 350');
   svg.setAttribute('width','100%');
   const mk=(t,at)=>{ const e=document.createElementNS(NS,t); Object.entries(at).forEach(([k,v])=>e.setAttribute(k,v)); return e; };
   // cercles
@@ -6943,12 +6527,29 @@ function tRadarSVG(){
   axes.forEach((a,i)=>{
     const [x,y]=pt(i,R);
     svg.appendChild(mk('line',{x1:cx,y1:cy,x2:x,y2:y,stroke:'#1e293b','stroke-width':1}));
-    const [lx,ly]=pt(i,R+14);
-    const t=mk('text',{x:lx,y:ly,'font-size':6.2,'font-weight':700,
-      fill: a.tested? '#e2e8f0':'#475569',
-      'text-anchor': lx>cx+6?'start':(lx<cx-6?'end':'middle')});
-    t.textContent = a.axe;
+    const [lx,ly]=pt(i,R+13);
+    const anchor = lx>cx+6?'start':(lx<cx-6?'end':'middle');
+    // découpe en 2 lignes si le libellé est long
+    const w = a.axe.split(' ');
+    let l1=a.axe, l2='';
+    if(a.axe.length>13 && w.length>1){
+      let acc='';
+      for(let k=0;k<w.length;k++){
+        if((acc+' '+w[k]).trim().length<=13){ acc=(acc+' '+w[k]).trim(); }
+        else { l1=acc; l2=w.slice(k).join(' '); break; }
+      }
+      if(!l2){ l1=a.axe; }
+    }
+    const col = a.tested? '#e2e8f0':'#475569';
+    const dy = l2 ? -3 : 0;
+    const t=mk('text',{x:lx,y:ly+dy,'font-size':6,'font-weight':700,fill:col,'text-anchor':anchor});
+    t.textContent = l1;
     svg.appendChild(t);
+    if(l2){
+      const t2=mk('text',{x:lx,y:ly+5,'font-size':6,'font-weight':700,fill:col,'text-anchor':anchor});
+      t2.textContent = l2;
+      svg.appendChild(t2);
+    }
   });
   // polygone des scores
   const pts = axes.map((a,i)=> pt(i, a.score!=null ? R*a.score/4 : 0));
@@ -7011,7 +6612,7 @@ function renderTests(){
     top.appendChild($('span',{style:{fontSize:'11px',fontWeight:'700',flex:'1'}}, ep.lbl));
     if(sc!=null) top.appendChild($('span',{style:{fontSize:'10px',fontWeight:'800',
       color: sc>=3?'#10b981': sc>=2?'#f59e0b':'#ef4444'}}, sc+'/4'));
-    top.appendChild($('span',{class:'help-icon',onclick:(e)=>showTooltip(e,ep.help)},'?'));
+    top.appendChild($('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e,ep.help); }},'?'));
     row.appendChild(top);
     const line=$('div',{style:{display:'flex',gap:'5px',alignItems:'center'}});
     const iv=$('input',{class:'input-mod',type:'number',step:'0.01',style:{width:'72px'},
@@ -7034,7 +6635,9 @@ function renderTests(){
   // ── SCORES COMPOSITES (info) ──
   const rsa = tRSA(), mti = tMTI45();
   const box=$('div',{style:{background:'#0d1525',border:'1px solid #1e2d42',borderRadius:'10px',padding:'10px 12px',marginTop:'10px'}});
-  box.appendChild($('div',{style:{fontSize:'10px',fontWeight:'800',color:'#f5a623',marginBottom:'6px'}},'SCORES COMPOSITES'));
+  box.appendChild($('div',{style:{fontSize:'10px',fontWeight:'800',color:'#f5a623',marginBottom:'4px'}},'SCORES COMPOSITES'));
+  box.appendChild($('div',{style:{fontSize:'8.5px',color:'#64748b',marginBottom:'8px',lineHeight:'1.45'}},
+    'Deux lectures complémentaires. Le RSA mesure la FORCE RELATIVE seule : il dit si tu es assez fort pour le métier. Le MTI 45+ mesure la POLYVALENCE — force, endurance de force, work capacity, moteur : il dit si aucune qualité ne décroche. Un RSA élevé avec un 45+ bas signale un athlète fort mais incomplet.'));
 
   const l1=$('div',{style:{display:'flex',alignItems:'baseline',gap:'7px',marginBottom:'3px'}});
   l1.appendChild($('span',{style:{fontSize:'11px',fontWeight:'700',flex:'1'}},'RSA (MTI)'));
@@ -7057,6 +6660,18 @@ function renderTests(){
     mti.n ? mti.detail.map(d=>d[0]+' '+d[1]+'pt').join(' · ')+(mti.n<4?' — '+(4-mti.n)+' épreuve(s) manquante(s)':'')
           : 'Hinge 3RM + pompes + keg lift + épreuve longue'));
   box.appendChild($('div',{style:{fontSize:'8.5px',color:'#475569',marginTop:'2px'}},'Good 8-11 · Excellent ≥ 12'));
+
+  const v2=tVO2();
+  if(v2){
+    const l3=$('div',{style:{display:'flex',alignItems:'baseline',gap:'7px',marginTop:'7px',paddingTop:'7px',borderTop:'1px solid #1e2d42'}});
+    l3.appendChild($('span',{style:{fontSize:'11px',fontWeight:'700',flex:'1'}},'VO2max'));
+    l3.appendChild($('span',{style:{fontSize:'14px',fontWeight:'800',
+      color: v2.val>=55?'#10b981' : v2.val>=50?'#f59e0b':'#ef4444'}}, v2.val.toFixed(1)));
+    l3.appendChild($('span',{style:{fontSize:'9px',color:'#64748b'}}, v2.src));
+    box.appendChild(l3);
+    box.appendChild($('div',{style:{fontSize:'8.5px',color:'#475569'}},
+      '47,7 = moy. entraînement fonctionnel · 55 = amateur MMA / UFC moyen · 56 = élite CrossFit · >60 = élite MMA'));
+  }
   wrap.appendChild(box);
 
   return wrap;
@@ -7400,39 +7015,11 @@ function renderStats(){
           'Pesées : ' + last + (wl.length>3 ? ' — ' + wl.length + ' au total' : '') + '. Hebdomadaire à la maison — alimente standards ×PDC et RSA.'));
       }
     })();
-    const puMax = moteurGetPullupsMax();
-    const puRow = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}},
-      $('span',{style:{fontSize:'11px',color:'#94a3b8'}},'Pull-ups stricts max (reps) :'),
-      $('input',{class:'input-mod',type:'number',step:'1',min:'0',value:puMax!=null?String(puMax):'',
-        onchange:(e)=>moteurSetPullupsMax(e.target.value===''?null:Number(e.target.value))})
-    );
-    stdCard.appendChild(puRow);
-    // ── Tests de référence (RM réels — prioritaires sur l'estimation) ──
-    const trm = moteurGetTestRM();
-    stdCard.appendChild($('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginTop:'4px',marginBottom:'6px'}},
-      'Tests de référence — RM réels (prioritaires sur l\'e1RM estimé)'));
-    const rmField = (lbl, field) => $('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}},
-      $('span',{style:{fontSize:'11px',color:'#94a3b8',flex:'1'}},lbl),
-      $('input',{class:'input-mod',type:'number',step:'0.5',min:'0',value:trm[field]!=null?String(trm[field]):'',
-        onchange:(e)=>moteurSetTestRM(field, e.target.value===''?null:Number(e.target.value))}),
-      $('button',{title:'Ajouter cette valeur à l\'historique',style:{background:'#1e293b',border:'none',borderRadius:'5px',color:'#f5a623',fontSize:'11px',padding:'5px 8px',cursor:'pointer'},
-        onclick:()=>moteurAddTestRMHistory(field, trm[field], trm.date)},'📌'));
-    stdCard.appendChild(rmField('Bench 3RM (kg) :','bench_3rm'));
-    stdCard.appendChild(rmField('Hinge — Soulevé de terre / RDL 3RM (kg) :','rdl_3rm'));
-    stdCard.appendChild(rmField('Squat (Front prise croisée ou Zercher) 3RM (kg) :','front_squat_3rm'));
-    stdCard.appendChild(rmField('Militaire 3RM (kg) :','militaire_3rm'));
-    stdCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'}},
-      $('span',{style:{fontSize:'11px',color:'#94a3b8',flex:'1'}},'Date de la batterie :'),
-      $('input',{class:'input-mod',type:'date',value:trm.date||'',
-        onchange:(e)=>moteurSetTestRM('date', e.target.value||null)})));
-    (function(){
-      let note = 'Champ vide = repli sur l\'e1RM estimé des dernières séances.';
-      if(trm.date){
-        const age = Math.floor((Date.now() - new Date(trm.date).getTime())/86400000);
-        if(isFinite(age) && age>=0) note = 'Batterie du '+trm.date+' ('+age+' j'+(age>70?' — retest conseillé, >8 semaines':'')+'). '+note;
-      }
-      stdCard.appendChild($('div',{style:{fontSize:'10px',color:(trm.date && (Date.now()-new Date(trm.date).getTime())/86400000>70)?'#f5a623':'#64748b',marginBottom:'8px'}}, note));
-    })();
+    // ── Saisie des RM et tractions : déplacée dans l'onglet 🎯 Tests ──
+    stdCard.appendChild($('div',{style:{padding:'8px',background:'#111d2e',borderRadius:'7px',marginBottom:'8px'}},
+      $('div',{style:{fontSize:'10px',color:'#64748b'}},
+        '3RM (bench, hinge, squat), tractions max et date de batterie : saisie dans l\'onglet 🎯 Tests.')
+    ));
     // ── Historique des tests 3RM — conserve les anciennes valeurs même après un retest ──
     (function(){
       const fields = [['bench_3rm','Bench'],['rdl_3rm','RDL/Hinge'],['front_squat_3rm','Zercher/FS'],['militaire_3rm','Militaire']];
@@ -7474,14 +7061,10 @@ function renderStats(){
     stdCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'6px',fontStyle:'italic'}},
       'Le Minimum est un plancher que j\'interpole, jamais un chiffre publié. Convertis en 3RM (Epley ≈ 1RM×0.909). Zercher n\'a pas de standard propre — approximé via Front Squat. Military Press ne fait partie d\'aucun standard MTI (ni du RSA) — retiré d\'ici, suivi ci-dessous en % du Bench.'));
 
-    // ── Score RSA (vrai MTI Relative Strength Assessment) ──
-    const rsa = moteurRSAScore();
+    // ── Score RSA : déplacé dans l'onglet 🎯 Tests (saisie des 3RM + calcul auto) ──
     stdCard.appendChild($('div',{style:{marginTop:'10px',padding:'8px',background:'#111d2e',borderRadius:'7px'}},
-      $('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginBottom:'3px'}},'🎯 MTI Relative Strength Assessment (score composite)'),
-      $('div',{style:{fontSize:'16px',fontWeight:'700',color: rsa==null?'#475569':(rsa>=6.5?'#10b981':rsa>=5.75?'#f5a623':'#e63946')}},
-        rsa!=null ? rsa.toFixed(2)+' — '+(rsa>=6.5?'Excellent ✓':rsa>=5.75?'Good':'Poor (cible ≥5,75)') : 'Pas assez de données — Front Squat/Zercher, RDL et Bench requis, saisis via une séance du moteur'),
-      $('div',{style:{fontSize:'9.5px',color:'#64748b',marginTop:'3px'}},
-        '(Front Squat/Zercher + RDL + Bench en 1RM, + tractions×10%PDC plafonné à 20) ÷ PDC. Formule officielle MTI. Source par mouvement : RM testé si saisi ci-dessus, sinon e1RM estimé des dernières séances (Epley reps+RIR).')
+      $('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginBottom:'2px'}},'🎯 Score RSA'),
+      $('div',{style:{fontSize:'10px',color:'#64748b'}},'Saisie des 3RM et calcul du score dans l\'onglet Tests.')
     ));
 
     // ── Strict Press en % du Bench (pas de standard externe tactique — repère perso) ──
@@ -7699,7 +7282,9 @@ function renderRoutine(){
   el.appendChild($('div',{class:'section-hdr'},'☀️ Routine du Matin'));
 
   const cats = [...new Set(ROUTINE_MATIN.map(r=>r.cat))];
-  const curCat = S.routineCat || cats[0];
+  // repli si la catégorie mémorisée n'existe plus (ancienne version) → évite un onglet vide
+  const curCat = cats.includes(S.routineCat) ? S.routineCat : cats[0];
+  if(S.routineCat && !cats.includes(S.routineCat)) S.routineCat = cats[0];
 
   const seg = $('div',{class:'seg-ctrl'});
   cats.forEach(cat=>{
@@ -7792,8 +7377,13 @@ function renderSeance(){
   }
 
   const selectorCard = $('div',{class:'card',style:{paddingBottom:'8px'}});
-  const selectorWrap = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px'}});
+  const selectorWrap = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',alignItems:'center'}});
+  // Séparateurs de jour — semaine ENDURANCE (cf. programme §2, gabarit 1)
+  const M_JOURS = {vo2max:'J1', z2:'J2', fb_1:'J3', z2_long:'J4', agt:'J5', fb_2:'J6', wc_glyco:'···'};
+  const sepStyle={fontSize:'9px',fontWeight:'800',color:'#f5a623',padding:'0 2px 0 4px',
+    borderLeft:'2px solid #f5a623',lineHeight:'1',alignSelf:'stretch',display:'flex',alignItems:'center'};
   MTPL.session_types.forEach(session=>{
+    if(M_JOURS[session.id]) selectorWrap.appendChild($('div',{style:sepStyle}, M_JOURS[session.id]));
     const lockedByPhase = moteurSessionLockedByPhase(session);
     const target = moteurMissionTarget(session.frequence_cible);
     const done = moteurSessionDoneCountThisWeek(session.id);
