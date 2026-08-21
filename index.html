@@ -3669,6 +3669,120 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "reps",
       "protocole_cycle_eligible": false,
       "notes": "Pallof debout, un pied avancé (appui décalé/split stance). Intermédiaire entre le Pallof pieds parallèles et le half-kneeling : base asymétrique = anti-rotation accrue, plus proche d'une position de combat/appui réel. Alterner le pied avant."
+    },
+    {
+      "id": "squat_espagnol",
+      "name": "Squat espagnol (isométrique)",
+      "category": "bas_force",
+      "qualities": [
+        "excentrique",
+        "isometrique",
+        "prophylaxie_genou"
+      ],
+      "equipment_required": [
+        "elastiques"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "windows_ok": [
+        "maison",
+        "paris",
+        "nomade",
+        "hors_maison"
+      ],
+      "substitutes": {},
+      "pattern": "squat",
+      "progression_type": "reps",
+      "protocole_cycle_eligible": false,
+      "notes": "Élastique enroulé autour d'un point fixe, tirant horizontalement au niveau des hanches, position squat tenue. Travail ISOMÉTRIQUE/EXCENTRIQUE du quadriceps à charge quasi nulle sur l'articulation — utilisé en rééducation de tendinopathie rotulienne. Outil de la SÉQUENCE DE DÉVERROUILLAGE genou, plus prudent que la charge unilatérale légère. Tenir 20-40s, plusieurs séries, sans douleur."
+    },
+    {
+      "id": "presse_jambes_2j",
+      "name": "Presse à jambes (2 jambes)",
+      "category": "bas_force",
+      "qualities": [
+        "force"
+      ],
+      "equipment_required": [
+        "presse_jambes"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [],
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "squat",
+      "progression_type": "charge",
+      "protocole_cycle_eligible": false,
+      "notes": "Squat guidé SANS charge axiale sur la colonne — dossier soutenu. Alternative au Zercher : force jambes comparable, mais NE reproduit PAS le gainage antérieur que la position Zercher impose. Bon choix quand le dos/gainage n'inspire pas confiance ; incomplet sur le transfert global une fois la confiance revenue."
+    },
+    {
+      "id": "presse_jambes_1j",
+      "name": "Presse à jambes (1 jambe)",
+      "category": "bas_force",
+      "qualities": [
+        "force",
+        "unilateral"
+      ],
+      "equipment_required": [
+        "presse_jambes"
+      ],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "squat_unilat",
+      "progression_type": "charge",
+      "protocole_cycle_eligible": false,
+      "notes": "Alternative GUIDÉE au Bulgarian — isole la jambe travaillée sans que l'équilibre n'entre en jeu (contrairement au Bulgarian libre, qui sollicite le tronc). Utile quand le gainage/dos ne doit pas être sollicité en plus de la jambe."
+    },
+    {
+      "id": "split_squat_surelev",
+      "name": "Split squat, pied avant surélevé",
+      "category": "bas_force",
+      "qualities": [
+        "force",
+        "unilateral"
+      ],
+      "equipment_required": [],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "windows_ok": [
+        "maison",
+        "paris",
+        "nomade",
+        "hors_maison"
+      ],
+      "substitutes": {},
+      "pattern": "squat_unilat",
+      "progression_type": "charge",
+      "protocole_cycle_eligible": false,
+      "notes": "Variante LIBRE du Bulgarian — pied avant sur step bas (pas le pied arrière sur banc). Garde un peu de travail d'équilibre en réduisant amplitude et charge sur le genou arrière vs Bulgarian classique. Bonne étape intermédiaire entre presse guidée et Bulgarian complet."
+    },
+    {
+      "id": "side_plank",
+      "name": "Planche latérale (side plank)",
+      "category": "gainage",
+      "qualities": [
+        "anti_flexion_laterale"
+      ],
+      "equipment_required": [],
+      "side_rule": "G_first",
+      "contraindications": [],
+      "windows_ok": [
+        "maison",
+        "paris",
+        "nomade",
+        "hors_maison"
+      ],
+      "substitutes": {},
+      "pattern": "gainage_lateral",
+      "progression_type": "reps",
+      "protocole_cycle_eligible": false,
+      "notes": "Anti-flexion latérale — 3e face du gainage complet (avec anti-extension et anti-rotation). Appui coude, corps aligné. G en premier."
     }
   ]
 }
@@ -3692,7 +3806,7 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "aerobie_seuil"
       ],
-      "objectif": "Intervalles courts 4x4 min à >170 bpm. Réservé aux phases où la base aérobie est déjà réamorcée.",
+      "objectif": "VO2max — développe le PLAFOND aérobie. Séance la plus exigeante en fraîcheur : J1, au lendemain du repos.\nJustification : la courbe puissance-durée est PLATE (92,5 W sur 20 min ≈ 93 W sur 40 min) → c'est le plafond qui limite, pas l'endurance à ce plafond. Le travail VO2max le déplace plus vite que le volume Z2 seul.\n⚠ Ne PAS reporter au profit de la Z2 : les deux sont nécessaires, la VO2max dès la première semaine.",
       "slots": [
         {
           "role": "aerobie_vo2max",
@@ -3702,7 +3816,9 @@ input,select,textarea{box-sizing:border-box}
           ],
           "exercice_pref": "velo_z2_seuil_vo2max",
           "obligatoire": true,
-          "note": "Nécessite mesure de puissance/FC fiable — vélo Assioma en priorité. Non reproductible fidèlement en nomade."
+          "note": "Progression : 4×3 min → 5×3 → 6×3 → 5×4 min. Récup ACTIVE à allure très facile, durée = durée de l'effort.\nRepère d'exécution : le dernier intervalle doit être aussi rapide que le premier. Si ça s'effondre, l'intensité de départ était trop haute.\nAlternative course quand le genou le permet : 30/30 ou 1 min/1 min à VMA.",
+          "format_fixe": "5 × 3 min / récup 3 min",
+          "rpe_fixe": "~93-106 W (105-120 % FTP)"
         }
       ]
     },
@@ -3715,14 +3831,17 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "aerobie_seuil"
       ],
-      "objectif": "Mesure ou développement de la vitesse maximale aérobie. Conditionné au protocole retour course (IT band silencieux 3 sem).",
+      "objectif": "VMA — COURSE uniquement. Verrou physiologique : indisponible tant que le protocole de retour à la course n'est pas validé et l'IT band silencieux.\nAncre le SV2 et les zones de course. La dernière mesure (17 km/h, mai 2025) a 15 mois — tout l'entraînement de course repose dessus.",
       "slots": [
         {
           "role": "vma_effort",
           "category": "aerobie",
           "exercice_pref": "course_retour_conditionnel",
           "obligatoire": true,
-          "contrainte": "genou_G_itband — bloqué si flag actif"
+          "contrainte": "genou_G_itband — bloqué si flag actif",
+          "format_fixe": "30/30 × 2 blocs de 8-10",
+          "rpe_fixe": "100-105 % VMA",
+          "note": "Format classique : 30 s à VMA / 30 s en trottinant, 8-10 répétitions, 2 blocs, 3-4 min entre blocs.\nAlternative : 1 min / 1 min × 6-8.\n⚠ N'ouvrir qu'après l'étape 4 de la séquence de déverrouillage (course 30 min + accélérations sans réaction)."
         }
       ]
     },
@@ -3735,7 +3854,7 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "aerobie_base"
       ],
-      "objectif": "Base aérobie, zéro impact, respiration nasale = capteur de zone. Zone cible : 130-150 bpm (SV1 labo 153, bascule nasale mesurée 145-149 le 05/07). 2 bras uniquement. En Guyane (KB 16/20/28) : format en cours de calibration — voir Journal Z2 (essais : 20 kg continu → blocs mixtes 20/28 → step-ups lents). Nasale = capteur, bouche assumée au-dessus de ~145.",
+      "objectif": "Z2 — BASE AÉROBIE. Le socle : c'est elle qui améliore la récupération et rend le reste soutenable.\nPILOTAGE : respiration nasale EN PREMIER, puissance et FC en repères de suivi.\n⚠ Constat 18-19/08 : nasal confortable à 68-75 W alors que la grille Coggan place la Z2 à 49-66 W. NE PAS brider la puissance tant que la nasale est aisée — soit le FTP de 88 W est sous-estimé, soit la grille ne colle pas à ce profil. C'est la respiration qui tranche, pas le tableau.",
       "slots": [
         {
           "role": "aerobie_base_courte",
@@ -3745,7 +3864,9 @@ input,select,textarea{box-sizing:border-box}
           ],
           "exercice_pref": "velo_z2_seuil_vo2max",
           "obligatoire": true,
-          "note": "Substitut universel toutes fenêtres : kb_swing_z2 ou marche nasale."
+          "note": "Continu, sans à-coups. Objectif = TEMPS PASSÉ, pas intensité. Vélo par défaut (zéro impact) ; course dès que la tolérance le permet, SAUF le soir d'un jour de force.",
+          "format_fixe": "30-45 min continu",
+          "rpe_fixe": "nasale confortable · ~49-75 W"
         },
         {
           "role": "z2_alt_stepups",
@@ -3757,34 +3878,102 @@ input,select,textarea{box-sizing:border-box}
       ]
     },
     {
-      "id": "t1_t2",
-      "nom": "T1/T2",
-      "frequence_cible": "1×/semaine dès que la fenêtre d'annonce du test est active",
+      "id": "portage_2",
+      "nom": "Portage 2",
+      "frequence_cible": "1x/semaine (soir de Z2 courte)",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
-        "work_capacity",
-        "aerobie_seuil"
+        "portage",
+        "gainage",
+        "grip"
       ],
-      "objectif": "Simulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
+      "objectif": "PORTAGE 2 — SUITCASE + SANDBAG, le soir de la Z2 courte.\nPrend la place de T1/T2 : celui-ci est un effort de SEUIL, or le seuil est déjà couvert par le protocole Vandel (J5) → doublon de qualité.\n⚠ T1/T2 est SUSPENDU, PAS SUPPRIMÉ. Il ne portait pas que du seuil : il familiarisait aussi avec les GESTES DU TEST (tractions, pompes, gainage, enchaînement). Cette fonction est mise en pause tant que le stage reste incertain — À RÉACTIVER dès que la date est connue, dans les 3-4 semaines de spécification.\nLe sandbag en bear hug sollicite peu la prise digitale (charge contre le torse) : il cohabite bien avec le suitcase.\n\n⚠ RDL 1 jambe, élévations latérales, back extension : ÉCARTÉS (même raison qu'en Portage 1).",
       "slots": [
         {
-          "role": "t1_denivele",
-          "category": "aerobie",
-          "exercice_pref": "t1_escaliers",
-          "obligatoire": true,
-          "format_fixe": "10-15 min de montées (escaliers / côte), allure soutenue",
-          "rpe_fixe": "7-8",
-          "note": "T1 — le dénivelé est le piège n°1 du test. Sac léger optionnel."
+          "role": "echauffement_general",
+          "category": "cars_mobilite",
+          "exercice_pref": "cars_epaule",
+          "obligatoire": false,
+          "note": "CARs épaule + poignet."
         },
         {
-          "role": "t2_enchaine",
-          "category": "work_capacity",
-          "exercice_pref": "t2_enchaine",
+          "role": "carry_unilateral",
+          "category": "bas_force",
+          "exercice_pref": "suitcase_carry",
           "obligatoire": true,
-          "format_fixe": "Enchaîné SANS repos : 20 pompes + 50 s gainage + 4 tractions strictes",
-          "rpe_fixe": "—",
-          "note": "Tractions propres en étant essoufflé = le critère. Barre requise (parc en déplacement) ; à défaut TRX row lesté strict, proxy dégradé. Tractions EN PRONATION (geste du test)."
+          "format_fixe": "3-4 × 30-40 m/côté",
+          "rpe_fixe": "contrôle, pas d'inclinaison",
+          "note": "EN SÉANCE (développement) : SUR PENTE (10-20m) si disponible — plus complet (poussée jambes + gainage antérieur en plus du grip) que le plat pour développer le portage. EN TEST (protocole batterie) : TOUJOURS PLAT — le barème GBRS (50/70/75m) a été établi sur plat, seule condition de comparabilité."
+        },
+        {
+          "role": "portage_sandbag",
+          "category": "bas_force",
+          "exercice_pref": "sandbag_work_capacity",
+          "obligatoire": true,
+          "format_fixe": "3-4 × 40 m",
+          "rpe_fixe": "encombrant, prise ingrate",
+          "note": "EN SÉANCE (développement) : SUR PENTE (10-20m) si disponible — plus complet (poussée jambes + gainage antérieur en plus du grip) que le plat pour développer le portage. EN TEST (protocole batterie) : TOUJOURS PLAT — le barème GBRS (50/70/75m) a été établi sur plat, seule condition de comparabilité."
+        },
+        {
+          "role": "shrug_prophylaxie",
+          "category": "haut_iso_volume",
+          "exercice_pref": "shrug",
+          "obligatoire": false,
+          "format_fixe": "3×12-15",
+          "rpe_fixe": "RPE 7",
+          "note": "Trapèzes hauts — sollicités par le carry, autant les renforcer directement."
+        },
+        {
+          "role": "pompes_volume",
+          "category": "haut_force",
+          "exercice_pref": "pompes_poignees",
+          "obligatoire": false,
+          "format_fixe": "3×max-2",
+          "rpe_fixe": "RIR 2",
+          "note": "Volume poussée horizontale — poids de corps."
+        },
+        {
+          "role": "planche_face",
+          "category": "gainage",
+          "exercice_pref": "hardstyle_plank",
+          "obligatoire": false,
+          "format_fixe": "3×30-45s",
+          "rpe_fixe": "contrôle",
+          "note": "Gainage 1/3 — anti-extension."
+        },
+        {
+          "role": "planche_laterale",
+          "category": "gainage",
+          "exercice_pref": "side_plank",
+          "obligatoire": false,
+          "format_fixe": "3×20-30s/côté",
+          "rpe_fixe": "contrôle",
+          "note": "Gainage 2/3 — anti-flexion latérale. G en premier."
+        },
+        {
+          "role": "militaire_2e_stimulus",
+          "category": "haut_force",
+          "exercice_pref": "militaire_barre",
+          "obligatoire": false,
+          "format_fixe": "2×6-8",
+          "rpe_fixe": "RIR 2-3",
+          "note": "2e stimulus hebdo (1er en FB2) — militaire en développement, pas encore à l'objectif. Isolé du row (qui reste sur Portage 1) pour ne pas cumuler 2 mouvements de force haut du corps le même soir."
+        },
+        {
+          "role": "sled_p2",
+          "category": "bas_force",
+          "exercice_pref": "sled_push",
+          "obligatoire": false,
+          "format_fixe": "3-4 × 20m",
+          "note": "SUR PLAT (tranché). AUTOCONSTRUIT : pneu lesté (sable/gravats ou poids attachés) + sangle taille/épaules — pas de sled rigide, adapté au terrain irrégulier.\nPROTOCOLE : ALLER en PUSH (face au pneu, le repousser devant en avançant) · RETOUR en PULL (pneu attaché dans le dos, le tirer en marchant devant). Un seul trajet aller-retour, sans temps mort.\nEffort CONCENTRIQUE — ne développe pas la force max jambes (le retard front squat n'est pas comblé ici) : sert le conditionnement à faible coût articulaire, et le PULL en particulier est documenté favorable au genou (littérature sled training)."
+        },
+        {
+          "role": "cou_optionnel",
+          "category": "haut_iso_volume",
+          "exercice_pref": "nuque_iso_elastique",
+          "obligatoire": false,
+          "note": "Nuque ISO."
         }
       ]
     },
@@ -3888,7 +4077,7 @@ input,select,textarea{box-sizing:border-box}
           "category": "prophylaxie_genou_pied",
           "exercice_pref": "copenhagen_adductor",
           "obligatoire": false,
-          "note": "Copenhagen — prophylaxie adducteurs (aine, genou, MMA).",
+          "note": "Copenhagen — prophylaxie adducteurs (aine, genou, MMA). Présent en FB1 ET FB2 (2x/sem) : asymétrie mesurée à 20%, au-dessus du seuil d'alerte -> phase de construction, pas de maintien.",
           "repos": "1 min"
         },
         {
@@ -3963,7 +4152,7 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "aerobie_base"
       ],
-      "objectif": "Durée plutôt qu'intensité — 45-60+ min. Peut intégrer dénivelé si test de stage approche.",
+      "objectif": "Z2 LONGUE — volume aérobie de fond. C'est la DURÉE qui compte, pas l'intensité.\nSupport de la mesure de DÉRIVE CARDIAQUE (découplage Pw:Hr) : intensité la plus CONSTANTE possible sur toute la séance, sinon la mesure n'est pas exploitable.\nRepères obtenus : −1,7 % (18/08) et +2,6 % (19/08) = base aérobie qui tient. <5 % = solide.",
       "slots": [
         {
           "role": "aerobie_base_longue",
@@ -3973,14 +4162,16 @@ input,select,textarea{box-sizing:border-box}
           ],
           "exercice_pref": "velo_z2_seuil_vo2max",
           "obligatoire": true,
-          "note": "Rando lestée, natation crawl (si piscine, prudence épaule G), ou marche lestée inclinée en substitut selon fenêtre."
+          "note": "Monter progressivement : 45 min → 60 → 75 → 90. Ne PAS allonger tant que la position vélo n'est pas réglée (gêne coccyx signalée le 18/08).",
+          "format_fixe": "60-90 min continu",
+          "rpe_fixe": "nasale confortable, INTENSITÉ CONSTANTE"
         }
       ]
     },
     {
       "id": "portage",
-      "nom": "Portage",
-      "frequence_cible": "1x/semaine (jour de Z2 longue)",
+      "nom": "Portage 1",
+      "frequence_cible": "1x/semaine (soir de Z2 longue)",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
@@ -3988,7 +4179,7 @@ input,select,textarea{box-sizing:border-box}
         "grip",
         "gainage"
       ],
-      "objectif": "PORTAGE — qualité AUTONOME, pas une composante de la Z2 longue.\nProgrammée le même jour (J4) mais SANS obligation d'enchaînement : peut se faire le matin, la Z2 le soir.\nTravaille le grip, le gainage sous charge et la tolérance au portage — trois qualités qu'aucune autre séance ne couvre depuis le passage au format 2-FB.\n⚠ Le RUCKING (portage sur distance) prendra ce créneau une fois l'étape 3 du genou validée.",
+      "objectif": "PORTAGE 1 — FARMER seul, le soir de la Z2 longue.\nSéparé du suitcase/sandbag (Portage 2) car le GRIP est le facteur limitant identifié (test du 16/08 : lâcher côté gauche). Enchaîner farmer et suitcase le même jour ferait travailler le second sur des avant-bras déjà cuits — charge effective effondrée, volume de mauvaise qualité.\nOBJECTIF : DÉVELOPPER le portage, pas l'entretenir → la fréquence prime sur la concentration du volume.\n\n⚠ RDL 1 jambe, élévations latérales, back extension : ÉCARTÉS — indépendamment du dos, la séance compte déjà 7 exercices + nuque. RDL 1 jambe existe déjà en Bas 2 (doublon si ajouté ici). ",
       "slots": [
         {
           "role": "echauffement_general",
@@ -4004,25 +4195,51 @@ input,select,textarea{box-sizing:border-box}
           "obligatoire": true,
           "format_fixe": "3-4 × 40-60 m",
           "rpe_fixe": "charge lourde, posture tenue",
-          "note": "Farmer carry bilatéral — grip et gainage global. Lâcher AVANT que la posture se dégrade. Noter quelle main lâche en premier (asymétrie)."
+          "note": "EN SÉANCE (développement) : SUR PENTE (10-20m) si disponible — plus complet (poussée jambes + gainage antérieur en plus du grip) que le plat pour développer le portage. EN TEST (protocole batterie) : TOUJOURS PLAT — le barème GBRS (50/70/75m) a été établi sur plat, seule condition de comparabilité."
         },
         {
-          "role": "carry_unilateral",
-          "category": "bas_force",
-          "exercice_pref": "suitcase_carry",
-          "obligatoire": true,
-          "format_fixe": "3 × 30-40 m/côté",
-          "rpe_fixe": "contrôle, pas d'inclinaison",
-          "note": "Suitcase — ANTI-FLEXION LATÉRALE. G en premier. Le tronc reste droit : c'est le critère, pas la distance."
-        },
-        {
-          "role": "portage_sandbag",
-          "category": "bas_force",
-          "exercice_pref": "sandbag_work_capacity",
+          "role": "shrug_prophylaxie",
+          "category": "haut_iso_volume",
+          "exercice_pref": "shrug",
           "obligatoire": false,
-          "format_fixe": "3-4 × 40 m",
-          "rpe_fixe": "encombrant, prise ingrate",
-          "note": "Bear hug ou over-shoulder — soulever-porter réel. Le sandbag apprend ce que la barre n'apprend pas : charge instable et sans prise."
+          "format_fixe": "3×12-15",
+          "rpe_fixe": "RPE 7",
+          "note": "Trapèzes hauts — sollicités par le carry, autant les renforcer directement."
+        },
+        {
+          "role": "pompes_volume",
+          "category": "haut_force",
+          "exercice_pref": "pompes_poignees",
+          "obligatoire": false,
+          "format_fixe": "3×max-2",
+          "rpe_fixe": "RIR 2",
+          "note": "Volume poussée horizontale — poids de corps."
+        },
+        {
+          "role": "planche_face",
+          "category": "gainage",
+          "exercice_pref": "hardstyle_plank",
+          "obligatoire": false,
+          "format_fixe": "3×30-45s",
+          "rpe_fixe": "contrôle",
+          "note": "Gainage 1/3 — anti-extension."
+        },
+        {
+          "role": "planche_laterale",
+          "category": "gainage",
+          "exercice_pref": "side_plank",
+          "obligatoire": false,
+          "format_fixe": "3×20-30s/côté",
+          "rpe_fixe": "contrôle",
+          "note": "Gainage 2/3 — anti-flexion latérale. G en premier."
+        },
+        {
+          "role": "sled_prudent",
+          "category": "bas_force",
+          "exercice_pref": "sled_push",
+          "obligatoire": false,
+          "format_fixe": "3-4 × 20m",
+          "note": "SUR PLAT (tranché). AUTOCONSTRUIT : pneu lesté (sable/gravats ou poids attachés) + sangle taille/épaules — pas de sled rigide, adapté au terrain irrégulier.\nPROTOCOLE : ALLER en PUSH (face au pneu, le repousser devant en avançant) · RETOUR en PULL (pneu attaché dans le dos, le tirer en marchant devant). Un seul trajet aller-retour, sans temps mort.\nEffort CONCENTRIQUE — ne développe pas la force max jambes (le retard front squat n'est pas comblé ici) : sert le conditionnement à faible coût articulaire, et le PULL en particulier est documenté favorable au genou (littérature sled training)."
         },
         {
           "role": "cou_optionnel",
@@ -4043,20 +4260,25 @@ input,select,textarea{box-sizing:border-box}
         "alactique",
         "repetition_puissance"
       ],
-      "objectif": "Finisher alactique complet — puissance pure, récupération complète entre efforts.",
+      "objectif": "AGT — capacité ALACTIQUE. Efforts courts et maximaux, récupération COMPLÈTE, fatigue ÉVITÉE.\nRÈGLE ABSOLUE : arrêter dès que la vitesse ou la qualité du geste baisse. Ce n'est PAS du conditionnement — si ça brûle, c'est raté.\nPlacée le MATIN du jour de seuil : l'alactique ne tolère aucune fatigue préalable, alors que le seuil tolère bien une pré-activation.",
       "slots": [
         {
           "role": "agt_principal",
           "category": "alactique_finisher",
           "exercice_pref": "kb_swing_alactique_28",
           "obligatoire": true,
-          "note": "8-12 efforts max par séance, récup complète entre chaque. Passage 28→32 kg : drop-off <5 % à 28 sur deux mesures consécutives → 32 kg sur les 3-4 premiers efforts (les plus frais), puis étendre. Mesure de drop-off de référence : sur AGT autonome, à frais."
+          "note": "Swing explosif, hanches. STOP dès que la vitesse chute — mieux vaut 6 séries rapides que 10 dégradées.",
+          "format_fixe": "8-10 × 8-10 s",
+          "rpe_fixe": "vitesse MAX · récup 2 min complète"
         },
         {
           "role": "agt_rotation",
           "category": "alactique_finisher",
           "exercice_pref": "chop_lift_elastique",
-          "obligatoire": false
+          "obligatoire": false,
+          "format_fixe": "4-6 × 5/côté",
+          "rpe_fixe": "explosif · récup complète",
+          "note": "Rotation explosive. G en premier. Transfert MMA (frappe tournante)."
         }
       ]
     },
@@ -4069,17 +4291,15 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "aerobie_seuil"
       ],
-      "objectif": "Intervalles 8-12 min à SV2 (~166 bpm). Développe le seuil, pas la base. Zones ancrées sur le test FTP 20 min home-trainer (S2 de chaque grande fenêtre maison) : FTP = 95 % de la puissance moyenne, FC SV2 = FC moyenne des 15 dernières minutes.",
+      "objectif": "SEUIL — protocole Agile Training (N. Vandel), version VÉLO.\nRegistre TEMPO : 75-85 % FCM, difficulté 7/10. « Essoufflé mais respiration CONTRÔLÉE — si la respiration vous contrôle, vous êtes trop vite. »\nPRINCIPE CLÉ : allure IDENTIQUE quelle que soit la durée de la séquence (4, 8 ou 12 min). C'est un exercice de GESTION, pas de puissance max — il corrige précisément le défaut observé au test FTP du 18/08 (départ à 107 W puis chute à 82 W).\nRécupération LIBRE entre séquences : rouler modéré jusqu'à ne plus être essoufflé du tout.\n⚠ PILOTER À LA PUISSANCE OU À LA RESPIRATION, PAS À LA FC : 75-85 % de FCM = 137-155 bpm, au-dessus de ce qui a été tenu sur l'effort maximal de 40 min (139 moy). La FC ne reflète pas l'intensité réelle à vélo ici.\n⚠ Durées de séance annoncées 1h15 → 2h50 (échauffement inclus) : DÉMARRER EN RÉDUISANT, la Z2 la plus longue actuelle fait 30 min.",
       "slots": [
         {
-          "role": "aerobie_seuil",
-          "category": "aerobie",
-          "qualities": [
-            "aerobie_seuil"
-          ],
+          "role": "seuil_bloc",
+          "category": "cardio",
           "exercice_pref": "velo_z2_seuil_vo2max",
           "obligatoire": true,
-          "note": "Substitut sans vélo (déplacement) : marche/course rapide si IT band OK, sinon KB swings cadence haute en dernier recours (imprécis pour le seuil)."
+          "format_fixe": "Progression S1→S8",
+          "note": "PROGRESSION VÉLO (séquences en min, allure identique partout) :\nS1 (2x) 4-12-4 · S2 (2x) 4-8-12 · S3 (3x) 4-12-4 · S4 (3x) 4-8-12 · S5 (4x) 4-12-4 · S6 (4x) 4-8-12 · S7 (5x) 4-12-4 · S8 (5x) 4-8-12.\nVersion COURSE (quand le genou le permet, durées /2) : 2-6-2 et 2-4-6.\nRécup libre entre séquences."
         }
       ]
     },
@@ -4246,6 +4466,38 @@ input,select,textarea{box-sizing:border-box}
           "exercice_pref": "nuque_iso_elastique",
           "obligatoire": false,
           "note": "Cou iso — cervicales."
+        }
+      ]
+    },
+    {
+      "id": "t1_t2",
+      "nom": "T1/T2 (suspendu)",
+      "frequence_cible": "1×/semaine dès que la fenêtre d'annonce du test est active",
+      "semaine_classique": true,
+      "eligible_bloc_qualite": true,
+      "qualites_prioritaires": [
+        "work_capacity",
+        "aerobie_seuil"
+      ],
+      "objectif": "⚠ SUSPENDU — remplacé par Portage 2 le soir de la Z2 courte.\nRaison : T1 est un effort de SEUIL, déjà couvert par le protocole Vandel (J5) → doublon.\nÀ RÉACTIVER dès que la date du stage est connue : T1/T2 ne porte pas que du seuil, il familiarise aussi avec les GESTES DU TEST (tractions, pompes, gainage, enchaînement course-effort).\nSimulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
+      "slots": [
+        {
+          "role": "t1_denivele",
+          "category": "aerobie",
+          "exercice_pref": "t1_escaliers",
+          "obligatoire": true,
+          "format_fixe": "10-15 min de montées (escaliers / côte), allure soutenue",
+          "rpe_fixe": "7-8",
+          "note": "T1 — le dénivelé est le piège n°1 du test. Sac léger optionnel."
+        },
+        {
+          "role": "t2_enchaine",
+          "category": "work_capacity",
+          "exercice_pref": "t2_enchaine",
+          "obligatoire": true,
+          "format_fixe": "Enchaîné SANS repos : 20 pompes + 50 s gainage + 4 tractions strictes",
+          "rpe_fixe": "—",
+          "note": "Tractions propres en étant essoufflé = le critère. Barre requise (parc en déplacement) ; à défaut TRX row lesté strict, proxy dégradé. Tractions EN PRONATION (geste du test)."
         }
       ]
     },
@@ -5145,6 +5397,7 @@ const GTG_EXERCICES = [
 
 const ROUTINE_MATIN = [
   {id:'clamshell',cat:'Renfo obligatoire',icon:'🦵',name:'Clamshell G FIRST',detail:'3 × 15/côté · élastique léger',priority:'★★★',note:'Fessier moyen G = cause racine IT band. Quotidien SANS EXCEPTION. G d\'abord.'},
+  {id:'squat_espagnol_gtg',cat:'Renfo obligatoire',icon:'🦵',name:'Squat espagnol',detail:'2-3 × 20-40s tenu · élastique léger','priority':'★★★',note:"Désensibilisation genou (tendinopathie rotulienne) — charge quasi nulle sur l'articulation. Fréquence QUOTIDIENNE ou quasi requise pour agir (contrairement à un exercice de force : l'effet vient de la RÉGULARITÉ légère, pas de l'intensité). Sans douleur, jamais au-delà du seuil de gêne."},
   
   {id:'petersen',cat:'Renfo obligatoire',icon:'🦵',name:'Petersen Step-up G FIRST',detail:'2 × 10/jambe · BW',priority:'★★★',note:'Orteils sur bord marche 10-15cm. Genou monte vers la pointe. VMO. IT band rehab. Quotidien jusqu\'à disparition douleur.'},
   
@@ -6337,25 +6590,28 @@ const T_EPREUVES = [
   // ── FORCE MAXIMALE : les 3RM bruts ──
   {id:'pdc',        axe:null,                    cat:'force', unit:'kg',    lbl:'Poids de corps',
    help:'Nécessaire au calcul du RSA et des ratios. À repeser à chaque batterie.', score:null},
-  {id:'fs3',        axe:'Force maximale',        cat:'force', unit:'kg 3RM',lbl:'Front squat 3RM',
+  {id:'fs3',        axe:'Force max BAS',         cat:'force', unit:'kg 3RM',lbl:'Front squat 3RM',
    help:'Prise croisée. Entre dans le RSA (converti en 1RM × 1,10) et dans le ratio Good 1,25 × PDC.',
    ratio:1.25},
-  {id:'bench3',     axe:'Force maximale',        cat:'force', unit:'kg 3RM',lbl:'Bench 3RM',
+  {id:'bench3',     axe:'Force max HAUT',        cat:'force', unit:'kg 3RM',lbl:'Bench 3RM',
    help:'Entre dans le RSA. Ratio Good = 1,25 × PDC.', ratio:1.25},
-  {id:'hinge3',     axe:'Force maximale',        cat:'force', unit:'kg 3RM',lbl:'Hinge Lift 3RM',
+  {id:'hinge3',     axe:'Force max BAS',         cat:'force', unit:'kg 3RM',lbl:'Hinge Lift 3RM',
    help:'RDL hanches hautes. Entre dans le RSA et dans le score MTI 45+. Ratio Good = 1,75 × PDC.',
    ratio:1.75},
   // ── FORCE RELATIVE : déplacer son propre poids ──
-  {id:'tractions',  axe:'Force relative',        cat:'force', unit:'reps',  lbl:'Tractions strictes max',
-   help:'Pronation, max de reps (plafonnées à 20 dans le RSA). GBRS : 10 / 15 / 20.',
+  {id:'tractions',  axe:'Force max HAUT',        cat:'force', unit:'reps',  lbl:'Tractions strictes max',
+   help:'Pronation, max de reps (plafonnées à 20 dans le RSA). GBRS : 10 / 15 / 20.\nLe SCORE RSA (force relative globale) est calculé plus bas — les axes Force max sont déjà notés EN RATIO du poids de corps, un axe « force relative » séparé ferait doublon.',
    score:v=> v<10?0 : v<15?2 : v<20?3 : 4},
   // ── ENDURANCE DE FORCE ──
-  {id:'pompes',     axe:'Endurance de force',    cat:'force', unit:'reps',  lbl:'Pompes 2 min',
+  {id:'pompes',     axe:'Endur. force HAUT',     cat:'force', unit:'reps',  lbl:'Pompes 2 min',
    help:'Hand-release. MTI 45+ : <15=0 · 16-25=1 · 26-37=2 · 38-50=3 · >50=4',
    score:v=> v<16?0 : v<26?1 : v<38?2 : v<51?3 : 4},
-  {id:'bench_pdc',  axe:'Endurance de force',    cat:'force', unit:'reps',  lbl:'Bench @ PDC max reps',
+  {id:'bench_pdc',  axe:'Endur. force HAUT',     cat:'force', unit:'reps',  lbl:'Bench @ PDC max reps',
    help:'Barre chargée au poids de corps. GBRS : 10 / 15 / 20.',
    score:v=> v<10?0 : v<15?2 : v<20?3 : 4},
+  {id:'wallsit',    axe:'Endur. force BAS',      cat:'force', unit:'s',     lbl:'Wall sit (le côté faible)',
+   help:'Chaise iso dos au mur, cuisses à 90°. Tenir jusqu\'à rupture. Noter aussi D et G séparément si testé en unilatéral — l\'écart alimente l\'axe Symétrie.\nRepères : <60 s faible · 60-90 s correct · 90-120 s bon · >120 s excellent.',
+   score:v=> v<60?0 : v<90?1 : v<120?2 : v<150?3 : 4},
   // ── PUISSANCE ──
   {id:'cmj',        axe:'Puiss. membres inf',    cat:'puiss', unit:'cm',    lbl:'CMJ',
    help:'3 essais, mains aux hanches. Sans barème publié — suivi longitudinal.', score:null},
@@ -6408,12 +6664,12 @@ const T_EPREUVES = [
    score:v=> v<120?0 : v<150?2 : v<180?3 : 4},
   {id:'pallof',     axe:'Gainage 3 axes',        cat:'struct',unit:'s',     lbl:'Pallof iso (anti-rotation)',
    help:'Tenue bras tendus, élastique latéral. Noter le côté faible. Sans barème — suivi.', score:null},
-  {id:'asym',       axe:'Prophylaxie',           cat:'struct',unit:'% écart',lbl:'Asymétrie max D/G',
+  {id:'asym',       axe:'Symétrie',              cat:'struct',unit:'% écart',lbl:'Asymétrie max D/G',
    help:'UNE SEULE valeur à saisir : le PLUS GRAND écart D/G trouvé sur l\'ensemble du dépistage.\nExemple : Copenhagen 8 %, side plank 12 %, Bulgarian 15 % → saisir 15.\nNordic curl et nuque ne se notent PAS ici : ils servent à repérer un déficit, pas à produire un écart (Nordic = bilatéral, nuque = 4 directions). Les noter à part en commentaire.\nBarème : <5 %=4 · 5-10=3 · 10-15=2 · 15-20=1 · >20=0 🚩 plancher éliminatoire.',
    score:v=> v>20?0 : v>15?1 : v>10?2 : v>5?3 : 4},
-  {id:'mobilite',   axe:'Mobilité',              cat:'struct',unit:'/4',    lbl:'Mobilité (auto-éval)',
-   help:'Épaule, cheville, hanche. 0 = très limité · 4 = amplitude complète et symétrique.',
-   score:v=> Math.max(0,Math.min(4,v))},
+  {id:'gowod',      axe:'Mobilité',              cat:'struct',unit:'score',lbl:'Mobilité (score GOWOD)',
+   help:'Score GLOBAL GOWOD sur 100, réévalué tous les 3 mois. Protocole standardisé = vraie mesure.\nBarème : <40=0 · 40-55=1 · 55-70=2 · 70-85=3 · >85=4.\nDernier relevé 47/100 (15/04/2025) — détail : chevilles 100, overhead 52, thorax 40, épaules 38, hanches 31, chaîne postérieure 28.\nLes deux plus faibles (hanches, chaîne post.) sont liées à l\'IT band et au genou.',
+   score:v=> v<40?0 : v<55?1 : v<70?2 : v<85?3 : 4},
   {id:'fc_recup',   axe:'Récupération',          cat:'struct',unit:'bpm',   lbl:'FC récupération 60 s',
    help:'Delta entre l\'arrêt de l\'épreuve longue et 60 s. >12 normal · >20 bonne condition.',
    score:v=> v<8?0 : v<12?1 : v<16?2 : v<20?3 : 4},
@@ -6499,12 +6755,8 @@ function tAxes(){
     const v=vo2.val;
     map['VO2max / PMA'].scores.push(v<45?0 : v<50?1 : v<55?2 : v<60?3 : 4);
   }
-  // Force relative : ajouter le score RSA à l'axe
-  const rsa = tRSA();
-  if(rsa!=null && map['Force relative']){
-    map['Force relative'].tested = true;
-    map['Force relative'].scores.push(rsa<5.0?0 : rsa<5.75?1 : rsa<6.0?2 : rsa<6.5?3 : 4);
-  }
+  // Le RSA n'alimente AUCUN axe : les axes Force max sont déjà notés en ratio du PDC.
+  // Il reste un score composite, affiché en bas — sinon les mêmes 3RM compteraient deux fois.
   return Object.values(map).map(a=>({
     ...a, score: a.scores.length ? a.scores.reduce((x,y)=>x+y,0)/a.scores.length : null
   }));
@@ -7674,7 +7926,7 @@ function renderSessionCards(el, session){
       // Zercher ET Front squat sont légitimes : Zercher pour le gainage antérieur, les longs tibias
       // (1m84) et le transfert MMA/terrain ; Front squat pour le standard RSA officiel. Choix libre.
       squat: { roles:new Set(['squat_bilateral','test_rsa_front_squat']),
-               choices:[['zercher_squat','Zercher'],['front_squat','Front squat']] },
+               choices:[['zercher_squat','Zercher'],['front_squat','Front squat'],['presse_jambes_2j','Presse à jambes (2j)']] },
       // Gainage anti-extension : hardstyle plank (iso, plafonne) ↔ dragon flag (dynamique, plus dur —
       // ⚠ tension coude G : à réserver aux jours coude silencieux).
       gainage_ae: { roles:new Set(['gainage_finisher','anti_extension_finisher']),
@@ -7690,7 +7942,7 @@ function renderSessionCards(el, session){
                choices:[['bridge_rotation','Bridge rotation'],['ghd_rotation','Rotation GHD'],['rotation_fente_elastique','Rotation fente bulgare'],['russian_twist','Russian twist'],['landmine_twist','Landmine twist'],['chop_lift_elastique','Chop/lift contrôlé']] },
       // Squat unilatéral genou-dominant : bulgarian (défaut) ou presse une jambe.
       unilat: { roles:new Set(['unilateral_genou']),
-               choices:[['bulgarian_split_squat','Bulgarian'],['presse_une_jambe','Presse une jambe']] },
+               choices:[['bulgarian_split_squat','Bulgarian'],['presse_une_jambe','Presse une jambe'],['presse_jambes_1j','Presse à jambes (1j, guidée)'],['split_squat_surelev','Split squat surélevé']] },
       // Rappel puissance (priming FB) : lancer/swing explosif au choix.
       rappel_puiss: { roles:new Set(['rappel_puissance']),
                choices:[['med_ball_horizontal','Lancer horizontal'],['med_ball_rotationnel','Lancer rotationnel'],['pseudo_lancer_rot_elastique','Pseudo lancer élastique'],['kb_swing_alactique_28','KB swing explosif'],['pompe_explosive','Pompe explosive']] },
