@@ -1605,7 +1605,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "kb_swing_alactique_28",
-      "name": "KB Swing 28kg 2 bras — alactique",
+      "name": "KB Swing 2 bras — alactique",
       "category": "alactique_finisher",
       "qualities": [
         "alactique",
@@ -3783,6 +3783,30 @@ input,select,textarea{box-sizing:border-box}
       "progression_type": "reps",
       "protocole_cycle_eligible": false,
       "notes": "Anti-flexion latérale — 3e face du gainage complet (avec anti-extension et anti-rotation). Appui coude, corps aligné. G en premier."
+    },
+    {
+      "id": "med_ball_slam",
+      "name": "Med ball slam",
+      "category": "haut_puissance",
+      "qualities": [
+        "alactique",
+        "puissance_verticale"
+      ],
+      "equipment_required": [
+        "med_ball"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "epaule_g_extreme"
+      ],
+      "windows_ok": [
+        "maison"
+      ],
+      "substitutes": {},
+      "pattern": "flexion_tronc_explosive",
+      "progression_type": "reps",
+      "protocole_cycle_eligible": false,
+      "notes": "Vecteur VERTICAL (flexion tronc + extension épaules/lats) — complémentaire du swing (vecteur horizontal, extension hanche). ⚠ Position haute bras tendus = flexion complète d'épaule suivie d'extension violente : SURVEILLER l'épaule G, réduire l'amplitude au-dessus de la tête si gêne (slam depuis la poitrine plutôt que overhead complet)."
     }
   ]
 }
@@ -4263,22 +4287,22 @@ input,select,textarea{box-sizing:border-box}
       "objectif": "AGT — capacité ALACTIQUE. Efforts courts et maximaux, récupération COMPLÈTE, fatigue ÉVITÉE.\nRÈGLE ABSOLUE : arrêter dès que la vitesse ou la qualité du geste baisse. Ce n'est PAS du conditionnement — si ça brûle, c'est raté.\nPlacée le MATIN du jour de seuil : l'alactique ne tolère aucune fatigue préalable, alors que le seuil tolère bien une pré-activation.",
       "slots": [
         {
-          "role": "agt_principal",
+          "role": "agt_puissance",
           "category": "alactique_finisher",
           "exercice_pref": "kb_swing_alactique_28",
           "obligatoire": true,
-          "note": "Swing explosif, hanches. STOP dès que la vitesse chute — mieux vaut 6 séries rapides que 10 dégradées.",
+          "note": "Vecteur VERTICAL bas→haut (extension hanche explosive). Le slam est vertical haut→bas (flexion tronc). Ce sont deux verticaux en sens opposés, PAS horizontal/vertical. Alterner 1 semaine sur 2 — jamais les deux dans la même séance (dilue la qualité de chaque geste).",
           "format_fixe": "8-10 × 8-10 s",
           "rpe_fixe": "vitesse MAX · récup 2 min complète"
         },
         {
           "role": "agt_rotation",
           "category": "alactique_finisher",
-          "exercice_pref": "chop_lift_elastique",
+          "exercice_pref": "med_ball_rotationnel",
           "obligatoire": false,
           "format_fixe": "4-6 × 5/côté",
           "rpe_fixe": "explosif · récup complète",
-          "note": "Rotation explosive. G en premier. Transfert MMA (frappe tournante)."
+          "note": "Lancer rotationnel med ball (5kg) — TOUJOURS présent (contrairement au swing/slam qui alternent). PLUS FIDÈLE à l'AGT que le chop/lift élastique : relâchement total en fin de geste (balistique pur), pas de décélération à contrôler contrairement à l'élastique qui résiste jusqu'au bout. G en premier. Transfert MMA direct (frappe tournante).\nSUBSTITUT NOMADE (pas de med ball) : chop/lift élastique."
         }
       ]
     },
@@ -5978,7 +6002,7 @@ function moteurResolveSession(session){
     unilateral_genou:'unilat',
     volume_quadriceps:'quad_bfr', rappel_puissance:'rappel_puiss',
     ischio_jambiers:'ischios', finisher_bfr_jambes:'ischios',
-    agt_rotation:'agt_rot'
+    agt_rotation:'agt_rot', agt_puissance:'agt_vecteur'
   };
   session.slots.forEach(slot=>{
     // Swap manuel : si l'utilisateur a choisi une variante pour ce créneau, on l'honore.
@@ -7612,6 +7636,12 @@ const COMPRESSED_SESSIONS = {
 };
 
 // ── Séance pilotée par le Moteur (post-Guyane) — même UI riche, données dynamiques ──
+const M_ROLE_LABEL = {
+  agt_puissance:'vecteur', agt_rotation:'rotation',
+  rappel_puissance:'rappel puissance', hinge_lourd:'hinge lourd', hinge_volume:'hinge volume',
+  squat_bilateral:'squat', unilateral_genou:'unilatéral', anti_rotation:'anti-rotation',
+  volume_quadriceps:'quadriceps', ischio_jambiers:'ischios', finisher_bfr_jambes:'ischios (BFR)'
+};
 function renderSeance(){
   moteurMaybeAutoSuggestDelestage();
   const el = $('div',{});
@@ -7899,7 +7929,7 @@ function renderSessionCards(el, session){
     if(MINIMAL_ROLES.has(slot.role)) return; // couvert par la ligne de priming ci-dessus
     if(!r.exId){
       el.appendChild($('div',{class:'card',style:{borderColor:'#e63946'}},
-        $('div',{style:{fontSize:'10px',textTransform:'uppercase',color:'#475569',letterSpacing:'.4px',marginBottom:'4px'}},slot.role.replace(/_/g,' ')),
+        $('div',{style:{fontSize:'10px',textTransform:'uppercase',color:'#475569',letterSpacing:'.4px',marginBottom:'4px'}}, M_ROLE_LABEL[slot.role] || slot.role.replace(/_/g,' ')),
         $('div',{style:{fontSize:'13px',fontWeight:600,color:'#ff8087'}},'⚠ Indisponible — '+(r.blockedReason||''))
       ));
       return;
@@ -7954,7 +7984,10 @@ function renderSessionCards(el, session){
                choices:[['trx_leg_curl','TRX leg curl BFR'],['leg_curl_machine','Leg curl machine BFR'],['nordic_curl','Nordic curl']] },
       // AGT rotation : versions explosives seulement (créneau alactique, frais).
       agt_rot: { roles:new Set(['agt_rotation']),
-               choices:[['chop_lift_elastique','Chop/lift explosif'],['med_ball_rotationnel','Med ball rotationnel']] }
+               choices:[['chop_lift_elastique','Chop/lift explosif'],['med_ball_rotationnel','Med ball rotationnel']] },
+      // AGT vecteur vertical/horizontal : ALTERNER swing (hanche) et slam (tronc) — visible directement, pas caché en note.
+      agt_vecteur: { roles:new Set(['agt_puissance']),
+               choices:[['kb_swing_alactique_28','KB swing — 1 sem/2'],['med_ball_slam','Slam — 1 sem/2']] }
     };
     for(const gk in SWAP_GROUPS){
       const grp = SWAP_GROUPS[gk];
@@ -7984,8 +8017,9 @@ function renderSessionCards(el, session){
     if(tooltipNote) hdr.appendChild($('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e, tooltipNote); }},'?'));
     card.appendChild(hdr);
     card.appendChild($('div',{style:{fontSize:'9.5px',textTransform:'uppercase',color:'#475569',letterSpacing:'.4px',marginTop:'-4px',marginBottom:'6px'}},
-      slot.role.replace(/_/g,' ')+(slot.obligatoire?'':' (optionnel)')));
+      (M_ROLE_LABEL[slot.role] || slot.role.replace(/_/g,' '))+(slot.obligatoire?'':' (optionnel)')));
     if(r.substituted && r.from) card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',marginBottom:'4px'}},'Remplace : '+(M_EX_BY_ID_NAME[r.from]||r.from)));
+    if(slot.role==='agt_puissance') card.appendChild($('div',{style:{fontSize:'10.5px',color:'#f5a623',fontWeight:'700',marginBottom:'4px'}},'⇄ Alterne avec le slam/swing — 1 semaine sur 2'));
 
 
     // Grid infos (format / repos / tempo / RPE cible) — priorité: protocole de cycle > format standard Guyane
