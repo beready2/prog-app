@@ -7,7 +7,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <title>Be Ready</title>
-  <link rel="manifest" href="manifest.json"/>
+  <link rel="manifest" href="sport-pwa-manifest.json"/>
+  <link rel="apple-touch-icon" href="icon-192.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
   <style>
@@ -38,7 +39,7 @@ input,select,textarea{box-sizing:border-box}
 /* Anti-débordement page Routine */
 .scroll{overflow-x:hidden!important}
 .section-hdr{max-width:100%;box-sizing:border-box;overflow-wrap:break-word}
-.cat-badge{flex-shrink:0;max-width:60px;overflow:hidden;text-overflow:ellipsis}
+.cat-badge{flex-shrink:0;max-width:130px;overflow:hidden;text-overflow:ellipsis}
 .tag{flex-shrink:0;white-space:normal}
 </style>
 </head>
@@ -3815,9 +3816,9 @@ input,select,textarea{box-sizing:border-box}
 {
   "meta": {
     "nom": "Be Ready — Templates de séance",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Couche intermédiaire entre le catalogue d'exercices (exercices individuels) et le moteur de l'app (choix du jour). Chaque type de séance définit ses créneaux (slots) : quelle(s) qualité(s) et catégorie(s) du catalogue chaque slot doit couvrir. L'app résout ensuite chaque slot en un exercice concret selon la fenêtre active (matériel dispo) et les contre-indications du jour, en suivant la chaîne de substituts du catalogue.",
-    "regle_bascule": "mode = 'semaine_classique' par défaut. mode = 'bloc_qualite' seulement si duree_fenetre_jours >= 28 (maison OU déplacement — le lieu ne décide pas, la durée décide). En semaine classique, seules les séances avec semaine_classique=true sont proposées ; les autres restent visibles mais verrouillées dans l'app.",
+    "regle_bascule": "v4.1 (30/08/2026) — LE GATE DES 28 JOURS EST ABROGÉ. Arbre D : le type de semaine se détermine par le MATÉRIEL disponible, pas par la durée du séjour ; Arbre E : la durée ne décide plus que de la FORME de progression (vague 3+1 si ≥4 semaines connues à l'avance, sinon semaine-type répétée sans vague). Aucune séance n'est verrouillée par la durée de fenêtre : le seul filtre réel est le matériel (windows_ok du catalogue, croisé avec le matériel coché dans l'app) et les contre-indications du jour. Le code applique déjà cette règle (moteurBlocQualiteActive() renvoie true en permanence) ; c'est ce texte qui décrivait encore l'ancienne règle. Le champ 'semaine_classique' de chaque session_type est DÉPRÉCIÉ et neutralisé (toutes les valeurs passées à true) : il est conservé pour compatibilité, il ne doit plus servir à décider quoi que ce soit.",
     "resolution_slot": "Pour un slot donné : filtrer catalogue.exercises par category (et qualities si précisé) -> exclure ceux dont une contraindication est un flag actif du bilan du jour -> parmi les restants, garder ceux dont current_window ∈ windows_ok -> si aucun ne matche, suivre substitutes du meilleur candidat pour la fenêtre. side_rule G_first du catalogue reste prioritaire à volume/charge égal."
   },
   "session_types": [
@@ -3825,7 +3826,7 @@ input,select,textarea{box-sizing:border-box}
       "id": "vo2max",
       "nom": "VO2",
       "frequence_cible": "1x/semaine en phase développement aérobie, jamais 2 séances hautes intensité aérobie le même jour que seuil",
-      "semaine_classique": false,
+      "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
         "aerobie_seuil"
@@ -3850,7 +3851,7 @@ input,select,textarea{box-sizing:border-box}
       "id": "vma",
       "nom": "VMA",
       "frequence_cible": "ponctuel — test de contrôle ou bloc développement course",
-      "semaine_classique": false,
+      "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
         "aerobie_seuil"
@@ -4005,7 +4006,7 @@ input,select,textarea{box-sizing:border-box}
       "id": "fb_1",
       "nom": "FB1",
       "frequence_cible": "1x/semaine (format 2-FB : FB1 + FB2 = 2 séances/sem)",
-      "semaine_classique": false,
+      "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
         "force_max"
@@ -4331,7 +4332,7 @@ input,select,textarea{box-sizing:border-box}
       "id": "fb_2",
       "nom": "FB2",
       "frequence_cible": "1x/semaine (format 2-FB : FB1 + FB2 = 2 séances/sem)",
-      "semaine_classique": false,
+      "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
         "force_max"
@@ -4557,7 +4558,7 @@ input,select,textarea{box-sizing:border-box}
       "id": "puissance_1",
       "nom": "P1",
       "frequence_cible": "bloc Fusion / post-gate",
-      "semaine_classique": false,
+      "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
         "puissance",
@@ -4692,7 +4693,7 @@ input,select,textarea{box-sizing:border-box}
       "id": "puissance_2",
       "nom": "P2",
       "frequence_cible": "bloc Fusion / post-gate",
-      "semaine_classique": false,
+      "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
         "puissance",
@@ -4834,8 +4835,8 @@ input,select,textarea{box-sizing:border-box}
 <script id="moteur-periodisation-data" type="application/json">{
   "meta": {
     "nom": "Be Ready — Périodisation bloc qualité",
-    "version": "4.0",
-    "description": "Cycle appliqué automatiquement dès qu'un bloc qualité est actif (fenêtre déclarée ou écoulée >= 28 jours), sauf si un focus manuel est choisi (force / puissance / préparation tests / semaine tests), qui prime toujours sur le calcul automatique. Pas de semaine d'adaptation : la puissance suit toujours une semaine de déload de force donc n'a pas besoin de réadaptation, et la force est travaillée toute l'année donc n'en a pas besoin non plus. Chaque bloc de 4 semaines = 3 semaines progressives (léger -> modéré -> pic) sur UNE qualité, puis 1 semaine de déload avant de rebasculer sur l'autre qualité. cycle_index = floor(jours_ecoules_depuis_debut_bloc_qualite / 28) ; type = cycle_index pair -> force, impair -> puissance. semaine_du_cycle = floor(jours_ecoules / 7) % 4 + 1. v4.0: le cycle automatique reste TOUJOURS en bloc Force (pas d'alternance auto vers Puissance) -- Puissance est disponible uniquement via le focus manuel, quand la personne juge que cluster/PAP est approprie ce jour-la (pas de risque poignet/genou). L'aerobie_seuil ne recoit plus de protocole de cycle (Seuil/VO2max progressent par duree/regularite, pas par top-set/cluster, cf manuel)."
+    "version": "4.1",
+    "description": "Cycle appliqué automatiquement dès qu'un bloc qualité est actif (fenêtre déclarée ou écoulée >= 28 jours), sauf si un focus manuel est choisi (force / puissance / préparation tests / semaine tests), qui prime toujours sur le calcul automatique. Pas de semaine d'adaptation : la puissance suit toujours une semaine de déload de force donc n'a pas besoin de réadaptation, et la force est travaillée toute l'année donc n'en a pas besoin non plus. Chaque bloc de 4 semaines = 3 semaines progressives (léger -> modéré -> pic) sur UNE qualité, puis 1 semaine de déload avant de rebasculer sur l'autre qualité. semaine_du_cycle = floor((jours_ecoules_depuis_debut_fenetre - offset_readaptation) / 7) % 4 + 1, offset_readaptation = 7 j par defaut (Arbre E : la 1re semaine de retour est une READAPTATION hors vague, la vague demarre au jour 8). v4.1: la formule 'cycle_index pair -> force, impair -> puissance' est ABROGEE et retiree -- elle contredisait la regle ci-dessous. Le cycle automatique reste TOUJOURS en bloc Force (pas d'alternance auto vers Puissance) -- Puissance est disponible uniquement via le focus manuel, quand la personne juge que cluster/PAP est approprie ce jour-la (pas de risque poignet/genou). L'aerobie_seuil ne recoit plus de protocole de cycle (Seuil/VO2max progressent par duree/regularite, pas par top-set/cluster, cf manuel)."
   },
   "protocoles": {
     "top_set_backoff_leger": {
@@ -4876,9 +4877,9 @@ input,select,textarea{box-sizing:border-box}
     },
     "deload": {
       "nom": "Déload",
-      "description": "Volume et charge réduits (~-50%), technique maintenue. Consolidation, pas régression. Sert aussi de transition avant de rebasculer sur l'autre qualité — pas besoin de semaine d'adaptation après.",
-      "rpe": "4-5",
-      "format": "3×3 déload"
+      "description": "Volume −40 à −50 %, INTENSITÉ MAINTENUE (v4.1, aligné sur le programme §2 et le manuel ch. 11 / v4.34). Le top set reste à son RPE habituel : ce qui saute, ce sont les back-off, le volume accessoire, le BFR et le gainage. Fréquence et technique inchangées. Consolidation, pas régression — et transition avant de rebasculer sur une autre qualité. ⚠ Déload ≠ affûtage.",
+      "rpe": "inchangé (celui de la phase précédente)",
+      "format": "Top set ×3 conservé — PAS de back-off · accessoires, BFR et gainage supprimés"
     },
     "prep_test": {
       "nom": "Préparation test",
@@ -5027,7 +5028,9 @@ input,select,textarea{box-sizing:border-box}
     "Le focus manuel prime toujours sur le calcul automatique du cycle — utile pour caler une préparation de test ou une semaine de tests sans attendre que le cycle Force/Puissance tombe au bon moment.",
     "Pas de semaine d'adaptation : la puissance suit toujours une semaine de déload de force (déjà 'adaptée' par le repos), et la force est développée toute l'année donc reste familière.",
     "Guyane (programme historique figé, 9 semaines jusqu'au 10 août 2026) garde sa propre structure S1-S9 telle quelle — ce cycle s'applique aux blocs qualité futurs.",
-    "L'alternance Force -> Puissance -> Force... continue tant que le bloc qualité dure et qu'aucun focus manuel n'est actif."
+    "v4.1 (30/08/2026) — note supprimée : elle affirmait « l'alternance Force -> Puissance -> Force continue tant que le bloc qualité dure », en contradiction directe avec la règle v4.0 juste au-dessus (le cycle automatique reste TOUJOURS en Force ; la Puissance n'est accessible que par focus manuel). Vestige de la v3.",
+    "v4.1 — DÉLOAD : volume −50 %, INTENSITÉ MAINTENUE. Le top set est conservé à son RPE ; ce sont les back-off, accessoires, BFR et gainage qui sautent. L'ancienne définition (RPE 4-5, format 3×3) baissait aussi l'intensité, en contradiction avec le programme §2 et le manuel ch. 11 (v4.34). C'est le volume qui coûte de la récupération, l'intensité qui tient les adaptations.",
+    "v4.1 — RÉADAPTATION : la vague ne démarre plus au jour 1 de la fenêtre mais au jour 8 (offset réglable dans les réglages du moteur). Sans cet offset, l'app plaçait le PIC de la vague sur la semaine où la doctrine prévoit le DÉLOAD."
   ]
 }</script>
 <script type="module">
@@ -5498,6 +5501,10 @@ function loadMoteurState(){
     mode: 'maison',
     equipDeplacement: [],
     windowStart: todayStr,
+    // Arbre E — la 1re semaine de retour est une RÉADAPTATION hors vague : la vague (S1 léger → S4 déload)
+    // démarre au jour 8 de la fenêtre, pas au jour 1. Réglable (0 = pas de réadaptation, cas d'une fenêtre
+    // qui prolonge la précédente sans coupure de matériel).
+    vagueOffsetJours: 7,
     dureePrevueJours: null,
     delestageEpauleTier: 0,
     delestageAutoDate: null,
@@ -5625,9 +5632,21 @@ function moteurBlocQualiteActive(){
   // WC / VO2 / FB / P1 / P2 ne sont plus verrouillées par la durée de fenêtre.
   return true;
 }
+// Arbre E — jours écoulés DANS LA VAGUE (≠ jours écoulés dans la fenêtre).
+// v4.1 : sans cet offset, l'app plaçait le PIC de la vague sur la semaine où la doctrine prévoit
+// le DÉLOAD — décalage systématique d'une semaine à chaque retour de déplacement.
+function moteurVagueElapsedDays(){
+  const off = (MS.vagueOffsetJours == null) ? 7 : Number(MS.vagueOffsetJours);
+  return moteurWindowElapsedDays() - off;
+}
+function moteurEnReadaptation(){
+  return moteurBlocQualiteActive() && moteurVagueElapsedDays() < 0;
+}
 function moteurCycleWeek(){
   if(!moteurBlocQualiteActive()) return null;
-  return Math.floor(moteurWindowElapsedDays()/7) % 4 + 1;
+  const d = moteurVagueElapsedDays();
+  if(d < 0) return null;            // semaine de réadaptation : HORS vague, pas de protocole de vague
+  return Math.floor(d/7) % 4 + 1;
 }
 // Le cycle automatique reste TOUJOURS en bloc Force (RM + aérobie à travailler en priorité).
 // Puissance (cluster/PAP) n'est disponible que via le focus manuel, quand c'est jugé pertinent
@@ -5675,7 +5694,9 @@ const M_METHOD_FORMATS = {
 };
 // Tests barre : toujours 3RM, sauf Militaire (5RM, plus sûr pour l'épaule). Jamais de 1RM (trop risqué).
 const M_TEST_FORMAT = {
-  militaire_barre:'Test 3RM (jamais 1RM)', bench_plat_barre:'Test 3RM (jamais 1RM)', deadlift_conventionnel:'Test 3RM (jamais 1RM)',
+  // Le deadlift conventionnel est RETIRÉ des mouvements de test (programme §0, manuel v4.34) : le Hinge
+  // Lift de MTI est un tirage hanches hautes, que le RDL barre-du-sol reproduit. Entrée supprimée.
+  militaire_barre:'Test 3RM (jamais 1RM)', bench_plat_barre:'Test 3RM (jamais 1RM)',
   pendlay_row:'Test 3RM (jamais 1RM)', rdl:'Test 3RM (jamais 1RM)', zercher_squat:'Test 3RM (jamais 1RM)',
   front_squat:'Test 3RM (RSA MTI — jamais 1RM)', chin_ups:'Test max reps strict — pull-ups (pronation)'
 };
@@ -5696,9 +5717,26 @@ function moteurProtocolFor(ex){
   if(MS.focusManuel === 'prep_tests'){
     return M_TEST_FORMAT[ex.id] ? {nom:'Préparation test', format:'Paliers progressifs vers sous-max, vitesse gardée', rpe:'7-8', phase:'focus_manuel', volume_pct:info.volume_pct} : null;
   }
-  // Déload — toujours pareil, quel que soit le type de cycle.
+  // Déload — VOLUME −50 %, INTENSITÉ MAINTENUE (programme §2 · manuel ch. 11, v4.34).
+  // v4.1 : l'ancienne version renvoyait '3×3 déload' @RPE 4-5, c.-à-d. une baisse d'intensité sur une
+  // semaine entière. C'est le volume qui coûte de la récupération ; l'intensité tient les adaptations
+  // neuromusculaires. On garde donc le top set à son RPE et on supprime tout le volume autour.
   if(info.phase === 'deload'){
-    return {nom:'Déload', format:'3×3 déload', rpe:'4-5', phase:'deload', volume_pct:50};
+    const dlType = info.type === 'puissance' ? 'puissance' : 'force';
+    const dlMethod = dlType === 'force'
+      ? (M_FORCE_TOPSET.has(ex.id) ? 'top_set' : null)
+      : (M_PUISSANCE_METHOD[ex.id] || null);
+    if(dlMethod === 'top_set'){
+      return {nom:'Déload', format:'Top set ×3 @RIR 1-2 — AUCUN back-off (volume −50 %, intensité maintenue)',
+              rpe:'8', phase:'deload', volume_pct:50};
+    }
+    if(dlMethod){
+      const mfd = M_METHOD_FORMATS[dlMethod];
+      return {nom:'Déload', format:mfd.modere+' — séries divisées par deux, vitesse et charge inchangées',
+              rpe:mfd.rpe.modere, phase:'deload', volume_pct:50};
+    }
+    return {nom:'Déload', format:'Volume −50 % (séries de travail divisées par deux) — charge et technique inchangées',
+            rpe:'inchangé', phase:'deload', volume_pct:50};
   }
   const cycleType = info.type;
   let method = null;
@@ -6040,11 +6078,12 @@ function moteurSessionLockedByPhase(session){
 // ── STATE ─────────────────────────────────────────────────────────────────
 
 const S = {
-  tab: 'routine',
+  tab: 'accueil',
   week: 1,
   bloc: 1,
   tooltipTarget: null,
   seanceKey: null,
+  testsRadarZoom: null,
 };
 
 // Charger config
@@ -6466,6 +6505,8 @@ function render(){
       .topbar{background:linear-gradient(135deg,#0a0f1a,#0d1525);border-bottom:1px solid #1e2d42;padding:12px 16px;padding-top:calc(12px + var(--safe-top));display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
       .topbar-title{font-family:var(--font-d);font-size:20px;letter-spacing:3px;color:#e63946}
       .topbar-info{font-size:10px;color:#475569;text-align:right}
+      .topbar-progress{height:3px;background:#1e2d42;flex-shrink:0;overflow:hidden}
+      .topbar-progress-fill{height:100%;transition:width .3s}
       .scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 14px 90px;display:flex;flex-direction:column;align-items:stretch}
 .scroll>*{width:100%}
       .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--border);width:100%;box-sizing:border-box}
@@ -6497,7 +6538,7 @@ function render(){
       .help-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#1e293b;color:#64748b;font-size:9px;font-weight:800;cursor:pointer;flex:0 0 auto}
       .ex-grid{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}.ex-grid>.ex-cell{flex:1 1 auto;min-width:0}
       .ex-cell{background:#1a2640;border-radius:6px;padding:4px 7px}
-      .ex-cell-lbl{font-size:8px;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+      .ex-cell-lbl{font-size:9px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
       .ex-cell-val{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap}
       .ex-cell-val.blue{color:#3b82f6}
       .ex-cell-val.gold{color:#f5a623}
@@ -6538,13 +6579,13 @@ function render(){
       .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(10,15,26,.97);border-top:1px solid #1e2d42;display:flex;padding-bottom:var(--safe-bottom);z-index:100;backdrop-filter:blur(10px)}
       .nav-tab{flex:1;padding:9px 4px 7px;text-align:center;cursor:pointer;border:none;background:none}
       .nav-tab-icon{font-size:20px;line-height:1}
-      .nav-tab-lbl{font-size:9px;font-weight:600;color:#475569;margin-top:3px;display:block}
+      .nav-tab-lbl{font-size:10px;font-weight:600;color:#64748b;margin-top:3px;display:block}
       .nav-tab.active .nav-tab-lbl{color:var(--acc)}
       .priming-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:12px;color:#64748b}
       .seg-ctrl{display:flex;background:#111d2e;border-radius:9px;padding:3px;gap:2px;margin-bottom:14px;width:100%;box-sizing:border-box;max-width:100%}
-      .seg-btn{flex:1 1 0;min-width:0;padding:7px 4px;border:none;background:none;color:#64748b;font-size:11px;font-weight:600;border-radius:7px;cursor:pointer;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .seg-btn{flex:1 1 0;min-width:0;padding:6px 3px;border:none;background:none;color:#64748b;font-size:10px;line-height:1.25;font-weight:600;border-radius:7px;cursor:pointer;transition:all .15s;white-space:normal;overflow:hidden;text-overflow:ellipsis;word-break:break-word}
       .seg-btn.active{background:#1e2d42;color:var(--text)}
-      .cat-badge{display:inline-block;padding:1px 7px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:.5px;margin-right:4px}
+      .cat-badge{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;letter-spacing:.3px;margin-right:4px}
       .cat-cars{background:#3b82f622;color:#3b82f6}
       .cat-renfo{background:#10b98122;color:#10b981}
       .cat-resp{background:#8b5cf622;color:#8b5cf6}
@@ -6561,18 +6602,28 @@ function render(){
 
   // TOPBAR
   const blocData = BLOCS.find(b=>b.id===S.bloc)||BLOCS[0];
+  // Depuis le 30/08 le programme n'est plus un plan fixe sur 9 semaines : c'est un BLOC
+  // vague 3+1 (déload en semaine 4) répété tant que la fenêtre matériel le permet (Programme v4_72, Arbre E).
+  const wkInBloc = ((S.week-1)%4)+1;
+  const isDeloadWk = wkInBloc===4;
   const tb = $('div',{class:'topbar'},
     $('div',{class:'topbar-title'},'BE READY'),
     $('div',{class:'topbar-info'},
-      $('div',{style:{color:blocData.color,fontWeight:700,fontSize:'11px'}},`S${S.week} · ${blocData.name}`),
+      $('div',{style:{color:blocData.color,fontWeight:700,fontSize:'11px'}},
+        `S${wkInBloc}/4${isDeloadWk?' · déload':''} · ${blocData.name}`),
       $('div',{},`${DAYS_FULL[DOW]} ${today.getDate()} ${MONTHS[today.getMonth()]}`)
     )
   );
   app.appendChild(tb);
+  const progPct = Math.max(0, Math.min(100, (wkInBloc/4)*100));
+  app.appendChild($('div',{class:'topbar-progress'},
+    $('div',{class:'topbar-progress-fill',style:{width:progPct+'%',background:isDeloadWk?'#10b981':blocData.color}})
+  ));
 
   // CONTENT
   const content = $('div',{class:'scroll'});
   const views = {
+    accueil: renderAccueil,
     routine: renderRoutine,
     seance: renderSeance,
     seanceG: renderSeanceGuyane,
@@ -6580,13 +6631,14 @@ function render(){
     bilan: renderBilan,
     tests: renderTests,
   };
-  content.appendChild((views[S.tab]||renderRoutine)());
+  content.appendChild((views[S.tab]||renderAccueil)());
   app.appendChild(content);
 
   if(S.tab==='seanceG'){ S.tab='seance'; }
   // BOTTOM NAV
   const nav = $('div',{class:'bottom-nav'});
   [
+    {id:'accueil',icon:'🏠',lbl:'Accueil'},
     {id:'routine',icon:'☀️',lbl:'Routine'},
     {id:'seance',icon:'🏋️',lbl:'Séance'},
     {id:'gtg',icon:'🔁',lbl:'GTG'},
@@ -6786,9 +6838,28 @@ function tAxes(){
   }));
 }
 
-function tRadarSVG(){
+const T_CAT_LABEL = {force:'FORCE', puiss:'PUISSANCE', filiere:'FILIÈRES', oper:'OPÉRATIONNEL', struct:'STRUCTURE'};
+
+// regroupe les 18 axes en 5 familles (mêmes familles que la carte de couverture du manuel)
+function tAxesGrouped(){
   const axes = tAxes();
-  const n = axes.length, cx=190, cy=175, R=112;
+  return ['force','puiss','filiere','oper','struct'].map(cat=>{
+    const subs = axes.filter(a=>a.cat===cat);
+    const scored = subs.filter(a=>a.score!=null);
+    return {
+      cat, label:T_CAT_LABEL[cat],
+      score: scored.length ? scored.reduce((s,a)=>s+a.score,0)/scored.length : null,
+      tested: subs.some(a=>a.tested),
+      nTested: subs.filter(a=>a.tested).length,
+      n: subs.length,
+      subs
+    };
+  });
+}
+
+// items: [{label, score(0-4|null), tested, color}] · onItemClick(it,i) rend les points/labels cliquables
+function tRadarSVGGeneric(items, onItemClick){
+  const n = items.length, cx=190, cy=175, R=112;
   const NS='http://www.w3.org/2000/svg';
   const svg=document.createElementNS(NS,'svg');
   svg.setAttribute('viewBox','0 0 380 350');
@@ -6799,50 +6870,70 @@ function tRadarSVG(){
     svg.appendChild(mk('circle',{cx,cy,r:R*lv/4,fill:'none',stroke:'#1e293b','stroke-width':1,'stroke-dasharray':'3 3'}));
   });
   const pt=(i,r)=>{ const a=-Math.PI/2 + i*2*Math.PI/n; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  const fs = onItemClick ? 10.5 : 8.5;
   // rayons + labels
-  axes.forEach((a,i)=>{
+  items.forEach((it,i)=>{
     const [x,y]=pt(i,R);
-    svg.appendChild(mk('line',{x1:cx,y1:cy,x2:x,y2:y,stroke:'#1e293b','stroke-width':1}));
-    const [lx,ly]=pt(i,R+13);
+    const grp = mk('g',{});
+    svg.appendChild(grp);
+    grp.appendChild(mk('line',{x1:cx,y1:cy,x2:x,y2:y,stroke:'#1e293b','stroke-width':1}));
+    const [lx,ly]=pt(i,R+17);
     const anchor = lx>cx+6?'start':(lx<cx-6?'end':'middle');
     // découpe en 2 lignes si le libellé est long
-    const w = a.axe.split(' ');
-    let l1=a.axe, l2='';
-    if(a.axe.length>13 && w.length>1){
+    const w = it.label.split(' ');
+    let l1=it.label, l2='';
+    if(it.label.length>13 && w.length>1){
       let acc='';
       for(let k=0;k<w.length;k++){
         if((acc+' '+w[k]).trim().length<=13){ acc=(acc+' '+w[k]).trim(); }
         else { l1=acc; l2=w.slice(k).join(' '); break; }
       }
-      if(!l2){ l1=a.axe; }
+      if(!l2){ l1=it.label; }
     }
-    const col = a.tested? '#e2e8f0':'#475569';
+    const col = it.tested? '#e2e8f0':'#475569';
     const dy = l2 ? -3 : 0;
-    const t=mk('text',{x:lx,y:ly+dy,'font-size':6,'font-weight':700,fill:col,'text-anchor':anchor});
+    const t=mk('text',{x:lx,y:ly+dy,'font-size':fs,'font-weight':700,fill:col,'text-anchor':anchor});
     t.textContent = l1;
-    svg.appendChild(t);
+    grp.appendChild(t);
     if(l2){
-      const t2=mk('text',{x:lx,y:ly+5,'font-size':6,'font-weight':700,fill:col,'text-anchor':anchor});
+      const t2=mk('text',{x:lx,y:ly+7,'font-size':fs,'font-weight':700,fill:col,'text-anchor':anchor});
       t2.textContent = l2;
-      svg.appendChild(t2);
+      grp.appendChild(t2);
+    }
+    if(onItemClick){
+      grp.setAttribute('style','cursor:pointer');
+      grp.appendChild(mk('circle',{cx:lx,cy:ly,r:22,fill:'transparent'}));
+      grp.addEventListener('click',()=>onItemClick(it,i));
     }
   });
   // polygone des scores
-  const pts = axes.map((a,i)=> pt(i, a.score!=null ? R*a.score/4 : 0));
-  if(axes.some(a=>a.score!=null)){
+  const pts = items.map((it,i)=> pt(i, it.score!=null ? R*it.score/4 : 0));
+  if(items.some(it=>it.score!=null)){
     svg.appendChild(mk('polygon',{points:pts.map(p=>p.join(',')).join(' '),
       fill:'#f5a623','fill-opacity':0.18,stroke:'#f5a623','stroke-width':2}));
   }
-  axes.forEach((a,i)=>{
-    const [x,y]=pt(i, a.score!=null ? R*a.score/4 : 0);
-    if(a.score!=null){
-      svg.appendChild(mk('circle',{cx:x,cy:y,r:3.5,fill:T_CAT_COLOR[a.cat]||'#f5a623',stroke:'#0d1525','stroke-width':1.5}));
+  items.forEach((it,i)=>{
+    const [x,y]=pt(i, it.score!=null ? R*it.score/4 : 0);
+    if(it.score!=null){
+      svg.appendChild(mk('circle',{cx:x,cy:y,r:3.5,fill:it.color||'#f5a623',stroke:'#0d1525','stroke-width':1.5}));
     } else {
       const [ox,oy]=pt(i,R);
       svg.appendChild(mk('circle',{cx:ox,cy:oy,r:3,fill:'none',stroke:'#475569','stroke-width':1.5,'stroke-dasharray':'2 2'}));
     }
   });
   return svg;
+}
+
+function tRadarSVG(zoomCat){
+  if(zoomCat){
+    const g = tAxesGrouped().find(g=>g.cat===zoomCat);
+    if(g){
+      const items = g.subs.map(a=>({label:a.axe, score:a.score, tested:a.tested, color:T_CAT_COLOR[a.cat]}));
+      return tRadarSVGGeneric(items, null);
+    }
+  }
+  const items = tAxesGrouped().map(g=>({label:g.label, score:g.score, tested:g.nTested>0, color:T_CAT_COLOR[g.cat], cat:g.cat}));
+  return tRadarSVGGeneric(items, (it)=>{ S.testsRadarZoom = it.cat; render(); });
 }
 
 function renderTests(){
@@ -6874,9 +6965,21 @@ function renderTests(){
 
   // radar
   const rbox=$('div',{style:{background:'#0d1525',borderRadius:'10px',padding:'6px',marginBottom:'10px'}});
-  rbox.appendChild(tRadarSVG());
+  const zoomCat = S.testsRadarZoom;
+  const zoomGroup = zoomCat ? tAxesGrouped().find(g=>g.cat===zoomCat) : null;
+  if(zoomGroup){
+    const bar = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',padding:'4px 6px 2px'}});
+    bar.appendChild($('button',{class:'btn-back',style:{padding:'5px 10px',fontSize:'11px'},
+      onclick:()=>{ S.testsRadarZoom=null; render(); }},'← Vue d’ensemble'));
+    bar.appendChild($('span',{style:{fontFamily:'var(--font-d)',fontSize:'14px',letterSpacing:'1.5px',
+      color:T_CAT_COLOR[zoomCat]||'#f5a623'}}, zoomGroup.label));
+    rbox.appendChild(bar);
+  }
+  rbox.appendChild(tRadarSVG(zoomCat));
   rbox.appendChild($('div',{style:{fontSize:'8px',color:'#475569',textAlign:'center',paddingBottom:'4px'}},
-    'Anneaux = 1 à 4 points · axe en pointillé = non mesuré'));
+    zoomGroup
+      ? zoomGroup.nTested+' / '+zoomGroup.n+' qualités mesurées dans cette famille'
+      : 'Anneaux = 1 à 4 points · touchez une famille pour voir le détail'));
   wrap.appendChild(rbox);
 
   // saisies
@@ -7551,6 +7654,68 @@ function seedBaselines(){
   localStorage.setItem(KEY,'1');
 }
 
+// ── ÉCRAN ACCUEIL — vue d'ensemble du jour ─────────────────────────────────
+function renderAccueil(){
+  const wrap = $('div',{});
+  wrap.appendChild($('div',{class:'section-hdr'},'🏠 Accueil'));
+
+  const blocData = BLOCS.find(b=>b.id===S.bloc)||BLOCS[0];
+  const wkInBloc = ((S.week-1)%4)+1;
+  const isDeloadWk = wkInBloc===4;
+
+  // ── carte bloc / semaine ──
+  const blocCard = $('div',{class:'card'});
+  blocCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'10px'}},
+    $('div',{style:{fontFamily:'var(--font-d)',fontSize:'19px',letterSpacing:'1.5px',color:blocData.color}}, blocData.name),
+    $('span',{class:'tag',style:{background:(isDeloadWk?'#10b981':blocData.color)+'22',color:isDeloadWk?'#10b981':blocData.color}},
+      isDeloadWk?'Déload':`Semaine ${wkInBloc}/4`)
+  ));
+  const barBg = $('div',{style:{height:'6px',background:'#111d2e',borderRadius:'4px',overflow:'hidden',marginBottom:'6px'}});
+  barBg.appendChild($('div',{style:{height:'100%',width:(wkInBloc/4*100)+'%',background:isDeloadWk?'#10b981':blocData.color,borderRadius:'4px'}}));
+  blocCard.appendChild(barBg);
+  blocCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b'}},'Vague 3+1 · déload en semaine 4 du bloc'));
+  wrap.appendChild(blocCard);
+
+  // ── carte séance du jour ──
+  const seance = SEANCES[S.seanceKey];
+  if(seance){
+    const sCard = $('div',{class:'card',style:{cursor:'pointer'},onclick:()=>{ S.tab='seance'; render(); }});
+    sCard.appendChild($('div',{class:'card-title'},'SÉANCE DU JOUR'));
+    sCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'10px'}},
+      $('div',{style:{fontSize:'28px',flexShrink:'0'}}, seance.icon),
+      $('div',{style:{flex:'1',minWidth:'0'}},
+        $('div',{style:{fontSize:'15px',fontWeight:'800'}}, S.seanceKey),
+        $('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'2px',overflowWrap:'break-word'}}, seance.focus)
+      ),
+      $('div',{style:{fontSize:'20px',color:'#475569',flexShrink:'0'}},'→')
+    ));
+    wrap.appendChild(sCard);
+  }
+
+  // ── carte routine du matin ──
+  const log = getLog();
+  const done = log.routine || [];
+  const totalRoutine = ROUTINE_MATIN.length;
+  const doneCount = ROUTINE_MATIN.filter(r=>done.includes(r.id)).length;
+  const routineOk = totalRoutine>0 && doneCount===totalRoutine;
+  const rCard = $('div',{class:'card',style:{cursor:'pointer'},onclick:()=>{ S.tab='routine'; render(); }});
+  rCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
+    $('div',{class:'card-title',style:{marginBottom:'0'}},'☀️ ROUTINE DU MATIN'),
+    $('span',{style:{fontSize:'14px',fontWeight:'800',color: routineOk?'#10b981':'#f5a623'}}, doneCount+'/'+totalRoutine)
+  ));
+  wrap.appendChild(rCard);
+
+  // ── mini radar (vue groupée, lien vers Tests) ──
+  const rCard2 = $('div',{class:'card',style:{cursor:'pointer'},onclick:()=>{ S.tab='tests'; render(); }});
+  rCard2.appendChild($('div',{class:'card-title'},'🎯 BATTERIE — VUE D’ENSEMBLE'));
+  const items = tAxesGrouped().map(g=>({label:g.label, score:g.score, tested:g.nTested>0, color:T_CAT_COLOR[g.cat]}));
+  rCard2.appendChild(tRadarSVGGeneric(items, null));
+  rCard2.appendChild($('div',{style:{fontSize:'10px',color:'#475569',textAlign:'center'}},'Touchez pour voir le détail par famille'));
+  wrap.appendChild(rCard2);
+
+  return wrap;
+}
+
 function renderRoutine(){
   const log = getLog();
   const done = log.routine || [];
@@ -7600,7 +7765,7 @@ function renderRoutine(){
       $('div',{class:'check-box'+(isDone?' done':'')}, isDone?'✓':''),
       $('div',{style:{flex:1}},
         $('div',{style:{display:'flex',alignItems:'center',gap:'6px',marginBottom:'2px',minWidth:'0',width:'100%'}},
-          $('span',{class:'cat-badge cat-'+(item.cat==='CARs'?'cars':item.cat.indexOf('Renfo')>=0?'renfo':'resp'),style:{flexShrink:'0',whiteSpace:'nowrap',fontSize:'9px'}},item.cat.indexOf('obligatoire')>=0?'obligatoire':item.cat.indexOf('optionnel')>=0?'optionnel':item.cat==='CARs'?'CARs':item.cat.indexOf('Respir')>=0?'resp':item.cat),
+          $('span',{class:'cat-badge cat-'+(item.cat==='CARs'?'cars':item.cat.indexOf('Renfo')>=0?'renfo':'resp'),style:{flexShrink:'0',whiteSpace:'nowrap'}},item.cat.indexOf('obligatoire')>=0?'obligatoire':item.cat.indexOf('optionnel')>=0?'optionnel':item.cat==='CARs'?'CARs':item.cat.indexOf('Respir')>=0?'resp':item.cat),
           $('span',{style:{fontSize:'13px',fontWeight:isDone?'400':'600',color:isDone?'#475569':'var(--text)',textDecoration:isDone?'line-through':'none',minWidth:'0',flex:'1',overflowWrap:'break-word'}},item.icon+' '+item.name),
         ),
         $('div',{style:{fontSize:'11px',color:'#475569'}},item.detail),
@@ -8588,6 +8753,20 @@ function renderBilan(){
       });
       cardMode.appendChild(grid);
     }
+    // Arbre E — réadaptation au retour (la vague démarre au jour 8, pas au jour 1)
+    cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'8px'}},'Semaine de réadaptation au début de cette fenêtre'));
+    const readSel = $('select',{class:'input-field',onchange:(e)=>{
+      MS.vagueOffsetJours = Number(e.target.value); saveMoteurState();
+    }});
+    [[7,'Oui — 7 j (défaut au retour de déplacement)'],[0,'Non — la vague démarre au jour 1'],[14,'Longue — 14 j (retour de coupure prolongée)']].forEach(([v,lbl])=>{
+      const o=$('option',{value:String(v)},lbl);
+      if(Number(MS.vagueOffsetJours==null?7:MS.vagueOffsetJours)===v) o.selected=true;
+      readSel.appendChild(o);
+    });
+    cardMode.appendChild(readSel);
+    cardMode.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'4px'}},
+      'Arbre E : au retour d\'un déplacement, la 1re semaine est un recalibrage technique hors vague. La vague S1→S4 démarre ensuite. Mettre « Non » si cette fenêtre prolonge la précédente sans coupure de matériel.'));
+
     cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'6px'}},
       MS.mode==='maison' ? 'Durée prévue de ce séjour maison' : 'Durée prévue de ce déplacement'));
     const dureeSel = $('select',{class:'input-field',onchange:(e)=>{
@@ -8605,10 +8784,17 @@ function renderBilan(){
       $('span',{},'Fenêtre en cours : ', $('b',{style:{color:'#f5a623'}}, elapsed+' j écoulés')),
       $('span',{style:{fontWeight:700,color: blocActive?'#10b981':'#94a3b8'}}, blocActive?'🔓 Bloc qualité débloqué':'🔒 Semaine classique')
     ));
-    if(blocActive){
+    if(blocActive && moteurEnReadaptation()){
+      const resteJ = -moteurVagueElapsedDays();
+      cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#f5a623',marginTop:'4px',fontWeight:600}},
+        '🔄 RÉADAPTATION — hors vague (Arbre E). La vague S1→S4 démarre dans '+resteJ+' j.'));
+      cardMode.appendChild($('div',{style:{fontSize:'10px',color:'#94a3b8',marginTop:'2px'}},
+        'Recalibrage technique, charges réduites, matériel réintroduit. Aucun protocole de vague appliqué cette semaine.'));
+    }
+    if(blocActive && !moteurEnReadaptation()){
       const cyc = moteurCycleInfo();
       const phaseLbl = {leger:'Semaine 1 — Léger', modere:'Semaine 2 — Modéré', pic:'Semaine 3 — Pic',
-        deload:'Semaine 4 — Déload (-50%)', focus_manuel:'Focus manuel actif'}[cyc.phase] || cyc.phase;
+        deload:'Semaine 4 — Déload (volume −50 %, intensité maintenue)', focus_manuel:'Focus manuel actif'}[cyc.phase] || cyc.phase;
       cardMode.appendChild($('div',{style:{fontSize:'11px',color:'#8b5cf6',marginTop:'4px',fontWeight:600}},'🔁 '+cyc.typeLabel+' — '+phaseLbl));
       // ── Frise du cycle 3:1 : où j'en suis dans le bloc ──
       const wk = moteurCycleWeek();
