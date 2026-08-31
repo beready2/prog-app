@@ -49,8 +49,8 @@ input,select,textarea{box-sizing:border-box}
 {
   "meta": {
     "nom": "Be Ready — Catalogue d'exercices",
-    "version": "1.4",
-    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet). v1.3 ajoute les machines maison (presse a cuisse, leg extension/curl, poulies haute/basse, butterfly) et des substituts lies aux contre-indications (pas seulement au materiel manquant) : ex. genou_G_itband -> presse_cuisse, poignet_G -> poulie. v1.4 ajoute Front Squat (test RSA officiel MTI, prise croisee), Push Press et Squat Clean (standards MTI documentes, priorite future une fois epaule/poignet stabilises).",
+    "version": "1.5",
+    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet). v1.3 ajoute les machines maison (presse a cuisse, leg extension/curl, poulies haute/basse, butterfly) et des substituts lies aux contre-indications (pas seulement au materiel manquant) : ex. genou_G_itband -> presse_cuisse, poignet_G -> poulie. v1.4 ajoute Front Squat (test RSA officiel MTI, prise croisee), Push Press et Squat Clean (standards MTI documentes, priorite future une fois epaule/poignet stabilises). v1.5 (31/08/2026, chantier 46) aligne le catalogue sur les decisions de J du 30/08, restees jusqu'ici dans le programme et le manuel seulement : (a) le RDL hanches hautes barre du sol devient explicitement le MOUVEMENT DE REFERENCE du hinge (test ET travail, creneau lourd ET creneau volume) ; (b) le souleve de terre conventionnel cesse d'etre le substitut par defaut de la trap bar et sa fiche porte son statut reel de dernier recours hors score ; (c) PRISE NUE par defaut partout (chin-ups, pull-ups, KB RDL) - la sangle redevient un delestage ponctuel, et elle disparait du NOM de l'exercice KB RDL ; (d) les notes qui decrivaient les creneaux par nom de seance du split abandonne (Haut 1, Haut 3, Bas 2) sont reformulees par PATTERN.",
     "usage_app": "L'app filtre exercises[] par window courante (equipement dispo) + qualites prioritaires de la phase active + contraindications actives (flags bilan du jour), puis assemble la séance. Les charges viennent des baselines/e1RM stockés séparément (état, pas catalogue)."
   },
   "taxonomies": {
@@ -489,7 +489,7 @@ input,select,textarea{box-sizing:border-box}
         "epaule_G": "landmine_press"
       },
       "test_baseline_field": "militaire_1RM_est",
-      "notes": "Qualité fondamentale entretenue — hors standard MTI, suivie en % du bench. N'est plus la priorité n°1 du programme (revenue au squat puis au hinge, juillet 2026) : garde sa place de premier mouvement de Haut 1 (geste le plus technique, SNC frais) et son GTG quotidien, mais cède l'arbitrage des semaines courtes. Bilatéral.",
+      "notes": "Qualité fondamentale entretenue — hors standard MTI, suivie en % du bench. N'est plus la priorité n°1 du programme (revenue au squat puis au hinge, juillet 2026) : garde sa place de premier mouvement de POUSSÉE VERTICALE de la séance (geste le plus technique, SNC frais) et son GTG quotidien, mais cède l'arbitrage des semaines courtes. Bilatéral.",
       "pattern": "push_vertical",
       "progression_type": "barre",
       "protocole_cycle_eligible": true
@@ -706,7 +706,7 @@ input,select,textarea{box-sizing:border-box}
         "nomade": "trx_row",
         "poignet_G": "poulie_haute"
       },
-      "notes": "Sangle poignet G obligatoire sur tous les tirages verticaux/RDL/Gorilla. Chin-ups (prise supination, paumes vers soi) preferes aux Pull-ups (pronation) : meilleur recrutement biceps/dorsaux et moins de contrainte sur l'epaule G en tendinopathie.",
+      "notes": "PRISE NUE PAR DEFAUT (decision de J, 30/08 — la sangle n'est plus utilisee depuis le retour metropole). Sangle = delestage PONCTUEL seulement : serie lourde ou le grip lache avant la chaine visee, ou poignet G symptomatique le jour meme. Raison : le grip gauche est en rattrapage actif (avis osteo du 17/08) — une sangle systematique annule exactement le mecanisme de rattrapage. Chin-ups (prise supination, paumes vers soi) preferes aux Pull-ups (pronation) : meilleur recrutement biceps/dorsaux et moins de contrainte sur l'epaule G en tendinopathie.",
       "test_baseline_field": "pullups_max",
       "pattern": "pull_vertical",
       "progression_type": "halteres_kb",
@@ -733,7 +733,7 @@ input,select,textarea{box-sizing:border-box}
         "paris"
       ],
       "substitutes": {},
-      "notes": "Prise pronation — LE geste testé au stage. Volume en Haut 3. Plus exigeant que le chin-up (moins de biceps), c'est voulu : c'est la prise du test. Sangle poignet G si besoin.",
+      "notes": "Prise pronation — LE geste testé au stage. Porte le créneau TIRAGE VERTICAL EN VOLUME (FB2 en format 2-FB). Plus exigeant que le chin-up (moins de biceps), c'est voulu : c'est la prise du test. Prise nue par défaut ; sangle en délestage ponctuel seulement.",
       "test_baseline_field": "pullups_max",
       "pattern": "pull_vertical",
       "progression_type": "halteres_kb",
@@ -1077,7 +1077,7 @@ input,select,textarea{box-sizing:border-box}
         "maison"
       ],
       "substitutes": {
-        "default": "deadlift_conventionnel",
+        "default": "rdl",
         "nomade": "kb_rdl",
         "genou_G_itband": "leg_curl_machine"
       },
@@ -1087,7 +1087,7 @@ input,select,textarea{box-sizing:border-box}
       "severity_overrides": {
         "genou_G_itband": 2
       },
-      "notes": "Mouvement lourd du top set Bas 1. Prise neutre (mains le long du corps) : supprime la torsion du poignet G, plus de sangle nécessaire. Position plus verticale et « squattée » que le DL barre droite — adaptée aux tibias/fémurs longs (1,84 m), moins de cisaillement lombaire, meilleur contrôle du valgus genou. Même règle genou : première séance à charge modérée, point externe silencieux vérifié, pas de top set lourd avant revalidation IT band."
+      "notes": "SUBSTITUT MAISON du créneau HINGE LOURD — la référence du créneau est le RDL hanches hautes, barre du sol (décision de J, 30/08). Le DL conventionnel n'est plus le substitut par défaut (v4.3). Prise neutre (mains le long du corps) : supprime la torsion du poignet G, plus de sangle nécessaire. Position plus verticale et « squattée » que le DL barre droite — adaptée aux tibias/fémurs longs (1,84 m), moins de cisaillement lombaire, meilleur contrôle du valgus genou. Même règle genou : première séance à charge modérée, point externe silencieux vérifié, pas de top set lourd avant revalidation IT band."
     },
     {
       "id": "deadlift_conventionnel",
@@ -1120,7 +1120,7 @@ input,select,textarea{box-sizing:border-box}
       "severity_overrides": {
         "genou_G_itband": 2
       },
-      "notes": "Retiré des priorités (§0, 24/07) — moins fidèle au Hinge Lift MTI (hanches hautes) que le RDL, défavorable à la morphologie longs segments. Conservé au catalogue en repli seulement si ni RDL ni trap bar ne sont réalisables. Le geste de test/référence est désormais le RDL, pas le DL."
+      "notes": "RETIRÉ DES PRIORITÉS (§0, 24/07 — confirmé par J le 30/08 : « il n'entre dans aucun score »). Moins fidèle au Hinge Lift MTI (hanches hautes) que le RDL, défavorable à la morphologie longs segments (1,84 m, longs tibias). SUBSTITUT DE DERNIER RECOURS uniquement : hors maison, faute de trap bar ET de RDL réalisable. Il n'est le mouvement de référence d'AUCUN créneau (ni FB1, ni FB2, ni test) et n'entre dans AUCUN score RSA. Fiche conservée pour trace, jamais supprimée."
     },
     {
       "id": "rdl",
@@ -1154,7 +1154,7 @@ input,select,textarea{box-sizing:border-box}
       "severity_overrides": {
         "genou_G_itband": 2
       },
-      "notes": "Volume hinge de Bas 2 : 3-4×6, bilatéral à la barre partout où il y en a une. Sans barre, il est REMPLACÉ par une variante unilatérale — landmine RDL à la maison, KB RDL en nomade — jamais complété par elle."
+      "notes": "MOUVEMENT DE RÉFÉRENCE DU HINGE (décision de J, 30/08) : hanches hautes, BARRE PARTANT DU SOL, genoux fléchis fixes, extension complète, retour au sol. C'est le geste du Hinge Lift MTI — donc à la fois le mouvement de TEST (3RM, composante hinge du score RSA) et le mouvement de TRAVAIL. Il porte les DEUX créneaux du format 2-FB : hinge LOURD (top set ×3, FB2) et hinge VOLUME (3-4×8-12, FB1). Trap bar au sélecteur à la maison. Sans barre : REMPLACÉ par une variante unilatérale (landmine RDL maison, KB RDL nomade), jamais complété par elle. Standard Excellence = 2,00 × PDC en 1RM (= 1,82 en 3RM). Prise nue par défaut."
     },
     {
       "id": "rdl_une_jambe_barre",
@@ -1185,7 +1185,7 @@ input,select,textarea{box-sizing:border-box}
     },
     {
       "id": "kb_rdl",
-      "name": "KB RDL (sangle poignet)",
+      "name": "KB RDL",
       "category": "bas_force",
       "qualities": [
         "force_max"
@@ -1205,7 +1205,7 @@ input,select,textarea{box-sizing:border-box}
       "pattern": "hinge",
       "progression_type": "halteres_kb",
       "protocole_cycle_eligible": false,
-      "notes": "Repli hinge du kit personnel : uniquement en nomade, quand il n'y a ni barre ni landmine. Dès qu'une barre est disponible, le hinge se fait au RDL barre ou au DL. Remplaçant du RDL barre quand celui-ci n'est pas réalisable, pas un exercice supplémentaire."
+      "notes": "Repli hinge du kit personnel : uniquement en nomade, quand il n'y a ni barre ni landmine. Dès qu'une barre est disponible, le hinge se fait au RDL barre (le DL conventionnel est retiré). Remplaçant du RDL barre quand celui-ci n'est pas réalisable, pas un exercice supplémentaire. Prise nue par défaut ; sangle en délestage ponctuel."
     },
     {
       "id": "copenhagen_adductor",
@@ -3129,7 +3129,7 @@ input,select,textarea{box-sizing:border-box}
       "pattern": "hinge",
       "progression_type": "charge",
       "protocole_cycle_eligible": false,
-      "notes": "Extension de hanche PURE, chargeable lourd — moteur du sprint, du sprawl, du relevé, de la projection (transfert combat/opérationnel direct). N'impose quasi aucune flexion de genou : mouvement lourd disponible même quand l'IT band parle. Renforce le grand fessier, soutien indirect du fessier moyen G (cause racine). Volume en Bas 2 : 3-4×8-10, tempo contrôlé, pause 1 s en haut. Sans banc/barre : hip thrust KB une jambe."
+      "notes": "Extension de hanche PURE, chargeable lourd — moteur du sprint, du sprawl, du relevé, de la projection (transfert combat/opérationnel direct). N'impose quasi aucune flexion de genou : mouvement lourd disponible même quand l'IT band parle. Renforce le grand fessier, soutien indirect du fessier moyen G (cause racine). Créneau volume d'extension de hanche : 3-4×8-10, tempo contrôlé, pause 1 s en haut. ⚠ Retiré du travail de jambes courant (redondant avec RDL / swings / carries) — à réintroduire seulement si une faiblesse fessier / extension de hanche est constatée. Sans banc/barre : hip thrust KB une jambe."
     },
     {
       "id": "leg_extension_machine",
@@ -3816,9 +3816,10 @@ input,select,textarea{box-sizing:border-box}
 {
   "meta": {
     "nom": "Be Ready — Templates de séance",
-    "version": "1.1",
+    "version": "1.2",
     "description": "Couche intermédiaire entre le catalogue d'exercices (exercices individuels) et le moteur de l'app (choix du jour). Chaque type de séance définit ses créneaux (slots) : quelle(s) qualité(s) et catégorie(s) du catalogue chaque slot doit couvrir. L'app résout ensuite chaque slot en un exercice concret selon la fenêtre active (matériel dispo) et les contre-indications du jour, en suivant la chaîne de substituts du catalogue.",
     "regle_bascule": "v4.1 (30/08/2026) — LE GATE DES 28 JOURS EST ABROGÉ. Arbre D : le type de semaine se détermine par le MATÉRIEL disponible, pas par la durée du séjour ; Arbre E : la durée ne décide plus que de la FORME de progression (vague 3+1 si ≥4 semaines connues à l'avance, sinon semaine-type répétée sans vague). Aucune séance n'est verrouillée par la durée de fenêtre : le seul filtre réel est le matériel (windows_ok du catalogue, croisé avec le matériel coché dans l'app) et les contre-indications du jour. Le code applique déjà cette règle (moteurBlocQualiteActive() renvoie true en permanence) ; c'est ce texte qui décrivait encore l'ancienne règle. Le champ 'semaine_classique' de chaque session_type est DÉPRÉCIÉ et neutralisé (toutes les valeurs passées à true) : il est conservé pour compatibilité, il ne doit plus servir à décider quoi que ce soit.",
+    "changelog_v1_2": "v1.2 (31/08/2026, chantier 46) — trois corrections, toutes issues de décisions déjà validées par J mais jamais descendues jusqu'à la couche qui pilote la séance réelle. ① CRÉNEAU HINGE LOURD DE FB2 : l'exercice de référence était la trap bar et la note disait « SDT LOURD … Trap bar / DL / RDL au sélecteur ». Le mouvement de référence est le RDL hanches hautes barre du sol (Hinge Lift MTI) ; la trap bar reste au sélecteur à la maison ; le soulevé de terre conventionnel est sorti du sélecteur. ② T2 EN FINISHER DE LA VO2max : l'arbitrage 18 a été validé par J le 30/08 et intégré au programme en v4_68 — l'app ne le portait nulle part, la séance J1 était donc incomplète. Slot ajouté (optionnel, ~4 min). ③ Le statut de la séance T1/T2 disait « remplacé par Portage 2 », ce qui n'est plus vrai que pour T1. Corrigé.",
     "resolution_slot": "Pour un slot donné : filtrer catalogue.exercises par category (et qualities si précisé) -> exclure ceux dont une contraindication est un flag actif du bilan du jour -> parmi les restants, garder ceux dont current_window ∈ windows_ok -> si aucun ne matche, suivre substitutes du meilleur candidat pour la fenêtre. side_rule G_first du catalogue reste prioritaire à volume/charge égal."
   },
   "session_types": [
@@ -3831,7 +3832,7 @@ input,select,textarea{box-sizing:border-box}
       "qualites_prioritaires": [
         "aerobie_seuil"
       ],
-      "objectif": "VO2max — développe le PLAFOND aérobie. Séance la plus exigeante en fraîcheur : J1, au lendemain du repos.\nJustification : la courbe puissance-durée est PLATE (92,5 W sur 20 min ≈ 93 W sur 40 min) → c'est le plafond qui limite, pas l'endurance à ce plafond. Le travail VO2max le déplace plus vite que le volume Z2 seul.\n⚠ Ne PAS reporter au profit de la Z2 : les deux sont nécessaires, la VO2max dès la première semaine.",
+      "objectif": "PMA VÉLO / VO2max — J1, au lendemain du repos, la séance qui exige le plus de fraîcheur.\n⚠ REQUALIFIÉE le 30/08 (arbitrage 19) : à vélo, la limite est atteinte alors que la FC n'est qu'à 76-85 % de FCmax — c'est la SPÉCIFICITÉ CYCLISTE (coordination, masse musculaire) qui bride, pas le plafond aérobie central. Cette séance développe donc la spécificité vélo et la tolérance aux intensités hautes. Le format ne change pas ; ce qui change, c'est ce qu'on lit dans les résultats. Le plafond aérobie CENTRAL se rouvrira par la course.\nCRITÈRE DE BASCULE VERS LA COURSE : quand le palier « accélérations progressives » du retour course est validé sur 2-3 sorties sans douleur ni réaction le lendemain → 30/30 ou 1 min/1 min à VMA. Le vélo VO2max devient alors le repli des semaines où le genou parle.\n⚠ Ne PAS reporter au profit de la Z2 : les deux sont nécessaires, la VO2max dès la première semaine.\n➜ FINISHER T2 (arbitrage 18) : le rappel de compétence du test se greffe ici, sur l'essoufflement maximal de fin de séance.",
       "slots": [
         {
           "role": "aerobie_vo2max",
@@ -3844,6 +3845,15 @@ input,select,textarea{box-sizing:border-box}
           "note": "Progression : 4×3 min → 5×3 → 6×3 → 5×4 min. Récup ACTIVE à allure très facile, durée = durée de l'effort.\nRepère d'exécution : le dernier intervalle doit être aussi rapide que le premier. Si ça s'effondre, l'intensité de départ était trop haute.\nAlternative course quand le genou le permet : 30/30 ou 1 min/1 min à VMA.",
           "format_fixe": "5 × 3 min / récup 3 min",
           "rpe_fixe": "~93-106 W (105-120 % FTP)"
+        },
+        {
+          "role": "t2_finisher",
+          "category": "work_capacity",
+          "exercice_pref": "t2_enchaine",
+          "obligatoire": false,
+          "format_fixe": "20 pompes + 50 s gainage + 4 tractions strictes — enchaînés SANS repos",
+          "rpe_fixe": "propreté, pas performance",
+          "note": "T2 EN FINISHER DE LA VO2max (arbitrage 18, validé par J le 30/08 · programme §7 bis). ~4 min, coût nul : ce n'est pas une séance, c'est un RAPPEL DE COMPÉTENCE du test.\nPourquoi ici : après 5×3 min à 105-120 % du FTP, l'essoufflement est maximal — la contrainte du test (« faire des tractions propres en étant essoufflé ») est reproduite au plus juste. Et J1 est le jour le plus court de la semaine, alors que J5 porte déjà l'AGT le matin et le protocole Vandel le soir.\nTRACTIONS EN PRONATION (le geste du test, pas le chin-up d'entraînement). Le critère est la PROPRETÉ : 4 tractions strictes, amplitude complète, sans balancer, malgré l'essoufflement. Si elles se dégradent, c'est l'information — pas un échec.\n⚠ T1 (dénivelé) reste SUSPENDU : c'est un effort de seuil déjà couvert par le protocole Vandel du J5. Le T1/T2 complet redevient une séance à part entière dès que la date du test de St Astier est connue (gabarit E).\nSTATUT DANS L'ORDRE DE RETRAIT : niveau 1 de l'Arbre A — c'est le premier élément sacrifié en semaine comprimée."
         }
       ]
     },
@@ -3866,7 +3876,7 @@ input,select,textarea{box-sizing:border-box}
           "contrainte": "genou_G_itband — bloqué si flag actif",
           "format_fixe": "30/30 × 2 blocs de 8-10",
           "rpe_fixe": "100-105 % VMA",
-          "note": "Format classique : 30 s à VMA / 30 s en trottinant, 8-10 répétitions, 2 blocs, 3-4 min entre blocs.\nAlternative : 1 min / 1 min × 6-8.\n⚠ N'ouvrir qu'après l'étape 4 de la séquence de déverrouillage (course 30 min + accélérations sans réaction)."
+          "note": "Format classique : 30 s à VMA / 30 s en trottinant, 8-10 répétitions, 2 blocs, 3-4 min entre blocs.\nAlternative : 1 min / 1 min × 6-8.\n⚠ N'ouvrir qu'après le palier ACCÉLÉRATIONS PROGRESSIVES du retour course (devenu P3 après l'inversion validée par J le 31/08), validé sur 2-3 sorties sans douleur ni réaction le lendemain. Prérequis cumulés : 30 min continu tenu, cadence acquise, extérieur toléré, puis accélérations."
         }
       ]
     },
@@ -4204,7 +4214,7 @@ input,select,textarea{box-sizing:border-box}
         "grip",
         "gainage"
       ],
-      "objectif": "PORTAGE 1 — FARMER seul, le soir de la Z2 longue.\nSéparé du suitcase/sandbag (Portage 2) car le GRIP est le facteur limitant identifié (test du 16/08 : lâcher côté gauche). Enchaîner farmer et suitcase le même jour ferait travailler le second sur des avant-bras déjà cuits — charge effective effondrée, volume de mauvaise qualité.\nOBJECTIF : DÉVELOPPER le portage, pas l'entretenir → la fréquence prime sur la concentration du volume.\n\n⚠ RDL 1 jambe, élévations latérales, back extension : ÉCARTÉS — indépendamment du dos, la séance compte déjà 7 exercices + nuque. RDL 1 jambe existe déjà en Bas 2 (doublon si ajouté ici). ",
+      "objectif": "PORTAGE 1 — FARMER seul, le soir de la Z2 longue.\nSéparé du suitcase/sandbag (Portage 2) car le GRIP est le facteur limitant identifié (test du 16/08 : lâcher côté gauche). Enchaîner farmer et suitcase le même jour ferait travailler le second sur des avant-bras déjà cuits — charge effective effondrée, volume de mauvaise qualité.\nOBJECTIF : DÉVELOPPER le portage, pas l'entretenir → la fréquence prime sur la concentration du volume.\n\n⚠ RDL 1 jambe, élévations latérales, back extension : ÉCARTÉS — indépendamment du dos, la séance compte déjà 7 exercices + nuque. RDL 1 jambe existe déjà au créneau hinge unilatéral du format 2-FB (doublon si ajouté ici). ",
       "slots": [
         {
           "role": "echauffement_general",
@@ -4278,7 +4288,7 @@ input,select,textarea{box-sizing:border-box}
     {
       "id": "agt",
       "nom": "AGT",
-      "frequence_cible": "1x/semaine (après Haut 2)",
+      "frequence_cible": "1x/semaine — J5 au MATIN, avant le seuil du soir (l'alactique ne tolère aucune fatigue préalable ; le seuil, si)",
       "semaine_classique": true,
       "eligible_bloc_qualite": true,
       "qualites_prioritaires": [
@@ -4381,9 +4391,9 @@ input,select,textarea{box-sizing:border-box}
         {
           "role": "hinge_lourd",
           "category": "bas_force",
-          "exercice_pref": "trap_bar_deadlift",
+          "exercice_pref": "rdl",
           "obligatoire": true,
-          "note": "SDT LOURD top set ×3 — apprentissage, frais. Trap bar / DL / RDL au sélecteur. RAMPE avant le top set : ~5×barre à vide → 5×~50% → 3×~70% → 2×~85% → top set ×3. Montée progressive, séries d'approche non comptées comme volume.",
+          "note": "HINGE LOURD top set ×3 — RDL HANCHES HAUTES, BARRE PARTANT DU SOL : c'est le geste du Hinge Lift MTI, donc le mouvement de test ET de travail (décision de J, 30/08 ; programme §2 ter). Sélecteur : trap bar à la maison (prise neutre, poignet G protégé, adaptée aux longs segments). ⚠ Le soulevé de terre CONVENTIONNEL est retiré des priorités et sorti du sélecteur : il n'entre dans aucun score et n'est plus la référence d'aucun créneau. RAMPE avant le top set : ~5×barre à vide → 5×~50% → 3×~70% → 2×~85% → top set ×3. Montée progressive, séries d'approche non comptées comme volume. Prise NUE par défaut — le grip est co-limitant, c'est voulu (rattrapage grip G).",
           "format_fixe": "Top set ×3",
           "rpe_fixe": "RPE 8 · RIR 1-2"
         },
@@ -4504,7 +4514,7 @@ input,select,textarea{box-sizing:border-box}
         "work_capacity",
         "aerobie_seuil"
       ],
-      "objectif": "⚠ SUSPENDU — remplacé par Portage 2 le soir de la Z2 courte.\nRaison : T1 est un effort de SEUIL, déjà couvert par le protocole Vandel (J5) → doublon.\nÀ RÉACTIVER dès que la date du stage est connue : T1/T2 ne porte pas que du seuil, il familiarise aussi avec les GESTES DU TEST (tractions, pompes, gainage, enchaînement course-effort).\nSimulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
+      "objectif": "⚠ T1 SEUL EST SUSPENDU — T2 EST REVENU en finisher de la VO2max (J1) depuis l'arbitrage 18, validé par J le 30/08. Cette séance-ci = le T1/T2 COMPLET (dénivelé + enchaînement), qui reste suspendu.\nRaison de la suspension de T1 : c'est un effort de SEUIL, déjà couvert par le protocole Vandel (J5) → doublon de filière.\nCe que le remplaçant du 20/08 (Portage 2) ne couvrait PAS : tractions, pompes, gainage, enchaînement effort-geste. D'où le retour de T2 seul, à coût nul, sur la VO2max — c'est le plancher permanent.\nÀ RÉACTIVER EN ENTIER dès que la date du test de St Astier est connue (gabarit E, 3-4 semaines de spécification) : le seuil vélo passe alors en second rôle.\nSimulation directe de la phase 1 du test de stage : dénivelé puis enchaînement sous fatigue. Les deux slots s'enchaînent SANS repos.",
       "slots": [
         {
           "role": "t1_denivele",
@@ -4836,7 +4846,7 @@ input,select,textarea{box-sizing:border-box}
   "meta": {
     "nom": "Be Ready — Périodisation bloc qualité",
     "version": "4.1",
-    "description": "Cycle appliqué automatiquement dès qu'un bloc qualité est actif (fenêtre déclarée ou écoulée >= 28 jours), sauf si un focus manuel est choisi (force / puissance / préparation tests / semaine tests), qui prime toujours sur le calcul automatique. Pas de semaine d'adaptation : la puissance suit toujours une semaine de déload de force donc n'a pas besoin de réadaptation, et la force est travaillée toute l'année donc n'en a pas besoin non plus. Chaque bloc de 4 semaines = 3 semaines progressives (léger -> modéré -> pic) sur UNE qualité, puis 1 semaine de déload avant de rebasculer sur l'autre qualité. semaine_du_cycle = floor((jours_ecoules_depuis_debut_fenetre - offset_readaptation) / 7) % 4 + 1, offset_readaptation = 7 j par defaut (Arbre E : la 1re semaine de retour est une READAPTATION hors vague, la vague demarre au jour 8). v4.1: la formule 'cycle_index pair -> force, impair -> puissance' est ABROGEE et retiree -- elle contredisait la regle ci-dessous. Le cycle automatique reste TOUJOURS en bloc Force (pas d'alternance auto vers Puissance) -- Puissance est disponible uniquement via le focus manuel, quand la personne juge que cluster/PAP est approprie ce jour-la (pas de risque poignet/genou). L'aerobie_seuil ne recoit plus de protocole de cycle (Seuil/VO2max progressent par duree/regularite, pas par top-set/cluster, cf manuel)."
+    "description": "Cycle appliqué automatiquement (le bloc qualité est TOUJOURS actif depuis l'abrogation du gate des 28 jours — Arbre D : c'est le matériel qui décide, pas la durée ; résidu de texte corrigé le 31/08, v4.3), sauf si un focus manuel est choisi (force / puissance / préparation tests / semaine tests), qui prime toujours sur le calcul automatique. Pas de semaine d'adaptation : la puissance suit toujours une semaine de déload de force donc n'a pas besoin de réadaptation, et la force est travaillée toute l'année donc n'en a pas besoin non plus. Chaque bloc de 4 semaines = 3 semaines progressives (léger -> modéré -> pic) sur UNE qualité, puis 1 semaine de déload avant de rebasculer sur l'autre qualité. semaine_du_cycle = floor((jours_ecoules_depuis_debut_fenetre - offset_readaptation) / 7) % 4 + 1, offset_readaptation = 7 j par defaut (Arbre E : la 1re semaine de retour est une READAPTATION hors vague, la vague demarre au jour 8). v4.1: la formule 'cycle_index pair -> force, impair -> puissance' est ABROGEE et retiree -- elle contredisait la regle ci-dessous. Le cycle automatique reste TOUJOURS en bloc Force (pas d'alternance auto vers Puissance) -- Puissance est disponible uniquement via le focus manuel, quand la personne juge que cluster/PAP est approprie ce jour-la (pas de risque poignet/genou). L'aerobie_seuil ne recoit plus de protocole de cycle (Seuil/VO2max progressent par duree/regularite, pas par top-set/cluster, cf manuel)."
   },
   "protocoles": {
     "top_set_backoff_leger": {
@@ -5030,7 +5040,8 @@ input,select,textarea{box-sizing:border-box}
     "Guyane (programme historique figé, 9 semaines jusqu'au 10 août 2026) garde sa propre structure S1-S9 telle quelle — ce cycle s'applique aux blocs qualité futurs.",
     "v4.1 (30/08/2026) — note supprimée : elle affirmait « l'alternance Force -> Puissance -> Force continue tant que le bloc qualité dure », en contradiction directe avec la règle v4.0 juste au-dessus (le cycle automatique reste TOUJOURS en Force ; la Puissance n'est accessible que par focus manuel). Vestige de la v3.",
     "v4.1 — DÉLOAD : volume −50 %, INTENSITÉ MAINTENUE. Le top set est conservé à son RPE ; ce sont les back-off, accessoires, BFR et gainage qui sautent. L'ancienne définition (RPE 4-5, format 3×3) baissait aussi l'intensité, en contradiction avec le programme §2 et le manuel ch. 11 (v4.34). C'est le volume qui coûte de la récupération, l'intensité qui tient les adaptations.",
-    "v4.1 — RÉADAPTATION : la vague ne démarre plus au jour 1 de la fenêtre mais au jour 8 (offset réglable dans les réglages du moteur). Sans cet offset, l'app plaçait le PIC de la vague sur la semaine où la doctrine prévoit le DÉLOAD."
+    "v4.1 — RÉADAPTATION : la vague ne démarre plus au jour 1 de la fenêtre mais au jour 8 (offset réglable dans les réglages du moteur). Sans cet offset, l'app plaçait le PIC de la vague sur la semaine où la doctrine prévoit le DÉLOAD.",
+    "v4.3 (31/08/2026) — la description de ce fichier citait encore le gate des 28 jours (« fenêtre déclarée ou écoulée >= 28 jours ») comme condition d'activation du bloc qualité. Règle abrogée depuis le 24/07 (Arbre D) et déjà neutralisée dans le code. Texte corrigé."
   ]
 }</script>
 <script type="module">
@@ -5142,7 +5153,7 @@ const SEANCES = {
           {num:'1',name:'\u2605\u2605\u2605 MILITAIRE BARRE',fmt:'4\u00d75',s1:'30 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:'Priorit\u00e9 absolue. Tempo 2-1-X-0. 1 activation ISO 5s angle 90\u00b0 juste avant 1\u00e8re s\u00e9rie.'},
           {num:'2',name:'Pendlay Row \u00b7 d\u00e9part sol chaque rep',fmt:'3\u00d76',s1:'44 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Explosif concentrique. En B2 sup.: sup. avec militaire pendant repos. Tempo 2-0-X-0.'},
           {num:'3',name:'DB Bench INCLIN\u00c9 \u00b7 halt\u00e8res \u00b7 2 bras simult.',fmt:'3\u00d78',s1:'2\u00d718 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Halt\u00e8res. 2 bras simultan\u00e9s. Tempo 3-1-X-1.'},
-          {num:'4',name:'Chin-ups \u00b7 volume \u00b7 sangle poignet G',fmt:'3\u00d78 RIR3-4',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:'Tempo 3-1-X-1. Descente contr\u00f4l\u00e9e.'},
+          {num:'4',name:'Chin-ups \u00b7 volume',fmt:'3\u00d78 RIR3-4',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:'Tempo 3-1-X-1. Descente contr\u00f4l\u00e9e.'},
           {num:'5',name:'\u2605\u2605 Face Pull \u00e9lastique \u00b7 superset\u2192',fmt:'3\u00d715',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'\u2014',rpe:'5/10',note:'Coudes hauts. Hold 2s.'},
           {num:'6',name:'Rotation ext \u00e9lastique debout \u00b7 \u2190superset',fmt:'2\u00d712/c\u00f4t\u00e9',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Coude 90\u00b0 contre flanc. Hold 2s.'},
           {num:'7',name:'\u2605\u2605 Nuque ISO \u00e9lastique \u00b7 4 directions',fmt:'2\u00d74 dir.\u00d78s',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'60s',rpe:'5/10',note:'Boucle front. Avant/Arri\u00e8re/G/D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Transfert vers la force sous charge. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos pour la cha\u00eene TFL/IT band).'}]},
@@ -5153,7 +5164,7 @@ const SEANCES = {
           {num:'1',name:'\u2605\u2605\u2605 MILITAIRE \u00b7 Top set conjugate \u00b7 superset\u2192',fmt:'5\u00d73 \u2192 top set',s1:'\u2191 vers 35 kg',s2:'\u2191 vers 37-38 kg + AMRAP',s3:'\u2191 vers 40 kg',dl:'3\u00d73 @30 kg d\u00e9load',repos:'2-3 min',rpe:'9/10',note:'CONJUGATE : 5 s\u00e9ries de 3 reps en montant vers le top set du jour (RIR 1). En S4 : +1 s\u00e9rie AMRAP \u00e0 ~80% du top set (max reps propres, stop RIR 1) = 6 s\u00e9ries. Superset pendant repos avec Pendlay Row.'},
           {num:'2',name:'Pendlay Row \u00b7 \u2190superset militaire',fmt:'4\u00d75',s1:'48 kg',s2:'50-52 kg + AMRAP',s3:'52-54 kg',dl:'44 kg d\u00e9load',repos:'\u2014',rpe:'7/10',note:'Pendant repos militaire. Tempo 2-0-X-0.'},
           {num:'3',name:'DB Bench INCLIN\u00c9 halt\u00e8res',fmt:'3-4\u00d78',s1:'2\u00d720 kg',s2:'2\u00d722 kg',s3:'2\u00d724 kg',dl:'2\u00d718 kg d\u00e9load',repos:'2 min',rpe:'7/10',note:'Omoplates r\u00e9tract\u00e9es + d\u00e9prim\u00e9es. Descente contr\u00f4l\u00e9e jusqu\u2019\u00e0 affleurement. Coudes ~45\u00b0 du tronc. Expiration sur push. G d\u00e9finit la charge.'},
-          {num:'4',name:'Chin-ups \u00b7 volume + AMRAP \u00b7 sangle poignet G',fmt:'4\u00d76-8 RIR3-4',s1:'PDC',s2:'PDC',s3:'PDC + AMRAP (stop RIR2)',dl:'PDC d\u00e9load',repos:'2-3 min',rpe:'6-7/10',note:'Prise supination, sangle G si grip l\u00e2che. ARR\u00caTER \u00e0 RIR 1-2 (1-2 reps en r\u00e9serve), PAS d\u2019\u00e9chec fractionn\u00e9 \u2014 viser RPE 8-9 max, pas 10. Sur la s\u00e9rie AMRAP : stop quand la forme casse. D\u00e9coaptation initiale, initier dorsaux, menton au-dessus barre, descente 3s.'},
+          {num:'4',name:'Chin-ups \u00b7 volume + AMRAP',fmt:'4\u00d76-8 RIR3-4',s1:'PDC',s2:'PDC',s3:'PDC + AMRAP (stop RIR2)',dl:'PDC d\u00e9load',repos:'2-3 min',rpe:'6-7/10',note:'Prise supination. Prise NUE par d\u00e9faut (30/08) ; sangle en d\u00e9lestage ponctuel si le grip l\u00e2che avant les dorsaux. ARR\u00caTER \u00e0 RIR 1-2 (1-2 reps en r\u00e9serve), PAS d\u2019\u00e9chec fractionn\u00e9 \u2014 viser RPE 8-9 max, pas 10. Sur la s\u00e9rie AMRAP : stop quand la forme casse. D\u00e9coaptation initiale, initier dorsaux, menton au-dessus barre, descente 3s.'},
           {num:'5',name:'Face Pull + Rotation ext \u00b7 superset',fmt:'3\u00d715+2\u00d712',s1:'moyen',s2:'moyen+',s3:'moyen+',dl:'l\u00e9ger d\u00e9load',repos:'90s',rpe:'5/10',note:'Face pull : coudes hauts, tirer vers le visage. Rotation ext : coude 90\u00b0 collé au flanc, rotation vers l\u2019ext\u00e9rieur, hold 2s.'},
           {num:'6',name:'Nuque ISO \u00e9lastique',fmt:'2\u00d74 dir.\u00d79-10s',s1:'l\u00e9ger',s2:'moyen',s3:'moyen',dl:'l\u00e9ger d\u00e9load',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
       3:{duree:'S6 transition ~70 min | S7-S8 ~80 min',rpe:'S6: 7/10 | S7-S8: 8-9/10',
@@ -5163,7 +5174,7 @@ const SEANCES = {
           {num:'1',name:'\u2605\u2605\u2605 MILITAIRE \u00b7 Cluster 2+2+2',fmt:'4 clusters',s1:'@40 kg',s2:'@42 kg',s3:'@38 kg 3 clusters',dl:'\u2014',repos:'20s/3 min',rpe:'8-9/10',note:'2\u219220s\u21922\u219220s\u21922 = 1 cluster.'},
           {num:'2',name:'\u2605\u2605\u2605 Bench PAP \u2192 plyo push-up OU speed bench',fmt:'3-4 paires (ou 3\u00d73 speed)',s1:'@68 kg\u2192plyo\u00d75',s2:'@70 kg\u2192plyo\u00d75',s3:'@64 kg 2 paires',dl:'\u2014',repos:'4-5 min/paire',rpe:'9/10',note:'0s entre bench @85% et le plyo. PLYO PUSH-UP : sur poign\u00e9es ou poings (m\u00e9nage poignet G), SANS claquer, r\u00e9ception contr\u00f4l\u00e9e. OPTION SPEED BENCH : contre \u00e9lastiques (50-55% + bandes), 3\u00d73 \u00e0 VITESSE MAXIMALE, transition 15-30s apr\u00e8s la s\u00e9rie lourde @85%. Les deux d\u00e9veloppent la puissance de poussée.'},
           {num:'3',name:'Pendlay Row \u00b7 3-7 Legeard @65%',fmt:'3\u219247 paliers',s1:'@44 kg',s2:'@46 kg',s3:'@40 kg',dl:'\u2014',repos:'10-15s entre paliers',rpe:'8/10',note:'Dos 90\u00b0. Barre au sol entre chaque rep. Coudes 45\u00b0 du tronc. Contraction omoplate en haut. Explosif mont\u00e9e, lent descente.'},
-          {num:'4',name:'Chin-ups \u00b7 volume \u00b7 sangle poignet G',fmt:'3\u00d78 RIR3',s1:'PDC',s2:'PDC',s3:'PDC',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:''},
+          {num:'4',name:'Chin-ups \u00b7 volume',fmt:'3\u00d78 RIR3',s1:'PDC',s2:'PDC',s3:'PDC',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:''},
           {num:'5',name:'Face Pull + Rotation ext peak',fmt:'3\u00d715+2\u00d712',s1:'lourd',s2:'lourd',s3:'moyen',dl:'\u2014',repos:'90s',rpe:'5/10',note:'M\u00eame technique. Progression en amplitude de rotation ext.'},
           {num:'6',name:'Nuque ISO \u00e9lastique peak',fmt:'3\u00d74 dir.\u00d710s',s1:'moyen',s2:'moyen',s3:'moyen',dl:'l\u00e9ger d\u00e9load',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
       4:{duree:'~45 min',rpe:'4-5/10',
@@ -5196,7 +5207,7 @@ const SEANCES = {
         priming:['Hip CAR \u00d73/c\u00f4t\u00e9'],
         exercices:[
           {num:'1',name:'\u2605\u2605\u2605 Bulgarian G FIRST \u00b7 charg\u00e9',fmt:'3-4\u00d78/c\u00f4t\u00e9',s1:'@16 kg goblet',s2:'@16-20 kg',s3:'@20 kg',dl:'PDC d\u00e9load',repos:'2 min/c\u00f4t\u00e9',rpe:'7/10',note:'G AVANT D. G d\u00e9finit le poids/reps. Tempo 3-1-X-1.'},
-          {num:'2',name:'Romanian DL bil. \u00b7 sangle poignet G',fmt:'4\u00d76 RIR',s1:'82-84 RIR3',s2:'84-86 RIR3',s3:'86-88 RIR2',dl:'88-90 RIR2 plafond',repos:'2-3 min',rpe:'8/10',note:'e1RM ~103, 6RM ~88-92. Kg = fourchette, prescrire en RIR (toute série ≤ e-xRM −5%). SANGLE poignet G. Genoux fléchis FIXES, hanches en arrière jusqu\u2019à tension ischio, barre contre jambes, dos plat.'},
+          {num:'2',name:'Romanian DL bil.',fmt:'4\u00d76 RIR',s1:'82-84 RIR3',s2:'84-86 RIR3',s3:'86-88 RIR2',dl:'88-90 RIR2 plafond',repos:'2-3 min',rpe:'8/10',note:'e1RM ~103, 6RM ~88-92. Kg = fourchette, prescrire en RIR (toute série ≤ e-xRM −5%). PRISE NUE par défaut (30/08) — le grip est co-limitant, c’est voulu (rattrapage grip G) ; sangle en délestage ponctuel seulement. Genoux fléchis FIXES, hanches en arrière jusqu\u2019à tension ischio, barre contre jambes, dos plat.'},
           {num:'3',name:'Copenhagen \u00b7 G FIRST',fmt:'2\u00d78-10/c\u00f4t\u00e9',s1:'PDC',s2:'PDC+l\u00e9ger',s3:'PDC+l\u00e9ger',dl:'PDC d\u00e9load',repos:'90s',rpe:'5/10',note:'Mollet sur banc. Ligne droite corps. Lever jambe basse. Bassin stable. G EN PREMIER.'},
           {num:'4',name:'Pallof press',fmt:'3\u00d710-12/c\u00f4t\u00e9',s1:'moyen',s2:'moyen+',s3:'moyen+',dl:'l\u00e9ger d\u00e9load',repos:'90s',rpe:'5/10',note:'Bras tendus. R\u00e9sister \u00e0 la rotation. Tronc neutre.'},
           {num:'F1',name:'Dragon flag \u00b7 finisher',fmt:'3\u00d75-6',s1:'tuck/1-leg',s2:'1-leg',s3:'1-leg/full',dl:'tuck d\u00e9load',repos:'2 min',rpe:'7/10',note:'OPTIONNEL. ANTI-EXTENSION dynamique grande amplitude. Prise derri\u00e8re la t\u00eate, coudes pr\u00e8s du corps (\u00e9paule G confortable). Corps RIGIDE, z\u00e9ro cassure \u00e0 la hanche. Descente 4-5s contr\u00f4l\u00e9e (l\u2019excentrique = tout l\u2019int\u00e9r\u00eat). Progression : negatives \u2192 tuck \u2192 one-leg \u2192 full. R\u00e9gresser si lombaire cambre ou \u00e9paule G g\u00eane.'},
@@ -5206,7 +5217,7 @@ const SEANCES = {
         priming:['Clamshell G \u00d715'],
         exercices:[
           {num:'1',name:'\u2605\u2605\u2605 Bulgarian PAP \u00b7 G FIRST \u2192 Jump Lunge OU Step-up explosif',fmt:'3-4 paires/c\u00f4t\u00e9',s1:'@20 kg\u2192plyo\u00d75/c\u00f4t\u00e9',s2:'@20 kg\u2192plyo\u00d75',s3:'@16 kg 2 paires',dl:'\u2014',repos:'4 min/paire',rpe:'9/10',note:'G AVANT D. 0-15s entre Bulgarian et le plyo. OPTION S\u00c9CURIT\u00c9 IT band : Step-up EXPLOSIF (banc ~40cm, concentrique MAXIMAL, redescente MARCH\u00c9E 2s = pas d\u2019impact excentrique) au lieu du Jump Lunge. 5/c\u00f4t\u00e9. Alterner les c\u00f4t\u00e9s pendant les repos. ARR\u00caT au moindre signal IT band. Atterrissage contr\u00f4l\u00e9.'},
-          {num:'2',name:'RDL PAP \u2192 KB swing 2 bras (0s) \u00b7 sangle poignet G',fmt:'paires 2-3 reps',s1:'@90-95\u2192KB\u00d75',s2:'@95-97 max\u2192KB\u00d75',s3:'@88-90 d\u00e9chargé',dl:'\u2014',repos:'4-5 min/paire',rpe:'9/10',note:'\u26a0 2 BRAS sur KB swing. 0s entre RDL et swing.'},
+          {num:'2',name:'RDL PAP \u2192 KB swing 2 bras (0s)',fmt:'paires 2-3 reps',s1:'@90-95\u2192KB\u00d75',s2:'@95-97 max\u2192KB\u00d75',s3:'@88-90 d\u00e9chargé',dl:'\u2014',repos:'4-5 min/paire',rpe:'9/10',note:'\u26a0 2 BRAS sur KB swing. 0s entre RDL et swing.'},
           {num:'3',name:'Copenhagen peak \u00b7 G FIRST',fmt:'3\u00d78/c\u00f4t\u00e9',s1:'PDC+l\u00e9ger',s2:'PDC+moyen',s3:'PDC',dl:'\u2014',repos:'90s',rpe:'6/10',note:'Mollet sur banc. Progression si stable : cheville sur le banc (levier plus long). G EN PREMIER.'},
           {num:'4',name:'Pallof press lourd',fmt:'3\u00d710/c\u00f4t\u00e9',s1:'lourd',s2:'lourd',s3:'moyen',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Bras tendus. R\u00e9sister \u00e0 la rotation. Progression de charge uniquement si la technique est parfaite.'},
           {num:'F1',name:'Dragon flag \u00b7 finisher',fmt:'3\u00d76',s1:'1-leg/full',s2:'full',s3:'full',dl:'\u2014',repos:'2 min',rpe:'8/10',note:'OPTIONNEL. ANTI-EXTENSION dynamique grande amplitude. Prise derri\u00e8re la t\u00eate, coudes pr\u00e8s du corps (\u00e9paule G confortable). Corps RIGIDE, z\u00e9ro cassure \u00e0 la hanche. Descente 4-5s contr\u00f4l\u00e9e. Progression : negatives \u2192 tuck \u2192 one-leg \u2192 full. R\u00e9gresser si lombaire cambre ou \u00e9paule G g\u00eane.'},
@@ -5257,7 +5268,7 @@ const SEANCES = {
         exercices:[
           {num:'1',name:'Bench PLAT barre \u00b7 2\u00e8me stimulus horizontal',fmt:'3\u00d75',s1:'54 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'6/10',note:'Omoplates r\u00e9tract\u00e9es + d\u00e9prim\u00e9es. Pieds au sol. Descente contr\u00f4l\u00e9e touche poitrine. Coudes 45\u00b0 du tronc. Expiration sur push. Tempo 3-1-X-1.'},
           {num:'2',name:'DB Press vertical halt\u00e8res \u00b7 8+ reps',fmt:'3\u00d78',s1:'2\u00d714 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'2 bras simult. 2\u00e8me stimulus vertical. OPTION UNILAT\u00c9RAL (\u00e0 tester) : 1 seul haltier \u00e0 la fois, autre main \u00e0 la hanche. G EN PREMIER, commence l\u00e9ger (10-12 kg). Tronc gain\u00e9, NE PAS se pencher c\u00f4t\u00e9 charge = b\u00e9n\u00e9fice anti-rotation. Surveiller \u00e9paule G. Tempo 3-1-1-0.'},
-          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 5 reps \u00b7 sangle poignet G',fmt:'3\u00d75 RIR2-3',s1:'PDC+2 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'3 min',rpe:'6/10',note:'Tempo 3-1-X-1. Force.'},
+          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 5 reps',fmt:'3\u00d75 RIR2-3',s1:'PDC+2 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'3 min',rpe:'6/10',note:'Tempo 3-1-X-1. Force.'},
           {num:'4',name:'Gorilla Row \u00b7 pause 1s en haut',fmt:'3\u00d78/c\u00f4t\u00e9',s1:'20 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Un bras \u00e0 la fois. Pause 1s. Tempo 2-1-1-0.'},
           {num:'5',name:'\u2605\u2605 Face Pull \u00e9lastique \u00b7 superset\u2192',fmt:'3\u00d715',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'\u2014',rpe:'5/10',note:'2\u00e8me stimulus sant\u00e9 \u00e9paule semaine.'},
           {num:'6',name:'Rotation ext \u00e9lastique \u00b7 \u2190superset',fmt:'2\u00d712/c\u00f4t\u00e9',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'5/10',note:'Coude 90\u00b0 collé au flanc. Rotation vers l\u2019ext\u00e9rieur uniquement. Hold 2s position out. Pas de compensation de tronc.'},
@@ -5267,7 +5278,7 @@ const SEANCES = {
         exercices:[
           {num:'1',name:'Bench PLAT barre \u00b7 top set conjugate',fmt:'5\u00d73 \u2192 top set (+AMRAP S4)',s1:'\u2191 vers 62 kg',s2:'\u2191 vers 64-66 kg + AMRAP',s3:'\u2191 vers 68 kg',dl:'3\u00d73 @54 kg d\u00e9load',repos:'2-3 min',rpe:'9/10 (top set RIR1)',note:'CONJUGATE : 5 s\u00e9ries de 3 reps en montant vers le top set du jour (RIR 1). En S4 : ajouter 1 s\u00e9rie AMRAP \u00e0 ~80% du top set (max reps propres, stop \u00e0 RIR 1) = 6 s\u00e9ries au total. Omoplates r\u00e9tract\u00e9es, descente contr\u00f4l\u00e9e, coudes 45\u00b0.'},
           {num:'2',name:'DB Press vertical \u00b7 8+ reps',fmt:'3\u00d78-10',s1:'2\u00d712 kg',s2:'2\u00d712-14 kg',s3:'2\u00d714 kg',dl:'2\u00d710 kg d\u00e9load',repos:'2 min',rpe:'6/10',note:'\u00c9paule G = facteur limitant (pas la force). Monter seulement si l\u2019\u00e9paule G tol\u00e8re sans douleur. OPTION UNILAT\u00c9RAL : 1 bras \u00e0 la fois, G d\u2019abord, l\u00e9ger (10-12 kg), tronc gain\u00e9 anti-rotation. Prise neutre ou prono. Press vers le haut l\u00e9g\u00e8rement en arc. Omoplates stables. Pas d\u2019hyperextension lombaire. Tempo 3-1-1-0.'},
-          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 force \u00b7 sangle poignet G',fmt:'4\u00d75 RIR2-3',s1:'PDC+3 kg',s2:'PDC+5-7 kg',s3:'PDC+8-10 kg (plafond)',dl:'PDC d\u00e9load',repos:'2-3 min',rpe:'7/10',note:'D\u00e9coaptation initiale. Initier avec dorsaux. Menton au-dessus barre. Lest stable (ceinture ou sac). Descente contr\u00f4l\u00e9e.'},
+          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 force',fmt:'4\u00d75 RIR2-3',s1:'PDC+3 kg',s2:'PDC+5-7 kg',s3:'PDC+8-10 kg (plafond)',dl:'PDC d\u00e9load',repos:'2-3 min',rpe:'7/10',note:'D\u00e9coaptation initiale. Initier avec dorsaux. Menton au-dessus barre. Lest stable (ceinture ou sac). Descente contr\u00f4l\u00e9e.'},
           {num:'4',name:'Gorilla Row \u00b7 progression 20\u219228',fmt:'3-4\u00d76-8/c\u00f4t\u00e9',s1:'20\u219228 kg',s2:'28 kg',s3:'28 kg',dl:'20 kg d\u00e9load',repos:'2 min',rpe:'7/10',note:'KB au sol. Genou oppos\u00e9 au sol. Tirrer coude haut, pause 1s en haut. Corps stable. Alterner sans poser le KB non-actif. GRIP: 2 derni\u00e8res s\u00e9ries option serviette microfibre autour de la anse (\u00e9crasement/grappling), D d\u2019abord, G si indolore. Tempo 2-1-1-0.'},
           {num:'5',name:'Face Pull + Rotation ext \u00b7 superset',fmt:'3\u00d715+2\u00d712',s1:'moyen',s2:'moyen+',s3:'moyen+',dl:'l\u00e9ger d\u00e9load',repos:'90s',rpe:'5/10',note:'Face pull : coudes hauts, tirer vers le visage. Rotation ext : coude 90\u00b0 collé au flanc, rotation vers l\u2019ext\u00e9rieur, hold 2s.'},
           {num:'6',name:'Nuque ISO \u00e9lastique \u00b7 4 directions',fmt:'2\u00d74 dir.\u00d79-10s',s1:'moyen',s2:'moyen+',s3:'moyen+',dl:'l\u00e9ger d\u00e9load',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
@@ -5276,7 +5287,7 @@ const SEANCES = {
         exercices:[
           {num:'1',name:'Bench PLAT barre \u00b7 cluster 2+2+2',fmt:'4 clusters',s1:'@68 kg',s2:'@70 kg',s3:'@64 kg 3 clusters',dl:'\u2014',repos:'20s/3 min',rpe:'8-9/10',note:'15-20s entre chaque mini-s\u00e9rie. Intensit\u00e9 \u00e9lev\u00e9e. Chaque rep avec intention maximale.'},
           {num:'2',name:'DB Press vertical',fmt:'3\u00d78-10',s1:'2\u00d712 kg',s2:'2\u00d713-14 kg',s3:'2\u00d712 kg',dl:'\u2014',repos:'2 min',rpe:'6/10',note:'Press vers le haut. Omoplates stables. Pas d\u2019hyperextension lombaire. Tempo 3-1-1-0.'},
-          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 3-7 Legeard \u00b7 sangle poignet G',fmt:'3\u219247 @65%',s1:'PDC+8 kg',s2:'PDC+10 kg',s3:'PDC+6 kg',dl:'\u2014',repos:'10-15s entre paliers',rpe:'8/10',note:'10-15s entre paliers. Chaque rep qualitative. Lest fixe sur tout le Legeard.'},
+          {num:'3',name:'Chin-ups lest\u00e9s \u00b7 3-7 Legeard',fmt:'3\u219247 @65%',s1:'PDC+8 kg',s2:'PDC+10 kg',s3:'PDC+6 kg',dl:'\u2014',repos:'10-15s entre paliers',rpe:'8/10',note:'10-15s entre paliers. Chaque rep qualitative. Lest fixe sur tout le Legeard.'},
           {num:'4',name:'Gorilla Row \u00b7 3-7 Legeard @65%',fmt:'3\u219247 paliers/c\u00f4t\u00e9',s1:'@20 kg',s2:'@20-28 kg',s3:'@16 kg',dl:'\u2014',repos:'10-15s entre paliers',rpe:'8/10',note:'Pause 1s en haut. 10-15s entre paliers. Corps stable. GRIP: option serviette microfibre autour de la anse sur 2 s\u00e9ries (\u00e9crasement), D d\u2019abord.'},
           {num:'5',name:'Face Pull + Rotation ext peak',fmt:'3\u00d715+2\u00d712',s1:'lourd',s2:'lourd',s3:'moyen',dl:'\u2014',repos:'90s',rpe:'5/10',note:'M\u00eame technique. Progression en amplitude de rotation ext.'},
           {num:'6',name:'Nuque ISO \u00e9lastique \u00b7 peak',fmt:'3\u00d74 dir.\u00d710s',s1:'lourd',s2:'lourd',s3:'moyen',dl:'\u2014',repos:'60s',rpe:'5/10',note:'\u00c9lastique au poteau, boucle autour de la t\u00eate. Maintenir la t\u00eate dans l\u2019axe malgr\u00e9 la traction. 4 directions : avant, arri\u00e8re, G, D.'},{num:'F',name:'Hardstyle Plank \u00b7 gainage anti-extension',fmt:'3\u00d710-20s',s1:'tension max',s2:'tension max',s3:'tension max',dl:'2\u00d715s',repos:'45s',rpe:'7/10',note:'TENSION MAXIMALE tout le corps : fessiers serr\u00e9s, quadriceps contract\u00e9s, poings serr\u00e9s, abdos verrouill\u00e9s. 10-20s SUFFISENT si vraiment max. M\u00e9thode StrongFirst. Ne sollicite PAS les fl\u00e9chisseurs de hanche (repos cha\u00eene TFL/IT band).'}]},
@@ -5285,7 +5296,7 @@ const SEANCES = {
         exercices:[
           {num:'1',name:'Bench PLAT barre \u00b7 d\u00e9load + TEST 3RM S9',fmt:'3\u00d73 puis test',s1:'50 kg puis 3RM',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'3 min',rpe:'4-9/10',note:'S9: test 3RM. Objectif \u226580 kg.'},
           {num:'2',name:'DB Press vertical \u00b7 d\u00e9load',fmt:'2\u00d78',s1:'2\u00d712 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'Volume r\u00e9duit. M\u00eame technique.'},
-          {num:'3',name:'Chin-ups \u00b7 d\u00e9load \u00b7 sangle poignet G',fmt:'3\u00d75',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'4/10',note:'Prise supination. Qualit\u00e9 avant tout.'},
+          {num:'3',name:'Chin-ups \u00b7 d\u00e9load',fmt:'3\u00d75',s1:'PDC',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2-3 min',rpe:'4/10',note:'Prise supination. Qualit\u00e9 avant tout.'},
           {num:'4',name:'Gorilla Row \u00b7 d\u00e9load',fmt:'2\u00d76/c\u00f4t\u00e9',s1:'20 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'4/10',note:'Pause 1s en haut. Corps stable.'},
           {num:'T1',name:'🎯 TEST · Pull-ups max strict',fmt:'1 série max',s1:'≥15',s2:'—',s3:'—',dl:'—',repos:'10 min',rpe:'10/10',note:'Test officiel S9. Propres uniquement : chin au-dessus barre, coudes pleine extension en bas. Note le nombre exact.'},
           {num:'T2',name:'🎯 TEST · Dead hang max',fmt:'1 série max',s1:'≥30s',s2:'—',s3:'—',dl:'—',repos:'5 min',rpe:'10/10',note:'Prise mixte ou double pronation. Stop à la première fissure de grip.'},
@@ -5397,7 +5408,7 @@ const SEANCES = {
         exercices:[
           {num:'1',name:'\u26a1 Bench plat BARRE \u00b7 ISO + volume',fmt:'1 iso 6s + 2\u00d78-10',s1:'iso mi-course \u2192 50-54 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'iso\u21922min, s\u00e9ries 90s',rpe:'iso 100% / s\u00e9ries 7-8',note:'1) ISO OVERCOMING au mi-course (sticking point) : barre cal\u00e9e sur les barres de s\u00e9curit\u00e9 \u00e0 hauteur mi-course, pousser 100% pendant 6s. 2) REPOS 1min30-2min (potentiation). 3) 2 s\u00e9ries de 8-10 reps en dynamique RPE 7-8, repos 90s entre. OPTION YIELDING (si \u00e9paule G \u2265 2-3/10) : remplacer 2 sem par 3-5 tenues de 30-45s @~70% sur les s\u00e9curit\u00e9s (contraction excentrique douce, moins agressive que l\u2019overcoming). Omoplates r\u00e9tract\u00e9es. Bench ISO reste OBLIGATOIRE. Tempo 3-1-X-1.'},
           {num:'2',name:'\u26a1 Militaire BARRE \u00b7 ISO + volume (OPTIONNEL)',fmt:'1 iso 6s + 2\u00d78-10',s1:'iso mi-course \u2192 26-30 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'iso\u21922min, s\u00e9ries 90s',rpe:'iso 100% / s\u00e9ries 7-8',note:'1) ISO OVERCOMING au mi-course (sticking point) : pousser 100% 6s contre point fixe. 2) REPOS 1min30-2min. 3) 2 s\u00e9ries de 8-10 reps dynamique RPE 7-8. \u26a1 OPTIONNEL : sauter cet exercice si \u00e9paule G sensible OU si semaine de GTG militaire complet (le press vertical est d\u00e9j\u00e0 stimul\u00e9 3\u00d7/sem). Le bench ISO, lui, reste obligatoire. Si conserv\u00e9 : surveiller \u00e9paule G, angle non-douloureux, pas d\u2019hyperextension lombaire. Tempo 3-1-1-0.'},
-          {num:'PU',name:'\u2605 Pull-ups / Chin-ups \u00b7 sangle poignet G',fmt:'4\u00d76-8 RIR2-3',s1:'PDC (+lest si facile)',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'7-8/10',note:'Tirage vertical en volume. Reps propres, tempo contr\u00f4l\u00e9 (descente 3s), z\u00e9ro \u00e9lan. Pronation (test m\u00e9tier) ou supination (\u00e9paule G + biceps) selon ressenti. Menton au-dessus barre.'},{num:'3',name:'Row b\u00fbcheron \u00b7 volume',fmt:'3\u00d710-12/c\u00f4t\u00e9',s1:'20-28 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'7/10',note:'Tirage volume, plus de reps que le Pendlay lourd. Tempo contr\u00f4l\u00e9. Coude pr\u00e8s du corps, serrer l\u2019omoplate en haut. Tronc gain\u00e9. Tempo 2-1-1-0.'},
+          {num:'PU',name:'\u2605 Pull-ups / Chin-ups',fmt:'4\u00d76-8 RIR2-3',s1:'PDC (+lest si facile)',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'2 min',rpe:'7-8/10',note:'Tirage vertical en volume. Reps propres, tempo contr\u00f4l\u00e9 (descente 3s), z\u00e9ro \u00e9lan. Pronation (test m\u00e9tier) ou supination (\u00e9paule G + biceps) selon ressenti. Menton au-dessus barre.'},{num:'3',name:'Row b\u00fbcheron \u00b7 volume',fmt:'3\u00d710-12/c\u00f4t\u00e9',s1:'20-28 kg',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'90s',rpe:'7/10',note:'Tirage volume, plus de reps que le Pendlay lourd. Tempo contr\u00f4l\u00e9. Coude pr\u00e8s du corps, serrer l\u2019omoplate en haut. Tronc gain\u00e9. Tempo 2-1-1-0.'},
           {num:'4',name:'\u00c9l\u00e9vations lat\u00e9rales DB',fmt:'3\u00d712-15',s1:'l\u00e9ger',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'60s',rpe:'7/10',note:'Delto\u00efde moyen (jamais cibl\u00e9 directement ailleurs). L\u00e9ger, contr\u00f4l\u00e9, pas d\u2019\u00e9lan. Lever jusqu\u2019\u00e0 l\u2019horizontale, descente lente. Surveiller \u00e9paule G.'},
           {num:'4b',name:'Shrug barre/DB \u00b7 trap\u00e8zes',fmt:'3\u00d712-15',s1:'mod\u00e9r\u00e9-lourd',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'60s',rpe:'7/10',note:'Trap\u00e8zes sup\u00e9rieurs (port casque/gilet). \u00c9paules vers les oreilles, PAS de rotation. Tenue 1s en haut, descente contr\u00f4l\u00e9e. Barre ou halt\u00e8res.'},{num:'5',name:'Curl biceps DB \u00b7 BFR',fmt:'30-15-15-15 reps',s1:'l\u00e9ger + bande',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'30s',rpe:'brulure',note:'BFR : bande/\u00e9lastique en haut du bras (serr\u00e9 mais pas garrot total ~7/10). Charge tr\u00e8s l\u00e9g\u00e8re (5-8 kg). 30 reps \u2192 30s repos \u2192 15 \u2192 15 \u2192 15, bande maintenue tout du long. Hypertrophie sans charge articulaire. Test \u2014 \u00e0 d\u00e9faut, volume classique 3\u00d715-20.'},
           {num:'6',name:'Extension triceps DB \u00b7 BFR',fmt:'30-15-15-15 reps',s1:'l\u00e9ger + bande',s2:'\u2014',s3:'\u2014',dl:'\u2014',repos:'30s',rpe:'brulure',note:'M\u00eame protocole BFR que le curl, bande au m\u00eame endroit (haut du bras). Charge tr\u00e8s l\u00e9g\u00e8re. Superset possible avec le curl (bande garde la m\u00eame). \u00c0 d\u00e9faut de bande : volume classique 3\u00d715-20.'},
@@ -5500,7 +5511,10 @@ function loadMoteurState(){
   const base = {
     mode: 'maison',
     equipDeplacement: [],
-    windowStart: todayStr,
+    // v4.3 : par défaut la date réelle d'ouverture de la fenêtre maison en vigueur (12/08/2026,
+    // programme v4_72 §1) et non « aujourd'hui » — sinon une réinstallation redémarre la vague à zéro
+    // et le déload tombe à côté. Modifiable dans Réglages.
+    windowStart: '2026-08-12',
     // Arbre E — la 1re semaine de retour est une RÉADAPTATION hors vague : la vague (S1 léger → S4 déload)
     // démarre au jour 8 de la fenêtre, pas au jour 1. Réglable (0 = pas de réadaptation, cas d'une fenêtre
     // qui prolonge la précédente sans coupure de matériel).
@@ -5556,32 +5570,56 @@ function moteurEquipment(){
   const base = MS.mode === 'maison' ? M_MAISON_EQUIPMENT : MS.equipDeplacement;
   return Array.from(new Set([...base, ...always]));
 }
+// ── VERSION DE L'APP ─────────────────────────────────────────────────────────────────────
+// Affichée dans Réglages. Ajoutée en v4.3 : jusqu'ici l'app ne portait AUCUN numéro de version,
+// et c'est exactement pour cette raison que la copie du projet (moteur v4.1) et celle du
+// téléphone (v4.1 + écran Accueil + radar groupé) ont divergé sans que personne s'en aperçoive.
+// Toute évolution incrémente ces trois constantes.
+const APP_VERSION = 'moteur v4.5';
+const APP_VERSION_DATE = '31/08/2026';
+const APP_VERSION_NOTE = 'v4.5 (31/08) — ÉCRAN TESTS : bascule 5 familles \u21c4 18 qualités au-dessus du radar, et la liste des tests est enfin GROUPÉE PAR QUALITÉ PHYSIQUE (famille \u2192 qualité \u2192 tests, avec le score de chaque qualité). Un clic sur un axe filtre la liste : le radar devient la navigation de l\'écran au lieu d\'une simple image. · v4.4 (31/08) — J valide l\'INVERSION DES PALIERS COURSE (sortir du tapis AVANT les accélérations) et le DÉPART DU KIT VALISE : Lyon bascule du gabarit F au gabarit D. · v4.3 — alignement sur programme v4_72 et manuel v4.35 : hinge lourd = RDL du sol · DL conventionnel hors score · prise nue partout · T2 en finisher de la VO2max · frise des jalons réécrite. Base : v4.2 (écran Accueil, radar par famille).';
+
 // ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────
 // Dates cibles, ajustables. Affichés dans la frise Réglages avec compte à rebours.
+// ⚠ RÉÉCRIT LE 31/08/2026 (v4.3, chantier 46). L'ancienne frise décrivait un calendrier ABANDONNÉ :
+// fenêtres « poste barre 34 j » (23/09), « matériel complet 20 j » (27/10), « kit personnel 26 j »
+// (16/11), « matériel complet 16 j » (12/12) — plus aucune n'existe. Elle portait aussi trois erreurs
+// de fond : ① le gate des 28 jours (« bloc qualité ouvert ≥28 j »), ABROGÉ ; ② un mini-test testant le
+// « Soulevé de terre », RETIRÉ des priorités depuis le 30/08 ; ③ un retour course plafonné à « 20 min
+// continues mi-septembre », alors que 30 min continu ont été tenus les 24/08 et 28/08.
+// Source unique de ce calendrier : programme v4_72, §1.
+// Vague 3+1 de la fenêtre maison (démarrage jour 8 = 19/08, Arbre E) : S1 19-25/08 · S2 26/08-01/09 ·
+// S3 02-08/09 · S4 déload 09-15/09 · S1 16-22/09 · S2 23-29/09 · S3 pic 30/09-06/10 · S4 07-11/10.
 const M_JALONS = [
-  {date:'2026-08-10', label:'Retour course — étape 1 (4 marche / 1 course ×5-6)', type:'protocole',
-   detail:'Conditionnel : IT band silencieux 21 j. Tapis d\'abord, Z2 basse 130-140. 2×/sem.'},
-  {date:'2026-08-17', label:'Fenêtre maison — S1 reprise (−30 % volume)', type:'fenetre',
-   detail:'Revalidation technique, ré-acclimatation thermique. Bloc qualité Force ouvert (≥28 j).'},
-  {date:'2026-08-24', label:'Test FTP 20 min (zones vélo)', type:'test',
-   detail:'Jour frais. 20 min max soutenable. FTP = 95 % puissance moy · FC SV2 = FC moy des 15 dernières min.'},
-  {date:'2026-08-24', label:'Retour course — étape 2 (3 marche / 2 course ×5)', type:'protocole',
-   detail:'Si étape 1 propre sur 2 séances.'},
-  {date:'2026-08-31', label:'Retour course — étape 3 (continu 15 min, +10 %/sem)', type:'protocole',
-   detail:'Objectif 20 min continues mi-septembre.'},
-  {date:'2026-09-07', label:'Répétition générale phase 2 (chronométrée, en tenue)', type:'test',
-   detail:'Jour frais, sommeil ≥6 h. Remplace le work capacity de la semaine. Mesures : temps total, temps mannequin, points de friction.'},
-  {date:'2026-09-14', label:'Déload + mini-test (batterie 3RM)', type:'deload',
-   detail:'Bench · Soulevé de terre · Zercher · Militaire (tous en 3RM) + pull-ups stricts max + broad jump + wall sit G/D. Fixe les charges de la fenêtre suivante.'},
-  {date:'2026-09-23', label:'Changement de fenêtre — poste barre (34 j)', type:'fenetre',
-   detail:'Bloc qualité maintenu. Priorité d\'arbitrage : préparation tests (T1/T2 hebdo dès le 01/10).'},
-  {date:'2026-10-27', label:'Changement de fenêtre — matériel complet (20 j)', type:'fenetre',
-   detail:'<28 j : semaine classique, pas de nouveau bloc. Revalidation courte 2-3 séances.'},
-  {date:'2026-11-16', label:'Changement de fenêtre — kit personnel (26 j)', type:'fenetre',
-   detail:'Maintien. T1/T2 hebdo obligatoire. AGT inchangée.'},
-  {date:'2026-12-12', label:'Changement de fenêtre — matériel complet (16 j)', type:'fenetre',
-   detail:'Reprise réelle : 2-3 séances à −20/30 %, retour au niveau en semaine 2.'}
+  {date:'2026-09-09', label:'Déload — S4 de la vague (09 → 15/09)', type:'deload',
+   detail:'Volume −40/50 % (moins de séries, pas moins de séances), INTENSITÉ MAINTENUE, fréquence inchangée. Sautent en premier : WC glyco, BFR, volume accessoire. ⏸ Fenêtre idéale pour le TEST POMPES HAND-RELEASE (2 min, strictes, à froid) : jour frais, volume bas, aucun matériel — c\'est lui qui décide du passage à Good sur MTI 45+.'},
+  {date:'2026-09-30', label:'⏸ Répétition générale phase 2 — semaine du 30/09 au 06/10', type:'test',
+   detail:'DATE À CONFIRMER (programme §1). Chronométrée, EN TENUE COMPLÈTE, jour frais, sommeil ≥6 h. Franchissement · tirage pneu bras ferme · traction pneu arme en main · 2 retournés · dégagement mannequin (cible <2 min) · coups d\'arrêt. REMPLACE le créneau portage/WC de la semaine — jamais en plus.'},
+  {date:'2026-10-09', label:'⏸ Mini-test 3RM — jour 1 (remplace FB1)', type:'test',
+   detail:'DATE À CONFIRMER (programme §1). Fin de S4. Bench · HINGE = RDL du sol, hanches hautes (⚠ plus le soulevé de terre conventionnel, retiré le 30/08). Jour frais.'},
+  {date:'2026-10-11', label:'⏸ Mini-test 3RM — jour 2 (remplace FB2, 48 h après)', type:'test',
+   detail:'DATE À CONFIRMER. Front squat prise croisée · pull-ups stricts max · militaire. ⚠ Le front squat est LE jalon de cette fenêtre (arbitrage 21) : il mesure ce que 10 semaines de technique ont rendu sur les 2,8 kg qui manquent au Minimum ×PDC.'},
+  {date:'2026-10-12', label:'DÉPART LYON — bascule GABARIT D (ENDURANCE DE FORCE), 12 j', type:'fenetre',
+   detail:'Le KIT VALISE PART (validé par J le 31/08) : élastiques, TRX, poignées de pompes → gabarit D, pas F. Développe le moteur aérobie + l\'endurance de force ; la force MAX n\'est pas maintenue (pas de barre), c\'est assumé sur 12 j. FB1/FB2 en endurance de force : 12-25 reps ou 40-60 s sous tension, RIR 1-2. ⚠ AGT dégradée : sans KB ni med ball il ne reste que le chop/lift élastique (rotation) — le vecteur balistique principal manque. ⚠ Course extérieure SEULEMENT si le palier « sortir du tapis » est validé AVANT le départ — sinon marche rapide / escaliers, le compteur reprend au retour à l\'étape acquise. À faire avant de partir : repérer une barre de traction (parc) — elle débloque le T2 complet.'},
+  {date:'2026-10-23', label:'Fin de Lyon — dernier jour sans barre', type:'fenetre',
+   detail:'Bilan honnête : la force MAX n\'a pas été maintenue (assumé, 12 j = perte négligeable) ; l\'endurance de force, elle, a été développée. Ce qui doit avoir tenu : routines quotidiennes, prophylaxie, plancher articulaire, et la régularité du retour course si le palier extérieur était acquis.'},
+  {date:'2026-10-24', label:'Retour maison — reprise progressive', type:'fenetre',
+   detail:'2-3 séances à −20/30 % (manuel ch. 4), retour au niveau en semaine 2. Gabarit C (FUSION) ou A (FORCE) selon la priorité. C\'est ici que démarre le bloc de CHARGE du front squat (arbitrage 21), et c\'est la fenêtre d\'introduction de la MARCHE LESTÉE (à plat, charge modeste, protocole de cadence suspendu le temps de l\'installer). ⚠ Si la date du test de ST ASTIER tombe entre-temps → gabarit E, qui remplace tout le reste.'}
 ];
+// ⚠ ST ASTIER (le stage avec test physique) reste SANS DATE — entre octobre et janvier, sélection non
+// acquise. Il ne peut donc pas figurer dans cette frise. C\'est lui, et lui seul, qui déclenche le
+// gabarit E (spécification 3-4 sem. + affûtage). Le déplacement à Lyon n\'est PAS un test.
+// ⚠ Retour course : le palier 1 (30 min continu × 2-3 sorties) et le protocole de cadence (7 sorties)
+// n\'ont volontairement pas de date — ils avancent à la tolérance du tissu, pas au calendrier.
+// ⚠ ORDRE DES PALIERS — INVERSÉ le 31/08, validé par J (arbitrage 47) :
+//   P1 tenir 30 min continu (2-3 sorties) + cadence 166  →  P2 SORTIR DU TAPIS (ex-③)
+//   →  P3 accélérations progressives (ex-②)  →  P4 pente réelle ≥3 % et descente.
+// Raison : seul P2 a une échéance (le 12/10 décide si Lyon est une fenêtre de course ou un trou), et
+// à allure égale changer de surface est moins agressif qu\'augmenter l\'intensité — l\'intensité est le
+// paramètre directement corrélé à la contrainte sur la bandelette.
+// ⚠ Les conditions écrites « après le palier 2 » ailleurs dans le dossier désignent un NOMBRE de
+// paliers franchis (≥2), pas le palier « accélérations ». Le critère de bascule de la VO2max vers la
+// course, lui, reste nommément lié aux ACCÉLÉRATIONS — devenues P3.
 function moteurJalons(){
   const now = new Date(); now.setHours(0,0,0,0);
   return M_JALONS.map(j=>{
@@ -6083,7 +6121,8 @@ const S = {
   bloc: 1,
   tooltipTarget: null,
   seanceKey: null,
-  testsRadarZoom: null,
+  testsRadarZoom: null,   // null = 5 familles · 'all' = 18 qualités · <cat> = une famille
+  testsAxeFocus: null,    // qualité sélectionnée → filtre la liste des tests
 };
 
 // Charger config
@@ -6427,7 +6466,7 @@ function computeFlags(){
     if(sleepLow) raisons.push('sommeil <6h');
     if(hrvDrop10) raisons.push('HRV -10%');
     if(painMod) raisons.push('douleur ≥ modérée');
-    flags.unshift({lvl:'orange',icon:'🗜️',metric:'Jour compressé conseillé ('+raisons.join(' · ')+')',msg:'Signaux de récupération basse. La séance COMPRESSÉE du jour (version allégée) est disponible en 1 tap dans l\'onglet Séance. Garde le mouvement, réduis le volume/l\'intensité — ne saute pas, allège.',compressed:true});
+    flags.unshift({lvl:'orange',icon:'🗜️',metric:'Jour compressé conseillé ('+raisons.join(' · ')+')',msg:'Signaux de récupération basse. La version allégée du jour s\'affiche en tête de l\'onglet Séance. Règle : on coupe du VOLUME et des séances, on GARDE l\'intensité du top set (programme §2 · manuel ch. 11). Ne saute pas, allège — sauf VO2max (à remplacer par une Z2) et AGT (à supprimer) : celles-là se font entières ou pas du tout.',compressed:true});
   }
 
   return flags;
@@ -6492,6 +6531,38 @@ try {
     });
   }
 } catch(e){ window.__swStatus='non disponible dans ce contexte'; }
+// ── OÙ EN EST-ON DANS LA VAGUE 3+1 ? (source unique : le moteur, pas le plan Guyane figé) ─────
+// Arbre E : la 1re semaine d'une fenêtre est une RÉADAPTATION hors vague ; la vague S1→S4 démarre
+// ensuite (offset réglable dans Réglages). S4 = déload : volume −40/50 %, INTENSITÉ MAINTENUE.
+const V_COULEUR = {1:'#3b82f6', 2:'#8b5cf6', 3:'#e63946', 4:'#10b981'};
+function appVague(){
+  try{
+    if(typeof moteurEnReadaptation === 'function' && moteurEnReadaptation()){
+      return {court:'Réadaptation · hors vague', long:'Réadaptation', tag:'Hors vague',
+        color:'#f5a623', pct:0, deload:false, semaine:null,
+        aide:'Recalibrage technique de début de fenêtre — la vague S1→S4 démarre ensuite (Arbre E).'};
+    }
+    const w = (typeof moteurCycleWeek === 'function') ? moteurCycleWeek() : null;
+    if(w){
+      const info = (typeof moteurCycleInfo === 'function') ? moteurCycleInfo() : null;
+      const nom = (info && info.typeLabel) ? String(info.typeLabel).toUpperCase() : 'FORCE';
+      const phase = {1:'léger', 2:'modéré', 3:'pic', 4:'déload'}[w];
+      return {court:`S${w}/4 · ${phase} · ${nom}`, long:nom, tag: w===4?'Déload':`Semaine ${w}/4`,
+        color:V_COULEUR[w]||'#f5a623', pct:(w/4)*100, deload:w===4, semaine:w,
+        aide: w===4
+          ? 'Déload : volume −40/50 %, INTENSITÉ MAINTENUE, fréquence inchangée. Sautent en premier : WC glyco, BFR, volume accessoire.'
+          : 'Vague 3+1 · déload en semaine 4 du bloc'};
+    }
+  }catch(e){}
+  // Repli : ancien compteur du plan à 9 semaines. Conservé pour ne jamais afficher une page vide,
+  // mais il ne fait plus foi — d'où le libellé explicite.
+  const b = BLOCS.find(x=>x.id===S.bloc)||BLOCS[0];
+  const w = ((S.week-1)%4)+1;
+  return {court:`S${w}/4 · ${b.name} (repli)`, long:b.name, tag:`Semaine ${w}/4`,
+    color:b.color, pct:(w/4)*100, deload:w===4, semaine:w,
+    aide:'Vague non calculée par le moteur — vérifier la date de début de fenêtre dans Réglages.'};
+}
+
 function render(){
   const _ps=document.querySelector('.scroll'); const _st=_ps?_ps.scrollTop:0;
   const root = document.getElementById('root');
@@ -6601,23 +6672,17 @@ function render(){
   const app = $('div',{class:'app'});
 
   // TOPBAR
-  const blocData = BLOCS.find(b=>b.id===S.bloc)||BLOCS[0];
-  // Depuis le 30/08 le programme n'est plus un plan fixe sur 9 semaines : c'est un BLOC
-  // vague 3+1 (déload en semaine 4) répété tant que la fenêtre matériel le permet (Programme v4_72, Arbre E).
-  const wkInBloc = ((S.week-1)%4)+1;
-  const isDeloadWk = wkInBloc===4;
+  const V = appVague();
   const tb = $('div',{class:'topbar'},
     $('div',{class:'topbar-title'},'BE READY'),
     $('div',{class:'topbar-info'},
-      $('div',{style:{color:blocData.color,fontWeight:700,fontSize:'11px'}},
-        `S${wkInBloc}/4${isDeloadWk?' · déload':''} · ${blocData.name}`),
+      $('div',{style:{color:V.color,fontWeight:700,fontSize:'11px'}}, V.court),
       $('div',{},`${DAYS_FULL[DOW]} ${today.getDate()} ${MONTHS[today.getMonth()]}`)
     )
   );
   app.appendChild(tb);
-  const progPct = Math.max(0, Math.min(100, (wkInBloc/4)*100));
   app.appendChild($('div',{class:'topbar-progress'},
-    $('div',{class:'topbar-progress-fill',style:{width:progPct+'%',background:isDeloadWk?'#10b981':blocData.color}})
+    $('div',{class:'topbar-progress-fill',style:{width:V.pct+'%',background:V.color}})
   ));
 
   // CONTENT
@@ -6859,7 +6924,9 @@ function tAxesGrouped(){
 
 // items: [{label, score(0-4|null), tested, color}] · onItemClick(it,i) rend les points/labels cliquables
 function tRadarSVGGeneric(items, onItemClick){
-  const n = items.length, cx=190, cy=175, R=112;
+  // v4.5 : avec 18 axes, les libellés voisins se chevauchaient en haut du radar. On resserre
+  // le polygone pour dégager de la marge et on éloigne un peu les libellés de l'anneau.
+  const n = items.length, cx=190, cy=175, R = n <= 6 ? 112 : 96;
   const NS='http://www.w3.org/2000/svg';
   const svg=document.createElementNS(NS,'svg');
   svg.setAttribute('viewBox','0 0 380 350');
@@ -6870,14 +6937,17 @@ function tRadarSVGGeneric(items, onItemClick){
     svg.appendChild(mk('circle',{cx,cy,r:R*lv/4,fill:'none',stroke:'#1e293b','stroke-width':1,'stroke-dasharray':'3 3'}));
   });
   const pt=(i,r)=>{ const a=-Math.PI/2 + i*2*Math.PI/n; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
-  const fs = onItemClick ? 10.5 : 8.5;
+  // v4.5 : la lisibilité dépend du NOMBRE d'axes, pas du fait qu'ils soient cliquables.
+  // 5 familles → gros labels ; 18 qualités → petits, sinon ça se chevauche.
+  const fs = n <= 6 ? 10.5 : 8.2;
+  const hitR = n <= 6 ? 22 : 13;
   // rayons + labels
   items.forEach((it,i)=>{
     const [x,y]=pt(i,R);
     const grp = mk('g',{});
     svg.appendChild(grp);
     grp.appendChild(mk('line',{x1:cx,y1:cy,x2:x,y2:y,stroke:'#1e293b','stroke-width':1}));
-    const [lx,ly]=pt(i,R+17);
+    const [lx,ly]=pt(i, R + (n <= 6 ? 17 : 20));
     const anchor = lx>cx+6?'start':(lx<cx-6?'end':'middle');
     // découpe en 2 lignes si le libellé est long
     const w = it.label.split(' ');
@@ -6902,7 +6972,7 @@ function tRadarSVGGeneric(items, onItemClick){
     }
     if(onItemClick){
       grp.setAttribute('style','cursor:pointer');
-      grp.appendChild(mk('circle',{cx:lx,cy:ly,r:22,fill:'transparent'}));
+      grp.appendChild(mk('circle',{cx:lx,cy:ly,r:hitR,fill:'transparent'}));
       grp.addEventListener('click',()=>onItemClick(it,i));
     }
   });
@@ -6924,16 +6994,26 @@ function tRadarSVGGeneric(items, onItemClick){
   return svg;
 }
 
-function tRadarSVG(zoomCat){
-  if(zoomCat){
-    const g = tAxesGrouped().find(g=>g.cat===zoomCat);
+// v4.5 — TROIS MODES DE RADAR, tous cliquables :
+//   null   → les 5 FAMILLES (vue d'ensemble) · un clic zoome sur la famille
+//   'all'  → les 18 QUALITÉS d'un coup (vue historique, réintroduite à la demande de J)
+//   <cat>  → les qualités d'UNE famille
+// Dans les deux derniers, un clic sur un axe FILTRE la liste des tests sur cette qualité :
+// le radar cesse d'être une image et devient la navigation de l'écran.
+function tRadarSVG(mode){
+  if(mode === 'all'){
+    const items = tAxes().map(a=>({label:a.axe, score:a.score, tested:a.tested, color:T_CAT_COLOR[a.cat], axe:a.axe}));
+    return tRadarSVGGeneric(items, (it)=>{ S.testsAxeFocus = it.axe; render(); });
+  }
+  if(mode){
+    const g = tAxesGrouped().find(g=>g.cat===mode);
     if(g){
-      const items = g.subs.map(a=>({label:a.axe, score:a.score, tested:a.tested, color:T_CAT_COLOR[a.cat]}));
-      return tRadarSVGGeneric(items, null);
+      const items = g.subs.map(a=>({label:a.axe, score:a.score, tested:a.tested, color:T_CAT_COLOR[a.cat], axe:a.axe}));
+      return tRadarSVGGeneric(items, (it)=>{ S.testsAxeFocus = it.axe; render(); });
     }
   }
   const items = tAxesGrouped().map(g=>({label:g.label, score:g.score, tested:g.nTested>0, color:T_CAT_COLOR[g.cat], cat:g.cat}));
-  return tRadarSVGGeneric(items, (it)=>{ S.testsRadarZoom = it.cat; render(); });
+  return tRadarSVGGeneric(items, (it)=>{ S.testsRadarZoom = it.cat; S.testsAxeFocus = null; render(); });
 }
 
 function renderTests(){
@@ -6965,25 +7045,60 @@ function renderTests(){
 
   // radar
   const rbox=$('div',{style:{background:'#0d1525',borderRadius:'10px',padding:'6px',marginBottom:'10px'}});
-  const zoomCat = S.testsRadarZoom;
-  const zoomGroup = zoomCat ? tAxesGrouped().find(g=>g.cat===zoomCat) : null;
+  const mode = S.testsRadarZoom;                          // null · 'all' · <cat>
+  const zoomGroup = (mode && mode!=='all') ? tAxesGrouped().find(g=>g.cat===mode) : null;
+
+  // Bascule 5 familles ⇄ 18 qualités (v4.5, demande de J) — toujours visible.
+  const seg = $('div',{style:{display:'flex',gap:'5px',padding:'4px 4px 2px',alignItems:'center'}});
+  const segBtn = (lbl, actif, on) => $('button',{
+    style:{flex:'1 1 0',padding:'6px 4px',borderRadius:'7px',fontSize:'10.5px',fontWeight:'700',
+      cursor:'pointer',border: actif?'1px solid #f5a623':'1px solid #1e2d42',
+      background: actif?'#2a2214':'#111d2e', color: actif?'#f5a623':'#64748b'}, onclick:on}, lbl);
+  seg.appendChild(segBtn('5 familles', mode===null || !!zoomGroup,
+    ()=>{ S.testsRadarZoom=null; S.testsAxeFocus=null; render(); }));
+  seg.appendChild(segBtn('18 qualités', mode==='all',
+    ()=>{ S.testsRadarZoom='all'; S.testsAxeFocus=null; render(); }));
+  rbox.appendChild(seg);
+
   if(zoomGroup){
-    const bar = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',padding:'4px 6px 2px'}});
+    const bar = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',padding:'2px 6px'}});
     bar.appendChild($('button',{class:'btn-back',style:{padding:'5px 10px',fontSize:'11px'},
-      onclick:()=>{ S.testsRadarZoom=null; render(); }},'← Vue d’ensemble'));
+      onclick:()=>{ S.testsRadarZoom=null; S.testsAxeFocus=null; render(); }},'← Familles'));
     bar.appendChild($('span',{style:{fontFamily:'var(--font-d)',fontSize:'14px',letterSpacing:'1.5px',
-      color:T_CAT_COLOR[zoomCat]||'#f5a623'}}, zoomGroup.label));
+      color:T_CAT_COLOR[mode]||'#f5a623'}}, zoomGroup.label));
     rbox.appendChild(bar);
   }
-  rbox.appendChild(tRadarSVG(zoomCat));
+  rbox.appendChild(tRadarSVG(mode));
   rbox.appendChild($('div',{style:{fontSize:'8px',color:'#475569',textAlign:'center',paddingBottom:'4px'}},
     zoomGroup
-      ? zoomGroup.nTested+' / '+zoomGroup.n+' qualités mesurées dans cette famille'
-      : 'Anneaux = 1 à 4 points · touchez une famille pour voir le détail'));
+      ? zoomGroup.nTested+' / '+zoomGroup.n+' qualités mesurées · touchez un axe pour filtrer les tests'
+      : mode==='all'
+        ? 'Les 18 qualités · touchez un axe pour filtrer les tests'
+        : 'Anneaux = 1 à 4 points · touchez une famille pour voir le détail'));
   wrap.appendChild(rbox);
 
-  // saisies
-  T_EPREUVES.forEach(ep=>{
+  // Filtre actif sur une qualité → puce d'annulation
+  if(S.testsAxeFocus){
+    const chip = $('div',{style:{display:'flex',alignItems:'center',gap:'8px',background:'#1a2942',
+      border:'1px solid #f5a623',borderRadius:'8px',padding:'6px 10px',marginBottom:'8px'}});
+    chip.appendChild($('span',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',flex:'1'}},
+      'Filtre : '+S.testsAxeFocus));
+    chip.appendChild($('span',{style:{fontSize:'12px',cursor:'pointer',color:'#94a3b8'},
+      onclick:()=>{ S.testsAxeFocus=null; render(); }},'✕'));
+    wrap.appendChild(chip);
+  }
+
+  // ── SAISIES, GROUPÉES PAR QUALITÉ PHYSIQUE (v4.5) ──────────────────────
+  // Avant : une liste plate de 30 lignes, où rien ne disait à quelle qualité chaque test
+  // se rapportait — alors que le radar juste au-dessus raisonne, lui, par qualité. La liste
+  // et le radar lisaient les mêmes données sans jamais se parler. Elles sont maintenant
+  // la même vue : famille → qualité → tests, et le radar filtre la liste.
+  const axesById = {};
+  tAxes().forEach(a=>{ axesById[a.axe]=a; });
+  const CATS = ['force','puiss','filiere','oper','struct'];
+  const ANCRAGE = 'Ancrage (hors score)';
+
+  const renderEpreuve = (ep)=>{
     const r = res[ep.id] || {val:'',date:''};
     const sc = tScoreOf(ep,r);
     const row=$('div',{style:{background:'#111d2e',borderRadius:'8px',padding:'7px 9px',marginBottom:'6px'}});
@@ -7008,7 +7123,50 @@ function renderTests(){
         onclick:()=>{ const d=tLoad(); delete d[ep.id]; tSave(d); render(); }},'🗑'));
     }
     row.appendChild(line);
-    wrap.appendChild(row);
+    return row;
+  };
+
+  CATS.forEach(cat=>{
+    const eps = T_EPREUVES.filter(ep=>ep.cat===cat);
+    if(!eps.length) return;
+    // Regroupe les épreuves de la famille par qualité (axe). Les épreuves sans axe
+    // (PDC, FTP, VMA, PMA, test 3 min) sont des DONNÉES D'ANCRAGE : elles ne notent
+    // aucune qualité, elles calibrent les autres. Elles ont donc leur propre bloc.
+    const parAxe = {};
+    eps.forEach(ep=>{ const k = ep.axe || ANCRAGE; (parAxe[k] = parAxe[k] || []).push(ep); });
+    const axesDeLaFamille = Object.keys(parAxe)
+      .sort((a,b)=> a===ANCRAGE ? 1 : b===ANCRAGE ? -1 : 0);
+
+    const visibles = axesDeLaFamille.filter(k=>{
+      if(S.testsAxeFocus) return k === S.testsAxeFocus;
+      if(zoomGroup) return cat === mode;
+      return true;
+    });
+    if(!visibles.length) return;
+
+    const g = tAxesGrouped().find(x=>x.cat===cat);
+    const hdr = $('div',{style:{display:'flex',alignItems:'baseline',gap:'8px',
+      margin:'14px 0 6px',paddingBottom:'4px',borderBottom:'2px solid '+(T_CAT_COLOR[cat]||'#1e2d42')}});
+    hdr.appendChild($('span',{style:{fontFamily:'var(--font-d)',fontSize:'15px',letterSpacing:'1.5px',
+      color:T_CAT_COLOR[cat]||'#94a3b8',flex:'1'}}, T_CAT_LABEL[cat]));
+    if(g) hdr.appendChild($('span',{style:{fontSize:'10px',color:'#64748b'}},
+      g.nTested+'/'+g.n+' mesurées'+(g.score!=null? ' · '+g.score.toFixed(1)+'/4':'')));
+    wrap.appendChild(hdr);
+
+    visibles.forEach(axeKey=>{
+      const a = axesById[axeKey];
+      const sub = $('div',{style:{display:'flex',alignItems:'baseline',gap:'6px',margin:'8px 0 4px'}});
+      sub.appendChild($('span',{style:{fontSize:'11px',fontWeight:'800',
+        color: axeKey===ANCRAGE ? '#475569' : '#cbd5e1',flex:'1'}}, axeKey));
+      if(a && a.score!=null){
+        sub.appendChild($('span',{style:{fontSize:'10px',fontWeight:'800',
+          color: a.score>=3?'#10b981': a.score>=2?'#f59e0b':'#ef4444'}}, a.score.toFixed(1)+'/4'));
+      } else if(axeKey!==ANCRAGE){
+        sub.appendChild($('span',{style:{fontSize:'9px',color:'#475569'}},'non mesurée'));
+      }
+      wrap.appendChild(sub);
+      parAxe[axeKey].forEach(ep=> wrap.appendChild(renderEpreuve(ep)));
+    });
   });
 
   // ── SCORES COMPOSITES (info) ──
@@ -7238,8 +7396,13 @@ const M_STANDARDS_RATIOS = {
   front_squat: {label:'Front Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI (RSA)'},
   push_press: {label:'Push Press', min:null, obj:null, exc:1.1, source:'MTI (hors RSA — seule Excellence publiée)'},
   squat_clean: {label:'Squat Clean', min:null, obj:null, exc:1.25, source:'MTI (hors RSA — seule Excellence publiée)'},
-  // Zercher Squat n'a pas de standard propre — approximé au même ratio que Front Squat, clairement noté.
-  zercher_squat: {label:'Zercher Squat', min:1.0, obj:1.25, exc:1.5, source:'MTI, proxy Front Squat — pas de standard Zercher publié'},
+  // ⏸ CHANTIER 45 — EN ATTENTE D'ARBITRAGE DE J. Le Zercher n'a AUCUN standard externe publié :
+  // le barème ci-dessous est celui du front squat, appliqué à un mouvement que le manuel décrit
+  // lui-même comme « structurellement plus dur ». Un standard sans référence externe n'en est pas un.
+  // Recommandation du chantier : le RETIRER du tableau et suivre le Zercher en tendance personnelle
+  // (comme le Pendlay Row). Alternative : abattement explicite de −10 à −15 %.
+  // Conservé à titre CONSERVATOIRE tant que J n'a pas tranché — le libellé le dit à l'écran.
+  zercher_squat: {label:'Zercher Squat ⏸ (repère indicatif)', min:1.0, obj:1.25, exc:1.5, source:'⏸ à arbitrer — barème du front squat appliqué par défaut ; aucun standard Zercher publié, et le Zercher est structurellement plus dur'},
 };
 const M_RM_FACTOR = 0.909; // 3RM ≈ 1RM × 0.909 (Epley)
 // e1RM honnête : Epley avec les reps réelles du format + la réserve (RIR = 10 − RPE, plafonné à 4).
@@ -7338,7 +7501,12 @@ function moteurRSAScore(){
   const from3RM = v => { const n = Number(v); return (v!=null && v!=='' && isFinite(n) && n>0) ? n / M_RM_FACTOR : null; };
   // RM testé prioritaire, e1RM estimé des séances en repli
   const fs = from3RM(trm.front_squat_3rm) || est1RM('front_squat') || est1RM('zercher_squat');
-  const hinge = from3RM(trm.rdl_3rm) || est1RM('trap_bar_deadlift') || est1RM('deadlift_conventionnel') || est1RM('rdl');
+  // Composante hinge = RDL hanches hautes barre du sol (= Hinge Lift MTI). Le RM testé prime ;
+  // à défaut on estime sur le RDL lui-même, puis sur la trap bar (proxy maison le plus proche).
+  // ⚠ Le SOULEVÉ DE TERRE CONVENTIONNEL est EXCLU du score (décision de J, 30/08 : « il n'entre
+  // dans aucun score ») — il figurait encore ici comme repli, ce qui pouvait injecter dans le RSA
+  // un mouvement officiellement retiré. Retiré en v4.3.
+  const hinge = from3RM(trm.rdl_3rm) || est1RM('rdl') || est1RM('trap_bar_deadlift');
   const bench = from3RM(trm.bench_3rm) || est1RM('bench_plat_barre');
   const pullReps = moteurGetPullupsMax(); // saisie dédiée — charge de chin_ups = lest en kg, pas des reps
   if(fs==null || hinge==null || bench==null) return null;
@@ -7659,21 +7827,18 @@ function renderAccueil(){
   const wrap = $('div',{});
   wrap.appendChild($('div',{class:'section-hdr'},'🏠 Accueil'));
 
-  const blocData = BLOCS.find(b=>b.id===S.bloc)||BLOCS[0];
-  const wkInBloc = ((S.week-1)%4)+1;
-  const isDeloadWk = wkInBloc===4;
+  const V = appVague();
 
   // ── carte bloc / semaine ──
   const blocCard = $('div',{class:'card'});
-  blocCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'10px'}},
-    $('div',{style:{fontFamily:'var(--font-d)',fontSize:'19px',letterSpacing:'1.5px',color:blocData.color}}, blocData.name),
-    $('span',{class:'tag',style:{background:(isDeloadWk?'#10b981':blocData.color)+'22',color:isDeloadWk?'#10b981':blocData.color}},
-      isDeloadWk?'Déload':`Semaine ${wkInBloc}/4`)
+  blocCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'10px',gap:'8px'}},
+    $('div',{style:{fontFamily:'var(--font-d)',fontSize:'19px',letterSpacing:'1.5px',color:V.color}}, V.long),
+    $('span',{class:'tag',style:{background:V.color+'22',color:V.color,whiteSpace:'nowrap'}}, V.tag)
   ));
   const barBg = $('div',{style:{height:'6px',background:'#111d2e',borderRadius:'4px',overflow:'hidden',marginBottom:'6px'}});
-  barBg.appendChild($('div',{style:{height:'100%',width:(wkInBloc/4*100)+'%',background:isDeloadWk?'#10b981':blocData.color,borderRadius:'4px'}}));
+  barBg.appendChild($('div',{style:{height:'100%',width:V.pct+'%',background:V.color,borderRadius:'4px'}}));
   blocCard.appendChild(barBg);
-  blocCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b'}},'Vague 3+1 · déload en semaine 4 du bloc'));
+  blocCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b'}}, V.aide));
   wrap.appendChild(blocCard);
 
   // ── carte séance du jour ──
@@ -7800,12 +7965,69 @@ const COMPRESSED_SESSIONS = {
   'Conditioning': ['2 circuits seulement', 'Test HRR maintenu', 'Intensité modérée'],
 };
 
+// ── JOUR ROUGE, version des séances RÉELLES du moteur (v4.3) ──────────────────────────────
+// COMPRESSED_SESSIONS n'était indexé que par les noms du SPLIT (Haut 1, Bas 1…). Pour toutes les
+// séances réellement pratiquées (FB1, FB2, VO2max, Seuil, portages…) il n'y avait aucune entrée,
+// et le repli générique affichait « réduis le volume de ~40 % ET L'INTENSITÉ » — l'INVERSE de la
+// doctrine (programme §2, semaine dégradée · manuel ch. 11 et 15) : on coupe du volume et des
+// séances, JAMAIS l'intensité du top set. Deux séances ne se dégradent d'ailleurs pas du tout :
+// la VO2max se REMPLACE par une Z2, l'AGT se SUPPRIME — « entières ou pas du tout ».
+const COMPRESSED_MOTEUR = {
+  fb_1: ['Rappel puissance (2-3 séries) — bref, il reste',
+         'Top set squat À CHARGE INCHANGÉE — l\'intensité ne baisse pas',
+         'Volumes (chin-ups, incliné, RDL, row) : gardés, réduits à 2 séries',
+         'Prophylaxie : Copenhagen + rotation externe + face pull — ne se coupent jamais',
+         '❌ Sautent : BFR jambes, gainage, et la Z2 vélo du soir'],
+  fb_2: ['Rappel puissance (2-3 séries)',
+         'Top sets hinge ET bench À CHARGE INCHANGÉE',
+         'Bulgarian + pull-ups volume : 2 séries au lieu de 3-4',
+         'Prophylaxie : Copenhagen + rotation externe + face pull',
+         '❌ Sautent : BFR bras, gainage, twist, et la Z2 vélo du soir'],
+  vo2max: ['⚠ LA VO2max NE SE DÉGRADE PAS — elle se REMPLACE.',
+           'Jambes lourdes, HRV en chute ou sommeil <6 h → Z2 de 45 min à la place.',
+           'Une VO2max au rabais n\'atteint pas l\'intensité cible et coûte cher pour rien.',
+           '❌ Le finisher T2 saute aussi (niveau 1 de l\'ordre de retrait).'],
+  agt: ['⚠ L\'AGT NE SE DÉGRADE PAS — elle se SUPPRIME.',
+        'Une AGT où la vitesse chute n\'est plus de l\'alactique : c\'est du conditionnement mal nommé.',
+        'Reprendre à la prochaine séance, sur jambes fraîches.'],
+  seuil: ['1 seul bloc Vandel au lieu de 2-3 — l\'allure ne change PAS',
+          '⚠ Ne jamais couper le seuil pour garder une Z2 : on coupe la Z2 avant le seuil.',
+          'La base pardonne un volume irrégulier ; le plafond non.'],
+  z2: ['Garder la Z2 courte — noyau intangible de l\'Arbre A',
+       'Allure basse dans la zone, respiration nasale',
+       'Le retour course du jour se fait quand même : sa valeur tient à la RÉGULARITÉ'],
+  z2_long: ['Raccourcir : 90 → 60 → 45 min. Ne pas supprimer.',
+            'Intensité la plus constante possible — c\'est le support de la mesure de dérive cardiaque'],
+  portage: ['❌ PORTAGE 1 (farmer) SAUTE — carry bilatéral, celui qui ne corrige pas l\'asymétrie G.',
+            'Niveau 2 de l\'ordre de retrait (Arbre A).'],
+  portage_2: ['Réduire aux DEUX obligatoires + nuque : suitcase + sandbag + nuque ISO (~20 min)',
+              '❌ Sautent : shrug, pompes, gainages, militaire, sled',
+              '⚠ Garder le contrôle « prise anormale à froid » au premier carry — coût nul.'],
+  wc_glyco: ['❌ Saute en premier sur un jour rouge : il cherche la fatigue, c\'est exactement ce',
+             'qu\'on n\'a pas à dépenser aujourd\'hui.'],
+  wc_seuil: ['❌ Saute, ou se réduit à un seul bloc si l\'énergie le permet.'],
+  t1_t2: ['❌ Saute — entretien de compétence, niveau 1 de l\'ordre de retrait.'],
+  puissance_1: ['⚠ La puissance ne se fait pas fatigué : STOP dès que la vitesse baisse.',
+                'Jambes lourdes → remplacer par une Z2, ne pas faire au rabais.'],
+  puissance_2: ['⚠ Même règle : vitesse ou rien.',
+                'Jambes lourdes → remplacer par une Z2.']
+};
+// Phrase d'introduction spécifique quand la séance ne s'allège pas mais se remplace / se supprime.
+const COMPRESSED_REGLE = {
+  vo2max:  'Signaux de récupération basse. ⚠ Cette séance ne s\'allège pas — entière ou pas du tout :',
+  agt:     'Signaux de récupération basse. ⚠ Cette séance ne s\'allège pas — entière ou pas du tout :',
+  portage: 'Signaux de récupération basse. Ordre de retrait de l\'Arbre A :',
+  wc_glyco:'Signaux de récupération basse. Ordre de retrait de l\'Arbre A :',
+  t1_t2:   'Signaux de récupération basse. Ordre de retrait de l\'Arbre A :'
+};
+
 // ── Séance pilotée par le Moteur (post-Guyane) — même UI riche, données dynamiques ──
 const M_ROLE_LABEL = {
   agt_puissance:'vecteur', agt_rotation:'rotation',
   rappel_puissance:'rappel puissance', hinge_lourd:'hinge lourd', hinge_volume:'hinge volume',
   squat_bilateral:'squat', unilateral_genou:'unilatéral', anti_rotation:'anti-rotation',
-  volume_quadriceps:'quadriceps', ischio_jambiers:'ischios', finisher_bfr_jambes:'ischios (BFR)'
+  volume_quadriceps:'quadriceps', ischio_jambiers:'ischios', finisher_bfr_jambes:'ischios (BFR)',
+  t2_finisher:'T2 · finisher'
 };
 function renderSeance(){
   moteurMaybeAutoSuggestDelestage();
@@ -7826,7 +8048,13 @@ function renderSeance(){
   const selectorCard = $('div',{class:'card',style:{paddingBottom:'8px'}});
   const selectorWrap = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',alignItems:'center'}});
   // Séparateurs de jour — semaine ENDURANCE (cf. programme §2, gabarit 1)
-  const M_JOURS = {vo2max:'J1', z2:'J2', fb_1:'J3', z2_long:'J4', agt:'J5', fb_2:'J6', wc_glyco:'···'};
+  // Gabarit B (ENDURANCE), semaine en vigueur 12/08 → 11/10 — programme v4_72 §2 :
+  // J1 VO2max + T2 · J2 Z2 courte + Portage 2 (soir) · J3 FB1 + Z2 vélo · J4 Z2 longue + Portage 1
+  // (soir) · J5 AGT (matin) + Seuil (soir) · J6 FB2 + Z2 vélo · J7 repos.
+  // v4.3 : les créneaux du SOIR (portages, seuil) étaient absents de la frise — la semaine réelle
+  // compte 11 séances, la frise n'en jalonnait que 6.
+  const M_JOURS = {vo2max:'J1', z2:'J2', portage_2:'J2 soir', fb_1:'J3', z2_long:'J4',
+    portage:'J4 soir', agt:'J5', seuil:'J5 soir', fb_2:'J6', wc_glyco:'···'};
   const sepStyle={fontSize:'9px',fontWeight:'800',color:'#f5a623',padding:'0 2px 0 4px',
     borderLeft:'2px solid #f5a623',lineHeight:'1',alignSelf:'stretch',display:'flex',alignItems:'center'};
   MTPL.session_types.forEach(session=>{
@@ -8040,18 +8268,23 @@ function renderSessionCards(el, session){
     const compFlag = flags.find(f=>f.compressed);
     if(compFlag){
       const guyaneKey = M_GUYANE_SESSION_KEY[session.id];
-      const compData = guyaneKey ? COMPRESSED_SESSIONS[guyaneKey] : null;
+      const compData = COMPRESSED_MOTEUR[session.id] || (guyaneKey ? COMPRESSED_SESSIONS[guyaneKey] : null);
+      const compRegle = COMPRESSED_REGLE[session.id] || null;
       const banner = $('div',{class:'card',style:{borderColor:'#e67e22',background:'#2a1f14'}});
       banner.appendChild($('div',{class:'card-title',style:{color:'#e67e22'}},'🗜️ '+compFlag.metric));
-      banner.appendChild($('div',{style:{fontSize:'12px',color:'#c9a06a',marginBottom:'8px'}},'Signaux de récupération basse. Version allégée du jour (garde le mouvement, réduis le volume) :'));
+      banner.appendChild($('div',{style:{fontSize:'12px',color:'#c9a06a',marginBottom:'8px'}},
+        compRegle || 'Signaux de récupération basse. Version allégée du jour — on coupe du VOLUME, on garde l\'INTENSITÉ :'));
       if(compData){
         const ul=$('div',{style:{fontSize:'13px',lineHeight:'1.7'}});
         compData.forEach(x=>ul.appendChild($('div',{},'• '+x)));
         banner.appendChild(ul);
       } else {
-        banner.appendChild($('div',{style:{fontSize:'12px',color:'#8a94a6'}},'Réduis le volume de ~40% et l\'intensité, garde les patterns principaux.'));
+        banner.appendChild($('div',{style:{fontSize:'12px',color:'#8a94a6'}},'Réduis le VOLUME de ~40 % (moins de séries, accessoires coupés) et garde les patterns principaux. ⚠ NE PAS baisser l\'intensité du top set : c\'est le volume qui coûte de la récupération, l\'intensité qui tient les adaptations (programme §2 · manuel ch. 11).'));
       }
-      banner.appendChild($('div',{style:{fontSize:'11px',color:'#8a94a6',marginTop:'8px',fontStyle:'italic'}},'Ne saute pas la séance — allège-la. Le mouvement aide la récupération.'));
+      banner.appendChild($('div',{style:{fontSize:'11px',color:'#8a94a6',marginTop:'8px',fontStyle:'italic'}},
+        compRegle
+          ? 'Faire au rabais coûterait plus que ça ne rapporte. Décider franchement, puis passer à autre chose.'
+          : 'Ne saute pas la séance — allège-la. Le mouvement aide la récupération.'));
       el.appendChild(banner);
     }
   } catch(e){}
@@ -8381,7 +8614,7 @@ function renderSeanceGuyane(){
         compData.forEach(x=>ul.appendChild($('div',{},'• '+x)));
         banner.appendChild(ul);
       } else {
-        banner.appendChild($('div',{style:{fontSize:'12px',color:'#8a94a6'}},'Réduis le volume de ~40% et l\'intensité, garde les patterns principaux.'));
+        banner.appendChild($('div',{style:{fontSize:'12px',color:'#8a94a6'}},'Réduis le VOLUME de ~40 % (moins de séries, accessoires coupés) et garde les patterns principaux. ⚠ NE PAS baisser l\'intensité du top set : c\'est le volume qui coûte de la récupération, l\'intensité qui tient les adaptations (programme §2 · manuel ch. 11).'));
       }
       banner.appendChild($('div',{style:{fontSize:'11px',color:'#8a94a6',marginTop:'8px',fontStyle:'italic'}},'Ne saute pas la séance — allège-la. Le mouvement aide la récupération.'));
       el.appendChild(banner);
@@ -8728,8 +8961,13 @@ function renderBilan(){
   el.appendChild(seg);
 
   if(subTab==='reglages'){
-    el.appendChild($('div',{class:'card',style:{paddingTop:'10px',paddingBottom:'10px',fontSize:'11px',color:'#64748b'}},
-      'Mode, matériel, durée de fenêtre et focus d\'entraînement — utilisés par l\'onglet Séance pour choisir et adapter les séances.'));
+    el.appendChild($('div',{class:'card',style:{paddingTop:'10px',paddingBottom:'10px'}},
+      $('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',gap:'8px',marginBottom:'6px'}},
+        $('span',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',letterSpacing:'.5px'}},'BE READY — '+APP_VERSION),
+        $('span',{style:{fontSize:'10px',color:'#475569',whiteSpace:'nowrap'}}, APP_VERSION_DATE)),
+      $('div',{style:{fontSize:'11px',color:'#64748b'}},
+        'Mode, matériel, durée de fenêtre et focus d\'entraînement — utilisés par l\'onglet Séance pour choisir et adapter les séances.'),
+      $('div',{style:{fontSize:'10px',color:'#475569',marginTop:'6px'}}, APP_VERSION_NOTE)));
 
     const cardMode = $('div',{class:'card'});
     cardMode.appendChild($('div',{class:'card-title'},'OÙ ES-TU ?'));
@@ -8753,6 +8991,22 @@ function renderBilan(){
       });
       cardMode.appendChild(grid);
     }
+    // v4.3 — début de fenêtre éditable : c'est lui qui positionne toute la vague 3+1 (donc le
+    // déload). Il n'était réglable nulle part : il se figeait à la date du changement de mode, et
+    // une réinstallation le remettait à « aujourd'hui » sans que rien ne le signale.
+    cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'8px'}},'Début de la fenêtre en cours'));
+    const wsInput = $('input',{type:'date',class:'input-field',value:(MS.windowStart||todayStr),
+      onchange:(e)=>{ if(e.target.value){ MS.windowStart = e.target.value; saveMoteurState(); render(); } }});
+    cardMode.appendChild(wsInput);
+    (function(){
+      const d = new Date((MS.windowStart||todayStr)+'T00:00:00');
+      const j = Math.floor((today - d)/86400000);
+      const off = (MS.vagueOffsetJours==null) ? 7 : Number(MS.vagueOffsetJours);
+      const w = (j-off) >= 0 ? (Math.floor((j-off)/7)%4)+1 : null;
+      cardMode.appendChild($('div',{style:{fontSize:'10px',color:'#64748b',marginTop:'4px'}},
+        'Jour '+(j+1)+' de la fenêtre · '+(w ? 'vague S'+w+'/4'+(w===4?' (déload)':'') : 'réadaptation, hors vague')+
+        '. Fenêtre maison en vigueur : 12/08 → 11/10 (programme v4_72 §1).'));
+    })();
     // Arbre E — réadaptation au retour (la vague démarre au jour 8, pas au jour 1)
     cardMode.appendChild($('div',{class:'lbl',style:{marginTop:'8px'}},'Semaine de réadaptation au début de cette fenêtre'));
     const readSel = $('select',{class:'input-field',onchange:(e)=>{
