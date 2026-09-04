@@ -1,14 +1,15 @@
 {
-  "name": "MMA × Endurance",
-  "short_name": "MMA Sport",
-  "description": "Programme hybride MMA × Endurance — 16 semaines",
-  "start_url": "/",
+  "name": "BE READY",
+  "short_name": "BE READY",
+  "description": "Programme d'entraînement tactique personnalisé — préparation opérationnelle",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0f1a",
-  "theme_color": "#0f172a",
+  "theme_color": "#0a0f1a",
   "orientation": "portrait",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

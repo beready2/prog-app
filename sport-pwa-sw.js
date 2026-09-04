@@ -1,12 +1,13 @@
-const CACHE = 'mma-sport-v6';
+const CACHE = 'be-ready-v1';
 
 // Cache the actual files used by the app
 const ASSETS = [
   './',
-  './index2.html',
   './index.html',
   './sport-pwa-manifest.json',
-  './sport-pwa-sw.js'
+  './sport-pwa-sw.js',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', e => {
@@ -47,8 +48,7 @@ self.addEventListener('fetch', e => {
           if (cached) return cached;
           // For navigation requests offline, serve the app shell
           if (e.request.mode === 'navigate') {
-            return caches.match('./index2.html')
-              .then(r => r || caches.match('./index.html'))
+            return caches.match('./index.html')
               .then(r => r || caches.match('./'));
           }
           return new Response('', { status: 503 });
