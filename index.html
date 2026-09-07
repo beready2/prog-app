@@ -5636,6 +5636,246 @@ function moteurSeuilFormatLabel(modalite, semaine){
 // vit déjà dans le module « ⚙️ Configurer la Z2 » (renderSessionCards, cfg.duree) : pas de doublon ici,
 // voir la liste de durées étendue directement à cet endroit.
 
+// ══ v4.20 (chantier « Ops », 05/09) — DOMAINE TIR ═══════════════════════════════════════════
+// Source : SP2022 — Programme d'entraînement au tir, Phases 2 & 3 (S5-S12), v3. Doctrine IP
+// gendarmerie exclusivement (AAPC, REST, CRIC, AMER-PARA-VEP, ICCP, codification couleur).
+// Premier passage de transcription : structure complète des 8 semaines, drills résumés fidèlement
+// au texte source (pas de reformulation de doctrine). À valider par J avant tout ajustement de fond.
+const TIR_DATA = {
+  meta: {
+    nom: 'SP2022 — Phases 2 & 3',
+    version: '1.0',
+    perimetre: "Entretien individuel — ne remplace ni la formation IP, ni les séances d'unité, ni les contrôles réglementaires. Angles, rétention en munition réelle, tir en déplacement et toute technique de cellule : à faire valider en unité, jamais considérés acquis en solo seul.",
+  },
+  semaines: [
+    {id:5, phase:2, titre:'Levée de malfonction', lede:"L'arme s'arrête et le tireur continue. Rendre la résolution automatique avant de la rendre rapide.",
+      domicile:[
+        {titre:'ICCP acte réflexe', duree:8, items:['20 reps, incident induit au hasard (snap caps + douilles vides mélangés)','Au bip : ICCP complet puis une presse — par time 2,5 s','Critère éliminatoire : les yeux ne quittent pas la carte pendant la claque et la charge']},
+        {titre:'Acte réfléchi — double alimentation', duree:7, items:['10 reps, incident monté à la main — par time 6 s','Exécution derrière un angle de mur, jamais à découvert','Deux mouvements d\'armé francs']},
+        {titre:'Retour en visée', duree:5, items:['6 presses SA consécutives à 4 m, retour actif en visée','Noter les écarts entre presses (baromètre du grip)']},
+      ],
+      club:[
+        {titre:'Séances S5 (×1-2), 50 cps', items:['10 cps DA à froid — groupe mesuré','Chargement en aveugle : 3 chargeurs, inertes intercalés au hasard','20 cps cadence soutenue — chaque incident traité en ICCP réel, arme jamais posée','20 cps SA groupements, 4×5 — objectif 10 cm','Noter : incidents rencontrés / résolus sans regarder l\'arme']},
+        {titre:'Côté réactif — réintroduction', items:['À sec uniquement. 5 min fin de séance : tenue seule puis 10 presses lentes','Aucun chrono. Gêne = arrêt immédiat, report à S7']},
+      ],
+      focus:"L'incident fait partie de la séquence — pas de l'imprévu.",
+      mesure:'Temps ICCP moyen sur 10 reps laser · ratio incidents résolus sans regarder l\'arme / incidents rencontrés au club.'},
+    {id:6, phase:2, titre:'Positions dégradées et appui', lede:'Sortir du debout-de-face. La position se prend une fois, correctement, et ne se corrige pas ensuite.',
+      domicile:[
+        {titre:'Mise en position', duree:7, items:['Debout → un genou / accroupi / couché, 5 reps par position au bip','Arme en permanence en direction de la carte, index hors pontet','Par time debout→genou→impact : 2,5 s cette semaine, 2,0 s en S8']},
+        {titre:'Appui et référence main', duree:8, items:['Montant de porte et angle de mur, 15 reps par côté','Vertical côté de l\'arme : dos de la main réactive au contact. Horizontal : main réactive posée, canon au-dessus','Contrôle : rien ne dépasse au-delà du strict nécessaire']},
+        {titre:'Vitesse d\'accès', duree:5, items:['Dégainé au timer, par time 1,5 s, 15 reps','Rechargement rapide (chargeurs vides) : par time 3 s, 10 reps','Rechargement tactique derrière angle : 10 reps sans chrono','Séquence 1 + rechargement + 1 au timer, 10 reps']},
+      ],
+      club:[
+        {titre:'Séances S6 (×1-2), 50 cps', items:['10 cps DA à froid','20 cps à genou, 4×5 — référence zéro de la position','20 cps en appui vertical si le stand le permet, sinon couché/accroupi','Comparer debout / genou / appui : indique la position à travailler en priorité']},
+        {titre:'Côté réactif', items:['5 min à sec, presses lentes debout uniquement']},
+      ],
+      focus:'La stabilité se gagne par les appuis, pas par la crispation.',
+      mesure:'Groupes genou et appui à 25 m (cm) · temps debout → genou → impact au laser.'},
+    {id:7, phase:2, titre:'Bande 0-5 m et multi-cibles', lede:'La distance réelle d\'engagement. Départ systématique depuis la position d\'attente, jamais arme déjà pointée.',
+      domicile:[
+        {titre:'Attente → contact → contact feu', duree:7, items:['20 reps, arme à l\'étui au départ. Au bip : dégainé, contact, contact feu, impact à 3 m','Par time 1,5 s cette semaine, 1,2 s en S8']},
+        {titre:'Contact rapproché et rétention', duree:7, items:['Carte à 1 m. Arme au corps, coude verrouillé, main réactive au poitrail','15 presses — la main réactive ne passe JAMAIS devant le canon ni la culasse','Enchaîner : rétention (2) → recul d\'un pas → jonction des mains → 2 presses']},
+        {titre:'Multi-cibles', duree:6, items:['3 cartes à 1/3/5 m, ordre imposé puis annoncé au bip','Les yeux mènent : l\'œil acquiert la cible avant que l\'arme ne parte']},
+      ],
+      club:[
+        {titre:'Séances S7 (×1-2), 50 cps', items:['10 cps DA à froid','20 cps enchaînement 2 tronc + 1 zone haute, distance max autorisée','20 cps transitions entre deux cibles espacées']},
+        {titre:'Unité — à demander au moniteur', items:['Bande 0-5 m et rétention : validation uniquement en séance d\'unité/stand IP']},
+        {titre:'Côté réactif', items:['Passage en munition réelle si S5/S6 sans gêne : 5 cps posés 10-15 m, sans chrono']},
+      ],
+      focus:'À courte distance, la décision précède les organes de visée.',
+      mesure:'Temps bip → impact carte 3 m depuis position d\'attente · temps 3 cartes / 3 impacts.'},
+    {id:8, phase:2, titre:'Déplacement, tir en mouvement, tests Phase 2', lede:'Assembler. Mesurer. Ne rien chercher à améliorer cette semaine.',
+      domicile:[
+        {titre:'Pas alternatif et pas glissé', duree:7, items:['En position de contact : 3 m avant/arrière, latéral G/D','Buste orienté sur la zone de danger, jambes qui travaillent dessous']},
+        {titre:'Se déplacer, se stabiliser, tirer', duree:7, items:['Déplacement 3 m → arrêt franc → stabilisation → 2 presses, 10 reps (séquence prioritaire)','À sec uniquement : 1 presse tous les 2 pas en pas glissé lent']},
+        {titre:'Décrochage', duree:6, items:['Arme haute puis basse, 10 reps chacune, rejoindre une protection à 4 m en arrière','DND permanente, verrouillage osseux en arme basse']},
+        {titre:'Vendredi — tests laser', items:['Passer les tests étalons domicile, remplir le tableau. Aucune tentative de record']},
+      ],
+      club:[
+        {titre:'Séance test dédiée, 50 cps', items:['10 cps DA à froid → groupe (comparer S1/S4/S8)','10 cps SA → groupe','10 cps à genou → groupe (comparer S6)','10 cps chargeurs garnis en aveugle : compter incidents/résolutions','10 cps libres sur le point le plus faible du carnet']},
+      ],
+      focus:'Mesurer — pas performer.',
+      mesure:'Tests étalons Phase 2 (voir Bilan > Tests).'},
+    {id:9, phase:3, titre:'Ouverture d\'angle, se poster, prise en compte du volume', lede:'Le logement devient le terrain. Découvrir sans se découvrir.',
+      domicile:[
+        {titre:'Cartographie (une fois, lundi)', duree:20, items:['Tracer le plan du logement, numéroter ouvertures et angles morts','Pour chaque ouverture : ligne d\'arrêt (appuis) et ligne d\'agression (vu de l\'intérieur)']},
+        {titre:'Ouverture d\'angle', duree:8, items:['Porte ouverte, découverte progressive, 5 secteurs successifs, pas glissé','Position de contact maintenue tout du long · les appuis ne dépassent pas la ligne d\'arrêt','10 reps par ouverture. Variante à genou en compartiment étroit']},
+        {titre:'Se poster', duree:6, items:['Chercher le point offrant secteur d\'observation + protection + usage de l\'arme','S\'y porter en pas glissé, observer, tenir 10 s. 5 reps par pièce','⚠ La fonction d\'APPUI (dispositif à 2) reste hors périmètre solo — seule la lecture du terrain s\'entretient seul']},
+        {titre:'Triangle d\'agression et volume', duree:6, items:['Mesurer et réduire le temps d\'exposition dans le triangle — ne jamais y stationner','Prise en compte du volume : du général au particulier, du plus près au plus loin, 3 axes (médian/bas/haut)']},
+      ],
+      club:[
+        {titre:'Séances S9 (×1-2), 50 cps', items:['10 cps DA à froid','20 cps appui vertical, référence main, alternance des côtés','20 cps alternance debout/genou au top, 5 par position']},
+        {titre:'Unité — validation', items:['Faire contrôler une ouverture d\'angle par un IP/moniteur avant fin de phase']},
+        {titre:'Auto-contrôle', items:['Se filmer depuis l\'intérieur de la pièce (téléphone au sol)']},
+      ],
+      focus:'Découvrir sans se découvrir — la vitesse s\'adapte au compartiment, pas au chrono.',
+      mesure:'Secteurs/angle · conformité ligne d\'arrêt (binaire) · temps ligne d\'arrêt → poste tenu · exposition triangle · axes bas/haut pris en compte (O/N).'},
+    {id:10, phase:3, titre:'Attitudes, transitions, déplacement en tirant', lede:"L'attitude suit la menace, et rien d'autre.",
+      domicile:[
+        {titre:'Les cinq attitudes', duree:7, items:['Attente/abordage/contact/contact rapproché/contact feu, au hasard','30 transitions — index le long de la carcasse tant que la décision de tirer n\'est pas prise','Code couleur : jaune (aucune menace), orange (présumée), rouge (identifiée), rouge feu (agression actuelle)']},
+        {titre:'Transitions chronométrées', duree:7, items:['Étui → contact < 1,0 s, 15 reps','Contact → contact feu, impact 4 m < 0,8 s, 15 reps','Contact → contact rapproché, impact 1 m < 1,0 s, 10 reps']},
+        {titre:'Déplacement en tirant', duree:6, items:['Pas glissé lent, 1 presse tous les 2 pas, avant/arrière/latéral','Reste à sec — munition réelle seulement sur parcours tactique sous directeur de tir']},
+        {titre:'Entretien fin de séance', items:['5 rechargement rapide + 5 tactique (annoncer lequel avant) · 5 ICCP · 5 décrochage haute/basse']},
+      ],
+      club:[
+        {titre:'Séances S10 (×1-2), 50 cps', items:['10 cps DA à froid','20 cps "se déplacer, se stabiliser, tirer" si autorisé, sinon contact→contact feu au top','20 cps SA groupements']},
+        {titre:'Côté réactif', items:['10 cps posés seule à 10-15 m si aucune gêne depuis S7, aucun chrono']},
+      ],
+      focus:'L\'arme suit la décision, jamais l\'inverse.',
+      mesure:'Les trois temps de transition · taux de conformité index hors pontet sur 30 transitions filmées.'},
+    {id:11, phase:3, titre:'Lampe et faible luminosité', lede:'La lampe sert d\'abord à identifier. Une arme ne se pointe que sur un objectif identifié et isolé.',
+      domicile:[
+        {titre:'Les trois tenues à la main', duree:8, items:['Harries (charge le poignet réactif) · FBI (dissocie la source, tenue par défaut) · Poucier (rapide, moins stable)','10 presses par tenue, carte à 4 m, pièce obscure — comparer les groupes']},
+        {titre:'Discipline lumineuse', duree:7, items:['Éclairer bref (<1 s) → identifier → éteindre → se décaler, 15 reps','Jamais éclairer depuis la position tenue, jamais balayer en continu, préserver la vision nocturne']},
+        {titre:'Identifier puis décider', duree:5, items:['5 cartes dont plusieurs "non-menace" — éclairer, identifier, décider','Objectif zéro erreur d\'identification — une erreur annule la série']},
+        {titre:'Adaptation kyste', items:['Harries limité à 5 reps de contrôle · tenue par défaut FBI · gêne = abandon sans discussion']},
+      ],
+      club:[
+        {titre:'Si créneau faible luminosité, 50 cps', items:['10 cps DA à froid en lumière normale','20 cps à la lampe (FBI puis Harries, 10 chacune)','20 cps en éclairage réduit sans lampe — mesurer la perte de groupe']},
+        {titre:'À défaut — séance standard', items:['10 cps DA à froid · 20 cps visée guidon seule · 20 cps SA groupements']},
+      ],
+      focus:'On n\'éclaire pas ce qu\'on ne veut pas montrer — et on ne pointe que ce qu\'on a identifié.',
+      mesure:'Temps allumage → identification · taux d\'erreur (objectif 0%) · écart de groupe FBI/Harries.'},
+    {id:12, phase:3, titre:'Verbalisation, sommations, séquence post-engagement, tests', lede:'La voix fait partie de l\'arme. La séquence ne finit pas au départ du coup.',
+      domicile:[
+        {titre:'Verbalisation', duree:6, items:['À voix haute, réellement. « Gendarmerie ! » · « Ne bougez plus ! » · « Montrez-moi vos mains ! » · « À genoux ! » · « Ne vous retournez pas ! »','3×10 ordres en position de contact — la voix ne dégrade ni le grip, ni la visée, ni la respiration']},
+        {titre:'Sommations', duree:6, items:['Cadre L.435-1 : « Halte gendarmerie » puis « Halte ou je fais feu »','ZDHS : « Halte » puis « Dernière sommation : halte ou je fais feu » (+ chien : « ...attention au chien ! »)','Aucune sommation exigée face à une atteinte à la vie/intégrité, ni en légitime défense','10 reps chronométrées — l\'intelligibilité prime sur la vitesse']},
+        {titre:'Séquence complète AMER-PARA-VEP', duree:8, items:['AMER : Atteinte/Menace ? Environnement propice ? Ultime Recours ?','PARA : Position/prise en main, Acquisition, Respiration, Action du doigt','VEP : Vérification (effet du tir) · Environnement (balayage puis tour d\'horizon, arme dans l\'axe) · Protection (auto-palpation)','10 reps complètes']},
+        {titre:'Vendredi — tests laser Phase 3', items:['Remplir le tableau des tests étalons, aucun nouveau chrono']},
+      ],
+      club:[
+        {titre:'Séance test dédiée, 50 cps', items:['10 cps DA à froid → groupe (comparer S1/S4/S8/S12)','10 cps SA → groupe','10 cps à genou → groupe (comparer S6/S8)','10 cps en appui, référence main → groupe (comparer S9)','10 cps chargeurs garnis en aveugle, VEP complète après chaque séquence']},
+        {titre:'Bilan de cycle', items:['Identifier les deux compétences les plus faibles sur 12 semaines — elles ouvrent le cycle suivant en Bloc 1']},
+      ],
+      focus:'Le tir n\'est ni le début ni la fin de la séquence.',
+      mesure:'Tests étalons Phase 3 (voir Bilan > Tests) + bilan des trois carnets.'},
+  ],
+  tests_phase2: [
+    {test:'10 cps SA à 25 m — groupe (cm)', objectif:'−15 %'},
+    {test:'10 cps DA à froid 25 m — groupe (cm)', objectif:'−15 %'},
+    {test:'10 cps à genou 25 m — groupe (cm)', objectif:'≤ debout + 20 %'},
+    {test:'Dégainé laser 4 m — moy. 5 reps', objectif:'< 1,5 s'},
+    {test:'Séquence 1+1 laser — moy. 10 reps', objectif:'< 2,2 s'},
+    {test:'ICCP acte réflexe — bip → prêt', objectif:'< 2,0 s'},
+    {test:'Acte réfléchi — double alimentation', objectif:'< 6,0 s'},
+    {test:'Debout → un genou → impact carte', objectif:'< 2,0 s'},
+    {test:'Arme à l\'étui → impact carte 3 m', objectif:'< 1,2 s'},
+    {test:'3 cartes 0-5 m — 1 impact chacune', objectif:'< 3,0 s'},
+    {test:'Rechargement rapide — culasse à culasse', objectif:'< 3,0 s'},
+    {test:'Rechargement tactique à couvert', objectif:'arme utilisable en continu'},
+    {test:'Incidents résolus sans regarder l\'arme', objectif:'100 %'},
+  ],
+  tests_phase3: [
+    {test:'10 cps DA à froid 25 m — groupe (cm)', objectif:'maintenu ou −10 %'},
+    {test:'10 cps SA 25 m — groupe (cm)', objectif:'maintenu ou −10 %'},
+    {test:'10 cps en appui, référence main — groupe (cm)', objectif:'≤ groupe debout'},
+    {test:'Arme à l\'étui → contact', objectif:'< 1,0 s'},
+    {test:'Contact → contact feu, impact 4 m', objectif:'< 0,8 s'},
+    {test:'Contact → rétention, impact 1 m', objectif:'< 1,0 s'},
+    {test:'Ouverture d\'angle — secteurs/conformité ligne d\'arrêt', objectif:'5 secteurs / 100 %'},
+    {test:'Ligne d\'arrêt → poste tenu', objectif:'< 4,0 s'},
+    {test:'Lampe — identification correcte', objectif:'< 2,0 s / 0 % erreur'},
+    {test:'Sommations intelligibles', objectif:'2,5-4,0 s'},
+    {test:'VEP complète après séquence', objectif:'< 6,0 s'},
+    {test:'ICCP acte réflexe — maintien S8', objectif:'< 2,0 s'},
+  ],
+  conformites_binaires: ["Index hors pontet tant que la décision de tirer n'est pas prise", "Appuis en deçà de la ligne d'arrêt pendant toute ouverture d'angle", "Main réactive jamais devant le canon en contact rapproché — un chrono atteint avec une non-conformité est un chrono nul"],
+};
+
+// ══ v4.20 (chantier « Ops », 05/09) — DOMAINE STG (SAUVETAGE TACTIQUE) ══════════════════════
+// Source : Sauvetage Tactique — Programme de maintien, TCCC & casuistique civile. Cycle 4 semaines
+// renouvelable. Périmètre : reconnaissance et qualité de l'alerte pour les actes médicaux (décompression
+// à l'aiguille) — jamais l'exécution hors habilitation.
+const STG_DATA = {
+  meta: {
+    nom: 'Sauvetage Tactique — maintien TCCC & casuistique civile',
+    version: '1.0',
+    perimetre: "Le geste statistiquement le plus probable en carrière est la RCP/DAE, pas le garrot — les deux logiques (TCCC trauma pénétrant, casuistique civile majoritairement médicale) sont couvertes et ne s'opposent pas.",
+  },
+  gestes: [
+    {id:1, titre:'MARCH — séquence et boucle de réévaluation', resume:'M Massive Hemorrhage (garrot/packing/israélien, exsanguination 2-3 min sur fémorale) · A Airway · R Respiration (pansement occlusif) · C Circulation (choc AVPU/pouls/TRC/peau) · H Hypothermia. Boucle non linéaire : recommencer depuis M après chaque geste, toutes les 5-10 min.', standards:[], erreurs:[]},
+    {id:2, titre:'Geste 1 — Tourniquet (garrot)', resume:"Scénario A (main dominante) : identifier → dégainer → high & tight (5-7 cm au-dessus, jonction) → serrer à zéro jeu → windlass jusqu'à arrêt du flux (pas un nombre de tours) → verrouiller → marquer l'heure → annoncer. Scénario B (main non-dominante) : le plus négligé à l'entraînement, le plus probable en réel.",
+      standards:[{standard:'Garrot auto, main dominante',condition:'Repos, yeux ouverts',valeur:'< 25 s'},{standard:'Garrot auto, opérationnel',condition:'Tenue complète, couché',valeur:'< 30 s'},{standard:'Windlass non verrouillé',condition:'Tout scénario',valeur:'0 occurrence admissible'},{standard:'Garrot auto, main non-dom.',condition:'Repos',valeur:'< 35 s'},{standard:'Garrot auto, main non-dom.',condition:'Post-effort FC > 140',valeur:'< 45 s'},{standard:'Garrot auto, main non-dom.',condition:'Nuit / yeux fermés',valeur:'< 45 s'}],
+      erreurs:['Garrot trop bas (insuffisant sur cuisse charnue)','Serrage à un nombre de tours plutôt qu\'à l\'arrêt du flux','Windlass non verrouillé avant de relâcher la sangle','Heure non notée','Pose sur vêtement épais sans exposer la peau','Scénario B jamais entraîné']},
+    {id:3, titre:'Geste 2 — Wound Packing (packing hémostatique)', resume:"Plaies jonctionnelles où le garrot est anatomiquement inapplicable. Exposer → retirer le caillot instable → localiser la source en profondeur → packer depuis le fond en entonnoir → pression directe ferme 3 min chrono → pansement compressif externe → réévaluer à 30 s.",
+      standards:[], erreurs:['Packer depuis la surface (source profonde jamais comprimée)','Relâcher à 2 min 30 pour vérifier (caillot non stable, tout reprend)','Superposer de la gaze sur un packing insuffisant plutôt que recommencer','Oublier le pansement compressif externe']},
+    {id:4, titre:'Geste 3 — Pansement compressif type israélien', resume:"Plaies membres sans section artérielle, scalp, compression secondaire sur packing. Barre de pression = élément critique (levier ×3-5). Membre : centrer, 1er tour ferme, activer la barre (180°), 2-3 tours, fermer. Tête/scalp : figure-8 si temporal/occipital.",
+      standards:[{standard:'Pansement membre complet',condition:'Repos',valeur:'< 60 s'},{standard:'Pansement scalp complet',condition:'Repos',valeur:'< 90 s'},{standard:'Barre de pression activée',condition:'Tout scénario',valeur:'100 % des poses'}],
+      erreurs:['Ne pas activer la barre de pression (erreur la plus fréquente, même chez les formateurs)','Commencer à bander avant de centrer la compresse','Poser sur saignement artériel pulsatile (garrot indiqué)','Viscères exposés : couvrir sans comprimer']},
+    {id:5, titre:'Geste 4 — Pansement thoracique occlusif', resume:"Pneumothorax ouvert (plaie soufflante). Poser la paume gantée immédiatement → sécher la peau → appliquer à l'expiration → valve commerciale (4 bords collés) ou technique 3 côtés → traiter l'orifice postérieur si traversante → surveiller en continu (évolution vers tension).",
+      standards:[{standard:'Pose pansement occlusif',condition:'Peau exposée et sèche',valeur:'< 60 s'},{standard:'Réévaluation post-pose',condition:'Continue',valeur:'toutes les 5 min minimum'}],
+      erreurs:['Appliquer sur peau humide','Ne pas traiter l\'orifice postérieur d\'une plaie traversante','3 côtés avec le côté libre mal orienté','Pas de surveillance post-pose','Confondre pansement occlusif (R) et compressif (M) de MARCH']},
+    {id:6, titre:'Geste 5 — Pneumothorax sous tension : reconnaissance et alerte', resume:"⚠ SIGNALEMENT MÉDICAL AVANT TOUT GESTE — la décompression à l'aiguille est un acte médical, hors habilitation. Compétence entretenue : reconnaissance rapide + qualité de l'alerte (mécanisme, gestes déjà réalisés, signes constatés, paramètres, délai d'évacuation, demande explicite). Signes : détresse respi qui s'aggrave, trachée déviée (vers le côté SAIN), veines cervicales distendues, hypotension+tachycardie+agitation, asymétrie d'ampliation. Technique (site 4e-5e EIC ligne axillaire antérieure privilégié) documentée pour connaissance, jamais exécutée sans prescription/habilitation.",
+      standards:[{standard:'Reconnaissance + alerte',condition:'Signes constatés → contenu transmis',valeur:'< 30 s'},{standard:'Décompression complète (si habilité)',condition:'Repérage + insertion + fixation',valeur:'< 60 s'},{standard:'Vérification du côté',condition:'Avant toute insertion',valeur:'systématique'}],
+      erreurs:['Différer l\'alerte médicale pour évaluer plus longtemps','Confondre hémothorax et pneumothorax','Ne pas vérifier le côté (déviation trachéale vers le côté SAIN)']},
+    {id:7, titre:'Geste 6 — Libération des voies aériennes', resume:"Priorité A de MARCH, uniquement après contrôle de toute hémorragie massive. Inclinaison tête-menton (hors trauma cervical) ou subluxation mandibulaire (trauma suspecté) → désobstruction si visible → canule oro-pharyngée si inconscient sans réflexe nauséeux → canule naso-pharyngée si formé → position latérale de sécurité.",
+      standards:[{standard:'Ouverture VAS',condition:'Patient inconscient',valeur:'< 10 s'},{standard:'Pose canule',condition:'Si indiquée',valeur:'< 30 s'},{standard:'Position latérale',condition:'Patient stable',valeur:'< 20 s'}],
+      erreurs:['Inclinaison tête sur trauma cervical suspecté','Doigts sous les parties molles du cou','Balayage aveugle en profondeur','Guedel maintenue malgré réflexe nauséeux','NPA sans lubrification']},
+    {id:8, titre:'Geste 7 — Arrêt cardiaque : RCP et défibrillation', resume:"Le geste statistiquement le plus probable de toute la carrière — et qui se dégrade le plus vite sans répétition. Sécurité → évaluation 10 s max (attention aux gasps agoniques) → alerter/DAE → compressions immédiates (5-6 cm, 100-120/min, relâchement complet) → ventilations 30:2 si formé → DAE dès arrivée sans interrompre les compressions → reprendre immédiatement après le choc → relais toutes les 2 min.",
+      standards:[{standard:'Reconnaissance ACR',condition:'Conscience + respiration',valeur:'< 10 s'},{standard:'Délai avant 1re compression',condition:'Depuis reconnaissance',valeur:'< 10 s'},{standard:'Profondeur',condition:'Adulte',valeur:'5-6 cm'},{standard:'Fréquence',condition:'Toutes catégories',valeur:'100-120/min'},{standard:'Interruption pour le DAE',condition:'Pose des électrodes',valeur:'compressions maintenues'},{standard:'Reprise après choc',condition:'Post-défibrillation',valeur:'< 5 s'}],
+      erreurs:['Ne pas reconnaître les gasps agoniques et différer la RCP','Compressions trop superficielles','Relâchement incomplet','Interruptions trop longues/nombreuses','S\'écarter pendant la pose des électrodes','Vérifier le pouls après le choc au lieu de reprendre immédiatement','Ne pas relayer toutes les 2 min']},
+    {id:9, titre:'Geste 8 — Traumatologie civile courante', resume:"Casuistique gendarmerie réelle (AVP, rixes, chutes, incendies, accidents domestiques), statistiquement bien plus fréquente que le trauma balistique. 8.1 Brûlures (refroidir précocement, règle des 9 de Wallace, jamais corps gras) · 8.2 Fractures/immobilisation (pouls-sensibilité-motricité avant/après, jamais réaligner sauf avis médical, fémur=attelle de traction, bassin=ceinture pelvienne sur grands trochanters) · 8.3 Plaies/projections oculaires (rinçage 15-20 min, coque rigide sans compression sur globe perforé) · 8.4 Syndrome d'écrasement (danger = la LEVÉE de compression, alerter le régulateur AVANT de dégager, jamais de garrot sur un membre écrasé sauf hémorragie massive avérée).", standards:[], erreurs:['Brûlure : refroidir trop longtemps une grande surface (hypothermie induite)','Brûlure : corps gras, pommade, glace directe','Fracture : ne pas contrôler le pouls avant ET après immobilisation','Bassin : ceinture posée sur les crêtes iliaques au lieu des grands trochanters','Oculaire : comprimer un globe perforé','Écrasement : dégager sans avoir alerté et sans anticiper la dégradation']},
+    {id:10, titre:'Geste 9 — Prévention de l\'hypothermie', resume:"La triade létale (hypothermie/acidose/coagulopathie) s'installe même en environnement tempéré — prévenir est toujours plus efficace que traiter. Isoler du sol EN PREMIER → retirer vêtements mouillés si possible → couvrir (face réfléchissante vers le blessé) → couvrir la tête → protéger du vent/pluie → position horizontale → surveiller (disparition des tremblements = aggravation).",
+      standards:[{standard:'Isolation sol + couverture',condition:'Tout blessé non-valide',valeur:'< 60 s'},{standard:'Tête couverte',condition:'Systématique',valeur:'100 % des blessés'},{standard:'Position horizontale',condition:'Hors contre-indication',valeur:'maintenue'}],
+      erreurs:['Se concentrer sur la couverture supérieure en oubliant l\'isolation du sol','Couverture de survie posée à l\'envers','Oublier la tête','Laisser le blessé assis par commodité']},
+    {id:11, titre:'Geste 10 — Évaluation du choc hémorragique', resume:"Pas un geste unique — une compétence d'évaluation structurée et de surveillance évolutive. AVPU · pouls radial (présence + qualité) · TRC (<2s correct, >3s hypoperfusion) · couleur/température cutanée · réévaluer tous les gestes hémostatiques · position horizontale membres surélevés sauf contre-indication. Stades : compensé → intermédiaire → décompensé.", standards:[], erreurs:['Se fier à la seule FC (sportifs, bradycardisants)','TRC faussé par le froid ambiant','Un patient qui parle n\'est pas un patient stable','Passage d\'un stade à l\'autre parfois rapide — réévaluer toutes les 5 min']},
+    {id:12, titre:'Geste 11 — Extraction et Care Under Fire', resume:"Règle absolue : aucun soin sous le feu direct (exception : garrot en 2-3 s sans exposition supplémentaire). Supprimer/réduire la menace → évaluer la faisabilité de l'extraction → extraire vers le couvert le plus proche (drag col/gilet) → à couvert seulement : débuter le bilan MARCH complet → annoncer la prise en charge au blessé conscient.",
+      standards:[{standard:'Extraction drag 15 m',condition:'Sol, vers couvert désigné',valeur:'sans interruption'},{standard:'Prise initiale col/gilet',condition:'Tout scénario',valeur:'< 3 s'},{standard:'Arme du blessé récupérée',condition:'Tout scénario',valeur:'100 % des extractions'}],
+      erreurs:['Commencer des soins sous le feu','Se lever quand la position basse suffit','Traction par un membre blessé/fracturé','Prise trop lâche sur le col','Laisser l\'arme du blessé sur zone','Débuter le bilan avant d\'être effectivement à couvert']},
+  ],
+  bilan_transmission: {
+    canal_principal: "Le canal réel en métropole est le 15 (SAMU), via le CORG ou en direct — c'est celui-là qu'il faut entraîner en priorité. Le format 9 lignes OTAN ne concerne que les contextes de coopération militaire ou OPEX.",
+    etapes_15: ['Identification (qui, unité, indicatif, rappel)','Localisation précise (adresse, accès, GPS si non adressé)','Bilan circonstanciel (nature, mécanisme, heure, nb victimes, risques évolutifs)','Bilan d\'urgence vitale (AVPU, respiration, circulation)','Bilan lésionnel (tête aux pieds)','Éléments complémentaires (âge, antécédents, allergies)','Gestes effectués (garrot : localisation ET heure ; RCP/DAE : heure, nb chocs)','Évolution (amélioration/stabilité/aggravation depuis le 1er bilan)','Demande explicite (formulée, pas seulement décrite)'],
+  },
+  gestion_kit: {
+    regles: ["Emplacement identique pour tous les agents de l'unité", "Garrot accessible d'une seule main, à l'extérieur de la pochette", "Emplacement identique à l'entraînement et en service, y compris au tir", "Système d'ouverture rapide, testable avec des gants", "Kit individuel destiné à son porteur — on soigne le blessé avec le kit du blessé"],
+    controle: [{freq:'Prise de service', quoi:'Présence kit/garrot, intégrité fermeture — visuel, quelques secondes'},{freq:'Mensuelle', quoi:'Ouverture complète, dates de péremption, état du garrot — registre daté et signé'},{freq:'Après chaque usage', quoi:'Reconstitution immédiate et complète'},{freq:'Après exposition', quoi:'Chaleur/humidité/immersion : contrôler l\'adhésif des pansements occlusifs'}],
+  },
+  cycle: {
+    quotidien: {duree_min:5, items:[
+      {exercice:'Garrot auto — main dominante, yeux ouverts', standard:'< 25 s'},
+      {exercice:'Garrot auto — main non-dominante', standard:'< 40 s'},
+      {exercice:'Garrot auto — yeux fermés', standard:'< 30 s'},
+    ]},
+    post_seance: {duree_min:'10-12', frequence:'2×/semaine', lede:'Greffe immédiate post-conditionnement physique, sans récupération — FC encore élevée.', items:[
+      '1 garrot auto chronométré, temps reporté au journal',
+      '1 packing simulé (gaze Z-fold), pression 3 min chronométrées',
+      '1 israélien, barre de pression activée — vérifier au toucher',
+      '1 séquence RCP de 2 min sur mannequin si accessible',
+      '1 repérage de site de décompression à blanc (palpation seule, sans matériel), en énonçant à voix haute le contenu de l\'alerte médicale',
+    ]},
+    semaines: [
+      {sem:1, nom:'Auto-sauvetage', scenario:'Garrot main non-dominante, ramper 10 m, isolation du sol et couverture.', contrainte:'Sol, tenue complète, départ couché'},
+      {sem:2, nom:'ACR civil', scenario:'Reconnaissance, alerte, RCP 4 min minimum, DAE simulé, relais, bilan au 15 oral.', contrainte:'Sol dur, chrono, qualité mesurée'},
+      {sem:3, nom:'AVP', scenario:'Bilan circonstanciel, hémorragie + fracture + brûlure, immobilisation, bilan lésionnel complet, transmission structurée.', contrainte:'Multi-lésions, timer global'},
+      {sem:4, nom:'Nuit', scenario:'Effort 3 min, puis scénario libre au choix, bilan radio simulé et fiche remplie de mémoire.', contrainte:'Yeux bandés ou lumière minimale + gants'},
+    ],
+    mensuel: {duree_min:25, lede:'Effort intense 4 min → scénario multi-victimes mêlant trauma et casuistique civile → transmission structurée au 15 → fiche remplie de mémoire → débriefing (temps, erreurs, standards atteints ou non). Filmer si possible.'},
+  },
+  standards_globaux: [
+    {geste:'Garrot auto, main dominante', condition:'Repos', standard:'< 25 s', degrade:'< 30 s'},
+    {geste:'Garrot auto, main non-dom.', condition:'Repos', standard:'< 35 s', degrade:'< 45 s'},
+    {geste:'Garrot auto', condition:'Post-effort / nuit', standard:'< 35 s', degrade:'< 45 s'},
+    {geste:'Wound packing complet', condition:'Post-effort', standard:'irréprochable', degrade:'—'},
+    {geste:'Israélien membre', condition:'Repos', standard:'< 60 s', degrade:'< 75 s'},
+    {geste:'Israélien scalp', condition:'Repos', standard:'< 90 s', degrade:'< 120 s'},
+    {geste:'Pansement thoracique', condition:'Peau sèche', standard:'< 60 s', degrade:'< 90 s'},
+    {geste:'Reconnaissance PNO tension', condition:'+ contenu de l\'alerte', standard:'< 30 s', degrade:'—'},
+    {geste:'Décompression à l\'aiguille', condition:'Repérage + insertion + fixation (si habilité)', standard:'< 60 s', degrade:'< 90 s'},
+    {geste:'Ouverture VAS + canule', condition:'Patient inconscient', standard:'< 30 s', degrade:'< 45 s'},
+    {geste:'Reconnaissance ACR', condition:'Conscience + respiration', standard:'< 10 s', degrade:'—'},
+    {geste:'1re compression thoracique', condition:'Depuis reconnaissance', standard:'< 10 s', degrade:'—'},
+    {geste:'Qualité RCP', condition:'Profondeur/fréquence', standard:'5-6 cm / 100-120', degrade:'—'},
+    {geste:'Immobilisation membre', condition:'Contrôle distal avant/après', standard:'systématique', degrade:'—'},
+    {geste:'Refroidissement brûlure', condition:'Délai de mise en route', standard:'immédiat', degrade:'—'},
+    {geste:'Couverture de survie', condition:'Blessé non-valide', standard:'< 60 s', degrade:'< 90 s'},
+    {geste:'Bilan structuré au 15', condition:'Oral, de mémoire', standard:'9 étapes complètes', degrade:'< 90 s'},
+    {geste:'Extraction drag 15 m', condition:'Sol vers couvert', standard:'sans interruption', degrade:'—'},
+    {geste:'Contrôle mensuel du kit', condition:'Registre signé', standard:'12/an', degrade:'—'},
+  ],
+};
+
 function loadMoteurState(){
   const stored = load('moteur_state');
   const base = {
@@ -5656,7 +5896,10 @@ function loadMoteurState(){
     focusManuel: 'auto',
     // v4.14 — sélecteur Seuil (modalité + semaine de progression), demandé par J le 04/09.
     seuilModalite: 'velo',
-    seuilSemaine: 1
+    seuilSemaine: 1,
+    // v4.20 — domaines Tir (S5-S12) et STG (cycle 4 semaines), chantier « Ops » du 05/09.
+    tirSemaine: 5,
+    stgSemaine: 1
   };
   return stored ? Object.assign(base, stored) : base;
 }
@@ -5708,9 +5951,9 @@ function moteurEquipment(){
 // et c'est exactement pour cette raison que la copie du projet (moteur v4.1) et celle du
 // téléphone (v4.1 + écran Accueil + radar groupé) ont divergé sans que personne s'en aperçoive.
 // Toute évolution incrémente ces trois constantes.
-const APP_VERSION = 'moteur v4.16';
-const APP_VERSION_DATE = '04/09/2026';
-const APP_VERSION_NOTE = "v4.16 (04/09) — VÉRIFICATION D'UN COMPTE RENDU DE SESSION COWORK CONNECTÉE À L'ORDINATEUR DE J (dernière modif fin août, jamais rejointe la lignée du projet — même défaut que les deux app v4.10 divergents du cycle 21). Revu constat par constat contre v4.15 avant de rien croire sur parole. TROIS PROBLÈMES RÉELS CONFIRMÉS ET CORRIGÉS, DEUX AUTRES CLARIFIÉS. ① `sport-pwa-manifest.json` — toujours daté du 23/07, jamais touché depuis : nom/branding périmés (« MMA × Endurance », description « 16 semaines »), corrigés en BE READY. Référence à deux icônes (icon-192.png, icon-512.png) qui N'EXISTENT PAS dans le projet — pas corrigé ici, ça suppose un choix de design que J n'a pas encore fait (icône actuelle « BR sur fond marine » explicitely pas validée). ② `sport-pwa-sw.js` — même chose, daté du 23/07 : le fallback offline servait `index2.html`, un fichier qui n'existe nulle part dans ce projet. Retiré, remplacé par `index.html` seul ; cache renommé (bereadysw-v7) pour forcer la reprise chez les appareils qui ont l'ancien SW en cache. ③ `renderSeanceGuyane()` — la fonction contenant le bug « S9/9 plafonné » signalé (S.week calculé une fois depuis CORRECT_START='2026-06-09' et plafonné à 9) : VÉRIFIÉ MORT, pas un bug actif — un garde de redirection (`if(S.tab==='seanceG'){S.tab='seance';}`) renvoyait déjà vers le vrai écran séance, et aucun bouton de la barre de nav n'y menait. Supprimée (~280 lignes) plutôt que rustinée : l'écran réel (onglet Séance) utilise depuis longtemps le système de cycle 3:1 par gabarit (moteurCycleInfo), pas ce vieux modèle à 9 semaines fixes. ④ 🔴 EN CREUSANT CE MÊME BUG, EN TROUVÉ UN VRAI, TOUJOURS VIVANT AILLEURS : `computeFlags()` (l'analyse automatique du Bilan) comparait la RPE moyenne de la semaine à un « prescrit » lu via ce même S.week plafonné à 9 → BLOCS[4] (« DÉLOAD & TESTS », plan abandonné) EN PERMANENCE depuis début septembre, donnant toujours le même seuil par défaut (8) sans lien avec la phase réelle du cycle (léger/modéré/pic/déload). Corrigé : lit désormais moteurCycleInfo() comme le reste du moteur, avec un repère RPE par phase (7/8/9/6) aligné sur les protocoles déjà affichés à l'écran. ⑤ Écran Accueil et radar 5 familles zoomable (revendiqués comme « ajoutés » par la session Cowork) : CONFIRMÉS DÉJÀ PRÉSENTS dans cette lignée depuis fin août (chantiers 14 et 57/65) — la session connectée travaillait sur une copie bien plus ancienne du fichier, d'avant cette reconstruction. **Testé** : `node --check`, JSON des trois blocs validé, Chromium headless maison + Lyon (parcours complet), écran Accueil et Bilan vérifiés sans erreur console. v4.15 (04/09) — TROIS CORRECTIFS DEMANDÉS PAR J SUR LA LIVRAISON v4.14, LE JOUR MÊME. ① Le sélecteur de séance affichait le label du jour DEVANT CHAQUE séance du jour (« J2 … Z2 … J2 … Portage 2 »), pas une fois pour le jour : groupé, un seul « J2 » devant les deux boutons (idem J4, J5). ② Le sélecteur Seuil affichait « Semaine S1 » etc. dans le menu déroulant : simplifié en « S1 ». ③ Aucun changement fonctionnel côté v4.14, seulement ces deux détails d'affichage. v4.14 (04/09) — TROIS DEMANDES DE J (backlog v6), traitées dans la même session que la séance VMA du 04/09 qui a justifié la deuxième. ① FUSION DES LABELS JOUR/SOIR dans le sélecteur de séance : « J5 » ne se sépare plus en « J5 » et « J5 soir » — même chose pour J2 (Z2/Portage 2) et J4 (Z2 longue/Portage 1). Purement un label d'affichage (`M_JOURS`), aucune logique de séquencement n'y était attachée — vérifié avant de toucher au code. ② SÉLECTEUR SEUIL : la carte de séance affichait une seule note statique « Progression S1→S8 » à interpréter soi-même. Elle porte désormais deux menus — modalité (vélo/course) et semaine (S1 à S8) — et calcule elle-même le format réel (ex. « S3 · vélo · (3×) 4-12-4 min »), à partir de la progression déjà écrite au programme §7 bis (protocole Vandel). En modalité course, un rappel s'affiche : ces durées cadrent la structure, pas l'allure — c'est très exactement la leçon de la séance supra-seuil du 04/09 (programme v4_82), où viser un chiffre de vitesse fixe a produit un pic FC à 169. ③ Z2 : PLUS DE CHOIX DE DURÉE dans le module « Configurer la Z2 », qui existait déjà (modalité → durée → format, chips) — le sélecteur de durée n'était pas absent, seulement clairsemé : Z2 courte sautait de 30 à 45 min sans rien entre les deux (programme documente pourtant une plage continue 30-45), Z2 longue ne portait que les quatre paliers 45/60/75/90. Élargi à [15,20,25,30,35,40,45,50,60] et [30,45,60,75,90,105,120] respectivement — le pas de 15 min de la progression longue est conservé, une option est ajoutée en dessous et deux au-dessus. ⚠ Base de départ, à ajuster avec J si la granularité ou les bornes ne correspondent pas à l'usage réel — c'était explicitement resté une question ouverte dans les Entrées avant ce chantier. Le réglage Seuil (① ci-dessus), lui, est un vrai nouvel écran : il n'existait aucun sélecteur avant, seulement une note statique à interpréter soi-même. v4.13 (03/09) — DEUX CHANTIERS, ET UNE DÉCOUVERTE ENTRE LES DEUX : UN AUDIT V4 ENTIER (cycle 15, 31/08) EXISTAIT DANS LE PROJET SANS AVOIR JAMAIS ÉTÉ APPLIQUÉ. ① CHANTIER 65 (clôture le backlog audit v3, 55-65) : deux qualités ajoutées au catalogue (19 → 21). « Rotation contrôlée » — russian twist, bridge rotation, rotation au GHD (et un 4ᵉ cas trouvé en vérifiant chaque fiche : la rotation élastique en fente bulgare) portaient « puissance rotationnelle » alors que leur propre note dit l'inverse (« contrôlé, jamais en balistique », « tempo LENT, pas explosif ») — un tag qui contredit sa fiche fausse le compteur de l'axe « Rotation », qui mesure un lancer EXPLOSIF. Vérifié sans conséquence : l'AGT (med ball / chop-lift, présent chaque semaine) reste le vrai vecteur. « Santé / protection articulaire » — les 8 fiches sans AUCUNE qualité (face pull, rotation externe épaule, renfo poignet G, leg extension, élévations latérales, curl biceps BFR, extension triceps BFR, butterfly) sont rattachées à une qualité réelle : chacune est choisie pour épargner une articulation, chacune le dit dans sa note. ② AUDIT V4 RETROUVÉ ET RÉAPPLIQUÉ (chantiers 67, 68/71, 73 — 69/70/72/74/75/76/77 restent à faire, backlog v5) : cet audit avait simulé la semaine à LYON (12-23/10, kit valise, ni KB ni barre) et trouvé deux séances qui NE SE RÉSOLVAIENT PAS DU TOUT sans matériel de maison — mais son app v4.10 (chantiers 67-73) a divergé sans jamais rejoindre la lignée réellement livrée (qui a produit un AUTRE v4.10, celui des « cinq décisions de J » du 01/09) : le travail a existé, daté et argumenté, sans jamais atteindre l'app en vigueur. Récupéré et réappliqué ici, revérifié par un test Lyon complet (déplacement + TRX + élastiques, zéro KB, zéro barre) : ⚠ **AVANT CE CORRECTIF, LA SÉANCE DE SEUIL ÉTAIT ENTIÈREMENT INDISPONIBLE HORS MAISON** — son unique créneau portait la catégorie `cardio`, qui n'existe dans AUCUNE taxonomie (la vraie clé est `aerobie`) : sans vélo NI kettlebell (le seul substitut déclaré), le repli de dernier recours cherchait une catégorie morte et ne trouvait jamais rien. Corrigé : la séance se résout maintenant en Step-ups. Même défaut, sans conséquence réelle car les créneaux sont optionnels, sur le rappel de puissance de FB1/FB2 (`puissance_priming` → `alactique_finisher`) et le T2 de VO2max/T1-T2 (`work_capacity` → `work_capacity_opérateur`, la vraie clé du catalogue). ⚠ **FB1 SE BLOQUAIT ENTIÈREMENT À LYON** à cause d'un pur effet d'ordre de saisie : chin-ups (tirage vertical, servi EN PREMIER dans le template) et row bûcheron (tirage horizontal, seul contrepoids chargé de la semaine, servi ENSUITE) se disputaient la MÊME ressource rare — le TRX row, seul substitut nomade des deux. Le tirage vertical la consommait avant que le tirage horizontal n'ait sa chance, et FB1 disparaissait douze jours. Corrigé par un nouveau mécanisme, des SUBSTITUTS DE CRÉNEAU (`slot.substituts`, servis avant ceux de la fiche — le créneau connaît le rôle, la fiche ne connaît que le mouvement) et une ABSENCE ASSUMÉE (`absence_acceptable` + motif : un créneau obligatoire sans AUCUNE solution réelle — pas de tirage vertical sans barre de traction, le programme le dit lui-même — s'affiche désormais grisé « ○ Absent (assumé) » plutôt que de bloquer toute la séance). Résultat vérifié : le TRX row reste réservé au tirage horizontal de FB1 ; en FB2, où rien ne le lui dispute, il bascule explicitement sur le tirage vertical. **Un genou blessé par ce même défaut, non corrigé cette fois** : le squat de FB1 (Zercher, `barre_disques`, substitut nomade `kb_goblet_front_squat` qui exige un KB absent du kit) reste bloqué à Lyon faute de repli au poids du corps — chantier 75, reporté, P2, tel quel dans l'audit récupéré. Un identifiant de matériel mort corrigé au passage (chantier 73) : `presse_jambes` n'existait dans AUCUNE fenêtre — la presse à cuisse EXISTE à la maison sous la clé `presse_cuisse` ; les deux fiches étaient invisibles partout, y compris là où l'appareil est réellement disponible. **Non-régression vérifiée par les mêmes tests que l'audit original** : la semaine maison au complet (FB1, FB2, Zercher, chin-ups, row bûcheron) s'affiche identique à avant, zéro écran d'erreur, zéro changement de comportement quand le matériel est présent. v4.12 (02/09) — LE SWING 1 BRAS EST RÉAUTORISÉ, et ça vaut mieux qu'un tag retiré. J confirme que le swing ne gêne pas l'épaule G, même à un bras à 16 kg. ① L'étiquette « épaule G » part des **trois** fiches de swing — elle ne déclenchait rien faute d'étage de délestage, elle affichait une protection inexistante. ② **Conséquence réelle : le 1 bras alterné 40/20 redevient disponible, et c'est le SEUL format de swing qui atteigne la Z2** — 144 bpm mesurés le 24/07, contre 115 pour le 2 bras en 30/30. Il était banni depuis le 05/07. C'est l'outil Z2 des fenêtres sans vélo ni tapis, **dont les deux fenêtres de décembre**. ⚠ Réserve : les 144 bpm ont été mesurés à 36-37 °C ; au frais, attendre 134-139, et monter à 20 kg avant d'allonger le ratio si la zone n'est pas atteinte. v4.11 (02/09) — ① **Row à 4 séries** (J) : « une seule sollicitation » borne la fréquence, pas le volume. Dernière marge sur le ratio poussée/tirage. ② **LE CALENDRIER DE FIN D'ANNÉE EST CONNU** (J) et entre dans la frise : **24/10 → 06/12 six semaines à la maison** (réadaptation, puis vague 3+1 complète avec déload 21-27/11) · **07-11/12 déplacement, valise + KB** · **12-27/12 maison** · **28/12-03/01 déplacement, valise + KB minimum**. Les deux fenêtres « post-fêtes » qui traînaient depuis juillet sont remplacées par des dates réelles. ⚠ Le KB change le gabarit D : contrairement à Lyon, le vecteur balistique existe, donc l'AGT n'est pas dégradée. v4.10 (01/09) — CINQ DÉCISIONS DE J, et le ratio poussée/tirage bouge enfin. ① **Militaire retiré de Portage 2** : poussée verticale 3 → 2. ② **Une seule séance de pompes, obligatoire** (Portage 1) : poussée horizontale 4 → 3, et Portage 2 redevient une séance de portage unilatéral pure. ③ **Russian twist (FB2) et dragon flag obligatoires** : avec le Pallof de FB1, les trois axes de gainage ont enfin chacun un créneau obligatoire — c'était le trou de l'audit v3. ④ **Fusion des deux fiches doublons** « Planche latérale » et « Side plank », avec G_first et le standard du ch. 12. ⑤ **Pompe claquée** documentée comme substitut d'ENTRAÎNEMENT du lancer horizontal sans med ball — jamais de TEST, et avec la réserve poignet G (réception en extension). **RATIO APRÈS CE LOT : 3 poussées horizontales + 2 verticales contre 1 tirage horizontal + 2 verticaux**, contre 4+3 vs 1+2 la veille. v4.9 (31/08) — TROIS DÉCISIONS DE J. ① **Pallof obligatoire en FB1** : l'anti-rotation était le seul des trois axes de gainage sans aucun créneau obligatoire de la semaine. ② **Une seule sollicitation de row par semaine** — rien à ajouter ni en GTG, ni en portage, ni en FB2 : la contre-proposition « row en FB2 » est écartée. Le tirage horizontal repose donc entièrement sur le créneau de FB1, et le rééquilibrage devra se faire en RETIRANT de la poussée. ③ **Pas de créneau technique pour le front squat** pour le moment : l'alerte « aucun créneau dédié » de l'écran Tests reste allumée, et c'est voulu — elle dit l'état réel. v4.8 (31/08) — AUDIT v3, LOT P1/P2 (chantiers 57, 60, 61, 63, 64). ① LE PONT ENTRE CE QUI SE NOTE ET CE QUI S'ENTRAÎNE. L'app portait deux vocabulaires de qualités qui ne se parlaient pas : 19 tags d'exercice et 18 axes de radar. L'écran Tests affiche désormais, sous chaque axe, le NOMBRE DE CRÉNEAUX de la semaine qui l'alimentent — séances + GTG + routine du matin — et signale, sous chaque épreuve, quand LE MOUVEMENT TESTÉ n'a aucun créneau. C'est ce contrôle qui fait apparaître tout seul le cas du front squat : axe « Force max BAS » au vert grâce au RDL et au Zercher, et le front squat, seul lift sous le plancher, atteignable uniquement par un sélecteur. ② VOCABULAIRE REMIS D'ÉQUERRE : 23 fiches portaient des tags qui n'existent dans aucune taxonomie (puissance, gainage, stabilité, force…) et 3 n'en portaient AUCUN — dont le row bûcheron, seul tirage horizontal de la semaine. Les mots qui désignent une méthode passent dans un champ « methodes ». ③ Le pattern fourre-tout « rotation_anti_rotation » (15 fiches) est éclaté en anti_extension / anti_rotation / rotation_produite : le moteur substitue « même pattern » en premier, une planche pouvait donc remplacer un lancer rotationnel. ④ Le sélecteur quad BFR ne ciblait aucun rôle existant : il ne s'affichait jamais. ⑤ hip_thrust porte son statut réel · chiffre d'asymétrie aligné sur le §0. v4.7 (31/08) — AUDIT v3, LOT P0 (chantier 55). ① LE SEUL TIRAGE HORIZONTAL DE LA SEMAINE ÉTAIT UN CRÉNEAU OPTIONNEL : 4 poussées horizontales et 3 verticales contre 1 tirage horizontal chargé — et le moteur SAUTE sans substitut un créneau optionnel dont l'exercice est indisponible. Rendu obligatoire, et le row (qui n'avait aucun substitut déclaré, et était classé en isolation/volume au lieu de force) est relié au Pendlay, au TRX row et à la poulie basse. ② LE MED BALL SLAM PORTAIT UNE CONTRE-INDICATION MORTE (« epaule_g_extreme », clé qu'aucun bilan ne produit) : il pouvait être proposé en AGT un jour d'épaule G douloureuse, que la doctrine écarte nommément. Reclassé épaule G, étage 1. ③ Pattern orphelin et clé de substitut en minuscule corrigés. ④ Le GTG militaire portait une consigne indexée sur « BLOC 3 (S6-S8) », découpage abandonné : réécrite sur la charge du jour. ⑤ windows_ok déclaré DÉPRÉCIÉ (jamais lu par le moteur ; 97 entrées taguées « paris », fenêtre abandonnée). v4.6 (31/08) — SOURCE UNIQUE DES DONNÉES DE SÉANCE (chantiers 49, 50, 54). ① Le moteur allait chercher format / RPE / repos / note dans les FICHES DU SPLIT abandonné le 08/08, par mot-clé sur le nom de l'exercice. La valeur était donc attachée au MOUVEMENT et non au CRÉNEAU : le Zercher, passé du volume de Bas 2 au TOP SET de FB1, affichait 2 min de repos ; le RDL, passé au HINGE LOURD de FB2, 2-3 min — les deux séries les plus lourdes de la semaine, sous-récupérées à l'écran. 75 valeurs portées dans les créneaux, repli supprimé. ② La note du split primait sur celle du catalogue : le bench affichait encore « Test officiel S9 · Objectif 80 kg × 3 », cible de juillet périmée depuis le 3RM à 91 du 08/08. Catalogue prioritaire, 21 fiches techniques transférées, héritage affiché ÉTIQUETÉ. ③ Charges de départ recalées sur le §0 : bench 70 → 88, RDL 100 → 120, farmer 20 → 30/main, sandbag 20 → 27, front squat et trap bar ajoutés. ④ DÉLOAD (09-15/09) : la règle « volume ÷2, intensité maintenue » était écrasée par le format du créneau et n'atteignait pas la carte d'exercice — elle y est désormais affichée. ⑤ Correction factuelle : la note du militaire en Portage 2 disait « isolé du row (qui reste sur Portage 1) » — il n'y a AUCUN row en Portage 1. · v4.5 (31/08) — écran Tests : bascule 5 familles / 18 qualités, liste groupée par qualité. · v4.4 (31/08) — inversion des paliers course et départ du kit valise (Lyon : gabarit F → D). · v4.3 — alignement sur programme v4_72 et manuel v4.35.";
+const APP_VERSION = 'moteur v4.21';
+const APP_VERSION_DATE = '05/09/2026';
+const APP_VERSION_NOTE = "v4.21 (05/09) — TROIS AJUSTEMENTS D'ERGONOMIE DEMANDÉS PAR J SUR LA v4.20, LE JOUR MÊME. ① GTG déplacé en PREMIER dans Routine, avant les catégories de routine (renfo obligatoire, etc.) — plus rapide à saisir en ouvrant l'onglet. ② Accueil : encadré bloc/semaine (« BLOC FORCE MAXIMALE », « Semaine 3/4 ») retiré — surcharge jugée inutile, l'info reste visible en condensé dans la barre du haut sur tous les écrans. ③ Accueil : mini radar « Batterie — vue d'ensemble » retiré — le radar complet reste disponible dans Bilan > Tests, inchangé. Aucun changement fonctionnel ailleurs. **Testé** : module, JSON, Chromium (Accueil, Routine, non-régression Sport maison + Lyon, STG journal), 0 erreur. v4.20 (05/09) — CHANTIER « OPS » : L'APP DEVIENT UNE APP À TROIS DOMAINES (Sport, Tir, STG). Demande de J : conserver tout le code Sport existant (catalogue, moteur, logs, Firebase, offline) et intégrer Tir et Sauvetage Tactique. Phase 1 livrée : navigation, Accueil, Routine, Bilan refactorés + Tir et STG branchés avec un premier passage de contenu complet. ① NAVIGATION — 6 onglets : Accueil, Routine, Sport (renommé, ex-Séance, code interne inchangé), Tir (nouveau), STG (nouveau), Bilan. GTG et Tests disparaissent de la barre — fondus respectivement dans Routine et Bilan. ② ACCUEIL — bloc « Aujourd'hui » fusionné : cartes Sport / Tir / STG cliquables vers leur onglet, chacune avec statut fait/pas fait du jour. 🔴 Corrigé au passage : la carte Sport lisait `SEANCES[S.seanceKey]`, un reliquat du split abandonné le 08/08 — elle pouvait afficher un nom de séance sans rapport avec ce que l'onglet Sport proposait réellement une fois ouvert. Remplacée par `moteurCurrentSession()` (nouvelle fonction, extraite de renderSeance pour être partagée), qui lit la vraie résolution du moteur. Calendrier mensuel déplacé ici depuis Bilan (fonction extraite `renderCalendrierMensuel`). ③ ROUTINE — GTG intégré en section, plus d'onglet séparé. ④ BILAN — Tests fusionné comme 3ᵉ sous-onglet (Matin/Soir/Tests/Stats/Réglages), reprend l'écran Tests existant tel quel et y ajoute les tableaux de référence Tir (tests étalons Phase 2/3) et STG (standards globaux). ⑤ TIR — programme SP2022 Phases 2 & 3 (S5→S12) transcrit intégralement depuis le document source (12 fiches de semaine : domicile laser 20 min/j + club 25 m 50 cps, focus, mesure, conformités binaires Phase 3) — doctrine IP gendarmerie exclusivement, périmètre solo explicite (angles, rétention réelle, tir en déplacement, tout travail de cellule restent à faire valider en unité). ⑥ STG — cycle 4 semaines renouvelable (quotidien 5 min, post-séance 2×/sem, scénarios S1-S4, mensuel), 11 gestes MARCH/TCCC transcrits avec standards chronométrés et erreurs fréquentes, journal de bord persistant (ajout rapide geste/temps/standard atteint). ⚠ Périmètre explicite : reconnaissance et qualité de l'alerte pour les actes médicaux (décompression à l'aiguille), jamais l'exécution hors habilitation. **Premier passage** : structure et navigation complètes, testées ; le suivi fin (carnets détaillés Tir, saisie de groupements) reste à affiner avec J selon l'usage réel. **Testé** : `node --check`, JSON des 3 blocs de données validé, Chromium headless — parcours complet des 6 onglets (maison et Lyon), bascule Tir/STG/Accueil, ajout d'entrée journal STG, checkboxes fait-aujourd'hui, non-régression Sport (FB1/FB2/Seuil/Z2/AGT) — 0 erreur console. v4.16 (04/09) — VÉRIFICATION D'UN COMPTE RENDU DE SESSION COWORK CONNECTÉE À L'ORDINATEUR DE J (dernière modif fin août, jamais rejointe la lignée du projet — même défaut que les deux app v4.10 divergents du cycle 21). Revu constat par constat contre v4.15 avant de rien croire sur parole. TROIS PROBLÈMES RÉELS CONFIRMÉS ET CORRIGÉS, DEUX AUTRES CLARIFIÉS. ① `sport-pwa-manifest.json` — toujours daté du 23/07, jamais touché depuis : nom/branding périmés (« MMA × Endurance », description « 16 semaines »), corrigés en BE READY. Référence à deux icônes (icon-192.png, icon-512.png) qui N'EXISTENT PAS dans le projet — pas corrigé ici, ça suppose un choix de design que J n'a pas encore fait (icône actuelle « BR sur fond marine » explicitely pas validée). ② `sport-pwa-sw.js` — même chose, daté du 23/07 : le fallback offline servait `index2.html`, un fichier qui n'existe nulle part dans ce projet. Retiré, remplacé par `index.html` seul ; cache renommé (bereadysw-v7) pour forcer la reprise chez les appareils qui ont l'ancien SW en cache. ③ `renderSeanceGuyane()` — la fonction contenant le bug « S9/9 plafonné » signalé (S.week calculé une fois depuis CORRECT_START='2026-06-09' et plafonné à 9) : VÉRIFIÉ MORT, pas un bug actif — un garde de redirection (`if(S.tab==='seanceG'){S.tab='seance';}`) renvoyait déjà vers le vrai écran séance, et aucun bouton de la barre de nav n'y menait. Supprimée (~280 lignes) plutôt que rustinée : l'écran réel (onglet Séance) utilise depuis longtemps le système de cycle 3:1 par gabarit (moteurCycleInfo), pas ce vieux modèle à 9 semaines fixes. ④ 🔴 EN CREUSANT CE MÊME BUG, EN TROUVÉ UN VRAI, TOUJOURS VIVANT AILLEURS : `computeFlags()` (l'analyse automatique du Bilan) comparait la RPE moyenne de la semaine à un « prescrit » lu via ce même S.week plafonné à 9 → BLOCS[4] (« DÉLOAD & TESTS », plan abandonné) EN PERMANENCE depuis début septembre, donnant toujours le même seuil par défaut (8) sans lien avec la phase réelle du cycle (léger/modéré/pic/déload). Corrigé : lit désormais moteurCycleInfo() comme le reste du moteur, avec un repère RPE par phase (7/8/9/6) aligné sur les protocoles déjà affichés à l'écran. ⑤ Écran Accueil et radar 5 familles zoomable (revendiqués comme « ajoutés » par la session Cowork) : CONFIRMÉS DÉJÀ PRÉSENTS dans cette lignée depuis fin août (chantiers 14 et 57/65) — la session connectée travaillait sur une copie bien plus ancienne du fichier, d'avant cette reconstruction. **Testé** : `node --check`, JSON des trois blocs validé, Chromium headless maison + Lyon (parcours complet), écran Accueil et Bilan vérifiés sans erreur console. v4.15 (04/09) — TROIS CORRECTIFS DEMANDÉS PAR J SUR LA LIVRAISON v4.14, LE JOUR MÊME. ① Le sélecteur de séance affichait le label du jour DEVANT CHAQUE séance du jour (« J2 … Z2 … J2 … Portage 2 »), pas une fois pour le jour : groupé, un seul « J2 » devant les deux boutons (idem J4, J5). ② Le sélecteur Seuil affichait « Semaine S1 » etc. dans le menu déroulant : simplifié en « S1 ». ③ Aucun changement fonctionnel côté v4.14, seulement ces deux détails d'affichage. v4.14 (04/09) — TROIS DEMANDES DE J (backlog v6), traitées dans la même session que la séance VMA du 04/09 qui a justifié la deuxième. ① FUSION DES LABELS JOUR/SOIR dans le sélecteur de séance : « J5 » ne se sépare plus en « J5 » et « J5 soir » — même chose pour J2 (Z2/Portage 2) et J4 (Z2 longue/Portage 1). Purement un label d'affichage (`M_JOURS`), aucune logique de séquencement n'y était attachée — vérifié avant de toucher au code. ② SÉLECTEUR SEUIL : la carte de séance affichait une seule note statique « Progression S1→S8 » à interpréter soi-même. Elle porte désormais deux menus — modalité (vélo/course) et semaine (S1 à S8) — et calcule elle-même le format réel (ex. « S3 · vélo · (3×) 4-12-4 min »), à partir de la progression déjà écrite au programme §7 bis (protocole Vandel). En modalité course, un rappel s'affiche : ces durées cadrent la structure, pas l'allure — c'est très exactement la leçon de la séance supra-seuil du 04/09 (programme v4_82), où viser un chiffre de vitesse fixe a produit un pic FC à 169. ③ Z2 : PLUS DE CHOIX DE DURÉE dans le module « Configurer la Z2 », qui existait déjà (modalité → durée → format, chips) — le sélecteur de durée n'était pas absent, seulement clairsemé : Z2 courte sautait de 30 à 45 min sans rien entre les deux (programme documente pourtant une plage continue 30-45), Z2 longue ne portait que les quatre paliers 45/60/75/90. Élargi à [15,20,25,30,35,40,45,50,60] et [30,45,60,75,90,105,120] respectivement — le pas de 15 min de la progression longue est conservé, une option est ajoutée en dessous et deux au-dessus. ⚠ Base de départ, à ajuster avec J si la granularité ou les bornes ne correspondent pas à l'usage réel — c'était explicitement resté une question ouverte dans les Entrées avant ce chantier. Le réglage Seuil (① ci-dessus), lui, est un vrai nouvel écran : il n'existait aucun sélecteur avant, seulement une note statique à interpréter soi-même. v4.13 (03/09) — DEUX CHANTIERS, ET UNE DÉCOUVERTE ENTRE LES DEUX : UN AUDIT V4 ENTIER (cycle 15, 31/08) EXISTAIT DANS LE PROJET SANS AVOIR JAMAIS ÉTÉ APPLIQUÉ. ① CHANTIER 65 (clôture le backlog audit v3, 55-65) : deux qualités ajoutées au catalogue (19 → 21). « Rotation contrôlée » — russian twist, bridge rotation, rotation au GHD (et un 4ᵉ cas trouvé en vérifiant chaque fiche : la rotation élastique en fente bulgare) portaient « puissance rotationnelle » alors que leur propre note dit l'inverse (« contrôlé, jamais en balistique », « tempo LENT, pas explosif ») — un tag qui contredit sa fiche fausse le compteur de l'axe « Rotation », qui mesure un lancer EXPLOSIF. Vérifié sans conséquence : l'AGT (med ball / chop-lift, présent chaque semaine) reste le vrai vecteur. « Santé / protection articulaire » — les 8 fiches sans AUCUNE qualité (face pull, rotation externe épaule, renfo poignet G, leg extension, élévations latérales, curl biceps BFR, extension triceps BFR, butterfly) sont rattachées à une qualité réelle : chacune est choisie pour épargner une articulation, chacune le dit dans sa note. ② AUDIT V4 RETROUVÉ ET RÉAPPLIQUÉ (chantiers 67, 68/71, 73 — 69/70/72/74/75/76/77 restent à faire, backlog v5) : cet audit avait simulé la semaine à LYON (12-23/10, kit valise, ni KB ni barre) et trouvé deux séances qui NE SE RÉSOLVAIENT PAS DU TOUT sans matériel de maison — mais son app v4.10 (chantiers 67-73) a divergé sans jamais rejoindre la lignée réellement livrée (qui a produit un AUTRE v4.10, celui des « cinq décisions de J » du 01/09) : le travail a existé, daté et argumenté, sans jamais atteindre l'app en vigueur. Récupéré et réappliqué ici, revérifié par un test Lyon complet (déplacement + TRX + élastiques, zéro KB, zéro barre) : ⚠ **AVANT CE CORRECTIF, LA SÉANCE DE SEUIL ÉTAIT ENTIÈREMENT INDISPONIBLE HORS MAISON** — son unique créneau portait la catégorie `cardio`, qui n'existe dans AUCUNE taxonomie (la vraie clé est `aerobie`) : sans vélo NI kettlebell (le seul substitut déclaré), le repli de dernier recours cherchait une catégorie morte et ne trouvait jamais rien. Corrigé : la séance se résout maintenant en Step-ups. Même défaut, sans conséquence réelle car les créneaux sont optionnels, sur le rappel de puissance de FB1/FB2 (`puissance_priming` → `alactique_finisher`) et le T2 de VO2max/T1-T2 (`work_capacity` → `work_capacity_opérateur`, la vraie clé du catalogue). ⚠ **FB1 SE BLOQUAIT ENTIÈREMENT À LYON** à cause d'un pur effet d'ordre de saisie : chin-ups (tirage vertical, servi EN PREMIER dans le template) et row bûcheron (tirage horizontal, seul contrepoids chargé de la semaine, servi ENSUITE) se disputaient la MÊME ressource rare — le TRX row, seul substitut nomade des deux. Le tirage vertical la consommait avant que le tirage horizontal n'ait sa chance, et FB1 disparaissait douze jours. Corrigé par un nouveau mécanisme, des SUBSTITUTS DE CRÉNEAU (`slot.substituts`, servis avant ceux de la fiche — le créneau connaît le rôle, la fiche ne connaît que le mouvement) et une ABSENCE ASSUMÉE (`absence_acceptable` + motif : un créneau obligatoire sans AUCUNE solution réelle — pas de tirage vertical sans barre de traction, le programme le dit lui-même — s'affiche désormais grisé « ○ Absent (assumé) » plutôt que de bloquer toute la séance). Résultat vérifié : le TRX row reste réservé au tirage horizontal de FB1 ; en FB2, où rien ne le lui dispute, il bascule explicitement sur le tirage vertical. **Un genou blessé par ce même défaut, non corrigé cette fois** : le squat de FB1 (Zercher, `barre_disques`, substitut nomade `kb_goblet_front_squat` qui exige un KB absent du kit) reste bloqué à Lyon faute de repli au poids du corps — chantier 75, reporté, P2, tel quel dans l'audit récupéré. Un identifiant de matériel mort corrigé au passage (chantier 73) : `presse_jambes` n'existait dans AUCUNE fenêtre — la presse à cuisse EXISTE à la maison sous la clé `presse_cuisse` ; les deux fiches étaient invisibles partout, y compris là où l'appareil est réellement disponible. **Non-régression vérifiée par les mêmes tests que l'audit original** : la semaine maison au complet (FB1, FB2, Zercher, chin-ups, row bûcheron) s'affiche identique à avant, zéro écran d'erreur, zéro changement de comportement quand le matériel est présent. v4.12 (02/09) — LE SWING 1 BRAS EST RÉAUTORISÉ, et ça vaut mieux qu'un tag retiré. J confirme que le swing ne gêne pas l'épaule G, même à un bras à 16 kg. ① L'étiquette « épaule G » part des **trois** fiches de swing — elle ne déclenchait rien faute d'étage de délestage, elle affichait une protection inexistante. ② **Conséquence réelle : le 1 bras alterné 40/20 redevient disponible, et c'est le SEUL format de swing qui atteigne la Z2** — 144 bpm mesurés le 24/07, contre 115 pour le 2 bras en 30/30. Il était banni depuis le 05/07. C'est l'outil Z2 des fenêtres sans vélo ni tapis, **dont les deux fenêtres de décembre**. ⚠ Réserve : les 144 bpm ont été mesurés à 36-37 °C ; au frais, attendre 134-139, et monter à 20 kg avant d'allonger le ratio si la zone n'est pas atteinte. v4.11 (02/09) — ① **Row à 4 séries** (J) : « une seule sollicitation » borne la fréquence, pas le volume. Dernière marge sur le ratio poussée/tirage. ② **LE CALENDRIER DE FIN D'ANNÉE EST CONNU** (J) et entre dans la frise : **24/10 → 06/12 six semaines à la maison** (réadaptation, puis vague 3+1 complète avec déload 21-27/11) · **07-11/12 déplacement, valise + KB** · **12-27/12 maison** · **28/12-03/01 déplacement, valise + KB minimum**. Les deux fenêtres « post-fêtes » qui traînaient depuis juillet sont remplacées par des dates réelles. ⚠ Le KB change le gabarit D : contrairement à Lyon, le vecteur balistique existe, donc l'AGT n'est pas dégradée. v4.10 (01/09) — CINQ DÉCISIONS DE J, et le ratio poussée/tirage bouge enfin. ① **Militaire retiré de Portage 2** : poussée verticale 3 → 2. ② **Une seule séance de pompes, obligatoire** (Portage 1) : poussée horizontale 4 → 3, et Portage 2 redevient une séance de portage unilatéral pure. ③ **Russian twist (FB2) et dragon flag obligatoires** : avec le Pallof de FB1, les trois axes de gainage ont enfin chacun un créneau obligatoire — c'était le trou de l'audit v3. ④ **Fusion des deux fiches doublons** « Planche latérale » et « Side plank », avec G_first et le standard du ch. 12. ⑤ **Pompe claquée** documentée comme substitut d'ENTRAÎNEMENT du lancer horizontal sans med ball — jamais de TEST, et avec la réserve poignet G (réception en extension). **RATIO APRÈS CE LOT : 3 poussées horizontales + 2 verticales contre 1 tirage horizontal + 2 verticaux**, contre 4+3 vs 1+2 la veille. v4.9 (31/08) — TROIS DÉCISIONS DE J. ① **Pallof obligatoire en FB1** : l'anti-rotation était le seul des trois axes de gainage sans aucun créneau obligatoire de la semaine. ② **Une seule sollicitation de row par semaine** — rien à ajouter ni en GTG, ni en portage, ni en FB2 : la contre-proposition « row en FB2 » est écartée. Le tirage horizontal repose donc entièrement sur le créneau de FB1, et le rééquilibrage devra se faire en RETIRANT de la poussée. ③ **Pas de créneau technique pour le front squat** pour le moment : l'alerte « aucun créneau dédié » de l'écran Tests reste allumée, et c'est voulu — elle dit l'état réel. v4.8 (31/08) — AUDIT v3, LOT P1/P2 (chantiers 57, 60, 61, 63, 64). ① LE PONT ENTRE CE QUI SE NOTE ET CE QUI S'ENTRAÎNE. L'app portait deux vocabulaires de qualités qui ne se parlaient pas : 19 tags d'exercice et 18 axes de radar. L'écran Tests affiche désormais, sous chaque axe, le NOMBRE DE CRÉNEAUX de la semaine qui l'alimentent — séances + GTG + routine du matin — et signale, sous chaque épreuve, quand LE MOUVEMENT TESTÉ n'a aucun créneau. C'est ce contrôle qui fait apparaître tout seul le cas du front squat : axe « Force max BAS » au vert grâce au RDL et au Zercher, et le front squat, seul lift sous le plancher, atteignable uniquement par un sélecteur. ② VOCABULAIRE REMIS D'ÉQUERRE : 23 fiches portaient des tags qui n'existent dans aucune taxonomie (puissance, gainage, stabilité, force…) et 3 n'en portaient AUCUN — dont le row bûcheron, seul tirage horizontal de la semaine. Les mots qui désignent une méthode passent dans un champ « methodes ». ③ Le pattern fourre-tout « rotation_anti_rotation » (15 fiches) est éclaté en anti_extension / anti_rotation / rotation_produite : le moteur substitue « même pattern » en premier, une planche pouvait donc remplacer un lancer rotationnel. ④ Le sélecteur quad BFR ne ciblait aucun rôle existant : il ne s'affichait jamais. ⑤ hip_thrust porte son statut réel · chiffre d'asymétrie aligné sur le §0. v4.7 (31/08) — AUDIT v3, LOT P0 (chantier 55). ① LE SEUL TIRAGE HORIZONTAL DE LA SEMAINE ÉTAIT UN CRÉNEAU OPTIONNEL : 4 poussées horizontales et 3 verticales contre 1 tirage horizontal chargé — et le moteur SAUTE sans substitut un créneau optionnel dont l'exercice est indisponible. Rendu obligatoire, et le row (qui n'avait aucun substitut déclaré, et était classé en isolation/volume au lieu de force) est relié au Pendlay, au TRX row et à la poulie basse. ② LE MED BALL SLAM PORTAIT UNE CONTRE-INDICATION MORTE (« epaule_g_extreme », clé qu'aucun bilan ne produit) : il pouvait être proposé en AGT un jour d'épaule G douloureuse, que la doctrine écarte nommément. Reclassé épaule G, étage 1. ③ Pattern orphelin et clé de substitut en minuscule corrigés. ④ Le GTG militaire portait une consigne indexée sur « BLOC 3 (S6-S8) », découpage abandonné : réécrite sur la charge du jour. ⑤ windows_ok déclaré DÉPRÉCIÉ (jamais lu par le moteur ; 97 entrées taguées « paris », fenêtre abandonnée). v4.6 (31/08) — SOURCE UNIQUE DES DONNÉES DE SÉANCE (chantiers 49, 50, 54). ① Le moteur allait chercher format / RPE / repos / note dans les FICHES DU SPLIT abandonné le 08/08, par mot-clé sur le nom de l'exercice. La valeur était donc attachée au MOUVEMENT et non au CRÉNEAU : le Zercher, passé du volume de Bas 2 au TOP SET de FB1, affichait 2 min de repos ; le RDL, passé au HINGE LOURD de FB2, 2-3 min — les deux séries les plus lourdes de la semaine, sous-récupérées à l'écran. 75 valeurs portées dans les créneaux, repli supprimé. ② La note du split primait sur celle du catalogue : le bench affichait encore « Test officiel S9 · Objectif 80 kg × 3 », cible de juillet périmée depuis le 3RM à 91 du 08/08. Catalogue prioritaire, 21 fiches techniques transférées, héritage affiché ÉTIQUETÉ. ③ Charges de départ recalées sur le §0 : bench 70 → 88, RDL 100 → 120, farmer 20 → 30/main, sandbag 20 → 27, front squat et trap bar ajoutés. ④ DÉLOAD (09-15/09) : la règle « volume ÷2, intensité maintenue » était écrasée par le format du créneau et n'atteignait pas la carte d'exercice — elle y est désormais affichée. ⑤ Correction factuelle : la note du militaire en Portage 2 disait « isolé du row (qui reste sur Portage 1) » — il n'y a AUCUN row en Portage 1. · v4.5 (31/08) — écran Tests : bascule 5 familles / 18 qualités, liste groupée par qualité. · v4.4 (31/08) — inversion des paliers course et départ du kit valise (Lyon : gabarit F → D). · v4.3 — alignement sur programme v4_72 et manuel v4.35.";
 
 
 // ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────
@@ -6893,9 +7136,9 @@ function render(){
     accueil: renderAccueil,
     routine: renderRoutine,
     seance: renderSeance,
-    gtg: renderGTG,
+    tir: renderTir,
+    stg: renderStg,
     bilan: renderBilan,
-    tests: renderTests,
   };
   content.appendChild((views[S.tab]||renderAccueil)());
   app.appendChild(content);
@@ -6904,10 +7147,10 @@ function render(){
   [
     {id:'accueil',icon:'🏠',lbl:'Accueil'},
     {id:'routine',icon:'☀️',lbl:'Routine'},
-    {id:'seance',icon:'🏋️',lbl:'Séance'},
-    {id:'gtg',icon:'🔁',lbl:'GTG'},
-    {id:'bilan',icon:'📊',lbl:'Bilan'},
-    {id:'tests',icon:'🎯',lbl:'Tests'}].forEach(item=>{
+    {id:'seance',icon:'🏋️',lbl:'Sport'},
+    {id:'tir',icon:'🔫',lbl:'Tir'},
+    {id:'stg',icon:'🚑',lbl:'STG'},
+    {id:'bilan',icon:'📊',lbl:'Bilan'}].forEach(item=>{
     const tab = $('button',{
       class:'nav-tab'+(S.tab===item.id?' active':''),
       onclick:()=>{ S.tab=item.id; render(); }
@@ -8239,56 +8482,96 @@ function renderAccueil(){
   const wrap = $('div',{});
   wrap.appendChild($('div',{class:'section-hdr'},'🏠 Accueil'));
 
-  const V = appVague();
+  const log = getLog();
 
-  // ── carte bloc / semaine ──
-  const blocCard = $('div',{class:'card'});
-  blocCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'10px',gap:'8px'}},
-    $('div',{style:{fontFamily:'var(--font-d)',fontSize:'19px',letterSpacing:'1.5px',color:V.color}}, V.long),
-    $('span',{class:'tag',style:{background:V.color+'22',color:V.color,whiteSpace:'nowrap'}}, V.tag)
-  ));
-  const barBg = $('div',{style:{height:'6px',background:'#111d2e',borderRadius:'4px',overflow:'hidden',marginBottom:'6px'}});
-  barBg.appendChild($('div',{style:{height:'100%',width:V.pct+'%',background:V.color,borderRadius:'4px'}}));
-  blocCard.appendChild(barBg);
-  blocCard.appendChild($('div',{style:{fontSize:'10px',color:'#64748b'}}, V.aide));
-  wrap.appendChild(blocCard);
+  // v4.21 (05/09) — encadré bloc/semaine (« BLOC FORCE MAXIMALE », « Semaine 3/4 ») RETIRÉ d'Accueil
+  // à la demande de J : surcharge l'écran, redondant avec ce que Sport affiche déjà en ouvrant l'onglet.
+  // La barre de progression du haut d'écran (topbar) continue de l'afficher en condensé — c'est suffisant.
 
-  // ── carte séance du jour ──
-  const seance = SEANCES[S.seanceKey];
-  if(seance){
-    const sCard = $('div',{class:'card',style:{cursor:'pointer'},onclick:()=>{ S.tab='seance'; render(); }});
-    sCard.appendChild($('div',{class:'card-title'},'SÉANCE DU JOUR'));
+  // ══ v4.20 (chantier « Ops », 05/09) — BLOC « AUJOURD'HUI » FUSIONNÉ (demande de J) ══════════
+  // Sport + Tir + STG, chacun cliquable vers son onglet. Le Sport reprend désormais la VRAIE séance
+  // résolue par le moteur (moteurCurrentSession) — l'ancienne carte lisait SEANCES[S.seanceKey], un
+  // reliquat du split abandonné le 08/08 qui pouvait afficher un nom de séance sans rapport avec ce
+  // que l'onglet Séance propose réellement une fois ouvert. Corrigé au passage.
+  wrap.appendChild($('div',{class:'section-hdr',style:{fontSize:'13px',marginTop:'6px'}},'📋 Aujourd\'hui'));
+
+  // ── Sport ──
+  const curSession = moteurCurrentSession();
+  if(curSession){
+    const doneToday = moteurIsSessionDoneToday(curSession.id);
+    const sCard = $('div',{class:'card',style:{cursor:'pointer',background:doneToday?'#0d2b1f':undefined,borderColor:doneToday?'#10b981':undefined},
+      onclick:()=>{ S.tab='seance'; render(); }});
+    sCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'2px'}},
+      $('div',{class:'card-title',style:{marginBottom:'0'}},'🏋️ SPORT'),
+      doneToday ? $('span',{style:{fontSize:'11px',color:'#10b981',fontWeight:'700'}},'✓ fait') : null
+    ));
     sCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'10px'}},
-      $('div',{style:{fontSize:'28px',flexShrink:'0'}}, seance.icon),
       $('div',{style:{flex:'1',minWidth:'0'}},
-        $('div',{style:{fontSize:'15px',fontWeight:'800'}}, S.seanceKey),
-        $('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'2px',overflowWrap:'break-word'}}, seance.focus)
+        $('div',{style:{fontSize:'15px',fontWeight:'800'}}, curSession.nom),
+        $('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'2px',overflowWrap:'break-word'}}, (curSession.objectif||'').split('\n')[0])
       ),
       $('div',{style:{fontSize:'20px',color:'#475569',flexShrink:'0'}},'→')
     ));
     wrap.appendChild(sCard);
   }
 
+  // ── Tir ──
+  (function(){
+    const semTir = TIR_DATA.semaines.find(s=>s.id===MS.tirSemaine) || TIR_DATA.semaines[0];
+    const doneToday = !!(log.tir && log.tir.done);
+    const tCard = $('div',{class:'card',style:{cursor:'pointer',background:doneToday?'#0d2b1f':undefined,borderColor:doneToday?'#10b981':undefined},
+      onclick:()=>{ S.tab='tir'; render(); }});
+    tCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'2px'}},
+      $('div',{class:'card-title',style:{marginBottom:'0'}},'🔫 TIR'),
+      doneToday ? $('span',{style:{fontSize:'11px',color:'#10b981',fontWeight:'700'}},'✓ fait') : null
+    ));
+    tCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'10px'}},
+      $('div',{style:{flex:'1',minWidth:'0'}},
+        $('div',{style:{fontSize:'15px',fontWeight:'800'}}, 'S'+semTir.id+' — '+semTir.titre),
+        $('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'2px'}}, 'Phase '+semTir.phase+' · laser 20 min + club 50 cps')
+      ),
+      $('div',{style:{fontSize:'20px',color:'#475569',flexShrink:'0'}},'→')
+    ));
+    wrap.appendChild(tCard);
+  })();
+
+  // ── STG ──
+  (function(){
+    const semStg = STG_DATA.cycle.semaines.find(s=>s.sem===MS.stgSemaine) || STG_DATA.cycle.semaines[0];
+    const doneToday = !!log.stg_quotidien;
+    const gCard = $('div',{class:'card',style:{cursor:'pointer',background:doneToday?'#0d2b1f':undefined,borderColor:doneToday?'#10b981':undefined},
+      onclick:()=>{ S.tab='stg'; render(); }});
+    gCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'2px'}},
+      $('div',{class:'card-title',style:{marginBottom:'0'}},'🚑 STG'),
+      doneToday ? $('span',{style:{fontSize:'11px',color:'#10b981',fontWeight:'700'}},'✓ quotidien fait') : null
+    ));
+    gCard.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'10px'}},
+      $('div',{style:{flex:'1',minWidth:'0'}},
+        $('div',{style:{fontSize:'15px',fontWeight:'800'}}, 'Sem. '+semStg.sem+' — '+semStg.nom),
+        $('div',{style:{fontSize:'11px',color:'#64748b',marginTop:'2px'}}, 'Quotidien 5 min + scénario '+semStg.sem+'/4')
+      ),
+      $('div',{style:{fontSize:'20px',color:'#475569',flexShrink:'0'}},'→')
+    ));
+    wrap.appendChild(gCard);
+  })();
+
   // ── carte routine du matin ──
-  const log = getLog();
   const done = log.routine || [];
   const totalRoutine = ROUTINE_MATIN.length;
   const doneCount = ROUTINE_MATIN.filter(r=>done.includes(r.id)).length;
   const routineOk = totalRoutine>0 && doneCount===totalRoutine;
   const rCard = $('div',{class:'card',style:{cursor:'pointer'},onclick:()=>{ S.tab='routine'; render(); }});
   rCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
-    $('div',{class:'card-title',style:{marginBottom:'0'}},'☀️ ROUTINE DU MATIN'),
+    $('div',{class:'card-title',style:{marginBottom:'0'}},'☀️ ROUTINE DU MATIN (+ GTG)'),
     $('span',{style:{fontSize:'14px',fontWeight:'800',color: routineOk?'#10b981':'#f5a623'}}, doneCount+'/'+totalRoutine)
   ));
   wrap.appendChild(rCard);
 
-  // ── mini radar (vue groupée, lien vers Tests) ──
-  const rCard2 = $('div',{class:'card',style:{cursor:'pointer'},onclick:()=>{ S.tab='tests'; render(); }});
-  rCard2.appendChild($('div',{class:'card-title'},'🎯 BATTERIE — VUE D’ENSEMBLE'));
-  const items = tAxesGrouped().map(g=>({label:g.label, score:g.score, tested:g.nTested>0, color:T_CAT_COLOR[g.cat]}));
-  rCard2.appendChild(tRadarSVGGeneric(items, null));
-  rCard2.appendChild($('div',{style:{fontSize:'10px',color:'#475569',textAlign:'center'}},'Touchez pour voir le détail par famille'));
-  wrap.appendChild(rCard2);
+  // v4.21 (05/09) — mini radar « Batterie — vue d'ensemble » RETIRÉ d'Accueil à la demande de J
+  // (surcharge d'écran). Le radar complet reste disponible dans Bilan > Tests, inchangé.
+
+  // ── calendrier mensuel (déplacé depuis Bilan, demande de J) ──
+  wrap.appendChild(renderCalendrierMensuel());
 
   return wrap;
 }
@@ -8298,6 +8581,12 @@ function renderRoutine(){
   const done = log.routine || [];
   const el = $('div',{style:{width:'100%',maxWidth:'100%',boxSizing:'border-box',overflowX:'hidden'}});
   el.appendChild($('div',{class:'section-hdr'},'☀️ Routine du Matin'));
+
+  // v4.21 (05/09) — GTG en PREMIER, avant les catégories de routine (demande de J : plus simple à
+  // saisir dès l'ouverture de l'onglet, sans avoir à descendre après le renfo obligatoire).
+  const gtgBlock = renderGTG();
+  gtgBlock.style.marginBottom = '18px';
+  el.appendChild(gtgBlock);
 
   const cats = [...new Set(ROUTINE_MATIN.map(r=>r.cat))];
   // repli si la catégorie mémorisée n'existe plus (ancienne version) → évite un onglet vide
@@ -8352,14 +8641,6 @@ function renderRoutine(){
     card.appendChild(row);
   });
   el.appendChild(card);
-
-  // GTG rapide
-  const gtgCard = $('div',{class:'card'},
-    $('div',{class:'card-title'},'🔁 GTG — Dans la journée'),
-    $('div',{style:{fontSize:'12px',color:'#64748b',marginBottom:'8px'}},'Militaire 3 reps @20kg · Chaise iso G/D · Dead hang 15s · 3-4×/jour'),
-    $('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.tab='gtg'; render(); }},'→ Voir le GTG complet')
-  );
-  el.appendChild(gtgCard);
 
   return el;
 }
@@ -8441,12 +8722,9 @@ const M_ROLE_LABEL = {
   volume_quadriceps:'quadriceps', ischio_jambiers:'ischios', finisher_bfr_jambes:'ischios (BFR)',
   t2_finisher:'T2 · finisher'
 };
-function renderSeance(){
-  moteurMaybeAutoSuggestDelestage();
-  const el = $('div',{});
-
-  // ── Sélecteur compact des séances — statut (couleur), fait cette semaine (barré),
-  // pertinent pour le focus (encadré doré). Remplace l'ancienne liste pleine largeur. ──
+// v4.20 (chantier « Ops », 05/09) — extrait de renderSeance() pour être réutilisable depuis Accueil
+// (carte « Sport » du bloc Aujourd'hui) sans dupliquer la logique de sélection/repli.
+function moteurCurrentSession(){
   let current = MTPL.session_types.find(s=>s.id===S.moteurSessionId);
   const currentStillOk = current && !moteurSessionLockedByPhase(current) && moteurResolveSession(current).status!=='blocked';
   if(!current || !currentStillOk){
@@ -8456,6 +8734,15 @@ function renderSeance(){
     }) || MTPL.session_types[0];
     S.moteurSessionId = current.id;
   }
+  return current;
+}
+function renderSeance(){
+  moteurMaybeAutoSuggestDelestage();
+  const el = $('div',{});
+
+  // ── Sélecteur compact des séances — statut (couleur), fait cette semaine (barré),
+  // pertinent pour le focus (encadré doré). Remplace l'ancienne liste pleine largeur. ──
+  let current = moteurCurrentSession();
 
   const selectorCard = $('div',{class:'card',style:{paddingBottom:'8px'}});
   const selectorWrap = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',alignItems:'center'}});
@@ -9040,8 +9327,8 @@ function renderGTG(){
   const log = getLog();
   const gtgLog = log.gtg || {};
   const el = $('div',{});
-  
-  el.appendChild($('div',{class:'section-hdr'},'🔁 GTG — Grease The Groove'));
+
+  el.appendChild($('div',{class:'section-hdr',style:{fontSize:'14px',marginTop:'4px'}},'🔁 GTG — Grease The Groove'));
   el.appendChild($('div',{class:'card',style:{background:'#0d1a0d',borderColor:'#10b98133'}},
     $('div',{style:{fontSize:'12px',color:'#10b981',lineHeight:'1.5'}},
       '★ Jamais à l\'échec · Jamais fatigué · 50-80% du max · 3-4× par jour\n'+
@@ -9101,7 +9388,259 @@ function renderGTG(){
   return el;
 }
 
+// ── ONGLET TIR (v4.20, chantier « Ops », 05/09) ─────────────────────────────
+// Premier passage de transcription du programme SP2022 Phases 2 & 3. Structure et navigation
+// complètes ; le suivi fin (carnets détaillés, saisie des groupements) reste à affiner avec J.
+function renderTir(){
+  const log = getLog();
+  const el = $('div',{});
+  el.appendChild($('div',{class:'section-hdr'},'🔫 Tir — SP2022'));
+
+  const sem = TIR_DATA.semaines.find(s=>s.id===MS.tirSemaine) || TIR_DATA.semaines[0];
+
+  // Sélecteur de semaine S5-S12
+  const selRow = $('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'10px'}});
+  TIR_DATA.semaines.forEach(s=>{
+    selRow.appendChild($('button',{
+      style:{padding:'6px 10px',borderRadius:'7px',fontSize:'11px',fontWeight:'700',cursor:'pointer',
+        border:'1px solid '+(s.id===MS.tirSemaine?'#f5a623':'#334155'),
+        background:s.id===MS.tirSemaine?'#2a2214':'#111d2e',
+        color:s.id===MS.tirSemaine?'#f5a623':'#94a3b8'},
+      onclick:()=>{ MS.tirSemaine=s.id; saveMoteurState(); }
+    }, 'S'+s.id));
+  });
+  el.appendChild(selRow);
+
+  const phaseTag = $('div',{style:{marginBottom:'8px'}},
+    $('span',{class:'tag',style:{background:sem.phase===2?'#3b82f622':'#8b5cf622',color:sem.phase===2?'#3b82f6':'#8b5cf6'}},'Phase '+sem.phase));
+  el.appendChild(phaseTag);
+
+  const headCard = $('div',{class:'card'});
+  headCard.appendChild($('div',{style:{fontSize:'16px',fontWeight:'800'}}, 'S'+sem.id+' — '+sem.titre));
+  headCard.appendChild($('div',{style:{fontSize:'11.5px',color:'#64748b',marginTop:'4px',fontStyle:'italic'}}, sem.lede));
+  el.appendChild(headCard);
+
+  const blockCard = (titre, icon, items, sub) => {
+    const card = $('div',{class:'card'});
+    card.appendChild($('div',{class:'card-title'}, icon+' '+titre+(sub&&sub.duree?' — '+sub.duree+' min':'')));
+    const ul = $('div',{});
+    (sub?sub.items:items).forEach(it=>ul.appendChild($('div',{style:{fontSize:'12px',color:'#cbd5e1',padding:'3px 0',display:'flex',gap:'6px'}},
+      $('span',{style:{color:'#f5a623',flexShrink:'0'}},'·'), $('span',{},it))));
+    return card;
+  };
+
+  el.appendChild($('div',{class:'card-title',style:{marginTop:'4px'}},'🏠 DOMICILE — laser, 20 min/jour'));
+  sem.domicile.forEach(b=>el.appendChild(blockCard(b.titre,'▸',null,b)));
+
+  el.appendChild($('div',{class:'card-title',style:{marginTop:'4px'}},'🎯 CLUB — 25 m réel, 50 cps/séance'));
+  sem.club.forEach(b=>el.appendChild(blockCard(b.titre,'▸',null,b)));
+
+  const focusCard = $('div',{class:'card',style:{background:'#1a1408',borderColor:'#f5a62333'}});
+  focusCard.appendChild($('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginBottom:'4px'}},'FOCUS'));
+  focusCard.appendChild($('div',{style:{fontSize:'12.5px',color:'#e0e1dd',marginBottom:'6px'}}, sem.focus));
+  focusCard.appendChild($('div',{style:{fontSize:'11px',color:'#64748b'}},'Mesure : '+sem.mesure));
+  el.appendChild(focusCard);
+
+  if(TIR_DATA.conformites_binaires && sem.phase===3){
+    const cb = $('div',{class:'card',style:{background:'#3f1d1d',borderColor:'#7f1d1d'}});
+    cb.appendChild($('div',{style:{fontSize:'10px',fontWeight:'800',color:'#fca5a5',marginBottom:'4px'}},'⚠ CONFORMITÉS BINAIRES — priment sur tout chrono'));
+    TIR_DATA.conformites_binaires.forEach(c=>cb.appendChild($('div',{style:{fontSize:'10.5px',color:'#fecaca',padding:'2px 0'}},'· '+c)));
+    el.appendChild(cb);
+  }
+
+  // Fait aujourd'hui + note
+  const tirLog = log.tir || {};
+  el.appendChild($('div',{class:'card',style:{cursor:'pointer',background:tirLog.done?'#0d2b1f':undefined,borderColor:tirLog.done?'#10b981':undefined},
+    onclick:()=>{ const l=getLog(); const t=l.tir||{}; t.done=!t.done; l.tir=t; saveLog(l); render(); }},
+    $('div',{class:'check-item',style:{cursor:'pointer'}},
+      $('div',{class:'check-box'+(tirLog.done?' done':'')}, tirLog.done?'✓':''),
+      $('div',{style:{fontWeight:700,fontSize:'13px'}},'Séance tir effectuée aujourd\'hui'))));
+  const tirNote = $('input',{class:'input-field',type:'text',placeholder:'Note rapide (groupe mesuré, temps, ressenti…)',
+    style:{marginTop:'8px',fontSize:'12px',padding:'7px 10px'}, value:tirLog.note||'',
+    oninput:(e)=>{ const l=getLog(); const t=l.tir||{}; t.note=e.target.value; l.tir=t; saveLog(l); }});
+  el.appendChild(tirNote);
+
+  el.appendChild($('div',{style:{fontSize:'10px',color:'#475569',marginTop:'10px',fontStyle:'italic'}},
+    TIR_DATA.meta.perimetre));
+
+  return el;
+}
+
+// ── ONGLET STG — SAUVETAGE TACTIQUE (v4.20, chantier « Ops », 05/09) ────────
+function renderStg(){
+  const log = getLog();
+  const el = $('div',{});
+  el.appendChild($('div',{class:'section-hdr'},'🚑 STG — Sauvetage Tactique'));
+
+  // Quotidien (5 min)
+  const qCard = $('div',{class:'card'});
+  qCard.appendChild($('div',{class:'card-title'},'⏱ QUOTIDIEN — 5 min'));
+  STG_DATA.cycle.quotidien.items.forEach(it=>qCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',padding:'3px 0'}},
+    $('span',{style:{color:'#cbd5e1'}}, it.exercice), $('span',{style:{color:'#f5a623',fontWeight:'700'}}, it.standard))));
+  const qDone = (log.stg_quotidien===true);
+  qCard.appendChild($('div',{style:{marginTop:'8px',cursor:'pointer',display:'flex',alignItems:'center',gap:'8px'},
+    onclick:()=>{ const l=getLog(); l.stg_quotidien=!l.stg_quotidien; saveLog(l); render(); }},
+    $('div',{class:'check-box'+(qDone?' done':'')}, qDone?'✓':''),
+    $('div',{style:{fontSize:'12px',fontWeight:'700'}},'Fait aujourd\'hui')));
+  el.appendChild(qCard);
+
+  // 2x/semaine post-séance
+  const pCard = $('div',{class:'card'});
+  pCard.appendChild($('div',{class:'card-title'},'🔁 2×/SEMAINE — post-séance physique, '+STG_DATA.cycle.post_seance.duree_min+' min'));
+  pCard.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',marginBottom:'6px',fontStyle:'italic'}}, STG_DATA.cycle.post_seance.lede));
+  STG_DATA.cycle.post_seance.items.forEach(it=>pCard.appendChild($('div',{style:{fontSize:'12px',color:'#cbd5e1',padding:'3px 0',display:'flex',gap:'6px'}},
+    $('span',{style:{color:'#f5a623',flexShrink:'0'}},'·'), $('span',{},it))));
+  const pDone = (log.stg_post_seance===true);
+  pCard.appendChild($('div',{style:{marginTop:'8px',cursor:'pointer',display:'flex',alignItems:'center',gap:'8px'},
+    onclick:()=>{ const l=getLog(); l.stg_post_seance=!l.stg_post_seance; saveLog(l); render(); }},
+    $('div',{class:'check-box'+(pDone?' done':'')}, pDone?'✓':''),
+    $('div',{style:{fontSize:'12px',fontWeight:'700'}},'Fait aujourd\'hui')));
+  el.appendChild(pCard);
+
+  // Sélecteur semaine S1-S4
+  const selRow = $('div',{style:{display:'flex',gap:'6px',marginBottom:'10px'}});
+  STG_DATA.cycle.semaines.forEach(s=>{
+    selRow.appendChild($('button',{
+      style:{flex:'1',padding:'8px 4px',borderRadius:'7px',fontSize:'11px',fontWeight:'700',cursor:'pointer',
+        border:'1px solid '+(s.sem===MS.stgSemaine?'#f5a623':'#334155'),
+        background:s.sem===MS.stgSemaine?'#2a2214':'#111d2e',
+        color:s.sem===MS.stgSemaine?'#f5a623':'#94a3b8'},
+      onclick:()=>{ MS.stgSemaine=s.sem; saveMoteurState(); }
+    }, 'S'+s.sem));
+  });
+  el.appendChild(selRow);
+
+  const semStg = STG_DATA.cycle.semaines.find(s=>s.sem===MS.stgSemaine) || STG_DATA.cycle.semaines[0];
+  const scCard = $('div',{class:'card'});
+  scCard.appendChild($('div',{class:'card-title'},'🎬 SCÉNARIO HEBDOMADAIRE — Sem. '+semStg.sem+' : '+semStg.nom));
+  scCard.appendChild($('div',{style:{fontSize:'12.5px',color:'#e0e1dd',marginBottom:'6px'}}, semStg.scenario));
+  scCard.appendChild($('div',{style:{fontSize:'11px',color:'#64748b'}},'Contrainte : '+semStg.contrainte));
+  el.appendChild(scCard);
+
+  const mCard = $('div',{class:'card',style:{background:'#1a1408',borderColor:'#f5a62333'}});
+  mCard.appendChild($('div',{style:{fontSize:'11px',fontWeight:'700',color:'#f5a623',marginBottom:'4px'}},'MENSUEL — '+STG_DATA.cycle.mensuel.duree_min+' min'));
+  mCard.appendChild($('div',{style:{fontSize:'12px',color:'#cbd5e1'}}, STG_DATA.cycle.mensuel.lede));
+  el.appendChild(mCard);
+
+  // Journal de bord rapide — persistant (pas remis à zéro chaque jour, comme le carnet papier)
+  const stgJournal = load('stg_journal') || [];
+  const jCard = $('div',{class:'card'});
+  jCard.appendChild($('div',{class:'card-title'},'📓 JOURNAL DE BORD — ajout rapide'));
+  const gesteInput = $('input',{class:'input-field',type:'text',placeholder:'Geste (ex : garrot main non-dom.)',style:{fontSize:'12px',padding:'7px 10px',marginBottom:'6px'}});
+  const tempsInput = $('input',{class:'input-field',type:'text',placeholder:'Temps (ex : 38 s)',style:{fontSize:'12px',padding:'7px 10px',marginBottom:'6px'}});
+  const stdSel = $('select',{class:'input-field',style:{fontSize:'12px',padding:'7px 10px',marginBottom:'6px'}});
+  [['','Standard atteint ?'],['O','O — standard atteint'],['N','N — pas atteint']].forEach(([v,l])=>{
+    const o=$('option',{value:v},l); stdSel.appendChild(o);
+  });
+  const erreurInput = $('input',{class:'input-field',type:'text',placeholder:'Erreur identifiée (optionnel)',style:{fontSize:'12px',padding:'7px 10px',marginBottom:'6px'}});
+  jCard.appendChild(gesteInput); jCard.appendChild(tempsInput); jCard.appendChild(stdSel); jCard.appendChild(erreurInput);
+  jCard.appendChild($('button',{class:'btn btn-primary btn-sm',style:{width:'100%'},onclick:()=>{
+    if(!gesteInput.value.trim()) return;
+    const arr = load('stg_journal') || [];
+    arr.unshift({date:todayStr, geste:gesteInput.value.trim(), temps:tempsInput.value.trim(), std:stdSel.value, erreur:erreurInput.value.trim()});
+    save('stg_journal', arr.slice(0,200));
+    render();
+  }},'+ Ajouter au journal'));
+  el.appendChild(jCard);
+
+  if(stgJournal.length){
+    const histCard = $('div',{class:'card'});
+    histCard.appendChild($('div',{class:'card-title'},'Dernières entrées'));
+    stgJournal.slice(0,8).forEach(en=>{
+      histCard.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',gap:'8px',fontSize:'11.5px',padding:'4px 0',borderBottom:'1px solid #1e2d42'}},
+        $('span',{style:{color:'#64748b',flexShrink:'0'}}, en.date),
+        $('span',{style:{color:'#e0e1dd',flex:'1'}}, en.geste+(en.temps?' — '+en.temps:'')),
+        $('span',{style:{color:en.std==='O'?'#10b981':en.std==='N'?'#e63946':'#64748b',fontWeight:'700',flexShrink:'0'}}, en.std||'—')));
+    });
+    el.appendChild(histCard);
+  }
+
+  el.appendChild($('div',{style:{fontSize:'10px',color:'#475569',marginTop:'10px',fontStyle:'italic'}},
+    STG_DATA.meta.perimetre));
+
+  return el;
+}
+
 // ── ONGLET 4 — BILAN ─────────────────────────────────────────────────────
+
+function renderCalendrierMensuel(){
+  const el = $('div',{});
+  el.appendChild($('div',{class:'card-title'},'📅 CALENDRIER'));
+    // Mois affiché (S.calMonth = offset depuis le mois courant, 0 = courant)
+    const calOffset = S.calMonth || 0;
+    const now = new Date();
+    const viewDate = new Date(now.getFullYear(), now.getMonth()+calOffset, 1);
+    const yr = viewDate.getFullYear(); const mo = viewDate.getMonth();
+    const moNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    // Couleurs par séance
+    const seanceColors = {'Haut 1':'#1E3A5F','Bas 1':'#06b6d4','AGT':'#10b981','Haut 2':'#7C3AED','Bas 2':'#e63946','Z2 Swings':'#3b82f6','Haut 3':'#a78bfa',
+      'Seuil':'#f97316','VO2max':'#eab308','VMA':'#facc15','Work capacity':'#8b5cf6','Z2':'#0ea5e9','Z2 long':'#0284c7'};
+    // Construire map date -> séances faites (via clés ex_ pour Guyane, log.moteur_sessions pour le Moteur)
+    const dayMap = {};
+    Object.keys(localStorage).filter(k=>k.startsWith('log:')).forEach(k=>{
+      const ds = k.slice(4);
+      try {
+        const entry = JSON.parse(localStorage.getItem(k));
+        const sess = new Set();
+        Object.keys(entry).forEach(ek=>{
+          if(ek.startsWith('ex_') && !ek.startsWith('ex_moteur_') && entry[ek] && (entry[ek].charge||entry[ek].rpe||entry[ek].notes)){
+            const nm = ek.slice(3).replace(/_b\d+_\d+.*$/,'');
+            if(seanceColors[nm]) sess.add(nm);
+          }
+        });
+        (entry.moteur_sessions||[]).forEach(sid=>{
+          const st = MTPL.session_types.find(s=>s.id===sid);
+          if(st) sess.add(st.nom);
+        });
+        // routine faite ?
+        const hasRoutine = entry.routine && entry.routine.length>0;
+        if(sess.size>0 || hasRoutine || (entry.soir&&entry.soir.seance)) dayMap[ds] = {sess:[...sess], routine:hasRoutine, entry};
+      } catch(e){}
+    });
+    // En-tête navigation mois
+    const navRow = $('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}});
+    navRow.appendChild($('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.calMonth=(S.calMonth||0)-1; render(); }},'‹'));
+    navRow.appendChild($('div',{style:{fontWeight:'700',fontSize:'15px'}},moNames[mo]+' '+yr));
+    navRow.appendChild($('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.calMonth=(S.calMonth||0)+1; render(); }},'›'));
+    el.appendChild(navRow);
+    // Grille calendrier
+    const grid = $('div',{style:{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'3px',width:'100%',boxSizing:'border-box'}});
+    ['L','M','M','J','V','S','D'].forEach(d=>grid.appendChild($('div',{style:{textAlign:'center',fontSize:'10px',color:'#64748b',fontWeight:'600',padding:'2px 0'}},d)));
+    // Premier jour (lundi=0)
+    let firstDay = new Date(yr,mo,1).getDay(); firstDay = firstDay===0?6:firstDay-1;
+    const daysInMonth = new Date(yr,mo+1,0).getDate();
+    for(let i=0;i<firstDay;i++) grid.appendChild($('div',{}));
+    const todayS = (new Date()).toISOString().slice(0,10);
+    for(let d=1;d<=daysInMonth;d++){
+      const ds = yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      const dayData = dayMap[ds];
+      const isToday = ds===todayS;
+      const cell = $('div',{style:{aspectRatio:'1',border:isToday?'2px solid #f5a623':'1px solid #1e2d42',borderRadius:'6px',padding:'2px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-start',cursor:dayData?'pointer':'default',boxSizing:'border-box',minWidth:'0',overflow:'hidden'}});
+      cell.appendChild($('div',{style:{fontSize:'10px',color:dayData?'#e0e1dd':'#475569',fontWeight:isToday?'700':'400'}},String(d)));
+      if(dayData){
+        const abbr={'H1':'H1','B1':'B1','AGT':'AGT','H2':'H2','B2':'B2','FB1':'FB1','FB2':'FB2','Z2 Swings':'Z2','H3':'H3',
+          'Seuil':'Seuil','VO2max':'VO2','VMA':'VMA','WC glyco':'WCg','WC seuil':'WCs','T1/T2':'T1','Z2':'Z2','Z2 long':'Z2L'};
+        const labels=$('div',{style:{display:'flex',flexDirection:'column',gap:'1px',width:'100%',marginTop:'1px',alignItems:'stretch'}});
+        dayData.sess.forEach(s=>labels.appendChild($('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:seanceColors[s]||'#64748b',borderRadius:'3px',padding:'1px 2px',textAlign:'center',lineHeight:'1.2',overflow:'hidden',whiteSpace:'nowrap'}},abbr[s]||s)));
+        if(dayData.routine && dayData.sess.length===0) labels.appendChild($('div',{style:{fontSize:'8px',color:'#94a3b8',textAlign:'center'}},'routine'));
+        cell.appendChild(labels);
+        cell.onclick=()=>{ S.tab='bilan'; S.bilanSub='journal'; S.journalDetail=ds; S.journalDetailData=dayData.entry; render(); };
+      }
+      grid.appendChild(cell);
+    }
+    el.appendChild(grid);
+    // Légende
+    const leg=$('div',{style:{marginTop:'14px',display:'flex',flexWrap:'wrap',gap:'8px'}});
+    const legAbbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Z2 Swings':'Z2','Haut 3':'H3'};
+    Object.entries(seanceColors).forEach(([nm,col])=>{
+      leg.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'4px',fontSize:'11px',color:'#94a3b8'}},
+        $('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:col,borderRadius:'3px',padding:'1px 4px'}},legAbbr[nm]||nm), nm));
+    });
+    el.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',fontWeight:'600',marginTop:'10px',marginBottom:'4px'}},'Légende'));
+    el.appendChild(leg);
+    el.appendChild($('div',{style:{fontSize:'11px',color:'#475569',marginTop:'10px',fontStyle:'italic'}},'Touche un jour avec séance pour voir le détail. Cadre orange = aujourd\'hui.'));
+    return el;
+}
 
 function renderBilan(){
   const log = getLog();
@@ -9116,13 +9655,15 @@ function renderBilan(){
     $('button',{class:'btn btn-ghost btn-sm',style:{flex:'1'},onclick:importHistory},'⬆ Import'),
   ));
 
+  // v4.20 (chantier « Ops », 05/09) — le calendrier part sur Accueil (renderCalendrierMensuel) ;
+  // Tests rejoint Bilan (fusion Bilan + Tests demandée par J), sous-onglets : Matin/Soir/Tests/Stats/Réglages.
   const subTab = S.bilanSub || 'matin';
   const seg = $('div',{class:'seg-ctrl'});
-  ['matin','soir','calendrier','stats','reglages'].forEach(t=>{
+  ['matin','soir','tests','stats','reglages'].forEach(t=>{
     seg.appendChild($('button',{
       class:'seg-btn'+(subTab===t?' active':''),
       onclick:()=>{ S.bilanSub=t; render(); }
-    }, t==='matin'?'🌅 Matin':t==='soir'?'🌙 Soir':t==='stats'?'📈 Stats':t==='calendrier'?'📅 Cal':'⚙️ Réglages'));
+    }, t==='matin'?'🌅 Matin':t==='soir'?'🌙 Soir':t==='stats'?'📈 Stats':t==='tests'?'🎯 Tests':'⚙️ Réglages'));
   });
   el.appendChild(seg);
 
@@ -9316,6 +9857,41 @@ function renderBilan(){
 
   if(subTab==='stats'){
     el.appendChild(renderStats());
+    return el;
+  }
+
+  // v4.20 (chantier « Ops », 05/09) — TESTS FUSIONNÉ DANS BILAN (demande de J). Reprend l'écran Tests
+  // existant tel quel (radar, batterie BE READY) et ajoute les deux nouveaux domaines à la suite :
+  // tests étalons Tir (Phase 2/3) et standards STG.
+  if(subTab==='tests'){
+    el.appendChild(renderTests());
+
+    const mkRefTable = (titre, cols, rows) => {
+      const card = $('div',{class:'card'});
+      card.appendChild($('div',{class:'card-title'},titre));
+      const table = $('div',{style:{display:'flex',flexDirection:'column',gap:'0'}});
+      rows.forEach((r,i)=>{
+        const row = $('div',{style:{display:'flex',gap:'8px',padding:'6px 0',borderBottom: i<rows.length-1?'1px solid #1e2d42':'none',fontSize:'11.5px'}});
+        cols.forEach(c=>row.appendChild($('div',{style:{flex:c.flex||'1',color:c.dim?'#64748b':'#e0e1dd',fontWeight:c.bold?'700':'400'}}, r[c.key]||'—')));
+        table.appendChild(row);
+      });
+      card.appendChild(table);
+      return card;
+    };
+
+    el.appendChild($('div',{class:'section-hdr',style:{fontSize:'13px',marginTop:'10px'}},'🔫 Tests étalons — Tir (SP2022)'));
+    el.appendChild(mkRefTable('Phase 2 (S5→S8)',
+      [{key:'test',flex:'2',dim:true},{key:'objectif',flex:'1',bold:true}],
+      TIR_DATA.tests_phase2.map(t=>({test:t.test, objectif:t.objectif}))));
+    el.appendChild(mkRefTable('Phase 3 (S9→S12)',
+      [{key:'test',flex:'2',dim:true},{key:'objectif',flex:'1',bold:true}],
+      TIR_DATA.tests_phase3.map(t=>({test:t.test, objectif:t.objectif}))));
+
+    el.appendChild($('div',{class:'section-hdr',style:{fontSize:'13px',marginTop:'10px'}},'🚑 Standards STG'));
+    el.appendChild(mkRefTable('Standards de performance globaux',
+      [{key:'geste',flex:'2',dim:true},{key:'condition',flex:'1.5',dim:true},{key:'standard',flex:'1',bold:true}],
+      STG_DATA.standards_globaux.map(s=>({geste:s.geste, condition:s.condition, standard:s.standard}))));
+
     return el;
   }
 
@@ -9577,82 +10153,6 @@ function renderBilan(){
     ));
   }
 
-  if(subTab==='calendrier'){
-    // Mois affiché (S.calMonth = offset depuis le mois courant, 0 = courant)
-    const calOffset = S.calMonth || 0;
-    const now = new Date();
-    const viewDate = new Date(now.getFullYear(), now.getMonth()+calOffset, 1);
-    const yr = viewDate.getFullYear(); const mo = viewDate.getMonth();
-    const moNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-    // Couleurs par séance
-    const seanceColors = {'Haut 1':'#1E3A5F','Bas 1':'#06b6d4','AGT':'#10b981','Haut 2':'#7C3AED','Bas 2':'#e63946','Z2 Swings':'#3b82f6','Haut 3':'#a78bfa',
-      'Seuil':'#f97316','VO2max':'#eab308','VMA':'#facc15','Work capacity':'#8b5cf6','Z2':'#0ea5e9','Z2 long':'#0284c7'};
-    // Construire map date -> séances faites (via clés ex_ pour Guyane, log.moteur_sessions pour le Moteur)
-    const dayMap = {};
-    Object.keys(localStorage).filter(k=>k.startsWith('log:')).forEach(k=>{
-      const ds = k.slice(4);
-      try {
-        const entry = JSON.parse(localStorage.getItem(k));
-        const sess = new Set();
-        Object.keys(entry).forEach(ek=>{
-          if(ek.startsWith('ex_') && !ek.startsWith('ex_moteur_') && entry[ek] && (entry[ek].charge||entry[ek].rpe||entry[ek].notes)){
-            const nm = ek.slice(3).replace(/_b\d+_\d+.*$/,'');
-            if(seanceColors[nm]) sess.add(nm);
-          }
-        });
-        (entry.moteur_sessions||[]).forEach(sid=>{
-          const st = MTPL.session_types.find(s=>s.id===sid);
-          if(st) sess.add(st.nom);
-        });
-        // routine faite ?
-        const hasRoutine = entry.routine && entry.routine.length>0;
-        if(sess.size>0 || hasRoutine || (entry.soir&&entry.soir.seance)) dayMap[ds] = {sess:[...sess], routine:hasRoutine, entry};
-      } catch(e){}
-    });
-    // En-tête navigation mois
-    const navRow = $('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}});
-    navRow.appendChild($('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.calMonth=(S.calMonth||0)-1; render(); }},'‹'));
-    navRow.appendChild($('div',{style:{fontWeight:'700',fontSize:'15px'}},moNames[mo]+' '+yr));
-    navRow.appendChild($('button',{class:'btn btn-ghost btn-sm',onclick:()=>{ S.calMonth=(S.calMonth||0)+1; render(); }},'›'));
-    el.appendChild(navRow);
-    // Grille calendrier
-    const grid = $('div',{style:{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'3px',width:'100%',boxSizing:'border-box'}});
-    ['L','M','M','J','V','S','D'].forEach(d=>grid.appendChild($('div',{style:{textAlign:'center',fontSize:'10px',color:'#64748b',fontWeight:'600',padding:'2px 0'}},d)));
-    // Premier jour (lundi=0)
-    let firstDay = new Date(yr,mo,1).getDay(); firstDay = firstDay===0?6:firstDay-1;
-    const daysInMonth = new Date(yr,mo+1,0).getDate();
-    for(let i=0;i<firstDay;i++) grid.appendChild($('div',{}));
-    const todayS = (new Date()).toISOString().slice(0,10);
-    for(let d=1;d<=daysInMonth;d++){
-      const ds = yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-      const dayData = dayMap[ds];
-      const isToday = ds===todayS;
-      const cell = $('div',{style:{aspectRatio:'1',border:isToday?'2px solid #f5a623':'1px solid #1e2d42',borderRadius:'6px',padding:'2px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-start',cursor:dayData?'pointer':'default',boxSizing:'border-box',minWidth:'0',overflow:'hidden'}});
-      cell.appendChild($('div',{style:{fontSize:'10px',color:dayData?'#e0e1dd':'#475569',fontWeight:isToday?'700':'400'}},String(d)));
-      if(dayData){
-        const abbr={'H1':'H1','B1':'B1','AGT':'AGT','H2':'H2','B2':'B2','FB1':'FB1','FB2':'FB2','Z2 Swings':'Z2','H3':'H3',
-          'Seuil':'Seuil','VO2max':'VO2','VMA':'VMA','WC glyco':'WCg','WC seuil':'WCs','T1/T2':'T1','Z2':'Z2','Z2 long':'Z2L'};
-        const labels=$('div',{style:{display:'flex',flexDirection:'column',gap:'1px',width:'100%',marginTop:'1px',alignItems:'stretch'}});
-        dayData.sess.forEach(s=>labels.appendChild($('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:seanceColors[s]||'#64748b',borderRadius:'3px',padding:'1px 2px',textAlign:'center',lineHeight:'1.2',overflow:'hidden',whiteSpace:'nowrap'}},abbr[s]||s)));
-        if(dayData.routine && dayData.sess.length===0) labels.appendChild($('div',{style:{fontSize:'8px',color:'#94a3b8',textAlign:'center'}},'routine'));
-        cell.appendChild(labels);
-        cell.onclick=()=>{ S.bilanSub='journal'; S.journalDetail=ds; S.journalDetailData=dayData.entry; render(); };
-      }
-      grid.appendChild(cell);
-    }
-    el.appendChild(grid);
-    // Légende
-    const leg=$('div',{style:{marginTop:'14px',display:'flex',flexWrap:'wrap',gap:'8px'}});
-    const legAbbr={'Haut 1':'H1','Bas 1':'B1','AGT':'AGT','Haut 2':'H2','Bas 2':'B2','Z2 Swings':'Z2','Haut 3':'H3'};
-    Object.entries(seanceColors).forEach(([nm,col])=>{
-      leg.appendChild($('div',{style:{display:'flex',alignItems:'center',gap:'4px',fontSize:'11px',color:'#94a3b8'}},
-        $('div',{style:{fontSize:'8px',fontWeight:'700',color:'#fff',background:col,borderRadius:'3px',padding:'1px 4px'}},legAbbr[nm]||nm), nm));
-    });
-    el.appendChild($('div',{style:{fontSize:'11px',color:'#64748b',fontWeight:'600',marginTop:'10px',marginBottom:'4px'}},'Légende'));
-    el.appendChild(leg);
-    el.appendChild($('div',{style:{fontSize:'11px',color:'#475569',marginTop:'10px',fontStyle:'italic'}},'Touche un jour avec séance pour voir le détail. Cadre orange = aujourd\'hui.'));
-    return el;
-  }
 
   if(subTab==='journal'){
     // ── Vue détail d'une journée (clic sur historique) ──
