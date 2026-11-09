@@ -1,0 +1,575 @@
+
+#### VO2 cursor=pointer
+🏋️ VO2
+⏱ Séance minimum (~25 min)
+Journée chargée ? 4 exercices clés au lieu de la séance complète.
+●
+Course (retour conditionnel)
+substitué
+?
+AEROBIE VO2MAX
+Remplace : Vélo (Z2 / seuil / VO2max, capteur puissance)
+FORMAT
+5 × 3 min / récup 3 min
+REPOS
+⏱ 2 min
+RPE CIBLE
+~93-106 W (105-120 % FTP)
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
+Set 4
+Set 5
++Série
+T2 · FINISHER
+⚠ Indisponible — Matériel manquant : Barre de traction
+
+#### Z2 cursor=pointer
+🏋️ Z2
+⚙️ Configurer la Z2
+Modalité
+🚴 Vélo
+🏃 Course
+🪢 Corde
+🔔 Swing
+Durée (min)
+15
+20
+25
+30
+35
+40
+45
+50
+60
+Format
+Continu
+30/30
+40/20
+4 marche/1 course
+3 marche/2 course
+▶ Vélo · 20 min · continu — zone 130-150 bpm
+Z2 — BASE AÉROBIE. Le socle : c'est elle qui améliore la récupération et rend le reste soutenable. PILOTAGE : respiration nasale EN PREMIER, puissance et FC en repères de suivi. ⚠ Constat 18-19/08 : nasal confortable à 68-75 W alors que la grille Coggan place la Z2 à 49-66 W. NE PAS brider la puissance tant que la nasale est aisée — soit le FTP de 88 W est sous-estimé, soit la grille ne colle pas à ce profil. C'est la respiration qui tranche, pas le tableau.
+
+#### Portage 2 cursor=default
+BE READY
+S4/4 · déload · BLOC FORCE MAXIMALE
+Jeudi 10 Déc
+J1
+VO2
+VMA
+J2
+Z2
+Portage 2
+J3
+FB1
+J4
+Z2 long
+Portage 1
+J5
+AGT
+Seuil
+J6
+FB2
+T1/T2 (suspendu)
+···
+WC glyco
+WC seuil
+P1
+P2
+?
+🏋️ Z2
+⚙️ Configurer la Z2
+Modalité
+🚴 Vélo
+🏃 Course
+🪢 Corde
+🔔 Swing
+Durée (min)
+15
+20
+25
+30
+35
+40
+45
+50
+60
+Format
+Continu
+30/30
+40/20
+4 marche/1 course
+3 marche/2 course
+▶ Vélo · 20 min · continu — zone 130-150 bpm
+Z2 — BASE AÉROBIE. Le socle : c'est elle qui améliore la récupération et rend le reste soutenable. PILOTAGE : respiration nasale EN PREMIER, puissance et FC en repères de suivi. ⚠ Constat 18-19/08 : nasal confortable à 68-75 W alors que la grille Coggan place la Z2 à 49-66 W. NE PAS brider la puissance tant que la nasale est aisée — soit le FTP de 88 W est sous-estimé, soit la grille ne colle pas à ce profil. C'est la respiration qui tranche, pas le tableau.
+
+#### FB1 cursor=default
+BE READY
+S4/4 · déload · BLOC FORCE MAXIMALE
+Jeudi 10 Déc
+J1
+VO2
+VMA
+J2
+Z2
+Portage 2
+J3
+FB1
+J4
+Z2 long
+Portage 1
+J5
+AGT
+Seuil
+J6
+FB2
+T1/T2 (suspendu)
+···
+WC glyco
+WC seuil
+P1
+P2
+?
+🏋️ Z2
+⚙️ Configurer la Z2
+Modalité
+🚴 Vélo
+🏃 Course
+🪢 Corde
+🔔 Swing
+Durée (min)
+15
+20
+25
+30
+35
+40
+45
+50
+60
+Format
+Continu
+30/30
+40/20
+4 marche/1 course
+3 marche/2 course
+▶ Vélo · 20 min · continu — zone 130-150 bpm
+Z2 — BASE AÉROBIE. Le socle : c'est elle qui améliore la récupération et rend le reste soutenable. PILOTAGE : respiration nasale EN PREMIER, puissance et FC en repères de suivi. ⚠ Constat 18-19/08 : nasal confortable à 68-75 W alors que la grille Coggan place la Z2 à 49-66 W. NE PAS brider la puissance tant que la nasale est aisée — soit le FTP de 88 W est sous-estimé, soit la grille ne colle pas à ce profil. C'est la respiration qui tranche, pas le tableau.
+
+#### Z2 long cursor=pointer
+🏋️ Z2 long
+⚙️ Configurer la Z2
+Modalité
+🚴 Vélo
+🏃 Course
+🪢 Corde
+🔔 Swing
+Durée (min)
+30
+45
+60
+75
+90
+105
+120
+Format
+Continu
+30/30
+40/20
+4 marche/1 course
+3 marche/2 course
+▶ Vélo · 20 min · continu — zone 130-150 bpm
+Z2 LONGUE — volume aérobie de fond. C'est la DURÉE qui compte, pas l'intensité. Support de la mesure de DÉRIVE CARDIAQUE (découplage Pw:Hr) : intensité la plus CONSTANTE possible sur toute la séance, sinon la mesure n'est pas exploitable. Repères obtenus : −1,7 % (18/08) et +2,6 % (19/08) = base aérobie qui tient. <5 % = solide.
+
+#### Portage 1 cursor=default
+BE READY
+S4/4 · déload · BLOC FORCE MAXIMALE
+Jeudi 10 Déc
+J1
+VO2
+VMA
+J2
+Z2
+Portage 2
+J3
+FB1
+J4
+Z2 long
+Portage 1
+J5
+AGT
+Seuil
+J6
+FB2
+T1/T2 (suspendu)
+···
+WC glyco
+WC seuil
+P1
+P2
+?
+🏋️ Z2 long
+⚙️ Configurer la Z2
+Modalité
+🚴 Vélo
+🏃 Course
+🪢 Corde
+🔔 Swing
+Durée (min)
+30
+45
+60
+75
+90
+105
+120
+Format
+Continu
+30/30
+40/20
+4 marche/1 course
+3 marche/2 course
+▶ Vélo · 20 min · continu — zone 130-150 bpm
+Z2 LONGUE — volume aérobie de fond. C'est la DURÉE qui compte, pas l'intensité. Support de la mesure de DÉRIVE CARDIAQUE (découplage Pw:Hr) : intensité la plus CONSTANTE possible sur toute la séance, sinon la mesure n'est pas exploitable. Repères obtenus : −1,7 % (18/08) et +2,6 % (19/08) = base aérobie qui tient. <5 % = solide.
+
+#### AGT cursor=pointer
+🏋️ AGT
+⚡ PRIMING — NE PAS FATIGUER
+Swing léger ×10
+⏱ Séance minimum (~25 min)
+Journée chargée ? 4 exercices clés au lieu de la séance complète.
+●
+Chop/Lift élastique explosif
+substitué
+?
+VECTEUR
+Remplace : KB Swing 2 bras — alactique
+⇄ Alterne avec le slam/swing — 1 semaine sur 2
+FORMAT
+8-10 × 8-10 s
+REPOS
+⏱ 2min
+RPE CIBLE
+vitesse MAX · récup 2 min complète
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
+Set 4
+Set 5
+Set 6
+Set 7
+Set 8
+Set 9
++Série
+●
+Pseudo lancer rotationnel élastique
+substitué
+?
+ROTATION (OPTIONNEL)
+Remplace : Med ball rotationnel
+FORMAT
+4-6 × 5/côté
+REPOS
+⏱ 2 min
+RPE CIBLE
+explosif · récup complète
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+kg
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
+Set 4
+Set 5
+Set 6
++Série
+
+#### Seuil cursor=pointer
+🏋️ Seuil
+⏱ Séance minimum (~25 min)
+Journée chargée ? 4 exercices clés au lieu de la séance complète.
+●
+Step-ups lents (alternative douce)
+substitué
+?
+SEUIL BLOC
+Remplace : Vélo (Z2 / seuil / VO2max, capteur puissance)
+Vélo
+Course
+S1
+S2
+S3
+S4
+S5
+S6
+S7
+S8
+FORMAT
+S1 · vélo · (2×) 4-12-4 min
+REPOS
+⏱ 2 min
+RPE CIBLE
+inchangé
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
++Série
+
+#### FB2 cursor=pointer
+🏋️ FB2
+⚡ PRIMING — NE PAS FATIGUER
+CARs Épaule
+optionnel
+?
+CARs Hanche
+optionnel
+?
+⏱ Séance minimum (~25 min)
+Journée chargée ? 4 exercices clés au lieu de la séance complète.
+●
+Pseudo lancer rotationnel élastique
+Pseudo lancer élastique
+Pompe explosive
+substitué
+?
+RAPPEL PUISSANCE (OPTIONNEL)
+Remplace : Lancer horizontal med ball (chest pass / single-arm)
+FORMAT
+2-3×3-5
+REPOS
+⏱ 2 min
+RPE CIBLE
+vitesse max · récup complète
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+kg
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
++Série
+●
+Good Morning élastique
+substitué
+?
+HINGE LOURD
+Remplace : Romanian Deadlift (RDL)
+FORMAT
+Top set ×3
+REPOS
+⏱ 5min
+RPE CIBLE
+RPE 8 · RIR 1-2
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+kg
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
++Série
+●
+Pompes (poignées)
+substitué
+?
+PUSH HORIZONTAL PRINCIPAL
+Remplace : Bench plat barre
+FORMAT
+Top set ×3
+REPOS
+⏱ 5min
+RPE CIBLE
+RPE 8 · RIR 1-2
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+kg
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
++Série
+●
+Split squat, pied avant surélevé
+même pattern
+?
+UNILATÉRAL
+Remplace : Bulgarian Split Squat
+FORMAT
+3×8-10/j
+REPOS
+⏱ 2min
+RPE CIBLE
+RPE 7-8 · RIR 2-3
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+kg
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
++Série
+●
+TRX Row
+substitué
+?
+TIRAGE VERTICAL VOLUME
+Remplace : Pull-ups (prise pronation)
+FORMAT
+3-4×volume
+REPOS
+⏱ 2 min
+RPE CIBLE
+RPE 7-8 · RIR 2-3
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+kg
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
+Set 4
++Série
+●
+ISO militaire overcoming (porte)
+substitué
+?
+PUSH VERTICAL PRINCIPAL (OPTIONNEL)
+Remplace : Militaire barre (strict press)
+FORMAT
+2×6-8, RIR 2-3
+REPOS
+⏱ 3min
+RPE CIBLE
+RPE 7-8
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
++Série
+●
+Clamshell renforcé (substitut Copenhagen nomade)
+substitué
+?
+ADDUCTEUR PROPHYLAXIE (OPTIONNEL)
+Remplace : Copenhagen adductor
+FORMAT
+2×8-10/côté
+REPOS
+⏱ 1min
+RPE CIBLE
+5/10
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
++Série
+●
+Rotation externe élastique
+?
+PROPHYLAXIE ROTATION EXT (OPTIONNEL)
+FORMAT
+2×12/côté
+REPOS
+⏱ 1min
+RPE CIBLE
+5/10
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
++Série
+●
+Face Pull élastique
+?
+PROPHYLAXIE EPAULE
+FORMAT
+3×15
+REPOS
+⏱ 1min
+RPE CIBLE
+5/10
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
++Série
+FINISHER BFR BRAS
+⚠ Indisponible — Matériel manquant : Kettlebell(s)
+FINISHER BFR BRAS 2
+⚠ Indisponible — Matériel manquant : Kettlebell(s)
+●
+Dragon flag
+Hardstyle plank
+Dragon flag
+Hollow hold
+?
+ANTI EXTENSION FINISHER
+FORMAT
+3×5-6 (dragon flag) · 3×10-20 s (hardstyle) · 3×20-30 s (hollow)
+REPOS
+enchaîné
+RPE CIBLE
+contrôle
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
++Série
+●
+Russian twist
+Rotation fente bulgare
+Russian twist
+Chop/lift contrôlé
+?
+ROTATION PUISSANCE
+FORMAT
+Volume −50 % (séries de travail divisées par deux) — charge et technique inchangées
+REPOS
+enchaîné
+RPE CIBLE
+contrôle
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+kg
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
++Série
+●
+Nuque ISO élastique (4 directions)
+?
+COU OPTIONNEL (OPTIONNEL)
+FORMAT
+2×4 dir.×9-10s
+REPOS
+⏱ 60s
+RPE CIBLE
+5/10
+🌙 DÉLOAD — séries de travail ÷2, charge et technique INCHANGÉES. Sautent en premier : WC glyco, BFR, volume accessoire.
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
++Série
+
+ERRS []
