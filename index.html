@@ -6206,9 +6206,9 @@ function moteurEquipment(){
 // et c'est exactement pour cette raison que la copie du projet (moteur v4.1) et celle du
 // téléphone (v4.1 + écran Accueil + radar groupé) ont divergé sans que personne s'en aperçoive.
 // Toute évolution incrémente ces trois constantes.
-const APP_VERSION = 'moteur v4.25';
-const APP_VERSION_DATE = '08/11/2026';
-const APP_VERSION_NOTE = "v4.25 (08/11) — REPRISE APRÈS SEPT SEMAINES (programme v4_98). ① RESTRICTIONS MÉDICALES datées dans Réglages, avec exercices autorisés par période (pré-remplies sur la consigne PRP : main G coupée du 03 au 15/11, puis réintroduction S2 row + DB incliné + portages, S3 bench + militaire, S4 trap bar ; tractions, swings et KB après le 06/12), qui s'ajoutent à la douleur du jour ; poignet_G étendu à 40 exercices sur deux seuils (catalogue 2.3). Un créneau coupé par une restriction s'affiche « Absent (restriction) » et ne bloque plus la séance : les FB deviennent des FB sans main G. ② Accueil : carte REPRISE (couleur du jour, restrictions actives, objectifs de la semaine, palier course conseillé, compteur avec minimum de 3 séances). ③ Bilan matin : statut VFC Garmin (fixe la couleur du jour avec le sommeil) ; VFC chiffrée, FC repos et BOLT passent en saisie facultative repliée. ④ Bilan soir : palier couru, minute d'apparition et note maximale de la gêne genou, travail de ferme (durée, nature). ⑤ Début de fenêtre recalé une fois sur la reprise du 09/11 (semaine 1 = réadaptation) : la frise affichait encore « S4/4 déload » de la fenêtre du 12/08. Historique des versions précédentes : dépôt GitHub beready2/prog-app et BE_READY_Journal.md.";
+const APP_VERSION = 'moteur v4.26';
+const APP_VERSION_DATE = '09/11/2026';
+const APP_VERSION_NOTE = "v4.26 (09/11) — Paliers de course R1 → R6 détaillés (déroulé minute par minute, temps de course et de séance, rôle de chaque palier, consignes) : dépliable dans la carte Reprise de l'Accueil, palier conseillé surligné, et dans le Bilan soir. — v4.25 (08/11) — REPRISE APRÈS SEPT SEMAINES (programme v4_98). ① RESTRICTIONS MÉDICALES datées dans Réglages, avec exercices autorisés par période (pré-remplies sur la consigne PRP : main G coupée du 03 au 15/11, puis réintroduction S2 row + DB incliné + portages, S3 bench + militaire, S4 trap bar ; tractions, swings et KB après le 06/12), qui s'ajoutent à la douleur du jour ; poignet_G étendu à 40 exercices sur deux seuils (catalogue 2.3). Un créneau coupé par une restriction s'affiche « Absent (restriction) » et ne bloque plus la séance : les FB deviennent des FB sans main G. ② Accueil : carte REPRISE (couleur du jour, restrictions actives, objectifs de la semaine, palier course conseillé, compteur avec minimum de 3 séances). ③ Bilan matin : statut VFC Garmin (fixe la couleur du jour avec le sommeil) ; VFC chiffrée, FC repos et BOLT passent en saisie facultative repliée. ④ Bilan soir : palier couru, minute d'apparition et note maximale de la gêne genou, travail de ferme (durée, nature). ⑤ Début de fenêtre recalé une fois sur la reprise du 09/11 (semaine 1 = réadaptation) : la frise affichait encore « S4/4 déload » de la fenêtre du 12/08. Historique des versions précédentes : dépôt GitHub beready2/prog-app et BE_READY_Journal.md.";
 
 
 // ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────
@@ -8773,13 +8773,42 @@ const REPRISE = {
   ]
 };
 const PALIERS_COURSE = [
-  {id:'R1', fmt:'3 × 6 min course / 2 min marche'},
-  {id:'R2', fmt:'2 × 10 min / 2 min marche'},
-  {id:'R3', fmt:'12 min + 2 marche + 10 min'},
-  {id:'R4', fmt:'15 min + 2 marche + 10 min'},
-  {id:'R5', fmt:'20 min continu'},
-  {id:'R6', fmt:'25 min continu, puis 30'}
+  {id:'R1', fmt:'3 × 6 min course / 2 min marche', course:18, seance:38,
+   deroule:['5 min marche rapide','6 min course','2 min marche','6 min course','2 min marche','6 min course','5 min marche'],
+   role:'Palier de repli : chaque segment reste très loin du seuil de gêne (~15 min).'},
+  {id:'R2', fmt:'2 × 10 min / 2 min marche', course:20, seance:32,
+   deroule:['5 min marche rapide','10 min course','2 min marche','10 min course','5 min marche'],
+   role:'Départ de la reprise. Teste aussi si la marche « remet le compteur à zéro » : gêne dans le 2e segment = c\'est le volume total qui compte.'},
+  {id:'R3', fmt:'12 min + 2 marche + 10 min', course:22, seance:34,
+   deroule:['5 min marche rapide','12 min course','2 min marche','10 min course','5 min marche'],
+   role:'Le 1er segment s\'approche du seuil sans l\'atteindre.'},
+  {id:'R4', fmt:'15 min + 2 marche + 10 min', course:25, seance:37,
+   deroule:['5 min marche rapide','15 min course','2 min marche','10 min course','5 min marche'],
+   role:'Le 1er segment atteint le seuil actuel : c\'est ici que la minute d\'apparition doit avoir reculé.'},
+  {id:'R5', fmt:'20 min continu', course:20, seance:30,
+   deroule:['5 min marche rapide','20 min course continue','5 min marche'],
+   role:'Premier continu au-delà du seuil d\'aujourd\'hui.'},
+  {id:'R6', fmt:'25 min continu, puis 30', course:'25 → 30', seance:'35-40',
+   deroule:['5 min marche rapide','25 min course continue (30 à la séance suivante si 0-1/10)','5 min marche'],
+   role:'Validé à 30 min propres : l\'intensité course se rouvre (6×30/30).'}
 ];
+const PALIERS_CONSIGNES = 'Tapis 1 % · allure Z2 pilotée à la respiration (tu peux parler par phrases) · métronome 166 pas/min · 2 séances/semaine, jamais deux jours de suite ni le lendemain d\'une séance jambes. Gêne 0-3/10 stable : on continue · > 3, qui monte d\'un segment à l\'autre ou qui change la foulée : finir en marchant, palier inférieur la fois suivante · lendemain matin pas à zéro : palier inférieur · monter = 2 séances de suite à 0-1/10 et rien le lendemain.';
+function renderPaliersDetail(courantId, ouvert){
+  const d = $('details',{style:{marginTop:'6px'}});
+  if(ouvert) d.setAttribute('open','open');
+  d.appendChild($('summary',{style:{fontSize:'11.5px',fontWeight:'700',color:'#3a86ff',cursor:'pointer'}},'Détail des paliers R1 → R6'));
+  PALIERS_COURSE.forEach(p=>{
+    const cur = p.id===courantId;
+    d.appendChild($('div',{style:{border:'1px solid '+(cur?'#3a86ff':'#334155'),background:cur?'#3a86ff14':'transparent',borderRadius:'8px',padding:'7px 9px',marginTop:'6px'}},
+      $('div',{style:{display:'flex',justifyContent:'space-between',gap:'6px',fontSize:'12.5px',fontWeight:'800',color:cur?'#7fb0ff':'#e2e8f0'}},
+        $('span',null,p.id+(cur?' ◀ conseillé':'')+' — '+p.fmt),
+        $('span',{style:{fontWeight:'600',color:'#94a3b8',whiteSpace:'nowrap'}},p.course+' min course · '+p.seance+' min')),
+      $('div',{style:{fontSize:'11px',color:'#cbd5e1',marginTop:'3px'}},p.deroule.join(' → ')),
+      $('div',{style:{fontSize:'10.5px',color:'#64748b',marginTop:'3px'}},p.role)));
+  });
+  d.appendChild($('div',{style:{fontSize:'10.5px',color:'#94a3b8',marginTop:'7px',lineHeight:'1.45'}},PALIERS_CONSIGNES));
+  return d;
+}
 const PALIER_DEPART = 'R2';
 function dateAddDays(str, n){
   const [y,mo,d] = str.split('-').map(Number); const dt = new Date(y, mo-1, d+n);
@@ -8850,7 +8879,8 @@ function renderRepriseCard(){
     const pc = palierCourseConseille();
     const pf = (PALIERS_COURSE.find(p=>p.id===pc.id)||{}).fmt||'';
     card.appendChild(row('Course', sem.course+' — palier conseillé '+pc.id+' : '+pf));
-    card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',margin:'0 0 2px 70px'}}, pc.motif+' Gêne 0-3/10 stable : on continue ; > 3 ou foulée modifiée : marcher.'));
+    card.appendChild($('div',{style:{fontSize:'10.5px',color:'#64748b',margin:'0 0 2px 70px'}}, pc.motif));
+    card.appendChild(renderPaliersDetail(pc.id, false));
     card.appendChild(row('Vélo', sem.velo));
     // compteur de la semaine (lundi → aujourd'hui)
     let n=0; const jsd = new Date(); const dow = (jsd.getDay()+6)%7; const lundi = dateAddDays(todayStr,-dow);
@@ -10547,6 +10577,11 @@ function renderBilan(){
     crCard.appendChild($('div',{class:'scale-row',style:{flexWrap:'wrap'}},
       ...PALIERS_COURSE.map(p=>$('button',{class:'scale-btn'+(cr.palier===p.id?' sel':''),style:{minWidth:'44px'},
         onclick:()=>{ cr.palier = (cr.palier===p.id?null:p.id); saveCr(); render(); }}, p.id))));
+    if(cr.palier){
+      const pp = PALIERS_COURSE.find(p=>p.id===cr.palier);
+      if(pp) crCard.appendChild($('div',{style:{fontSize:'11px',color:'#cbd5e1',marginTop:'6px'}}, pp.id+' : '+pp.deroule.join(' → ')));
+    }
+    crCard.appendChild(renderPaliersDetail(cr.palier || palierCourseConseille().id, false));
     crCard.appendChild($('div',{class:'lbl',style:{marginTop:'8px'}},'Minute d\'apparition de la gêne genou (vide = aucune)'));
     crCard.appendChild($('input',{class:'input-field',type:'number',min:'0',max:'60',inputmode:'numeric',placeholder:'ex : 15',
       value:cr.gene_min!=null?String(cr.gene_min):'', oninput:(e)=>{ cr.gene_min = e.target.value===''?null:Number(e.target.value); saveCr(); }}));
