@@ -8,9 +8,10 @@ navigateur du téléphone et dans Firebase, jamais ici).
 - `index.html` — toute l'app : HTML, CSS, module JS, et **trois blocs JSON** intégrés :
   `moteur-catalogue-data` (exercices), `moteur-templates-data` (séances), `moteur-periodisation-data`.
 - `sport-pwa-sw.js` (service worker, réseau d'abord) · `sport-pwa-manifest.json`.
-- Documents de référence (hors dépôt, dossier « BE READY » du Mac de J) : programme d'exécution
-  (`BE_READY_Programme_v5_XX.md`, fait foi pour les décisions), manuel source (doctrine), boîte
-  d'entrée (`entrees_current.md`), journal des versions.
+- Documents de référence hors dépôt : dossier « BE READY » du Mac de J — programme d'exécution
+  (`BE_READY_Programme_v5_XX.md`, fait foi pour les décisions), manuel source (doctrine), journal des
+  versions ; projet claude.ai « BE READY » — **`claude/etat_physique.md`** (état du fil, boîte d'entrée,
+  points ouverts, chantiers app restants). À relire en début de session, à mettre à jour en fin.
 
 ## Règles de modification (non négociables)
 1. **JSON : parser puis re-sérialiser** (`json.loads` → modification → `json.dumps(ensure_ascii=False, indent=2)`).
