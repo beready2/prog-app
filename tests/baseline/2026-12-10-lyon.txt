@@ -268,6 +268,8 @@ Set 9
 +Série
 ●
 Pseudo lancer rotationnel élastique
+Pseudo lancer rotationnel élastique
+Chop/lift explosif
 substitué
 ?
 ROTATION (OPTIONNEL)
@@ -516,6 +518,7 @@ FINISHER BFR BRAS 2
 ●
 Dragon flag
 Hardstyle plank
+Roue abdominale
 Dragon flag
 Hollow hold
 ?

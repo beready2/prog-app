@@ -329,6 +329,8 @@ Set 3
 ●
 Romanian Deadlift (RDL)
 RDL
+Good morning
+Good morning élastique
 DL trap bar
 ?
 HINGE VOLUME
@@ -485,6 +487,7 @@ Set 3
 ●
 Dragon flag
 Hardstyle plank
+Roue abdominale
 Dragon flag
 Hollow hold
 ?
@@ -814,6 +817,8 @@ Set 3
 ●
 Romanian Deadlift (RDL)
 RDL
+Good morning
+Good morning élastique
 DL trap bar
 ?
 HINGE LOURD
@@ -1020,6 +1025,7 @@ Set 3
 ●
 Dragon flag
 Hardstyle plank
+Roue abdominale
 Dragon flag
 Hollow hold
 ?

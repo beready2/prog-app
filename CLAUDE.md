@@ -8,7 +8,7 @@ navigateur du téléphone et dans Firebase, jamais ici).
 - `index.html` — toute l'app : HTML, CSS, module JS, et **trois blocs JSON** intégrés :
   `moteur-catalogue-data` (exercices), `moteur-templates-data` (séances), `moteur-periodisation-data`.
 - `sport-pwa-sw.js` (service worker, réseau d'abord) · `sport-pwa-manifest.json`.
-- Documents de référence hors dépôt : dossier « BE READY » du Mac de J — programme d'exécution
+- Documents de référence hors dépôt : dossier Drive « BE READY / Références » — programme d'exécution
   (`BE_READY_Programme_v5_XX.md`, fait foi pour les décisions), manuel source (doctrine), journal des
   versions ; projet claude.ai « BE READY » — **`claude/etat_physique.md`** (état du fil, boîte d'entrée,
   points ouverts, chantiers app restants). À relire en début de session, à mettre à jour en fin.
@@ -25,7 +25,7 @@ navigateur du téléphone et dans Firebase, jamais ici).
    seulement `bash tests/run.sh --update`. Zéro erreur JS tolérée.
 5. Ne jamais casser les données existantes du téléphone : nouvelles clés avec valeur par défaut,
    migrations idempotentes et signalées (drapeau `migration…` dans l'état).
-6. Après publication, mettre à jour la copie `index.html` du dossier « BE READY » du Mac.
+6. Après publication, vérifier que `origin/main` porte bien le commit (la copie sur le Mac n'est plus tenue).
 7. L'app fait foi en cas de divergence avec le programme ; signaler toute divergence trouvée.
 
 ## Repères de fond (décisions de J, à ne pas rediscuter sans lui)

@@ -49,8 +49,8 @@ input,select,textarea{box-sizing:border-box}
 {
   "meta": {
     "nom": "Be Ready — Catalogue d'exercices",
-    "version": "2.4",
-    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet). v1.3 ajoute les machines maison (presse a cuisse, leg extension/curl, poulies haute/basse, butterfly) et des substituts lies aux contre-indications (pas seulement au materiel manquant) : ex. genou_G_itband -> presse_cuisse, poignet_G -> poulie. v1.4 ajoute Front Squat (test RSA officiel MTI, prise croisee), Push Press et Squat Clean (standards MTI documentes, priorite future une fois epaule/poignet stabilises). v1.5 (31/08/2026, chantier 46) aligne le catalogue sur les decisions de J du 30/08, restees jusqu'ici dans le programme et le manuel seulement : (a) le RDL hanches hautes barre du sol devient explicitement le MOUVEMENT DE REFERENCE du hinge (test ET travail, creneau lourd ET creneau volume) ; (b) le souleve de terre conventionnel cesse d'etre le substitut par defaut de la trap bar et sa fiche porte son statut reel de dernier recours hors score ; (c) PRISE NUE par defaut partout (chin-ups, pull-ups, KB RDL) - la sangle redevient un delestage ponctuel, et elle disparait du NOM de l'exercice KB RDL ; (d) les notes qui decrivaient les creneaux par nom de seance du split abandonne (Haut 1, Haut 3, Bas 2) sont reformulees par PATTERN. v1.6 (31/08/2026, chantier 49) — TRANSFERT DES FICHES TECHNIQUES HÉRITÉES DU SPLIT. Jusqu'ici, pour 30 exercices, la note affichée sur la carte de séance ne venait PAS de ce catalogue mais des fiches du split abandonne le 08/08 (moteurFindGuyaneRef), qui primaient sur le champ notes[]. Consequence : la note maintenue etait masquee, et le bench affichait encore « Test officiel S9 - Objectif : 80 kg x 3 » (cible de juillet, perimee depuis le 3RM a 91 kg du 08/08). Les reperes techniques utiles sont desormais DANS ce catalogue, reformules par pattern et non par nom de seance ; les valeurs datees sont corrigees ou marquees perimees. Le catalogue redevient la source unique de la note d'exercice. v1.7 (31/08/2026, chantier 55) — (a) row_bucheron reclasse en haut_force (il etait le seul tirage horizontal classe en isolation/volume) et dote d'une chaine de substituts ; (b) med_ball_slam : la contre-indication epaule_g_extreme etait une cle morte, jamais lue par le moteur — reclassee epaule_G etage 1 ; (c) pseudo_lancer_rot_elastique : pattern 'rotation' orphelin -> 'rotation_anti_rotation', sinon le repli par pattern ne pouvait jamais le trouver ; (d) cle de substitut 'poignet_g' (minuscule) renommee : elle ne correspondait a aucune contre-indication. ⚠ CHAMP windows_ok : il est DEPRECIE. Le moteur ne le lit nulle part — le seul filtre reel est le materiel (equipment_required) croise avec le materiel coche, plus les contre-indications du jour. 97 entrees portent encore le tag 'paris', fenetre abandonnee depuis le 30/08 (Lyon confirme a la place). Conserve pour trace, ne doit plus servir a decider quoi que ce soit. v1.8 (31/08/2026, chantier 57) — VOCABULAIRE DE QUALITES REMIS D'EQUERRE. 23 fiches portaient des tags qui n'existent dans AUCUNE taxonomie (puissance, gainage, stabilite, force, rotation, unilateral, excentrique...) : elles etaient donc invisibles a toute requete par qualite — y compris au repli du moteur et au radar. Trois fiches n'avaient meme AUCUN tag, dont row_bucheron, le seul tirage horizontal de la semaine. Tout est normalise sur les 19 qualites declarees ; les mots qui designent une METHODE et non une qualite (excentrique, isometrique, explosivite, puissance_verticale, motricite, prophylaxie_genou) sont deplaces dans un champ 'methodes' — rien n'est perdu. pompes_poignees repasse en progression 'reps' (ce n'est pas un mouvement charge). ⚠ LIMITE CONNUE : la taxonomie n'a pas de 'rotation controlee' ; les rotations non balistiques (russian twist, bridge/GHD rotation) sont provisoirement rangees sous puissance_rotation — approximation assumee, chantier 65. v1.9 (31/08/2026, chantiers 60 et 64) — le pattern fourre-tout 'rotation_anti_rotation' (15 fiches) est ECLATE en anti_extension / anti_rotation / rotation_produite : le moteur substitue « meme pattern » EN PREMIER, une planche pouvait donc remplacer un lancer rotationnel, deux qualites que le code lui-meme qualifie d'INVERSES. hip_thrust porte enfin son statut reel (retire du travail de jambes courant). v2.0 (01/09/2026) — DECISIONS DE J : (a) FUSION des deux fiches doublons 'Planche laterale' et 'Side plank' en une seule (side_plank), avec G_first et le standard du ch. 12 ; (b) la POMPE CLAQUEE est documentee comme progression de la pompe explosive et substitut d'ENTRAINEMENT du lancer horizontal sans med ball — avec deux reserves ecrites : reception en extension de poignet (poignet G) et absence de bareme, donc jamais substitut de TEST. v2.1 (02/09/2026) — J confirme que le KB swing ne gene PAS l'epaule G, meme a un bras a 16 kg en alternance. (a) L'etiquette 'epaule_G' est retiree des TROIS fiches de swing : elle ne declenchait rien (aucun etage de delestage), elle affichait donc une protection inexistante. (b) Consequence bien plus importante que le tag : le SWING 1 BRAS ALTERNE 40/20 est reautorise, et c'est le SEUL format documente qui atteigne la Z2 (144 bpm mesures, contre 115 pour le 2 bras en 30/30). Il redevient l'outil Z2 des fenetres sans velo ni tapis — dont les deux fenetres de decembre (valise + KB). v2.2 (03/09/2026, chantier 65) — DEUX QUALITES AJOUTEES A LA TAXONOMIE (17 -> 19 -> 21 qualites), fermant la limite connue ecrite en v1.8. (a) 'rotation_controlee' : russian_twist, bridge_rotation, ghd_rotation portaient 'puissance_rotation' alors que leurs propres notes disent le contraire mot pour mot ('Contrôlé, jamais en balistique', 'Rotation en position NEUTRE', 'STOP dès que l'alignement se dégrade') — un tag qui contredit sa propre fiche fausse le compteur d'axe : l'axe teste 'Rotation' (lancer_rot, un lancer EXPLOSIF en metres) aurait ete crédité par des exercices lents et controles. Verifie sans consequence sur le compteur hebdomadaire : le créneau AGT (med_ball_rotationnel / chop_lift_elastique, explosifs, presents chaque semaine) reste le vecteur reel de l'axe 'Rotation' ; le créneau FB2 'rotation_puissance' (russian_twist par defaut) n'en a jamais ete le vecteur effectif une fois le tag corrige, ce qui est la lecture honnete de ce que fait ce mouvement. Un 4e cas non cite par l'audit v3 mais de meme nature, trouve en verifiant chaque fiche 'rotation_produite' plutot que de faire confiance a la liste : rotation_fente_elastique ('tempo LENT, pas explosif en appui instable' dans sa propre note) — corrige a l'identique. (b) 'sante_articulaire' : les 8 fiches recensees par l'audit v3 comme 'invisibles a tout comptage' (face_pull, rotation_ext_epaule, renfo_poignet_g, leg_extension_machine — les 4 fiches 'prophylaxie_*' — et elevations_laterales, curl_biceps_bfr, extension_triceps_bfr, butterfly — 4 accessoires haut_iso_volume choisis nommement pour epargner une articulation sensible, chacun le dit dans sa propre note : 'sans charge articulaire', 'sans stress articulaire epaule G', 'Surveiller l'epaule G'). Aucune des deux qualites n'alimente un axe du radar (T_AXE_VECTEURS inchange) : ni la rotation controlee ni la sante articulaire ne sont testees par une epreuve du ch. 12 aujourd'hui — c'est un constat, pas une omission a corriger dans ce chantier. Ce que a change : ces 12 fiches sont desormais rattachees a une qualite REELLE plutot qu'a aucune ou a la mauvaise, donc visibles a tout filtre ou audit futur par qualite. v2.2 (suite, chantier 73, audit v4 recupere) — cle de materiel morte : presse_jambes_2j et presse_jambes_1j exigeaient 'presse_jambes', absent de toute fenetre ; la taxonomie declare 'presse_cuisse' (la presse existe a la maison). Corrige -> 'presse_cuisse' : les deux fiches redeviennent atteignables la ou l'appareil existe reellement. v2.3 (08/11/2026, app v4.25) : poignet_G étendu à 43 fiches. Deux seuils : 1 = douleur légère ou restriction modérée → suspension, appuis au sol, frappe, tirages lourds coupés (fiches historiques) ; 2 = douleur forte ou restriction stricte (PRP) → toute préhension ou poussée chargée coupée (39 fiches ajoutées en severity_overrides 2 : bench, rows, carries, swings, KB, landmine, poulies…). front_squat, push_press, pompe_explosive et t2_enchaine passent au seuil 1. v2.4 (09/11/2026, app v4.27) : front_squat retiré (seuil poignet_G = 0 : toujours bloqué, plus jamais proposé) ; le Zercher le remplace dans le RSA.",
+    "version": "2.5",
+    "description": "Socle commun lu par le manuel (PDF, évergreen) et par le moteur de séance de l'app (choix live selon matériel/fenêtre/bilan). Aucune charge ici — seulement tags qualité, matériel, côté, contre-indication, substituts par fenêtre. v1.1 ajoute pattern de mouvement, progression_type, severity_overrides. v1.2 ajoute protocole_cycle_eligible: seuls militaire_barre et bench_plat_barre utilisaient la methode Top Set conjugate/Cluster dans Guyane -- les autres exercices gardent un format standard (pas de top set/cluster pour Bulgarian, RDL, Zercher, etc., coherent avec le risque genou/poignet). v1.3 ajoute les machines maison (presse a cuisse, leg extension/curl, poulies haute/basse, butterfly) et des substituts lies aux contre-indications (pas seulement au materiel manquant) : ex. genou_G_itband -> presse_cuisse, poignet_G -> poulie. v1.4 ajoute Front Squat (test RSA officiel MTI, prise croisee), Push Press et Squat Clean (standards MTI documentes, priorite future une fois epaule/poignet stabilises). v1.5 (31/08/2026, chantier 46) aligne le catalogue sur les decisions de J du 30/08, restees jusqu'ici dans le programme et le manuel seulement : (a) le RDL hanches hautes barre du sol devient explicitement le MOUVEMENT DE REFERENCE du hinge (test ET travail, creneau lourd ET creneau volume) ; (b) le souleve de terre conventionnel cesse d'etre le substitut par defaut de la trap bar et sa fiche porte son statut reel de dernier recours hors score ; (c) PRISE NUE par defaut partout (chin-ups, pull-ups, KB RDL) - la sangle redevient un delestage ponctuel, et elle disparait du NOM de l'exercice KB RDL ; (d) les notes qui decrivaient les creneaux par nom de seance du split abandonne (Haut 1, Haut 3, Bas 2) sont reformulees par PATTERN. v1.6 (31/08/2026, chantier 49) — TRANSFERT DES FICHES TECHNIQUES HÉRITÉES DU SPLIT. Jusqu'ici, pour 30 exercices, la note affichée sur la carte de séance ne venait PAS de ce catalogue mais des fiches du split abandonne le 08/08 (moteurFindGuyaneRef), qui primaient sur le champ notes[]. Consequence : la note maintenue etait masquee, et le bench affichait encore « Test officiel S9 - Objectif : 80 kg x 3 » (cible de juillet, perimee depuis le 3RM a 91 kg du 08/08). Les reperes techniques utiles sont desormais DANS ce catalogue, reformules par pattern et non par nom de seance ; les valeurs datees sont corrigees ou marquees perimees. Le catalogue redevient la source unique de la note d'exercice. v1.7 (31/08/2026, chantier 55) — (a) row_bucheron reclasse en haut_force (il etait le seul tirage horizontal classe en isolation/volume) et dote d'une chaine de substituts ; (b) med_ball_slam : la contre-indication epaule_g_extreme etait une cle morte, jamais lue par le moteur — reclassee epaule_G etage 1 ; (c) pseudo_lancer_rot_elastique : pattern 'rotation' orphelin -> 'rotation_anti_rotation', sinon le repli par pattern ne pouvait jamais le trouver ; (d) cle de substitut 'poignet_g' (minuscule) renommee : elle ne correspondait a aucune contre-indication. ⚠ CHAMP windows_ok : il est DEPRECIE. Le moteur ne le lit nulle part — le seul filtre reel est le materiel (equipment_required) croise avec le materiel coche, plus les contre-indications du jour. 97 entrees portent encore le tag 'paris', fenetre abandonnee depuis le 30/08 (Lyon confirme a la place). Conserve pour trace, ne doit plus servir a decider quoi que ce soit. v1.8 (31/08/2026, chantier 57) — VOCABULAIRE DE QUALITES REMIS D'EQUERRE. 23 fiches portaient des tags qui n'existent dans AUCUNE taxonomie (puissance, gainage, stabilite, force, rotation, unilateral, excentrique...) : elles etaient donc invisibles a toute requete par qualite — y compris au repli du moteur et au radar. Trois fiches n'avaient meme AUCUN tag, dont row_bucheron, le seul tirage horizontal de la semaine. Tout est normalise sur les 19 qualites declarees ; les mots qui designent une METHODE et non une qualite (excentrique, isometrique, explosivite, puissance_verticale, motricite, prophylaxie_genou) sont deplaces dans un champ 'methodes' — rien n'est perdu. pompes_poignees repasse en progression 'reps' (ce n'est pas un mouvement charge). ⚠ LIMITE CONNUE : la taxonomie n'a pas de 'rotation controlee' ; les rotations non balistiques (russian twist, bridge/GHD rotation) sont provisoirement rangees sous puissance_rotation — approximation assumee, chantier 65. v1.9 (31/08/2026, chantiers 60 et 64) — le pattern fourre-tout 'rotation_anti_rotation' (15 fiches) est ECLATE en anti_extension / anti_rotation / rotation_produite : le moteur substitue « meme pattern » EN PREMIER, une planche pouvait donc remplacer un lancer rotationnel, deux qualites que le code lui-meme qualifie d'INVERSES. hip_thrust porte enfin son statut reel (retire du travail de jambes courant). v2.0 (01/09/2026) — DECISIONS DE J : (a) FUSION des deux fiches doublons 'Planche laterale' et 'Side plank' en une seule (side_plank), avec G_first et le standard du ch. 12 ; (b) la POMPE CLAQUEE est documentee comme progression de la pompe explosive et substitut d'ENTRAINEMENT du lancer horizontal sans med ball — avec deux reserves ecrites : reception en extension de poignet (poignet G) et absence de bareme, donc jamais substitut de TEST. v2.1 (02/09/2026) — J confirme que le KB swing ne gene PAS l'epaule G, meme a un bras a 16 kg en alternance. (a) L'etiquette 'epaule_G' est retiree des TROIS fiches de swing : elle ne declenchait rien (aucun etage de delestage), elle affichait donc une protection inexistante. (b) Consequence bien plus importante que le tag : le SWING 1 BRAS ALTERNE 40/20 est reautorise, et c'est le SEUL format documente qui atteigne la Z2 (144 bpm mesures, contre 115 pour le 2 bras en 30/30). Il redevient l'outil Z2 des fenetres sans velo ni tapis — dont les deux fenetres de decembre (valise + KB). v2.2 (03/09/2026, chantier 65) — DEUX QUALITES AJOUTEES A LA TAXONOMIE (17 -> 19 -> 21 qualites), fermant la limite connue ecrite en v1.8. (a) 'rotation_controlee' : russian_twist, bridge_rotation, ghd_rotation portaient 'puissance_rotation' alors que leurs propres notes disent le contraire mot pour mot ('Contrôlé, jamais en balistique', 'Rotation en position NEUTRE', 'STOP dès que l'alignement se dégrade') — un tag qui contredit sa propre fiche fausse le compteur d'axe : l'axe teste 'Rotation' (lancer_rot, un lancer EXPLOSIF en metres) aurait ete crédité par des exercices lents et controles. Verifie sans consequence sur le compteur hebdomadaire : le créneau AGT (med_ball_rotationnel / chop_lift_elastique, explosifs, presents chaque semaine) reste le vecteur reel de l'axe 'Rotation' ; le créneau FB2 'rotation_puissance' (russian_twist par defaut) n'en a jamais ete le vecteur effectif une fois le tag corrige, ce qui est la lecture honnete de ce que fait ce mouvement. Un 4e cas non cite par l'audit v3 mais de meme nature, trouve en verifiant chaque fiche 'rotation_produite' plutot que de faire confiance a la liste : rotation_fente_elastique ('tempo LENT, pas explosif en appui instable' dans sa propre note) — corrige a l'identique. (b) 'sante_articulaire' : les 8 fiches recensees par l'audit v3 comme 'invisibles a tout comptage' (face_pull, rotation_ext_epaule, renfo_poignet_g, leg_extension_machine — les 4 fiches 'prophylaxie_*' — et elevations_laterales, curl_biceps_bfr, extension_triceps_bfr, butterfly — 4 accessoires haut_iso_volume choisis nommement pour epargner une articulation sensible, chacun le dit dans sa propre note : 'sans charge articulaire', 'sans stress articulaire epaule G', 'Surveiller l'epaule G'). Aucune des deux qualites n'alimente un axe du radar (T_AXE_VECTEURS inchange) : ni la rotation controlee ni la sante articulaire ne sont testees par une epreuve du ch. 12 aujourd'hui — c'est un constat, pas une omission a corriger dans ce chantier. Ce que a change : ces 12 fiches sont desormais rattachees a une qualite REELLE plutot qu'a aucune ou a la mauvaise, donc visibles a tout filtre ou audit futur par qualite. v2.2 (suite, chantier 73, audit v4 recupere) — cle de materiel morte : presse_jambes_2j et presse_jambes_1j exigeaient 'presse_jambes', absent de toute fenetre ; la taxonomie declare 'presse_cuisse' (la presse existe a la maison). Corrige -> 'presse_cuisse' : les deux fiches redeviennent atteignables la ou l'appareil existe reellement. v2.3 (08/11/2026, app v4.25) : poignet_G étendu à 43 fiches. Deux seuils : 1 = douleur légère ou restriction modérée → suspension, appuis au sol, frappe, tirages lourds coupés (fiches historiques) ; 2 = douleur forte ou restriction stricte (PRP) → toute préhension ou poussée chargée coupée (39 fiches ajoutées en severity_overrides 2 : bench, rows, carries, swings, KB, landmine, poulies…). front_squat, push_press, pompe_explosive et t2_enchaine passent au seuil 1. v2.4 (09/11/2026, app v4.27) : front_squat retiré (seuil poignet_G = 0 : toujours bloqué, plus jamais proposé) ; le Zercher le remplace dans le RSA. v2.5 (22/11/2026, app v4.29) : ajout de ab_wheel (roue abdominale), à la demande de J qui la pratique sans gêne ; sa fiche porte les mêmes restrictions que le dragon flag (coude : seuil 1, poignet : seuil 2). Note du dragon_flag corrigée : elle disait l'ab wheel « proscrit définitivement », ce qui contredit la pratique actuelle.",
     "usage_app": "L'app filtre exercises[] par window courante (equipement dispo) + qualites prioritaires de la phase active + contraindications actives (flags bilan du jour), puis assemble la séance. Les charges viennent des baselines/e1RM stockés séparément (état, pas catalogue)."
   },
   "taxonomies": {
@@ -402,7 +402,7 @@ input,select,textarea{box-sizing:border-box}
       },
       {
         "id": "coude_G_epicondyle",
-        "label": "Coude G — épicondyle médial, ab wheel proscrit"
+        "label": "Coude G — épicondyle médial"
       },
       {
         "id": "cervicales",
@@ -1383,7 +1383,39 @@ input,select,textarea{box-sizing:border-box}
       "substitutes": {
         "variation": "hardstyle_plank"
       },
-      "notes": "Remplace l'ab wheel (proscrit définitivement). Aucun matériel spécifique : un point d'ancrage solide (banc, cadre de lit, meuble lourd) et de la place suffisent. Variation/repli : hardstyle plank (même famille anti-extension).",
+      "notes": "Alternative à la roue abdominale quand elle n'est pas disponible. Aucun matériel spécifique : un point d'ancrage solide (banc, cadre de lit, meuble lourd) et de la place suffisent. Variation/repli : hardstyle plank (même famille anti-extension).",
+      "pattern": "anti_extension",
+      "progression_type": "isometrie",
+      "protocole_cycle_eligible": false,
+      "severity_overrides": {
+        "poignet_G": 2
+      }
+    },
+    {
+      "id": "ab_wheel",
+      "name": "Roue abdominale (ab wheel)",
+      "category": "gainage",
+      "qualities": [
+        "anti_extension"
+      ],
+      "equipment_required": [
+        "aucun"
+      ],
+      "side_rule": "bilateral",
+      "contraindications": [
+        "coude_G_epicondyle",
+        "poignet_G"
+      ],
+      "delestage_tier": null,
+      "windows_ok": [
+        "maison",
+        "paris",
+        "nomade"
+      ],
+      "substitutes": {
+        "variation": "hardstyle_plank"
+      },
+      "notes": "Anti-extension dynamique, plus dur que le hardstyle plank. Départ à genoux, bas du dos plaqué, amplitude réduite d'abord : on ne descend que tant que le bassin ne s'ouvre pas. Séries courtes (5–8 reps). Matériel : une roue, objet d'appoint non repris dans la liste du matériel (fiche déclarée « aucun »). Reprise décidée par J le 22/11/2026 : pratiquée sans gêne. Repli : hardstyle plank.",
       "pattern": "anti_extension",
       "progression_type": "isometrie",
       "protocole_cycle_eligible": false,
@@ -5734,6 +5766,10 @@ const GTG_EXERCICES = [
   {id:'militaire_gtg',icon:'🏋️',name:'Militaire GTG',reps:'1×3 reps',charge:'20 kg',rpe:'5/10',note:'3–4 passes/jour · 90 min min entre passes · SNC frais. Bureau, couloir, partout. Jamais fatigant. ~44% 1RM. ⚠ Les JOURS OÙ LE MILITAIRE EST DÉJÀ CHARGÉ EN SÉANCE (FB2, et Portage 2 tant qu’il y figure) : GTG allégé ou sauté — wall sit + dead hang seuls. La règle se lie à la CHARGE DU JOUR, pas à un numéro de bloc. (31/08 : elle disait « BLOC 3 (S6-S8) », découpage du plan Guyane abandonné le 08/08.)',freq:'3–4×/jour · allégé les jours de militaire chargé'},
   {id:'wall_sit_gtg',icon:'🪑',name:'Wall Sit GTG · bilatéral',reps:'1×35s propre',charge:'BW',rpe:'5/10',note:'Form stricte (pas de triche bassin). Passage unilatéral quand 60s bilatéral confortable.',freq:'3–4×/jour'},
   {id:'dead_hang_gtg',icon:'🤸',name:'Dead Hang',reps:'1×max (obj. 30s)',charge:'BW passif',rpe:'3/10',note:'Stimulus GTG à part entière. Décompression rachis + santé épaule G. ARRÊT si poignet G douloureux.',freq:'3–4×/jour'},
+  // v4.29 (22/11) — pompes et tractions en GTG, sur demande de J. Le nombre de reps se choisit par série
+  // (repsSel) ; log.gtg[id] = {passages:[…], reps:{'1':n,…}} (clé reps nouvelle, absente = défaut).
+  {id:'pompes_gtg',icon:'💪',name:'Pompes sur poignées · GTG',reps:'reps au choix',charge:'BW',rpe:'4–5/10',repsSel:{min:1,max:30,def:8},note:'Pompes sur poignées (pas mains au sol). Séries LOIN de l\u2019échec (RPE ≤ 5, environ la moitié du max) ; le nombre de reps se règle par série. Arrêt dès gêne. 90 min min entre passes. Dérogation GTG décidée par J le 22/11/2026 : adaptation assumée, pas un standard.',freq:'selon énergie · pas de série à l\u2019échec'},
+  {id:'tractions_gtg',icon:'🧗',name:'Tractions · GTG',reps:'reps au choix',charge:'BW',rpe:'4–5/10',repsSel:{min:1,max:15,def:3},note:'Si barre disponible. Séries LOIN de l\u2019échec (RPE ≤ 5, environ la moitié du max) ; le nombre de reps se règle par série. Arrêt dès gêne. Dérogation GTG décidée par J le 22/11/2026 : adaptation assumée, pas un standard.',freq:'selon énergie · pas de série à l\u2019échec'},
   {id:'iso_vert',icon:'🔲',name:'ISO Overcoming vertical · FALLBACK uniquement',reps:'1×8s 100%',charge:'—',rpe:'9/10',note:'⚠ FALLBACK si pas de barre disponible. Encadrement porte, pousser vers le haut 8s à 100%. Remplace militaire GTG en déplacement.',freq:'si pas de barre'}];
 
 // ── CARS / RENFO MATIN ────────────────────────────────────────────────────
@@ -6073,7 +6109,7 @@ const STG_DATA = {
 // v4.25 (08/11) — RESTRICTIONS MÉDICALES ACTIVES : persistantes et datées, elles s'ajoutent à la douleur
 // déclarée le matin (le moteur prend le maximum des deux). Niveau 1 = modérée, 2 = stricte.
 // v4.28 (22/11) : pompes sur poignées et tractions réintroduites sur décision de J (poignet calme plusieurs jours après la 1re exposition).
-const M_REINTRO_PEC = ['pompes_poignees','chin_ups','pull_ups_pronation'];
+const M_REINTRO_PEC = ['pompes_poignees','chin_ups','pull_ups_pronation','ab_wheel'];
 const M_REINTRO_S2 = ['row_bucheron','trx_row','poulie_basse','landmine_row_meadows','db_bench_incline','farmer_carry','suitcase_carry','shrug'].concat(M_REINTRO_PEC);
 const M_REINTRO_S3 = M_REINTRO_S2.concat(['bench_plat_barre','militaire_barre','gtg_militaire','poulie_haute']);
 const M_REINTRO_S4 = M_REINTRO_S3.concat(['trap_bar_deadlift']);
@@ -6129,7 +6165,8 @@ function loadMoteurState(){
   // v4.28 (22/11) — les restrictions DÉJÀ enregistrées (Firebase / navigateur) ne relisent pas les valeurs par
   // défaut : on y ajoute, sans doublon, pompes sur poignées + tractions aux exceptions des périodes S2-S4.
   // Idempotente : rejouable sans effet ; le drapeau est persisté au prochain enregistrement de l'état.
-  if(!st.migrationReintroPEC){
+  // v4.29 : même migration rejouée sous un nouveau drapeau pour ajouter ab_wheel (drapeau v1 déjà posé sur le téléphone).
+  if(!st.migrationReintroPEC2){
     st.restrictions.forEach(r=>{
       if(r && /^prp_s[234]$/.test(r.id)){
         if(!Array.isArray(r.exceptions)) r.exceptions = [];
@@ -6137,6 +6174,7 @@ function loadMoteurState(){
       }
     });
     st.migrationReintroPEC = true;
+    st.migrationReintroPEC2 = true;
   }
   return st;
 }
@@ -6220,9 +6258,9 @@ function moteurEquipment(){
 // et c'est exactement pour cette raison que la copie du projet (moteur v4.1) et celle du
 // téléphone (v4.1 + écran Accueil + radar groupé) ont divergé sans que personne s'en aperçoive.
 // Toute évolution incrémente ces trois constantes.
-const APP_VERSION = 'moteur v4.28';
+const APP_VERSION = 'moteur v4.29';
 const APP_VERSION_DATE = '22/11/2026';
-const APP_VERSION_NOTE = "v4.28 (22/11) — RESTRICTIONS : pompes sur poignées et tractions (chin-ups, pull-ups) ajoutées aux exercices autorisés dès le 22/11, sur décision de J. Migration unique et idempotente des restrictions déjà enregistrées sur le téléphone (drapeau migrationReintroPEC) ; catalogue inchangé (2.4). — v4.27 (09/11) — ① SÉANCE MINIMUM (~25 min) sur chaque séance de force : 4 créneaux obligatoires réalisables. ② VALIDATION EN FIN DE SÉANCE dans Sport (faite/partielle/modifiée/manquée, RPE, et palier + gêne pour Z2/Seuil/VO2) — mêmes données que Bilan › Soir. ③ FRONT SQUAT RETIRÉ (décision de J) : le Zercher le remplace dans le RSA, en repère interne non opposable ; sélecteur de squat = Zercher / trap bar / presse ; épreuve « Zercher 3RM » dans Tests. ④ Un exercice coupé par une restriction n'est plus remplacé que par le même pattern (fini les tractions remplacées par un militaire). ⑤ Courbes de la reprise sur l'Accueil : minute d'apparition de la gêne, bench à la nouvelle prise (dès le 23/11). ⑥ Allègement sur preuve : cohérence cardiaque et journal du soir repliés (0 saisie en 31 jours).";
+const APP_VERSION_NOTE = "v4.29 (22/11) — ① CORRECTIF SUBSTITUTION : le sélecteur de variante affiche toujours l'exercice réellement proposé, grise les options indisponibles, et un choix enregistré vers un exercice coupé est ignoré (fini le leg curl à la place d'un hinge) ; good morning ajouté au sélecteur de hinge. ② ROUE ABDOMINALE ajoutée au catalogue (2.5) et au sélecteur de gainage, mêmes restrictions que le dragon flag, exception ajoutée aux restrictions enregistrées (drapeau migrationReintroPEC2). ③ GTG : pompes sur poignées et tractions, nombre de reps réglable par série, total dans l'historique. — v4.28 (22/11) — RESTRICTIONS : pompes sur poignées et tractions (chin-ups, pull-ups) ajoutées aux exercices autorisés dès le 22/11, sur décision de J. Migration unique et idempotente des restrictions déjà enregistrées sur le téléphone (drapeau migrationReintroPEC) ; catalogue inchangé (2.4).";
 
 
 // ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────
@@ -6821,7 +6859,9 @@ function moteurResolveSession(session){
       const l = getLog(); const swaps = l._swaps || {};
       const swapKey = grp+'_swap@'+(session&&session.id?session.id:'')+'@'+slot.role;
       const chosen = swaps[swapKey];
-      if(chosen && M_EX_BY_ID[chosen]) effSlot = Object.assign({}, slot, {exercice_pref: chosen});
+      // v4.29 — un swap enregistré vers un exercice devenu indisponible est ignoré (sinon le créneau
+      // retombait sur un repli par pattern arbitraire, ex. leg curl à la place d'un hinge).
+      if(chosen && M_EX_BY_ID[chosen] && moteurExerciseStatus(chosen).ok) effSlot = Object.assign({}, slot, {exercice_pref: chosen});
     }
     const r = Object.assign({slot: effSlot}, moteurResolveSlot(effSlot, usedIds));
     // Le priming ne « consomme » pas son exercice : la rotation externe sert en activation ET en
@@ -7624,7 +7664,7 @@ function tScoreOf(ep, res){
 // besoin de savoir si un mouvement de test est atteignable autrement que par un créneau.
 const SWAP_GROUPS = {
   hinge: { roles:new Set(['hinge_principal','test_hinge_dl','hinge_volume','hinge_lourd']),
-           choices:[['rdl','RDL'],['trap_bar_deadlift','DL trap bar']] },
+           choices:[['rdl','RDL'],['good_morning','Good morning'],['good_morning_elastique','Good morning élastique'],['trap_bar_deadlift','DL trap bar']] },
   // Zercher ET Front squat sont légitimes : Zercher pour le gainage antérieur, les longs tibias
   // (1m84) et le transfert MMA/terrain ; Front squat pour le standard RSA officiel. Choix libre.
   squat: { roles:new Set(['squat_bilateral','test_rsa_front_squat']),
@@ -7632,7 +7672,7 @@ const SWAP_GROUPS = {
   // Gainage anti-extension : hardstyle plank (iso, plafonne) ↔ dragon flag (dynamique, plus dur —
   // ⚠ tension coude G : à réserver aux jours coude silencieux).
   gainage_ae: { roles:new Set(['gainage_finisher','anti_extension_finisher']),
-           choices:[['hardstyle_plank','Hardstyle plank'],['dragon_flag','Dragon flag'],['hollow_hold','Hollow hold']] },
+           choices:[['hardstyle_plank','Hardstyle plank'],['ab_wheel','Roue abdominale'],['dragon_flag','Dragon flag'],['hollow_hold','Hollow hold']] },
   // Anti-rotation (résister à la rotation — Pallof). NE PAS y mettre de twist : le twist est de la
   // rotation, qualité INVERSE. Créneau obligatoire, on garde l'anti-rotation.
   // Anti-rotation pur (Pallof). Pas d'autre vraie anti-rotation au catalogue → un seul choix, donc
@@ -7710,6 +7750,7 @@ const T_AXE_VECTEURS = {
 // invisibles à tout comptage — d'où les fausses alertes « proprioception : aucun vecteur ».)
 const T_ALIAS_CATALOGUE = {
   militaire_gtg:'gtg_militaire', wall_sit_gtg:'gtg_wall_sit', dead_hang_gtg:'gtg_dead_hang',
+  pompes_gtg:'pompes_poignees', tractions_gtg:'chin_ups',
   iso_vert:'iso_militaire_overcoming', clamshell:'clamshell_g_first', petersen:'petersen_step_up',
   calf_raise:'calf_raise_g_first', bolt:'test_bolt', coherence:'coherence_cardiaque',
   humming:'humming_expiratoire', poignet_g:'renfo_poignet_g', squat_espagnol_gtg:'squat_espagnol',
@@ -9599,20 +9640,26 @@ function renderSessionCards(el, session){
       const grp = SWAP_GROUPS[gk];
       if(!grp.roles.has(slot.role)) continue;
       const _equip = moteurEquipment();
-      const choices = grp.choices.filter(c => {
-        const ex = M_EX_BY_ID[c[0]];
-        if(!ex) return false;
+      let choices = grp.choices.filter(c => {
+        const ex2 = M_EX_BY_ID[c[0]];
+        if(!ex2) return false;
         // masquer une option si son matériel requis n'est pas disponible
-        const req = ex.equipment_required || [];
-        return req.every(r => _equip.includes(r));
+        const req = ex2.equipment_required || [];
+        return req.every(r2 => _equip.includes(r2));
       });
+      // v4.29 — l'exercice réellement affiché doit toujours figurer dans la liste et être celui qui
+      // est sélectionné (sinon le sélecteur affichait la 1re option, et resélectionner celle-ci ne
+      // déclenchait aucun changement). Les options coupées restent visibles mais grisées, avec la raison.
+      if(ex && ex.id && !choices.some(c => c[0]===ex.id)) choices = [[ex.id, ex.name]].concat(choices);
       if(choices.length < 2) continue;
       const swapKey = gk+'_swap@'+(session&&session.id?session.id:'')+'@'+slot.role;
       const sel = $('select',{class:'input-mod',style:{fontSize:'10px',padding:'2px 4px',marginLeft:'6px'},
         onchange:(e)=>{ const l=getLog(); l._swaps=l._swaps||{}; l._swaps[swapKey]=e.target.value; saveLog(l); render(); }
       });
       choices.forEach(c=>{
-        const opt=$('option',{value:c[0]}, c[1]);
+        const st2 = moteurExerciseStatus(c[0]);
+        const opt=$('option',{value:c[0]}, c[1] + (st2.ok ? '' : ' — indisponible'));
+        if(!st2.ok && c[0]!==ex.id){ opt.disabled=true; opt.title=st2.reason||''; }
         if(c[0]===ex.id) opt.selected=true;
         sel.appendChild(opt);
       });
@@ -9885,7 +9932,29 @@ function renderGTG(){
           g[ex.id]=el_; l.gtg=g; saveLog(l); render();
         }
       }, done?'✓':' ', 'Set '+p);
-      passRow.appendChild(chip);
+      if(ex.repsSel){
+        // v4.29 — reps par série : un sélecteur sous chaque chip ; la valeur choisie est conservée même
+        // avant de cocher, et la défaut (ex.repsSel.def) s'applique si rien n'a été choisi.
+        const cur = (exLog.reps && exLog.reps[p] != null) ? Number(exLog.reps[p]) : ex.repsSel.def;
+        const sel = $('select',{class:'input-mod',style:{fontSize:'11px',padding:'2px 2px',marginTop:'4px',width:'100%'},
+          'aria-label':'Reps set '+p,
+          onchange:(e)=>{
+            const l=getLog(); const g=l.gtg||{};
+            const el_=(g[ex.id]||{passages:[]});
+            el_.reps = el_.reps || {};
+            el_.reps[p] = Number(e.target.value);
+            g[ex.id]=el_; l.gtg=g; saveLog(l); render();
+          }
+        });
+        for(let n=ex.repsSel.min;n<=ex.repsSel.max;n++){
+          const o=$('option',{value:String(n)}, n+' rep'+(n>1?'s':''));
+          if(n===cur) o.selected=true;
+          sel.appendChild(o);
+        }
+        const wrap=$('div',{style:{display:'flex',flexDirection:'column',alignItems:'stretch',flex:'1',minWidth:'0'}});
+        wrap.appendChild(chip); wrap.appendChild(sel);
+        passRow.appendChild(wrap);
+      } else passRow.appendChild(chip);
     }
     card.appendChild(passRow);
 
@@ -10813,12 +10882,20 @@ function renderBilan(){
         el.appendChild(ec); }
       // GTG exécuté ce jour-là
       if(entry.gtg && Object.keys(entry.gtg).length){
-        const gtgNames={'militaire_gtg':'Militaire 20kg','wall_sit_gtg':'Wall sit','dead_hang_gtg':'Dead hang','iso_vert':'ISO vertical'};
+        const gtgNames={'militaire_gtg':'Militaire 20kg','wall_sit_gtg':'Wall sit','dead_hang_gtg':'Dead hang','iso_vert':'ISO vertical','pompes_gtg':'Pompes (poignées)','tractions_gtg':'Tractions'};
         const gc=$('div',{class:'card'}); gc.appendChild($('div',{style:{fontWeight:'700',marginBottom:'6px'}},'🔁 GTG du jour'));
         let any=false;
         Object.keys(entry.gtg).forEach(gid=>{
           const p=entry.gtg[gid]; const nb=(p&&p.passages)?p.passages.length:0;
-          if(nb>0){ any=true; gc.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},gtgNames[gid]||gid),$('span',{style:{fontWeight:'600'}},nb+' passage'+(nb>1?'s':'')))); }
+          if(nb>0){ any=true;
+            // v4.29 — pompes/tractions : total des reps réellement choisies par série (défaut si non réglée).
+            let repsTxt='';
+            const gdef=GTG_EXERCICES.find(x=>x.id===gid);
+            if(gdef && gdef.repsSel){
+              const tot=p.passages.reduce((a,n)=>a+((p.reps&&p.reps[n]!=null)?Number(p.reps[n]):gdef.repsSel.def),0);
+              repsTxt=' · '+tot+' reps';
+            }
+            gc.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},gtgNames[gid]||gid),$('span',{style:{fontWeight:'600'}},nb+' passage'+(nb>1?'s':'')+repsTxt))); }
         });
         if(any) el.appendChild(gc);
       }

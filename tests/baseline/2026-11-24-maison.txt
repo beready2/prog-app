@@ -191,7 +191,7 @@ RAPPEL PUISSANCE
 ●
 Zercher squat
 Zercher
-Trap bar (squat haut)
+Trap bar (squat haut) — indisponible
 Presse à jambes (2j)
 ?
 SQUAT
@@ -257,8 +257,10 @@ Set 3
 +Série
 ●
 Good Morning élastique
-RDL
-DL trap bar
+RDL — indisponible
+Good morning
+Good morning élastique
+DL trap bar — indisponible
 substitué
 ?
 HINGE VOLUME
@@ -408,7 +410,8 @@ Set 3
 ●
 Hardstyle Plank
 Hardstyle plank
-Dragon flag
+Roue abdominale
+Dragon flag — indisponible
 Hollow hold
 substitué
 ?
@@ -592,8 +595,9 @@ VECTEUR
 ○ Absent (restriction) — Restriction médicale active : Poignet G — arthrose post-rupture ligamentaire
 ●
 Pseudo lancer rotationnel élastique
+Pseudo lancer rotationnel élastique
 Chop/lift explosif
-Med ball rotationnel
+Med ball rotationnel — indisponible
 substitué
 ?
 ROTATION (OPTIONNEL)
@@ -663,11 +667,11 @@ optionnel
 Journée chargée ? 4 exercices clés au lieu de la séance complète.
 ●
 Pseudo lancer rotationnel élastique
-Lancer horizontal
-Lancer rotationnel
+Lancer horizontal — indisponible
+Lancer rotationnel — indisponible
 Pseudo lancer élastique
-KB swing explosif
-Pompe explosive
+KB swing explosif — indisponible
+Pompe explosive — indisponible
 substitué
 ?
 RAPPEL PUISSANCE (OPTIONNEL)
@@ -688,8 +692,10 @@ Set 3
 +Série
 ●
 Good Morning élastique
-RDL
-DL trap bar
+RDL — indisponible
+Good morning
+Good morning élastique
+DL trap bar — indisponible
 substitué
 ?
 HINGE LOURD
@@ -736,7 +742,8 @@ Set 3
 +Série
 ●
 Presse à cuisse
-Bulgarian
+Presse à cuisse
+Bulgarian — indisponible
 Presse une jambe
 Presse à jambes (1j, guidée)
 Split squat surélevé
@@ -847,7 +854,8 @@ FINISHER BFR BRAS 2
 ●
 Hardstyle Plank
 Hardstyle plank
-Dragon flag
+Roue abdominale
+Dragon flag — indisponible
 Hollow hold
 substitué
 ?
