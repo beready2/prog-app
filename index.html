@@ -6109,7 +6109,7 @@ const STG_DATA = {
 // v4.25 (08/11) — RESTRICTIONS MÉDICALES ACTIVES : persistantes et datées, elles s'ajoutent à la douleur
 // déclarée le matin (le moteur prend le maximum des deux). Niveau 1 = modérée, 2 = stricte.
 // v4.28 (22/11) : pompes sur poignées et tractions réintroduites sur décision de J (poignet calme plusieurs jours après la 1re exposition).
-const M_REINTRO_PEC = ['pompes_poignees','chin_ups','pull_ups_pronation','ab_wheel'];
+const M_REINTRO_PEC = ['pompes_poignees','chin_ups','pull_ups_pronation','ab_wheel','dragon_flag'];
 const M_REINTRO_S2 = ['row_bucheron','trx_row','poulie_basse','landmine_row_meadows','db_bench_incline','farmer_carry','suitcase_carry','shrug'].concat(M_REINTRO_PEC);
 const M_REINTRO_S3 = M_REINTRO_S2.concat(['bench_plat_barre','militaire_barre','gtg_militaire','poulie_haute']);
 const M_REINTRO_S4 = M_REINTRO_S3.concat(['trap_bar_deadlift']);
@@ -6166,7 +6166,8 @@ function loadMoteurState(){
   // défaut : on y ajoute, sans doublon, pompes sur poignées + tractions aux exceptions des périodes S2-S4.
   // Idempotente : rejouable sans effet ; le drapeau est persisté au prochain enregistrement de l'état.
   // v4.29 : même migration rejouée sous un nouveau drapeau pour ajouter ab_wheel (drapeau v1 déjà posé sur le téléphone).
-  if(!st.migrationReintroPEC2){
+  // v4.30 : rejouée sous le drapeau PEC3 pour ajouter dragon_flag (les drapeaux PEC et PEC2 sont déjà posés sur le téléphone).
+  if(!st.migrationReintroPEC3){
     st.restrictions.forEach(r=>{
       if(r && /^prp_s[234]$/.test(r.id)){
         if(!Array.isArray(r.exceptions)) r.exceptions = [];
@@ -6175,6 +6176,7 @@ function loadMoteurState(){
     });
     st.migrationReintroPEC = true;
     st.migrationReintroPEC2 = true;
+    st.migrationReintroPEC3 = true;
   }
   return st;
 }
@@ -6258,9 +6260,9 @@ function moteurEquipment(){
 // et c'est exactement pour cette raison que la copie du projet (moteur v4.1) et celle du
 // téléphone (v4.1 + écran Accueil + radar groupé) ont divergé sans que personne s'en aperçoive.
 // Toute évolution incrémente ces trois constantes.
-const APP_VERSION = 'moteur v4.29';
+const APP_VERSION = 'moteur v4.30';
 const APP_VERSION_DATE = '22/11/2026';
-const APP_VERSION_NOTE = "v4.29 (22/11) — ① CORRECTIF SUBSTITUTION : le sélecteur de variante affiche toujours l'exercice réellement proposé, grise les options indisponibles, et un choix enregistré vers un exercice coupé est ignoré (fini le leg curl à la place d'un hinge) ; good morning ajouté au sélecteur de hinge. ② ROUE ABDOMINALE ajoutée au catalogue (2.5) et au sélecteur de gainage, mêmes restrictions que le dragon flag, exception ajoutée aux restrictions enregistrées (drapeau migrationReintroPEC2). ③ GTG : pompes sur poignées et tractions, nombre de reps réglable par série, total dans l'historique. — v4.28 (22/11) — RESTRICTIONS : pompes sur poignées et tractions (chin-ups, pull-ups) ajoutées aux exercices autorisés dès le 22/11, sur décision de J. Migration unique et idempotente des restrictions déjà enregistrées sur le téléphone (drapeau migrationReintroPEC) ; catalogue inchangé (2.4).";
+const APP_VERSION_NOTE = "v4.30 (22/11) — DRAGON FLAG ajouté aux exceptions de restriction (décision de J : seul frein, la force des abdos) : il redevient proposable dans le sélecteur de gainage ; migration idempotente (drapeau migrationReintroPEC3). Catalogue inchangé (2.5). — v4.29 (22/11) — ① CORRECTIF SUBSTITUTION : le sélecteur de variante affiche toujours l'exercice réellement proposé, grise les options indisponibles, et un choix enregistré vers un exercice coupé est ignoré (fini le leg curl à la place d'un hinge) ; good morning ajouté au sélecteur de hinge. ② ROUE ABDOMINALE ajoutée au catalogue (2.5) et au sélecteur de gainage, mêmes restrictions que le dragon flag, exception ajoutée aux restrictions enregistrées (drapeau migrationReintroPEC2). ③ GTG : pompes sur poignées et tractions, nombre de reps réglable par série, total dans l'historique.";
 
 
 // ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────
