@@ -220,18 +220,16 @@ Set 2
 Set 3
 +Série
 ●
-Tirage poulie haute
-substitué · contre-indication
+Chin-ups (prise supination)
 ?
 TIRAGE VERTICAL LESTE
-Remplace : Chin-ups (prise supination)
 FORMAT
 3×3-4
 REPOS
 ⏱ 3min
 RPE CIBLE
 RPE 8-9
-kg
+kg lesté (PDC de base)
 reps
 RPE
 SÉRIES EFFECTUÉES:
@@ -515,18 +513,16 @@ Set 2
 Set 3
 +Série
 ●
-DB Bench incliné
-même pattern
+Pompes (poignées)
 ?
 POMPES VOLUME
-Remplace : Pompes (poignées)
 FORMAT
 3×max-2
 REPOS
 ⏱ 2 min
 RPE CIBLE
 RIR 2
-kg/main
+kg
 reps
 RPE
 SÉRIES EFFECTUÉES:
@@ -763,18 +759,16 @@ Set 2
 Set 3
 +Série
 ●
-Tirage poulie haute
-même pattern
+Pull-ups (prise pronation)
 ?
 TIRAGE VERTICAL VOLUME
-Remplace : Pull-ups (prise pronation)
 FORMAT
 3-4×volume
 REPOS
 ⏱ 2 min
 RPE CIBLE
 RPE 7-8 · RIR 2-3
-kg
+kg lesté (PDC de base)
 reps
 RPE
 SÉRIES EFFECTUÉES:

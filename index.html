@@ -6072,18 +6072,20 @@ const STG_DATA = {
 
 // v4.25 (08/11) — RESTRICTIONS MÉDICALES ACTIVES : persistantes et datées, elles s'ajoutent à la douleur
 // déclarée le matin (le moteur prend le maximum des deux). Niveau 1 = modérée, 2 = stricte.
-const M_REINTRO_S2 = ['row_bucheron','trx_row','poulie_basse','landmine_row_meadows','db_bench_incline','farmer_carry','suitcase_carry','shrug'];
+// v4.28 (22/11) : pompes sur poignées et tractions réintroduites sur décision de J (poignet calme plusieurs jours après la 1re exposition).
+const M_REINTRO_PEC = ['pompes_poignees','chin_ups','pull_ups_pronation'];
+const M_REINTRO_S2 = ['row_bucheron','trx_row','poulie_basse','landmine_row_meadows','db_bench_incline','farmer_carry','suitcase_carry','shrug'].concat(M_REINTRO_PEC);
 const M_REINTRO_S3 = M_REINTRO_S2.concat(['bench_plat_barre','militaire_barre','gtg_militaire','poulie_haute']);
 const M_REINTRO_S4 = M_REINTRO_S3.concat(['trap_bar_deadlift']);
 const M_RESTRICTIONS_DEFAUT = [
   {id:'prp_strict', contra:'poignet_G', niveau:2, du:'2026-11-03', au:'2026-11-15', exceptions:[],
    note:'PRP du 03/11 — 10 jours sans forcer (consigne médicale), reprise le lundi 16/11. Aucune préhension ni poussée chargée main G.'},
   {id:'prp_s2', contra:'poignet_G', niveau:2, du:'2026-11-16', au:'2026-11-22', exceptions:M_REINTRO_S2.slice(),
-   note:'Semaine 2 : row + DB incliné + portages, attelle à la 1re exposition. Le reste de la préhension chargée reste coupé.'},
+   note:'Semaine 2 : row + DB incliné + portages, attelle à la 1re exposition. Pompes sur poignées et tractions autorisées dès le 22/11 (décision de J). Le reste de la préhension chargée reste coupé.'},
   {id:'prp_s3', contra:'poignet_G', niveau:2, du:'2026-11-23', au:'2026-11-29', exceptions:M_REINTRO_S3.slice(),
-   note:'Semaine 3 : + bench à la prise actuelle, militaire (GTG compris) et tirage poulie haute (seul tirage vertical avant les tractions), attelle.'},
+   note:'Semaine 3 : + bench à la prise actuelle, militaire (GTG compris) et tirage poulie haute, attelle. Pompes sur poignées et tractions déjà autorisées (22/11).'},
   {id:'prp_s4', contra:'poignet_G', niveau:2, du:'2026-11-30', au:'2026-12-06', exceptions:M_REINTRO_S4.slice(),
-   note:'Semaine 4 : + trap bar. Tractions, swings et KB : après le 06/12, à réévaluer.'}
+   note:'Semaine 4 : + trap bar. Swings et KB : après le 06/12, à réévaluer. Pompes sur poignées et tractions autorisées depuis le 22/11.'}
 ];
 function loadMoteurState(){
   const stored = load('moteur_state');
@@ -6123,6 +6125,18 @@ function loadMoteurState(){
   // semaine 1 = réadaptation hors vague, puis S1 léger, S2 modéré, S3 (30/11-06/12). Une seule fois.
   if(st.windowStart === '2026-08-12' && !st.migrationReprise1109){
     st.windowStart = '2026-11-09'; st.vagueOffsetJours = 7; st.migrationReprise1109 = true;
+  }
+  // v4.28 (22/11) — les restrictions DÉJÀ enregistrées (Firebase / navigateur) ne relisent pas les valeurs par
+  // défaut : on y ajoute, sans doublon, pompes sur poignées + tractions aux exceptions des périodes S2-S4.
+  // Idempotente : rejouable sans effet ; le drapeau est persisté au prochain enregistrement de l'état.
+  if(!st.migrationReintroPEC){
+    st.restrictions.forEach(r=>{
+      if(r && /^prp_s[234]$/.test(r.id)){
+        if(!Array.isArray(r.exceptions)) r.exceptions = [];
+        M_REINTRO_PEC.forEach(x=>{ if(r.exceptions.indexOf(x) < 0) r.exceptions.push(x); });
+      }
+    });
+    st.migrationReintroPEC = true;
   }
   return st;
 }
@@ -6206,9 +6220,9 @@ function moteurEquipment(){
 // et c'est exactement pour cette raison que la copie du projet (moteur v4.1) et celle du
 // téléphone (v4.1 + écran Accueil + radar groupé) ont divergé sans que personne s'en aperçoive.
 // Toute évolution incrémente ces trois constantes.
-const APP_VERSION = 'moteur v4.27';
-const APP_VERSION_DATE = '09/11/2026';
-const APP_VERSION_NOTE = "v4.27 (09/11) — ① SÉANCE MINIMUM (~25 min) sur chaque séance de force : 4 créneaux obligatoires réalisables. ② VALIDATION EN FIN DE SÉANCE dans Sport (faite/partielle/modifiée/manquée, RPE, et palier + gêne pour Z2/Seuil/VO2) — mêmes données que Bilan › Soir. ③ FRONT SQUAT RETIRÉ (décision de J) : le Zercher le remplace dans le RSA, en repère interne non opposable ; sélecteur de squat = Zercher / trap bar / presse ; épreuve « Zercher 3RM » dans Tests. ④ Un exercice coupé par une restriction n'est plus remplacé que par le même pattern (fini les tractions remplacées par un militaire). ⑤ Courbes de la reprise sur l'Accueil : minute d'apparition de la gêne, bench à la nouvelle prise (dès le 23/11). ⑥ Allègement sur preuve : cohérence cardiaque et journal du soir repliés (0 saisie en 31 jours). — v4.26 (09/11) — Paliers de course R1 → R6 détaillés (déroulé minute par minute, temps de course et de séance, rôle de chaque palier, consignes) : dépliable dans la carte Reprise de l'Accueil, palier conseillé surligné, et dans le Bilan soir. — v4.25 (08/11) — REPRISE APRÈS SEPT SEMAINES (programme v4_98). ① RESTRICTIONS MÉDICALES datées dans Réglages, avec exercices autorisés par période (pré-remplies sur la consigne PRP : main G coupée du 03 au 15/11, puis réintroduction S2 row + DB incliné + portages, S3 bench + militaire, S4 trap bar ; tractions, swings et KB après le 06/12), qui s'ajoutent à la douleur du jour ; poignet_G étendu à 40 exercices sur deux seuils (catalogue 2.3). Un créneau coupé par une restriction s'affiche « Absent (restriction) » et ne bloque plus la séance : les FB deviennent des FB sans main G. ② Accueil : carte REPRISE (couleur du jour, restrictions actives, objectifs de la semaine, palier course conseillé, compteur avec minimum de 3 séances). ③ Bilan matin : statut VFC Garmin (fixe la couleur du jour avec le sommeil) ; VFC chiffrée, FC repos et BOLT passent en saisie facultative repliée. ④ Bilan soir : palier couru, minute d'apparition et note maximale de la gêne genou, travail de ferme (durée, nature). ⑤ Début de fenêtre recalé une fois sur la reprise du 09/11 (semaine 1 = réadaptation) : la frise affichait encore « S4/4 déload » de la fenêtre du 12/08. Historique des versions précédentes : dépôt GitHub beready2/prog-app et BE_READY_Journal.md.";
+const APP_VERSION = 'moteur v4.28';
+const APP_VERSION_DATE = '22/11/2026';
+const APP_VERSION_NOTE = "v4.28 (22/11) — RESTRICTIONS : pompes sur poignées et tractions (chin-ups, pull-ups) ajoutées aux exercices autorisés dès le 22/11, sur décision de J. Migration unique et idempotente des restrictions déjà enregistrées sur le téléphone (drapeau migrationReintroPEC) ; catalogue inchangé (2.4). — v4.27 (09/11) — ① SÉANCE MINIMUM (~25 min) sur chaque séance de force : 4 créneaux obligatoires réalisables. ② VALIDATION EN FIN DE SÉANCE dans Sport (faite/partielle/modifiée/manquée, RPE, et palier + gêne pour Z2/Seuil/VO2) — mêmes données que Bilan › Soir. ③ FRONT SQUAT RETIRÉ (décision de J) : le Zercher le remplace dans le RSA, en repère interne non opposable ; sélecteur de squat = Zercher / trap bar / presse ; épreuve « Zercher 3RM » dans Tests. ④ Un exercice coupé par une restriction n'est plus remplacé que par le même pattern (fini les tractions remplacées par un militaire). ⑤ Courbes de la reprise sur l'Accueil : minute d'apparition de la gêne, bench à la nouvelle prise (dès le 23/11). ⑥ Allègement sur preuve : cohérence cardiaque et journal du soir repliés (0 saisie en 31 jours).";
 
 
 // ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────

@@ -219,8 +219,24 @@ Set 1
 Set 2
 Set 3
 +Série
+●
+Chin-ups (prise supination)
+?
 TIRAGE VERTICAL LESTE
-○ Absent (restriction) — Sans barre de traction (Lyon), il n'existe AUCUN tirage vertical au catalogue — le programme §2 le dit lui-même (« tractions si barre repérée »). Une absence prévue, pas une panne : ne bloque plus FB1 et ne consomme pas le TRX row, réservé au SEUL tirage horizontal chargé de la semaine (row_bucheron, ci-dessous) — chantier 68/71, audit v4.
+FORMAT
+3×3-4
+REPOS
+⏱ 3min
+RPE CIBLE
+RPE 8-9
+kg lesté (PDC de base)
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
++Série
 ●
 DB Bench incliné
 ?
@@ -497,18 +513,16 @@ Set 2
 Set 3
 +Série
 ●
-DB Bench incliné
-même pattern
+Pompes (poignées)
 ?
 POMPES VOLUME
-Remplace : Pompes (poignées)
 FORMAT
 3×max-2
 REPOS
 ⏱ 2 min
 RPE CIBLE
 RIR 2
-kg/main
+kg
 reps
 RPE
 SÉRIES EFFECTUÉES:
@@ -695,8 +709,8 @@ Set 2
 Set 3
 +Série
 ●
-DB Bench incliné
-même pattern
+Pompes (poignées)
+substitué
 ?
 PUSH HORIZONTAL PRINCIPAL
 Remplace : Bench plat barre
@@ -706,7 +720,7 @@ REPOS
 ⏱ 5min
 RPE CIBLE
 RPE 8 · RIR 1-2
-kg/main
+kg
 reps
 RPE
 SÉRIES EFFECTUÉES:
@@ -738,8 +752,25 @@ Set 1
 Set 2
 Set 3
 +Série
+●
+Pull-ups (prise pronation)
+?
 TIRAGE VERTICAL VOLUME
-○ Absent (restriction) — Restriction médicale active : Poignet G — arthrose post-rupture ligamentaire
+FORMAT
+3-4×volume
+REPOS
+⏱ 2 min
+RPE CIBLE
+RPE 7-8 · RIR 2-3
+kg lesté (PDC de base)
+reps
+RPE
+SÉRIES EFFECTUÉES:
+Set 1
+Set 2
+Set 3
+Set 4
++Série
 PUSH VERTICAL PRINCIPAL
 ○ Absent (restriction) — Restriction médicale active : Poignet G — arthrose post-rupture ligamentaire
 ●
