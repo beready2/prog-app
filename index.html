@@ -6260,9 +6260,9 @@ function moteurEquipment(){
 // et c'est exactement pour cette raison que la copie du projet (moteur v4.1) et celle du
 // téléphone (v4.1 + écran Accueil + radar groupé) ont divergé sans que personne s'en aperçoive.
 // Toute évolution incrémente ces trois constantes.
-const APP_VERSION = 'moteur v4.30';
+const APP_VERSION = 'moteur v4.31';
 const APP_VERSION_DATE = '22/11/2026';
-const APP_VERSION_NOTE = "v4.30 (22/11) — DRAGON FLAG ajouté aux exceptions de restriction (décision de J : seul frein, la force des abdos) : il redevient proposable dans le sélecteur de gainage ; migration idempotente (drapeau migrationReintroPEC3). Catalogue inchangé (2.5). — v4.29 (22/11) — ① CORRECTIF SUBSTITUTION : le sélecteur de variante affiche toujours l'exercice réellement proposé, grise les options indisponibles, et un choix enregistré vers un exercice coupé est ignoré (fini le leg curl à la place d'un hinge) ; good morning ajouté au sélecteur de hinge. ② ROUE ABDOMINALE ajoutée au catalogue (2.5) et au sélecteur de gainage, mêmes restrictions que le dragon flag, exception ajoutée aux restrictions enregistrées (drapeau migrationReintroPEC2). ③ GTG : pompes sur poignées et tractions, nombre de reps réglable par série, total dans l'historique.";
+const APP_VERSION_NOTE = "v4.31 (22/11) — SÉLECTEUR DE VARIANTE : un exercice coupé par une restriction ou une contre-indication (RDL, trap bar…) reste CHOISISSABLE ; il est alors marqué « hors restriction · choix manuel » (décision de J : c'est lui qui arbitre, l'app le rend visible). Seul le matériel manquant grise une option. — v4.30 (22/11) — DRAGON FLAG ajouté aux exceptions de restriction (décision de J : seul frein, la force des abdos) : il redevient proposable dans le sélecteur de gainage ; migration idempotente (drapeau migrationReintroPEC3). Catalogue inchangé (2.5).";
 
 
 // ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────
@@ -6790,6 +6790,10 @@ function moteurResolveSlot(slot, usedIds){
   if(pref){
     const st = moteurExerciseStatus(pref);
     if(st.ok && !usedIds.has(pref)) return {exId: pref, substituted:false};
+    // v4.31 — choix MANUEL de J dans le sélecteur de variante, vers un exercice coupé par une restriction
+    // ou une contre-indication (pas par le matériel) : honoré, mais signalé « hors restriction ». C'est
+    // sa décision ; l'app la rend visible au lieu de la contourner en silence ou de la refuser.
+    if(slot.choixManuel && !st.ok && st.contra && !usedIds.has(pref)) return {exId: pref, substituted:false, horsRestriction:true, blockedReason: st.reason};
     if(!st.ok && st.contra) fallbackStrict = true;
     // CHANTIER 68/71 (audit v4) — substituts déclarés au niveau du CRÉNEAU, servis AVANT ceux de la
     // fiche. Le créneau connaît le rôle et l'intensité (quel créneau a le plus besoin de la ressource
@@ -6863,7 +6867,7 @@ function moteurResolveSession(session){
       const chosen = swaps[swapKey];
       // v4.29 — un swap enregistré vers un exercice devenu indisponible est ignoré (sinon le créneau
       // retombait sur un repli par pattern arbitraire, ex. leg curl à la place d'un hinge).
-      if(chosen && M_EX_BY_ID[chosen] && moteurExerciseStatus(chosen).ok) effSlot = Object.assign({}, slot, {exercice_pref: chosen});
+      if(chosen && M_EX_BY_ID[chosen]){ const stC = moteurExerciseStatus(chosen); if(stC.ok || stC.contra) effSlot = Object.assign({}, slot, {exercice_pref: chosen, choixManuel: !stC.ok}); }
     }
     const r = Object.assign({slot: effSlot}, moteurResolveSlot(effSlot, usedIds));
     // Le priming ne « consomme » pas son exercice : la rotation externe sert en activation ET en
@@ -9660,13 +9664,18 @@ function renderSessionCards(el, session){
       });
       choices.forEach(c=>{
         const st2 = moteurExerciseStatus(c[0]);
-        const opt=$('option',{value:c[0]}, c[1] + (st2.ok ? '' : ' — indisponible'));
-        if(!st2.ok && c[0]!==ex.id){ opt.disabled=true; opt.title=st2.reason||''; }
+        // Coupé par une restriction/contre-indication : choisissable (décision de J), marqué « hors restriction ».
+        // Coupé par le matériel : grisé, impossible à choisir.
+        const horsR = !st2.ok && !!st2.contra;
+        const opt=$('option',{value:c[0]}, c[1] + (st2.ok ? '' : (horsR ? ' — hors restriction' : ' — indisponible')));
+        if(!st2.ok && !horsR && c[0]!==ex.id){ opt.disabled=true; }
+        if(!st2.ok) opt.title=st2.reason||'';
         if(c[0]===ex.id) opt.selected=true;
         sel.appendChild(opt);
       });
       hdr.appendChild(sel);
     }
+    if(r.horsRestriction) hdr.appendChild($('span',{class:'tag',style:{fontSize:'9px',background:'#f5a62322',color:'#f5a623'},title:r.blockedReason||''},'⚠ hors restriction · choix manuel'));
     if(r.substituted) hdr.appendChild($('span',{class:'tag tag-purple',style:{fontSize:'9px'}},
       r.viaContraindication?'substitué · contre-indication':(r.viaPattern?'même pattern':'substitué')));
     if(tooltipNote) hdr.appendChild($('button',{class:'info-btn',onclick:(e)=>{ e.stopPropagation(); showTooltip(e, tooltipNote); }},'?'));

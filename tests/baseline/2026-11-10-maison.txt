@@ -139,7 +139,7 @@ RAPPEL PUISSANCE
 ●
 Zercher squat
 Zercher
-Trap bar (squat haut) — indisponible
+Trap bar (squat haut) — hors restriction
 Presse à jambes (2j)
 ?
 SQUAT
@@ -173,10 +173,10 @@ PUSH INCLINE VOLUME
 ○ Absent (restriction) — Restriction médicale active : Poignet G — arthrose post-rupture ligamentaire
 ●
 Good Morning élastique
-RDL — indisponible
+RDL — hors restriction
 Good morning
 Good morning élastique
-DL trap bar — indisponible
+DL trap bar — hors restriction
 substitué
 ?
 HINGE VOLUME
@@ -307,8 +307,8 @@ Set 3
 ●
 Hardstyle Plank
 Hardstyle plank
-Roue abdominale — indisponible
-Dragon flag — indisponible
+Roue abdominale — hors restriction
+Dragon flag — hors restriction
 Hollow hold
 substitué
 ?
@@ -445,7 +445,7 @@ VECTEUR
 Pseudo lancer rotationnel élastique
 Pseudo lancer rotationnel élastique
 Chop/lift explosif
-Med ball rotationnel — indisponible
+Med ball rotationnel — hors restriction
 substitué
 ?
 ROTATION (OPTIONNEL)
@@ -515,11 +515,11 @@ optionnel
 Journée chargée ? 4 exercices clés au lieu de la séance complète.
 ●
 Pseudo lancer rotationnel élastique
-Lancer horizontal — indisponible
-Lancer rotationnel — indisponible
+Lancer horizontal — hors restriction
+Lancer rotationnel — hors restriction
 Pseudo lancer élastique
-KB swing explosif — indisponible
-Pompe explosive — indisponible
+KB swing explosif — hors restriction
+Pompe explosive — hors restriction
 substitué
 ?
 RAPPEL PUISSANCE (OPTIONNEL)
@@ -540,10 +540,10 @@ Set 3
 +Série
 ●
 Good Morning élastique
-RDL — indisponible
+RDL — hors restriction
 Good morning
 Good morning élastique
-DL trap bar — indisponible
+DL trap bar — hors restriction
 substitué
 ?
 HINGE LOURD
@@ -567,7 +567,7 @@ PUSH HORIZONTAL PRINCIPAL
 ●
 Presse à cuisse
 Presse à cuisse
-Bulgarian — indisponible
+Bulgarian — hors restriction
 Presse une jambe
 Presse à jambes (1j, guidée)
 Split squat surélevé
@@ -646,8 +646,8 @@ FINISHER BFR BRAS 2
 ●
 Hardstyle Plank
 Hardstyle plank
-Roue abdominale — indisponible
-Dragon flag — indisponible
+Roue abdominale — hors restriction
+Dragon flag — hors restriction
 Hollow hold
 substitué
 ?

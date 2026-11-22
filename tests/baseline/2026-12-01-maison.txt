@@ -257,7 +257,7 @@ Set 3
 +Série
 ●
 Good Morning élastique
-RDL — indisponible
+RDL — hors restriction
 Good morning
 Good morning élastique
 DL trap bar
@@ -595,7 +595,7 @@ VECTEUR
 Pseudo lancer rotationnel élastique
 Pseudo lancer rotationnel élastique
 Chop/lift explosif
-Med ball rotationnel — indisponible
+Med ball rotationnel — hors restriction
 substitué
 ?
 ROTATION (OPTIONNEL)
@@ -665,11 +665,11 @@ optionnel
 Journée chargée ? 4 exercices clés au lieu de la séance complète.
 ●
 Pseudo lancer rotationnel élastique
-Lancer horizontal — indisponible
-Lancer rotationnel — indisponible
+Lancer horizontal — hors restriction
+Lancer rotationnel — hors restriction
 Pseudo lancer élastique
-KB swing explosif — indisponible
-Pompe explosive — indisponible
+KB swing explosif — hors restriction
+Pompe explosive — hors restriction
 substitué
 ?
 RAPPEL PUISSANCE (OPTIONNEL)
@@ -690,7 +690,7 @@ Set 3
 +Série
 ●
 Good Morning élastique
-RDL — indisponible
+RDL — hors restriction
 Good morning
 Good morning élastique
 DL trap bar
@@ -741,7 +741,7 @@ Set 3
 ●
 Presse à cuisse
 Presse à cuisse
-Bulgarian — indisponible
+Bulgarian — hors restriction
 Presse une jambe
 Presse à jambes (1j, guidée)
 Split squat surélevé
