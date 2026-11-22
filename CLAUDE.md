@@ -31,10 +31,11 @@ navigateur du téléphone et dans Firebase, jamais ici).
 ## Repères de fond (décisions de J, à ne pas rediscuter sans lui)
 - Objectifs : **opérateur qui vieillit bien + ferme**. Plus de St Astier ni de MMA ; la condition
   physique de combat reste visée (combat non volontaire), sans objectif de compétition.
-- **Aucune information de santé dans ce dépôt** (ni ici, ni dans le code, les tests, les messages de
-  commit). Le contexte médical et les restrictions en cours vivent dans le projet claude.ai
-  (`claude/etat_physique.md`) et dans les réglages de l'app sur le téléphone. Dans le code, rester
-  générique : « restriction », « zone », « gêne » — jamais de diagnostic, de traitement ni de date de soin.
+- **Pas de nouvelle information de santé dans ce dépôt.** Le contexte médical vit dans le projet
+  claude.ai (`claude/etat_physique.md`) et dans les réglages de l'app. **Existant accepté par J
+  (22/11/2026, dépôt public maintenu, l'option privée étant payante)** : restrictions par défaut et
+  libellés de contre-indication de `index.html`, qui servent la programmation. N'y rien ajouter ; dans
+  le code et les messages de commit, rester générique (« restriction », « zone », « gêne »).
 - Front squat **retiré définitivement** ; squat du RSA = **Zercher, repère interne non opposable**.
 - Tests en **3RM, jamais 1RM**. Course par paliers R1-R6, échelle de gêne 0-10 (plafond 3).
 - Un créneau coupé par une restriction s'affiche « Absent (restriction) », ne bloque pas la séance,
