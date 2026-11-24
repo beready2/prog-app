@@ -5764,7 +5764,7 @@ const SEANCE_PAR_JOUR = {1:'H1',2:'B1',3:'Z2',4:'H2',5:'B2',6:'WC glyco',0:'Z2'}
 
 const GTG_EXERCICES = [
   {id:'militaire_gtg',icon:'🏋️',name:'Militaire GTG',reps:'1×3 reps',charge:'20 kg',rpe:'5/10',note:'3–4 passes/jour · 90 min min entre passes · SNC frais. Bureau, couloir, partout. Jamais fatigant. ~44% 1RM. ⚠ Les JOURS OÙ LE MILITAIRE EST DÉJÀ CHARGÉ EN SÉANCE (FB2, et Portage 2 tant qu’il y figure) : GTG allégé ou sauté — wall sit + dead hang seuls. La règle se lie à la CHARGE DU JOUR, pas à un numéro de bloc. (31/08 : elle disait « BLOC 3 (S6-S8) », découpage du plan Guyane abandonné le 08/08.)',freq:'3–4×/jour · allégé les jours de militaire chargé'},
-  {id:'wall_sit_gtg',icon:'🪑',name:'Wall Sit GTG · bilatéral',reps:'1×35s propre',charge:'BW',rpe:'5/10',note:'Form stricte (pas de triche bassin). Passage unilatéral quand 60s bilatéral confortable.',freq:'3–4×/jour'},
+  {id:'wall_sit_gtg',icon:'🪑',name:'Wall Sit GTG · bilatéral',reps:'durée au choix par série',charge:'BW',rpe:'5/10',repsSel:{values:[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,24,26,28,30,35,40,45,50,60,75,90],def:10,unit:'s'},note:'Form stricte (pas de triche bassin). Durée réglable par série : partir sous ton max actuel, puis +2 à 3 s quand les quatre séries sont propres (adaptation assumée, pas un standard). Cible de départ 35 s propre abandonnée le 24/11. Passage unilatéral quand 60s bilatéral confortable.',freq:'3–4×/jour'},
   {id:'dead_hang_gtg',icon:'🤸',name:'Dead Hang',reps:'1×max (obj. 30s)',charge:'BW passif',rpe:'3/10',note:'Stimulus GTG à part entière. Décompression rachis + santé épaule G. ARRÊT si poignet G douloureux.',freq:'3–4×/jour'},
   // v4.29 (22/11) — pompes et tractions en GTG, sur demande de J. Le nombre de reps se choisit par série
   // (repsSel) ; log.gtg[id] = {passages:[…], reps:{'1':n,…}} (clé reps nouvelle, absente = défaut).
@@ -6260,9 +6260,9 @@ function moteurEquipment(){
 // et c'est exactement pour cette raison que la copie du projet (moteur v4.1) et celle du
 // téléphone (v4.1 + écran Accueil + radar groupé) ont divergé sans que personne s'en aperçoive.
 // Toute évolution incrémente ces trois constantes.
-const APP_VERSION = 'moteur v4.31';
-const APP_VERSION_DATE = '22/11/2026';
-const APP_VERSION_NOTE = "v4.31 (22/11) — SÉLECTEUR DE VARIANTE : un exercice coupé par une restriction ou une contre-indication (RDL, trap bar…) reste CHOISISSABLE ; il est alors marqué « hors restriction · choix manuel » (décision de J : c'est lui qui arbitre, l'app le rend visible). Seul le matériel manquant grise une option. — v4.30 (22/11) — DRAGON FLAG ajouté aux exceptions de restriction (décision de J : seul frein, la force des abdos) : il redevient proposable dans le sélecteur de gainage ; migration idempotente (drapeau migrationReintroPEC3). Catalogue inchangé (2.5).";
+const APP_VERSION = 'moteur v4.32';
+const APP_VERSION_DATE = '24/11/2026';
+const APP_VERSION_NOTE = "v4.32 (24/11) — WALL SIT GTG : durée réglable par série (5 à 90 s), total dans l'historique ; la cible « 35 s propre » est abandonnée. SOIR : champs « heure de coucher » et « pas » retirés (Garmin les donne à Claude ; aucune règle de l'app ne les lisait ; données déjà saisies conservées). — v4.31 (22/11) — SÉLECTEUR DE VARIANTE : un exercice coupé par une restriction ou une contre-indication (RDL, trap bar…) reste CHOISISSABLE ; il est alors marqué « hors restriction · choix manuel » (décision de J : c'est lui qui arbitre, l'app le rend visible). Seul le matériel manquant grise une option.";
 
 
 // ── Jalons : tests, déloads, changements de fenêtre, étapes du retour course ──────────────
@@ -9957,11 +9957,13 @@ function renderGTG(){
             g[ex.id]=el_; l.gtg=g; saveLog(l); render();
           }
         });
-        for(let n=ex.repsSel.min;n<=ex.repsSel.max;n++){
-          const o=$('option',{value:String(n)}, n+' rep'+(n>1?'s':''));
+        const rs = ex.repsSel, unitS = rs.unit==='s';
+        const vals = rs.values || Array.from({length: rs.max-rs.min+1}, (_,i)=>rs.min+i);
+        vals.forEach(n=>{
+          const o=$('option',{value:String(n)}, unitS ? n+' s' : n+' rep'+(n>1?'s':''));
           if(n===cur) o.selected=true;
           sel.appendChild(o);
-        }
+        });
         const wrap=$('div',{style:{display:'flex',flexDirection:'column',alignItems:'stretch',flex:'1',minWidth:'0'}});
         wrap.appendChild(chip); wrap.appendChild(sel);
         passRow.appendChild(wrap);
@@ -10796,16 +10798,7 @@ function renderBilan(){
       )
     ));
     nightCard.appendChild($('div',{style:{fontSize:'12px',color:'#3a86ff',marginTop:'10px',padding:'10px',background:'#3a86ff15',borderRadius:'8px',lineHeight:'1.5'}},'😴 Respiration 4-7-8 au lit (aide endormissement) : inspire nez 4s → retiens 7s → expire bouche 8s. ×3-4 cycles, lumières éteintes. Active le frein vagal, prépare au sommeil.'));
-    nightCard.appendChild($('div',{class:'lbl'},'Heure prévue de coucher'));
-    nightCard.appendChild($('input',{class:'input-field',type:'time',
-      value:s.bedtime||'',
-      oninput:(e)=>{ s.bedtime=e.target.value; log.soir=s; saveLog(log); }
-    }));
-    nightCard.appendChild($('div',{class:'lbl',style:{marginTop:'10px'}},'Nombre de pas (Garmin)'));
-    nightCard.appendChild($('input',{class:'input-field',type:'number',inputmode:'numeric',placeholder:'ex : 8500',
-      value:s.pas||'',
-      oninput:(e)=>{ s.pas=e.target.value; log.soir=s; saveLog(log); }
-    }));
+    // v4.32 — « heure de coucher » et « pas » retirés de la saisie : Garmin les fournit à Claude (revue hebdo), aucune règle de l'app ne les lisait. Les valeurs déjà saisies restent dans l'historique.
     el.appendChild(nightCard);
 
     // Humeur + notes soir
@@ -10904,7 +10897,7 @@ function renderBilan(){
             const gdef=GTG_EXERCICES.find(x=>x.id===gid);
             if(gdef && gdef.repsSel){
               const tot=p.passages.reduce((a,n)=>a+((p.reps&&p.reps[n]!=null)?Number(p.reps[n]):gdef.repsSel.def),0);
-              repsTxt=' · '+tot+' reps';
+              repsTxt=' · '+tot+(gdef.repsSel.unit==='s'?' s au total':' reps');
             }
             gc.appendChild($('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',padding:'2px 0'}},$('span',{style:{color:'#64748b'}},gtgNames[gid]||gid),$('span',{style:{fontWeight:'600'}},nb+' passage'+(nb>1?'s':'')+repsTxt))); }
         });
